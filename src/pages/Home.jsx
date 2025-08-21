@@ -40,16 +40,19 @@ function Home() {
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
               <span className="block">Full Stack Web Developer</span>
             </h1>
-            {/* Role flipper */}
+            {/* Role flipper on the same baseline as 'and' */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
               <span className="block">
-                and <span>
-                  <WordFlipper
-                    words={["UI/UX Expert", "Developer", "Hacker"]}
-                    intervalMs={2500}
-                    initialDelayMs={1200}
-                    textClassName="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-500"
-                  />
+                <span className="whitespace-nowrap">
+                  and
+                  <span className="ml-2 align-baseline inline-flex">
+                    <WordFlipper
+                      words={["UI/UX Expert", "Developer", "Hacker"]}
+                      intervalMs={2500}
+                      initialDelayMs={1200}
+                      textClassName="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-500"
+                    />
+                  </span>
                 </span>
               </span>
             </h1>

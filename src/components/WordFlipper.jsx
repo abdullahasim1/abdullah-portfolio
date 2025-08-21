@@ -58,9 +58,9 @@ function WordFlipper({
 
   return (
     <span
-      className={`inline-block overflow-hidden align-middle h-[1em] ${className}`}
+      className={`inline-block overflow-hidden align-baseline ${className}`}
     >
-      <span ref={textRef} className={`inline-block ${textClassName}`}>
+      <span ref={textRef} className={`inline-block align-baseline ${textClassName}`}>
         {words[index]}
       </span>
     </span>
