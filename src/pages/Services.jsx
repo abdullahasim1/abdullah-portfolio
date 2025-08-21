@@ -1,5 +1,6 @@
 import React from "react";
 import {  useScrollReveal } from "../hooks";
+import MagneticButton from "../components/MagneticButton";
 
 const services = [
   {
@@ -102,12 +103,9 @@ function Services() {
               Don't see exactly what you need? I'm always open to discussing custom solutions 
               that fit your specific requirements and goals.
             </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center px-8 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white hover:opacity-90 transition-opacity font-medium"
-            >
+            <MagneticButton href="#contact">
               Let's Discuss Your Project
-            </a>
+            </MagneticButton>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useCounterAnimation, useStaggerAnimation } from "../hooks";
+import GlowCard from "../components/GlowCard";
 
 const stats = [
   {
@@ -51,18 +52,20 @@ function Stats() {
         <div ref={staggerRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <div key={index} data-stagger className="text-center">
-              <div className="bg-white/60 dark:bg-black/30 backdrop-blur rounded-2xl p-6 border border-gray-200/60 dark:border-gray-800/60">
-                <div className="text-3xl mb-2">{stat.icon}</div>
-                <div 
-                  ref={counterRefs[index].elementRef}
-                  className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-fuchsia-600 mb-2"
-                >
-                  {stat.number}
+              <GlowCard>
+                <div className="p-6">
+                  <div className="text-3xl mb-2 float-y">{stat.icon}</div>
+                  <div 
+                    ref={counterRefs[index].elementRef}
+                    className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-fuchsia-600 mb-2"
+                  >
+                    {stat.number}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                  {stat.label}
-                </div>
-              </div>
+              </GlowCard>
             </div>
           ))}
         </div>
