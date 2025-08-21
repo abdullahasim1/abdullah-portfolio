@@ -10,7 +10,7 @@ const contactInfo = [
   },
   {
     icon: "📱",
-    title: "Phone",
+    title: "Phone/WhatsApp",
     value: "+92 307 0796208",
     link: "tel:+923070796208"
   },
@@ -123,18 +123,22 @@ function Contact() {
                 >
                   Let's Build Your Project
                 </button>
-                <button
-                  type="button"
+                <a
+                  href="https://wa.link/o1bqnp."
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="px-6 py-3 rounded-lg border border-gray-300/70 dark:border-gray-700/70 hover:bg-white/40 dark:hover:bg-white/5 backdrop-blur transition-colors"
+                  data-cursor="hover"
                 >
                   WhatsApp Me
-                </button>
-                <button
-                  type="button"
+                </a>
+                <a
+                  href="mailto:abdullah.gc.18@gmail.com?subject=Free%20Quote%20Request&body=Hi%20Abdullah%2C%0D%0A%0D%0AI%27d%20like%20a%20quote%20for%20my%20project.%20Here%20are%20some%20details%3A%0D%0A-%20Project%20type%3A%20%0D%0A-%20Timeline%3A%20%0D%0A-%20Budget%20range%3A%20%0D%0A%0D%0AThanks!"
                   className="px-6 py-3 rounded-lg border border-gray-300/70 dark:border-gray-700/70 hover:bg-white/40 dark:hover:bg-white/5 backdrop-blur transition-colors"
+                  data-cursor="hover"
                 >
                   Get a Free Quote
-                </button>
+                </a>
               </div>
             </form>
           </div>
