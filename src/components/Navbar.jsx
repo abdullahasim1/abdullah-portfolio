@@ -30,7 +30,7 @@ function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center gap-3">
           <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=120&auto=format&fit=crop"
+            src="/IMG-20240224-WA0006.jpg"
             alt="Abdullah Asim"
             className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
           />

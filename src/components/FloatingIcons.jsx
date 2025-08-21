@@ -26,7 +26,7 @@ function FloatingIcons() {
     const iconElements = container.querySelectorAll(".floating-icon");
 
     // Create floating animation for each icon
-    iconElements.forEach((icon, index) => {
+    iconElements.forEach((icon, ) => {
       const duration = 8 + Math.random() * 4; // 8-12 seconds
       const delay = Math.random() * 2; // 0-2 seconds delay
 

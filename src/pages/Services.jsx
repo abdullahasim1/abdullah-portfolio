@@ -1,39 +1,114 @@
 import React from "react";
-import { useScrollReveal } from "../hooks/useScrollReveal";
+import {  useScrollReveal } from "../hooks";
 
 const services = [
-  { title: "Web App Development", desc: "Custom, scalable web apps built with React, Node, and modern tooling.", badge: "React • Node • REST" },
-  { title: "Mobile Apps", desc: "Cross-platform apps using React Native for iOS and Android.", badge: "React Native" },
-  { title: "Backend APIs", desc: "Secure, performant APIs with Node and PostgreSQL.", badge: "Node • PostgreSQL" },
-  { title: "UI/UX & Branding", desc: "Design systems and visuals that convert and delight.", badge: "Figma • Design Systems" },
-  { title: "Payment Integration", desc: "Stripe and PayPal integrations for seamless checkout.", badge: "Stripe • PayPal" },
-  { title: "Automation", desc: "Scrapers and internal tools to streamline operations.", badge: "Automation" },
+  {
+    category: "Web App Development",
+    items: [
+      "Custom Web Applications",
+      "E-commerce Platforms",
+      "Progressive Web Apps",
+      "Admin Dashboards"
+    ]
+  },
+  {
+    category: "Mobile App Development",
+    items: [
+      "React Native Apps",
+      "Cross-platform Solutions",
+      "Native iOS/Android",
+      "App Maintenance"
+    ]
+  },
+  {
+    category: "Backend Development",
+    items: [
+      "API Development",
+      "Database Design",
+      "Server Architecture",
+      "Cloud Integration"
+    ]
+  },
+  {
+    category: "Frontend Development",
+    items: [
+      "React Applications",
+      "Responsive Design",
+      "Performance Optimization",
+      "UI/UX Implementation"
+    ]
+  },
+  {
+    category: "UI/UX Design",
+    items: [
+      "User Interface Design",
+      "User Experience Design",
+      "Prototyping",
+      "Design Systems"
+    ]
+  },
+  {
+    category: "Payment Gateway",
+    items: [
+      "Stripe Integration",
+      "PayPal Setup",
+      "Payment Security",
+      "Transaction Management"
+    ]
+  }
 ];
 
 function Services() {
+  
   useScrollReveal("#services .reveal");
 
   return (
     <section id="services" className="py-24">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-10 text-left">
+        <div className="mb-12 text-center">
           <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">
             <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
             Services
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">Complete Digital Solutions</h2>
+          
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((s) => (
-            <div key={s.title} className="reveal relative overflow-hidden rounded-2xl border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur p-6 transition-transform hover:-translate-y-1">
-              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-indigo-500/10 via-fuchsia-500/10 to-emerald-400/10 opacity-0 hover:opacity-100 transition-opacity"></div>
-              <div className="relative">
-                <h3 className="font-semibold text-lg mb-2">{s.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">{s.desc}</p>
-                <span className="inline-block text-xs px-2 py-1 rounded bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800/50">{s.badge}</span>
+        
+        <div  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((service, index) => (
+            <div key={index} data-stagger className="reveal group">
+              <div className="bg-white/60 dark:bg-black/30 backdrop-blur rounded-2xl p-6 border border-gray-200/60 dark:border-gray-800/60 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg">
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  {service.category}
+                </h3>
+                <ul className="space-y-2">
+                  {service.items.map((item, itemIndex) => (
+                    <li key={itemIndex} className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-3"></span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}
+        </div>
+        
+        <div className="reveal text-center mt-16">
+          <div className="bg-white/60 dark:bg-black/30 backdrop-blur rounded-2xl p-8 border border-gray-200/60 dark:border-gray-800/60">
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+              Need Something Custom?
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+              Don't see exactly what you need? I'm always open to discussing custom solutions 
+              that fit your specific requirements and goals.
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex items-center px-8 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white hover:opacity-90 transition-opacity font-medium"
+            >
+              Let's Discuss Your Project
+            </a>
+          </div>
         </div>
       </div>
     </section>

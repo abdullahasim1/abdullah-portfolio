@@ -1,5 +1,7 @@
 import React from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import SplitTextAnimation from "../components/SplitTextAnimation";
+import FlipAnimation from "../components/FlipAnimation";
 
 const projects = [
   {
@@ -60,15 +62,18 @@ function Projects() {
             <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
             Portfolio
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">Featured Projects</h2>
+          <SplitTextAnimation animationType="words" className="text-3xl md:text-4xl font-extrabold mt-2">
+            Featured Projects
+          </SplitTextAnimation>
         </div>
         
         {/* Featured Projects */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <FlipAnimation className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {featuredProjects.map((project, index) => (
             <a
               href={project.link}
               key={index}
+              data-flip
               className="reveal group relative overflow-hidden rounded-2xl border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur p-6 transition-transform hover:-translate-y-1"
             >
               <div className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-indigo-500/10 via-fuchsia-500/10 to-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -90,17 +95,20 @@ function Projects() {
               </div>
             </a>
           ))}
-        </div>
+        </FlipAnimation>
 
         {/* Other Projects */}
         <div className="mb-8">
-          <h3 className="text-2xl font-bold mb-6">Additional Projects</h3>
+          <SplitTextAnimation animationType="words" className="text-2xl font-bold mb-6">
+            Additional Projects
+          </SplitTextAnimation>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <FlipAnimation className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {otherProjects.map((project, index) => (
             <a
               href={project.link}
               key={index}
+              data-flip
               className="reveal group relative overflow-hidden rounded-2xl border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur p-6 transition-transform hover:-translate-y-1"
             >
               <div className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-indigo-500/10 via-fuchsia-500/10 to-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -119,7 +127,7 @@ function Projects() {
               </div>
             </a>
           ))}
-        </div>
+        </FlipAnimation>
 
         <div className="text-center mt-12">
           <a

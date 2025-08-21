@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingIcons from "./components/FloatingIcons";
 import ParticleEffect from "./components/ParticleEffect";
+import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -13,6 +14,7 @@ import Skills from "./pages/Skills";
 import Process from "./pages/Process";
 import Testimonials from "./pages/Testimonials";
 import Contact from "./pages/Contact";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -33,6 +35,7 @@ function App() {
       {/* Animated Background Effects */}
       <FloatingIcons />
       <ParticleEffect />
+      <CursorFollower />
       
       {/* Decorative background blobs */}
       <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl dark:bg-indigo-500/20"></div>
@@ -52,6 +55,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
