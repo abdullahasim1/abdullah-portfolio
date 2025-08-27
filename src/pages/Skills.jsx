@@ -36,7 +36,7 @@ function Skills() {
     <section id="skills" className="py-24">
       <div className="max-w-6xl mx-auto">
         <div className="mb-12 text-center">
-          <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">
+          <span className="inline-flex items-center gap-2 text-lg  font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
             <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
             Skills & Expertise
           </span>
