@@ -6,23 +6,30 @@ import FlipAnimation from "../components/FlipAnimation";
 const projects = [
   {
     title: "Food Ordering System",
-    description: "Full-stack e-commerce solution with payment integration, user authentication, and admin dashboard. Built with React, Node.js, and Stripe.",
+    description: "Full-stack e-commerce solution with payment integration, user authentication, and admin dashboard. Built with React, Node.js, and Tailwind CSS.",
     tags: ["React", "Node.js",  "MYSQL", "Express"],
     link: "https://github.com/abdullahasim1/food-order-project",
     featured: true,
   },
   {
     title: "Four-Ai",
-    description: "Collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
+    description: "Four AI is a web application that make Text to Speech , Text to Image , Voice Changer Effects etc. It is built with React, Gasp, Node.js, Express, MYSQL, and Tailwind CSS.",
     tags: ["React", "Gasp", "Node.js", "Express" , "MYSQL", "Tailwind CSS", ],
     link: "https://github.com/abdullahasim1/four-ai",
     featured: true,
   },
   {
     title: "Home Service",
-    description: "Modern, responsive portfolio website with dark mode, animations, and contact form integration.",
+    description: "Home Service is a web application that provide services to the user. It is built with HTML, CSS, and JavaScript.",
     tags: ["HTML", "CSS", "JavaScript", ],
     link: "https://github.com/abdullahasim1/HomeServices",
+    featured: true,
+  },
+  {
+    title: "Abdullah Portfolio",
+    description: "Abdullah Portfolio is a web application that showcase my projects and skills. It is built with React, Tailwind CSS, and Gasp.",
+    tags: ["React", "Tailwind CSS", "Gasp"],
+    link: "https://github.com/abdullahasim1/abdullah-portfolio",
     featured: true,
   },
   {
