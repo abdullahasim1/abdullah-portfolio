@@ -159,3 +159,5 @@ Defined in `src/index.css`:
 - The cursor follower respects `prefers-reduced-motion`.
 - For gradient text with `WordFlipper`, pass classes via `textClassName`.
 
+
+
