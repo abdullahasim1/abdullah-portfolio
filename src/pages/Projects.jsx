@@ -17,7 +17,7 @@ const projects = [
     description: "Four AI is a web application that make Text to Speech , Text to Image , Voice Changer Effects etc. It is built with React, Gasp, Node.js, Express, MYSQL, and Tailwind CSS.",
     tags: ["React", "Gasp", "Node.js", "Express" , "MYSQL", "Tailwind CSS", ],
     githubLink: "https://github.com/abdullahasim1/four-ai",
-    liveLink: "https://four-ai-demo.vercel.app",
+    liveLink: "https://four-ai-dev.vercel.app",
     featured: true,
   },
   {
@@ -25,7 +25,7 @@ const projects = [
     description: "Home Service is a web application that provide services to the user. It is built with HTML, CSS, and JavaScript.",
     tags: ["HTML", "CSS", "JavaScript", ],
     githubLink: "https://github.com/abdullahasim1/HomeServices",
-    liveLink: "https://home-services-demo.vercel.app",
+    liveLink: "https://homeservices-dev.vercel.app",
     featured: true,
   },
   {
@@ -33,7 +33,7 @@ const projects = [
     description: "Abdullah Portfolio is a web application that showcase my projects and skills. It is built with React, Tailwind CSS, and Gasp.",
     tags: ["React", "Tailwind CSS", "Gasp"],
     githubLink: "https://github.com/abdullahasim1/abdullah-portfolio",
-    liveLink: "https://abdullah-portfolio.vercel.app",
+    liveLink: "https://abdullah-asim-dev.vercel.app",
     featured: true,
   },
   {
