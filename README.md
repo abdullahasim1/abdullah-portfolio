@@ -2,7 +2,7 @@
 
 A modern, animated portfolio built with React 19, Vite 7, Tailwind CSS v4, and GSAP. It showcases projects, skills, services, animated stats, and a polished contact section with micro‑interactions.
 
-Live demo: add your URL here
+Live demo: https://abdullah-asim-dev.vercel.app
 
 ## ✨ Features
 
