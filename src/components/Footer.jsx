@@ -8,6 +8,7 @@ const quickLinks = [
   { name: "About", href: "#about" },
   { name: "Services", href: "#services" },
   { name: "Projects", href: "#projects" },
+  { name: "Certifications", href: "#certifications" },
   { name: "Skills", href: "#skills" },
   { name: "Contact", href: "#contact" }
 ];
@@ -24,8 +25,8 @@ const services = [
 const stats = [
   { number: "3+", label: "Years Experience" },
   { number: "25+", label: "Projects Completed" },
-  { number: "15+", label: "Technologies" },
-  { number: "100%", label: "Client Satisfaction" }
+  { number: "8+", label: "Certifications" },
+  { number: "15+", label: "Technologies" }
 ];
 
 function Footer() {

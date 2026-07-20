@@ -14,14 +14,14 @@ const stats = [
     icon: "🚀"
   },
   {
+    number: 8,
+    label: "Certifications",
+    icon: "🏆"
+  },
+  {
     number: 15,
     label: "Technologies",
     icon: "⚡"
-  },
-  {
-    number: 100,
-    label: "Client Satisfaction",
-    icon: "💯"
   }
 ];
 
@@ -31,8 +31,8 @@ function Stats() {
   // Call hooks individually at the top level
   const counter1Ref = useCounterAnimation(3, 2, 0);
   const counter2Ref = useCounterAnimation(25, 2, 0.2);
-  const counter3Ref = useCounterAnimation(15, 2, 0.4);
-  const counter4Ref = useCounterAnimation(100, 2, 0.6);
+  const counter3Ref = useCounterAnimation(8, 2, 0.4);
+  const counter4Ref = useCounterAnimation(15, 2, 0.6);
 
   const counterRefs = [counter1Ref, counter2Ref, counter3Ref, counter4Ref];
 

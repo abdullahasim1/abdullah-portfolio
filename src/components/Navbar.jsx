@@ -45,6 +45,7 @@ function Navbar() {
           <a href="#about" onClick={(e) => handleNavClick(e, "about")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About</a>
           <a href="#services" onClick={(e) => handleNavClick(e, "services")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Services</a>
           <a href="#projects" onClick={(e) => handleNavClick(e, "projects")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Projects</a>
+          <a href="#certifications" onClick={(e) => handleNavClick(e, "certifications")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Certs</a>
           <a href="#skills" onClick={(e) => handleNavClick(e, "skills")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Skills</a>
           <a href="#contact" onClick={(e) => handleNavClick(e, "contact")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</a>
           
@@ -73,6 +74,7 @@ function Navbar() {
           <div className="max-w-7xl mx-auto px-6 py-4 grid gap-4 text-sm">
             <a href="#services" onClick={(e) => { handleNavClick(e, "services"); setMobileOpen(false); }} className="py-1">Services</a>
             <a href="#projects" onClick={(e) => { handleNavClick(e, "projects"); setMobileOpen(false); }} className="py-1">Projects</a>
+            <a href="#certifications" onClick={(e) => { handleNavClick(e, "certifications"); setMobileOpen(false); }} className="py-1">Certifications</a>
             <a href="#skills" onClick={(e) => { handleNavClick(e, "skills"); setMobileOpen(false); }} className="py-1">Skills</a>
             <a href="#process" onClick={(e) => { handleNavClick(e, "process"); setMobileOpen(false); }} className="py-1">Process</a>
             <a href="#contact" onClick={(e) => { handleNavClick(e, "contact"); setMobileOpen(false); }} className="py-1">Contact</a>

@@ -48,14 +48,14 @@ function About() {
           <div className="space-y-6">
             <div  className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed space-y-4">
               <p>
-                I'm a passionate Full Stack Developer with a love for creating seamless digital experiences. 
-                With expertise in both frontend and backend development, I bring ideas to life with clean code 
-                and intuitive design.
+                I'm a passionate Full Stack Developer with a love for creating seamless digital experiences.
+                With expertise in both frontend and backend development — plus AWS Generative AI credentials —
+                I bring ideas to life with clean code and intuitive design.
               </p>
               <p>
-                My journey in web development started with curiosity and has evolved into a commitment to 
-                delivering high-quality solutions that not only meet but exceed expectations. I believe in 
-                the power of technology to solve real-world problems and create meaningful impact.
+                My journey in web development started with curiosity and has evolved into a commitment to
+                delivering high-quality solutions that not only meet but exceed expectations. From AI-powered
+                apps to full-stack platforms, I build products that solve real problems.
               </p>
               
             </div>

@@ -11,6 +11,7 @@ import Services from "./pages/Services";
 import Stats from "./pages/Stats";
 import Projects from "./pages/Projects";
 import Skills from "./pages/Skills";
+import Certifications from "./pages/Certifications";
 import Process from "./pages/Process";
 import Testimonials from "./pages/Testimonials";
 import Contact from "./pages/Contact";
@@ -50,6 +51,7 @@ function App() {
         <Stats />
         <Projects />
         <Skills />
+        <Certifications />
         <Process />
         <Testimonials />
         <Contact />
