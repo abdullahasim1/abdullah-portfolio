@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { ContactShadows, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
+import { scrollState } from "../../lib/scrollState";
 
 /* ---------- helpers ---------- */
 
@@ -293,11 +294,20 @@ function Laptop({ pointerRef, reduced }) {
   useFrame((state) => {
     if (!groupRef.current || reduced) return;
     const t = state.clock.elapsedTime;
-    // gentle idle sway + soft pointer follow (damped lerp)
-    const targetY = -0.32 + Math.sin(t * 0.3) * 0.05 + pointerRef.current.x * 0.12;
-    const targetX = Math.sin(t * 0.45) * 0.02 - pointerRef.current.y * 0.035;
+    const sp = scrollState.hero.value; // 0 → 1 (hero scroll-out)
+
+    // gentle idle sway + soft pointer follow + scroll-driven half spin
+    const targetY = -0.32 + Math.sin(t * 0.3) * 0.05 + pointerRef.current.x * 0.12 + sp * Math.PI * 0.85;
+    const targetX = Math.sin(t * 0.45) * 0.02 - pointerRef.current.y * 0.035 + sp * 0.22;
     groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.04;
     groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.04;
+
+    // scroll par zoom-out + depth mein recede + halka lift
+    const targetScale = 0.95 * (1 - sp * 0.3);
+    const s = groupRef.current.scale.x + (targetScale - groupRef.current.scale.x) * 0.06;
+    groupRef.current.scale.setScalar(s);
+    groupRef.current.position.z += (-sp * 1.5 - groupRef.current.position.z) * 0.06;
+    groupRef.current.position.y += (sp * 0.4 - groupRef.current.position.y) * 0.06;
   });
 
   const bodyMat = (

@@ -7,15 +7,23 @@ import {
   Environment,
   Lightformer,
 } from "@react-three/drei";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Laptop from "./Laptop";
+import { scrollState } from "../../lib/scrollState";
 
-/* Camera drifts subtly toward the cursor — cinematic parallax */
+gsap.registerPlugin(ScrollTrigger);
+
+/* Camera drifts subtly toward the cursor — cinematic parallax.
+   Scroll ke saath dolly-out bhi karta hai (hero se door hote hue) */
 function CameraRig(pointerRef) {
   const { camera } = useThree();
   useFrame(() => {
     const { x, y } = pointerRef.current;
+    const sp = scrollState.hero.value;
     camera.position.x += (x * 0.9 - camera.position.x) * 0.04;
-    camera.position.y += (y * 0.5 - camera.position.y) * 0.04;
+    camera.position.y += (y * 0.5 + sp * 0.55 - camera.position.y) * 0.04;
+    camera.position.z += (7 + sp * 2.4 - camera.position.z) * 0.05;
     camera.lookAt(0, 0, 0);
   });
   return null;
@@ -141,6 +149,23 @@ export default function HeroScene() {
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
+
+  /* Scroll-linked 3D: #home ke scroll-out progress (0→1) ko shared
+     state mein likhte hain — Laptop aur CameraRig useFrame mein padhte hain */
+  useEffect(() => {
+    if (reduced) return undefined;
+
+    const st = ScrollTrigger.create({
+      trigger: "#home",
+      start: "top top",
+      end: "bottom top",
+      onUpdate: (self) => {
+        scrollState.hero.value = self.progress;
+      },
+    });
+
+    return () => st.kill();
+  }, [reduced]);
 
   return (
     <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
