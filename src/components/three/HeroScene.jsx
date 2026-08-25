@@ -7,6 +7,7 @@ import {
   Environment,
   Lightformer,
 } from "@react-three/drei";
+import Laptop from "./Laptop";
 
 /* Camera drifts subtly toward the cursor — cinematic parallax */
 function CameraRig(pointerRef) {
@@ -18,30 +19,6 @@ function CameraRig(pointerRef) {
     camera.lookAt(0, 0, 0);
   });
   return null;
-}
-
-/* Main hero object — brushed-metal torus knot with studio reflections */
-function MetalKnot({ reduced }) {
-  const ref = useRef(null);
-
-  useFrame((state) => {
-    if (reduced || !ref.current) return;
-    const t = state.clock.elapsedTime;
-    ref.current.rotation.x = t * 0.16;
-    ref.current.rotation.y = t * 0.22;
-  });
-
-  return (
-    <mesh ref={ref}>
-      <torusKnotGeometry args={[1, 0.3, 256, 40]} />
-      <meshStandardMaterial
-        color="#141d2f"
-        metalness={1}
-        roughness={0.16}
-        envMapIntensity={1.6}
-      />
-    </mesh>
-  );
 }
 
 /* Orbiting glass orbs — physical material w/ transmission */
@@ -116,14 +93,14 @@ function SceneContent({ pointerRef, reduced }) {
       <directionalLight position={[4, 6, 4]} intensity={1.1} color="#bae6fd" />
 
       <group ref={groupRef} position={[offsetX, 0, 0]} scale={scale}>
-        <Float speed={1.3} rotationIntensity={0.25} floatIntensity={0.8}>
-          <MetalKnot reduced={reduced} />
-          <Ring radius={2.15} tilt={[Math.PI / 2.3, 0.2, 0]} color="#22d3ee" opacity={0.55} speed={0.35} reduced={reduced} />
-          <Ring radius={2.65} tilt={[Math.PI / 2.8, -0.45, 0]} color="#a78bfa" opacity={0.38} speed={-0.22} reduced={reduced} />
-          <Ring radius={1.75} tilt={[Math.PI / 1.9, 0.6, 0]} color="#67e8f9" opacity={0.25} speed={0.5} reduced={reduced} />
-          <GlassOrb radius={2.15} speed={0.5} size={0.14} color="#67e8f9" reduced={reduced} />
-          <GlassOrb radius={2.65} speed={0.36} size={0.11} color="#c4b5fd" reduced={reduced} />
-          <GlassOrb radius={1.75} speed={0.62} size={0.08} color="#e0f2fe" reduced={reduced} />
+        <Float speed={1.3} rotationIntensity={0.15} floatIntensity={0.6}>
+          <Laptop pointerRef={pointerRef} reduced={reduced} />
+          <Ring radius={2.5} tilt={[Math.PI / 2.3, 0.2, 0]} color="#22d3ee" opacity={0.55} speed={0.35} reduced={reduced} />
+          <Ring radius={2.95} tilt={[Math.PI / 2.8, -0.45, 0]} color="#a78bfa" opacity={0.38} speed={-0.22} reduced={reduced} />
+          <Ring radius={2.1} tilt={[Math.PI / 1.9, 0.6, 0]} color="#67e8f9" opacity={0.25} speed={0.5} reduced={reduced} />
+          <GlassOrb radius={2.5} speed={0.5} size={0.14} color="#67e8f9" reduced={reduced} />
+          <GlassOrb radius={2.95} speed={0.36} size={0.11} color="#c4b5fd" reduced={reduced} />
+          <GlassOrb radius={2.1} speed={0.62} size={0.08} color="#e0f2fe" reduced={reduced} />
         </Float>
       </group>
 
