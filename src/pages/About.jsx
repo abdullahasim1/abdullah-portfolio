@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
+
+const HoloOrb = lazy(() => import("../components/three/HoloOrb"));
 
 const strengths = [
   {
@@ -60,6 +62,14 @@ function About() {
                 products that solve real problems. From AI-powered platforms to full-stack web apps —
                 I build things that work, scale, and look great doing it.
               </p>
+
+              {/* Holographic 3D orb */}
+              <div className="relative h-40 sm:h-48 -mx-2">
+                <Suspense fallback={null}>
+                  <HoloOrb className="absolute inset-0" />
+                </Suspense>
+              </div>
+
               <div className="flex flex-wrap gap-x-8 gap-y-3 pt-3 border-t border-white/[0.06]">
                 {[
                   ["3+", "Years Experience"],

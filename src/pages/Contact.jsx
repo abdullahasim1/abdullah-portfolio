@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
+
+const PaperPlane = lazy(() => import("../components/three/PaperPlane"));
 
 const EMAIL = "abdullah.gc.18@gmail.com";
 
@@ -103,13 +105,21 @@ function Contact() {
           </div>
 
           {/* Contact form */}
-          <form onSubmit={handleSubmit} className="space-y-4 reveal glass rounded-3xl p-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input type="text" name="name" placeholder="Your Name" className={inputClass} />
-              <input type="email" name="email" placeholder="Your Email" className={inputClass} />
+          <div className="space-y-4 reveal">
+            {/* Paper plane 3D visual */}
+            <div className="relative h-40 sm:h-48 rounded-3xl overflow-hidden border border-white/[0.07] bg-white/[0.02]">
+              <Suspense fallback={null}>
+                <PaperPlane className="absolute inset-0" />
+              </Suspense>
             </div>
-            <input type="text" name="subject" placeholder="Subject" className={inputClass} />
-            <textarea name="message" placeholder="Tell me about your project…" rows={5} className={`${inputClass} resize-none`} />
+
+            <form onSubmit={handleSubmit} className="space-y-4 glass rounded-3xl p-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="text" name="name" placeholder="Your Name" className={inputClass} />
+                <input type="email" name="email" placeholder="Your Email" className={inputClass} />
+              </div>
+              <input type="text" name="subject" placeholder="Subject" className={inputClass} />
+              <textarea name="message" placeholder="Tell me about your project…" rows={5} className={`${inputClass} resize-none`} />
 
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <button
@@ -136,7 +146,8 @@ function Contact() {
                 Get a Free Quote
               </a>
             </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </section>
