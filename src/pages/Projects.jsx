@@ -261,7 +261,8 @@ function Projects() {
   }, [repos]);
 
   /* Stacked-cards scroll effect:
-     jab agli card scroll karke aati hai, pichli card scale-down + dim hoti hai */
+     agli card aane par pichli card depth mein peeche dhali hoti hai —
+     scale + lift + subtle 3D tilt, smoothed scrub ke saath */
   useEffect(() => {
     if (!stackRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -272,15 +273,18 @@ function Projects() {
       cards.forEach((card, i) => {
         if (i === cards.length - 1) return;
         gsap.to(card.querySelector("[data-stack-inner]"), {
-          scale: 0.9,
-          autoAlpha: 0.4,
+          scale: 0.92,
+          y: -28,
+          rotationX: 5,
+          transformPerspective: 1400,
+          autoAlpha: 0.32,
           transformOrigin: "50% 0%",
           ease: "none",
           scrollTrigger: {
             trigger: cards[i + 1],
-            start: "top 95%",
-            end: "top 30%",
-            scrub: true,
+            start: "top bottom",
+            end: "top 18%",
+            scrub: 0.75,
           },
         });
       });

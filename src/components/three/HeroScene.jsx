@@ -93,7 +93,7 @@ function SceneContent({ pointerRef, reduced }) {
       <directionalLight position={[4, 6, 4]} intensity={1.1} color="#bae6fd" />
 
       <group ref={groupRef} position={[offsetX, 0, 0]} scale={scale}>
-        <Float speed={1.3} rotationIntensity={0.15} floatIntensity={0.6}>
+        <Float speed={1.1} rotationIntensity={0.12} floatIntensity={0.5}>
           <Laptop pointerRef={pointerRef} reduced={reduced} />
           <Ring radius={2.5} tilt={[Math.PI / 2.3, 0.2, 0]} color="#22d3ee" opacity={0.55} speed={0.35} reduced={reduced} />
           <Ring radius={2.95} tilt={[Math.PI / 2.8, -0.45, 0]} color="#a78bfa" opacity={0.38} speed={-0.22} reduced={reduced} />
