@@ -11,6 +11,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Laptop from "./Laptop";
 import { scrollState } from "../../lib/scrollState";
+import useInViewport from "../../hooks/useInViewport";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -135,6 +136,7 @@ function SceneContent({ pointerRef, reduced }) {
 
 export default function HeroScene() {
   const pointerRef = useRef({ x: 0, y: 0 });
+  const [wrapRef, inView] = useInViewport("0px");
 
   const reduced =
     typeof window !== "undefined" &&
@@ -168,11 +170,11 @@ export default function HeroScene() {
   }, [reduced]);
 
   return (
-    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div ref={wrapRef} className="absolute inset-0 pointer-events-none" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0.4, 7], fov: 42 }}
-        dpr={[1, 1.75]}
-        frameloop={reduced ? "demand" : "always"}
+        dpr={[1, 1.5]}
+        frameloop={reduced ? "demand" : inView ? "always" : "never"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <SceneContent pointerRef={pointerRef} reduced={reduced} />

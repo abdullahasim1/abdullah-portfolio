@@ -77,10 +77,10 @@ function SceneContents({ reduced }) {
           <dodecahedronGeometry args={[1.45, 0]} />
         </Drifter>
 
-        <Sparkles count={45} scale={[18, 12, 8]} size={2.6} speed={0.18} color="#22d3ee" opacity={0.35} />
+        <Sparkles count={26} scale={[18, 12, 8]} size={2.6} speed={0.18} color="#22d3ee" opacity={0.35} />
       </group>
 
-      <Stars radius={130} depth={60} count={2000} factor={3} saturation={0.35} fade speed={0.4} />
+      <Stars radius={130} depth={60} count={1100} factor={3} saturation={0.35} fade speed={0.4} />
       <fog attach="fog" args={["#05060a", 12, 30]} />
     </>
   );

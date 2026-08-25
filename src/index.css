@@ -59,10 +59,8 @@ html.lenis body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 
 .glass-strong {
@@ -103,20 +101,27 @@ html.lenis body {
   inset-inline: -40%;
   bottom: -12%;
   height: 55%;
+  transform: perspective(600px) rotateX(62deg);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 78%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 78%);
+  pointer-events: none;
+}
+
+/* Pattern pseudo-element par — transform animation (GPU compositing, repaint nahi) */
+.grid-floor::before {
+  content: "";
+  position: absolute;
+  inset: -44px 0 0 0;
   background-image:
     linear-gradient(rgba(34, 211, 238, 0.14) 1px, transparent 1px),
     linear-gradient(90deg, rgba(34, 211, 238, 0.14) 1px, transparent 1px);
   background-size: 44px 44px;
-  transform: perspective(600px) rotateX(62deg);
-  mask-image: linear-gradient(to top, rgba(0,0,0,0.85), transparent 78%);
-  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.85), transparent 78%);
   animation: gridScroll 2.6s linear infinite;
-  pointer-events: none;
 }
 
 @keyframes gridScroll {
-  from { background-position-y: 0; }
-  to { background-position-y: 44px; }
+  from { transform: translateY(0); }
+  to { transform: translateY(44px); }
 }
 
 /* ---------- Animations ---------- */
