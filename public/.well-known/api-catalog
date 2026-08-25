@@ -1,0 +1,29 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://abdullah-asim-dev.vercel.app/",
+      "service-doc": [
+        {
+          "href": "https://github.com/abdullahasim1/abdullah-portfolio#readme",
+          "type": "text/html"
+        },
+        {
+          "href": "https://abdullah-asim-dev.vercel.app/index.md",
+          "type": "text/markdown"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://abdullah-asim-dev.vercel.app/",
+          "type": "text/html"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://abdullah-asim-dev.vercel.app/sitemap.xml",
+          "type": "application/xml"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+# Abdullah Asim — Portfolio
+# https://abdullah-asim-dev.vercel.app/robots.txt
+
+# ---------- Default ----------
+User-agent: *
+Allow: /
+
+# ---------- AI / LLM crawlers — policy: open (public portfolio) ----------
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# ---------- Content usage preferences (Content Signals) ----------
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+
+# ---------- Sitemap ----------
+Sitemap: https://abdullah-asim-dev.vercel.app/sitemap.xml

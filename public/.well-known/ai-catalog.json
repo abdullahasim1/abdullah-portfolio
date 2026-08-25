@@ -1,0 +1,50 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "hostName": "abdullah-asim-dev.vercel.app",
+    "displayName": "Abdullah Asim — Portfolio",
+    "description": "Portfolio of Abdullah Bin Asim, Full Stack Developer & AI Builder. Projects, skills, certifications and contact."
+  },
+  "entries": [
+    {
+      "urn": "urn:air:abdullah-asim-dev.vercel.app:portfolio:website",
+      "displayName": "Abdullah Asim Portfolio Website",
+      "type": "text/html",
+      "url": "https://abdullah-asim-dev.vercel.app/",
+      "representativeQueries": [
+        "Who is Abdullah Bin Asim?",
+        "Show me Abdullah Asim's portfolio and projects",
+        "Find a full stack developer with AI automation experience"
+      ]
+    },
+    {
+      "urn": "urn:air:abdullah-asim-dev.vercel.app:portfolio:markdown-summary",
+      "displayName": "Portfolio Summary (Markdown for Agents)",
+      "type": "text/markdown",
+      "url": "https://abdullah-asim-dev.vercel.app/index.md",
+      "representativeQueries": [
+        "What tech stack does Abdullah Asim use?",
+        "List Abdullah Asim's featured projects",
+        "How can I contact Abdullah Bin Asim?"
+      ]
+    },
+    {
+      "urn": "urn:air:abdullah-asim-dev.vercel.app:portfolio:sitemap",
+      "displayName": "Site Sitemap",
+      "type": "application/xml",
+      "url": "https://abdullah-asim-dev.vercel.app/sitemap.xml",
+      "representativeQueries": [
+        "Index all pages on abdullah-asim-dev.vercel.app"
+      ]
+    },
+    {
+      "urn": "urn:air:abdullah-asim-dev.vercel.app:portfolio:source-code",
+      "displayName": "Source Code (GitHub)",
+      "type": "text/html",
+      "url": "https://github.com/abdullahasim1/abdullah-portfolio",
+      "representativeQueries": [
+        "Where is the source code for Abdullah's portfolio?"
+      ]
+    }
+  ]
+}
