@@ -13,11 +13,12 @@ const HeroScene = lazy(() => import("../components/three/HeroScene"));
 
 const chips = ["React", "Next.js", "Node.js", "Claude & AI Agents", "GoHighLevel", "Make.com", "n8n", "AWS"];
 
-function Home() {
+function Home({ introDone = true }) {
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (!contentRef.current) return;
+    // Splash screen ke baad hi hero entrance chale
+    if (!introDone || !contentRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from("[data-hero-stagger]", {
         y: 28,
@@ -29,7 +30,7 @@ function Home() {
       });
     }, contentRef);
     return () => ctx.revert();
-  }, []);
+  }, [introDone]);
 
   const scrollTo = (e, id) => {
     e.preventDefault();

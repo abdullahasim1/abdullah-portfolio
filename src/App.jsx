@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
+import SplashScreen from "./components/SplashScreen";
 import SiteBackground from "./components/three/SiteBackground";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -18,6 +19,17 @@ import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
+  // Splash har session mein sirf ek dafa (refresh pe skip hota hai)
+  const [introDone, setIntroDone] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return sessionStorage.getItem("aa-splash-seen") === "1";
+  });
+
+  const handleSplashFinish = () => {
+    sessionStorage.setItem("aa-splash-seen", "1");
+    setIntroDone(true);
+  };
+
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip">
       {/* Top progress bar */}
@@ -50,7 +62,7 @@ function App() {
       <Navbar />
 
       <main className="relative z-10">
-        <Home />
+        <Home introDone={introDone} />
         <TechTicker />
         <About />
         <Services />
@@ -65,6 +77,9 @@ function App() {
 
       <Footer />
       <ScrollToTop />
+
+      {/* 3D intro splash — site ke upar render hota hai */}
+      {!introDone && <SplashScreen onFinish={handleSplashFinish} />}
     </div>
   );
 }
