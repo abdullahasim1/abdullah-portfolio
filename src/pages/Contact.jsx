@@ -8,7 +8,7 @@ const PaperPlane = lazy(() => import("../components/three/PaperPlane"));
 const EMAIL = "abdullah.gc.18@gmail.com";
 /* Web3Forms (free) — https://web3forms.com se email daal kar access key lein.
    Key khaali ho to form mailto: fallback use karta hai. */
-const WEB3FORMS_ACCESS_KEY = "";
+const WEB3FORMS_ACCESS_KEY = "120e0564-1284-48ae-8132-61625701985b";
 
 const contactInfo = [
   {
