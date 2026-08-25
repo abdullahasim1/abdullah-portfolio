@@ -26,8 +26,8 @@ const contactInfo = [
   {
     icon: "💼",
     title: "LinkedIn",
-    value: "abdullah-bin-asim",
-    link: "https://www.linkedin.com/in/abdullah-bin-asim-654287267/"
+    value: "abdullahasim1",
+    link: "https://www.linkedin.com/in/abdullahasim1/"
   },
   {
     icon: "🐙",
