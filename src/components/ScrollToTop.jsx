@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { scrollToTop as smoothScrollToTop } from "../lib/smoothScroll";
 
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,12 +17,7 @@ function ScrollToTop() {
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  };
+  const scrollToTop = () => smoothScrollToTop();
 
   return (
     <>

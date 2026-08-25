@@ -369,15 +369,15 @@ function Lid({ bodyMat, screenTexture, reduced }) {
   useFrame((state) => {
     if (!lidRef.current) return;
     if (!reduced) {
-      const open = 1.78 + Math.sin(state.clock.elapsedTime * 0.35) * 0.018;
+      const open = -0.22 + Math.sin(state.clock.elapsedTime * 0.35) * 0.018;
       lidRef.current.rotation.x += (open - lidRef.current.rotation.x) * 0.035;
     } else {
-      lidRef.current.rotation.x = 1.78;
+      lidRef.current.rotation.x = -0.22;
     }
   });
 
   return (
-    <group ref={lidRef} rotation={[1.78, 0, 0]}>
+    <group ref={lidRef} rotation={[-0.22, 0, 0]}>
       <RoundedBox args={[3.1, 2.05, 0.1]} radius={0.05} smoothness={8} position={[0, 1.02, 0]}>
         {bodyMat}
       </RoundedBox>

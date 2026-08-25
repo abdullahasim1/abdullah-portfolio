@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import SplitTextAnimation from "../components/SplitTextAnimation";
 import WordFlipper from "../components/WordFlipper";
 import MagneticButton from "../components/MagneticButton";
+import { scrollToSection } from "../lib/smoothScroll";
 
 // Hero 3D engine: Spline (spline.design) ya built-in Three.js scene.
 // Dono heavy hain — sirf selected wala hi load hota hai (lazy chunk).
@@ -34,7 +35,7 @@ function Home({ introDone = true }) {
 
   const scrollTo = (e, id) => {
     e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    scrollToSection(id);
   };
 
   return (

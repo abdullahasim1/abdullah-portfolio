@@ -1,6 +1,7 @@
 import React from "react";
 import { techLogos } from "../data/techLogos";
 import TiltIcon from "./TiltIcon";
+import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 
 const quickLinks = [
   { name: "Home", href: "#home" },
@@ -26,7 +27,12 @@ function Footer() {
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    const id = href.replace(/^#/, "");
+    if (id === "home") {
+      scrollToTop();
+    } else {
+      scrollToSection(id);
+    }
   };
 
   return (

@@ -102,7 +102,7 @@ function FeaturedProjectCard({ project, large = false }) {
   return (
     <article
       onMouseMove={spotMove}
-      className={`reveal group relative overflow-hidden rounded-3xl glass card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col ${
+      className={`reveal group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col ${
         large ? "md:col-span-2 md:flex-row" : ""
       }`}
     >
@@ -261,8 +261,8 @@ function Projects() {
   }, [repos]);
 
   /* Stacked-cards scroll effect:
-     agli card aane par pichli card depth mein peeche dhali hoti hai —
-     scale + lift + subtle 3D tilt, smoothed scrub ke saath */
+     agli card aane par pichli card clean fade-out + halka scale-down —
+     koi tilt/blur nahi, sirf smooth recede (smoothed scrub ke saath) */
   useEffect(() => {
     if (!stackRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -273,17 +273,15 @@ function Projects() {
       cards.forEach((card, i) => {
         if (i === cards.length - 1) return;
         gsap.to(card.querySelector("[data-stack-inner]"), {
-          scale: 0.92,
-          y: -28,
-          rotationX: 5,
-          transformPerspective: 1400,
-          autoAlpha: 0.32,
+          scale: 0.94,
+          y: -26,
+          autoAlpha: 0,
           transformOrigin: "50% 0%",
           ease: "none",
           scrollTrigger: {
             trigger: cards[i + 1],
             start: "top bottom",
-            end: "top 18%",
+            end: "top 110px",
             scrub: 0.75,
           },
         });

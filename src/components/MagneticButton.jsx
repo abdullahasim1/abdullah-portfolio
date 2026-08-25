@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { scrollToSection } from "../lib/smoothScroll";
 
 function MagneticButton({ href = "#", className = "", children }) {
   const wrapRef = useRef(null);
@@ -23,8 +24,7 @@ function MagneticButton({ href = "#", className = "", children }) {
   const onClick = (e) => {
     if (href && href.startsWith("#")) {
       e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) target.scrollIntoView({ behavior: "smooth" });
+      scrollToSection(href.slice(1));
     }
   };
 

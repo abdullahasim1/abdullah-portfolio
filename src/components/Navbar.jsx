@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 
 const links = [
   { label: "Home", id: "home" },
@@ -24,8 +25,11 @@ function Navbar() {
   const handleNavClick = (event, targetId) => {
     event.preventDefault();
     setMobileOpen(false);
-    const target = document.getElementById(targetId);
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (targetId === "home") {
+      scrollToTop();
+    } else {
+      scrollToSection(targetId);
+    }
   };
 
   return (
