@@ -1,88 +1,141 @@
-import React, { useEffect, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitTextAnimation from "../components/SplitTextAnimation";
 import WordFlipper from "../components/WordFlipper";
+import MagneticButton from "../components/MagneticButton";
 
-gsap.registerPlugin(ScrollTrigger);
+// Hero 3D engine: Spline (spline.design) ya built-in Three.js scene.
+// Dono heavy hain — sirf selected wala hi load hota hai (lazy chunk).
+// Apna Spline model ready ho toh: true karo + URL paste karo SplineHero.jsx mein.
+const USE_SPLINE_HERO = false;
+const SplineHero = lazy(() => import("../components/three/SplineHero"));
+const HeroScene = lazy(() => import("../components/three/HeroScene"));
+
+const chips = ["React", "Next.js", "Node.js", "Claude & AI Agents", "GoHighLevel", "Make.com", "n8n", "AWS"];
 
 function Home() {
-  const imageRef = useRef(null);
-  const headingRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    if (headingRef.current) {
-      gsap.fromTo(
-        headingRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
-      );
-    }
-    if (imageRef.current) {
-      gsap.fromTo(
-        imageRef.current,
-        { x: 24, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.9, ease: "power2.out", delay: 0.2 }
-      );
-    }
+    if (!contentRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.from("[data-hero-stagger]", {
+        y: 28,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.12,
+        ease: "power3.out",
+        delay: 0.15,
+      });
+    }, contentRef);
+    return () => ctx.revert();
   }, []);
 
+  const scrollTo = (e, id) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section id="home" className="min-h-[92vh] flex items-center py-20">
-      <div className="w-full flex justify-center">
-        <div className="max-w-3xl text-center space-y-6" ref={headingRef}>
-          <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">
-            <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* 3D hero scene (lazy) */}
+      {USE_SPLINE_HERO ? (
+        <Suspense fallback={null}>
+          <SplineHero />
+        </Suspense>
+      ) : (
+        <>
+          {/* CSS glow fallback while the R3F scene loads */}
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
+          </div>
+          <Suspense fallback={null}>
+            <HeroScene />
+          </Suspense>
+        </>
+      )}
+
+      {/* Cyber grid floor */}
+      <div className="grid-floor" aria-hidden="true" />
+
+      {/* Bottom fade into next section */}
+      <div aria-hidden className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-void to-transparent pointer-events-none" />
+
+      {/* Content */}
+      <div ref={contentRef} className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-28 w-full">
+        <div className="max-w-2xl space-y-7">
+          <span data-hero-stagger className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
             Available for new opportunities
           </span>
-          <div className="space-y-1">
-            {/* Static first line (no SplitText) */}
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              <span className="block">Full Stack Web Developer</span>
-            </h1>
-            {/* Role flipper on the same baseline as 'and' */}
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              <span className="block">
-                <span className="whitespace-nowrap">
-                  and
-                  <span className="ml-2 align-baseline inline-flex">
-                    <WordFlipper
-                      words={["UI/UX Expert", "Developer", "Hacker"]}
-                      intervalMs={2500}
-                      initialDelayMs={1200}
-                      textClassName="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-500"
-                    />
-                  </span>
-                </span>
-              </span>
-            </h1>
-          </div>
-          <SplitTextAnimation animationType="lines" delay={0.5} className="text-xl md:text-3xl font-semibold text-gray-800 dark:text-gray-200">
-            Build Your Vision with Clean Code and Stunning Design
+
+          <h1 data-hero-stagger className="font-display font-bold leading-[1.05] tracking-tight text-4xl sm:text-6xl lg:text-7xl">
+            <span className="block text-white">Full Stack</span>
+            <span className="block">
+              <WordFlipper
+                words={["Developer.", "UI/UX Designer.", "AI Builder."]}
+                intervalMs={2600}
+                initialDelayMs={1400}
+                textClassName="text-gradient"
+              />
+            </span>
+          </h1>
+
+          <SplitTextAnimation
+            animationType="lines"
+            delay={0.6}
+            className="text-lg md:text-2xl font-medium text-slate-300"
+          >
+            I build fast, scalable products with clean code and stunning design.
           </SplitTextAnimation>
-          <p className="text-gray-700 dark:text-gray-300 max-w-3xl text-xl">
-            <span className="block">Need a web app that performs flawlessly or visuals that tell your brand's story? I'm</span>
-            <span className="bg-clip-text text-transparent text-2xl font-bold font-stretch-100% bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-500"> Abdullah Bin Asim,</span>
-            <span className="block"> a results-driven developer and designer who transforms ideas into seamless digital products. Let's turn your project into a reality—faster, better, smarter.</span>
+
+          <p data-hero-stagger className="text-slate-400 leading-relaxed max-w-xl">
+            Hi, I'm <span className="text-white font-semibold">Abdullah Bin Asim</span> — a results-driven
+            developer &amp; designer with AWS Generative AI credentials. From AI-powered platforms to
+            full-stack web apps, I turn ideas into digital products that perform.
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs place-items-center mx-auto max-w-2xl">
-            <span className="inline-flex items-center justify-center rounded-full border border-gray-200/70 dark:border-indigo-800/70 px-3 py-2 bg-fuchsia/50 dark:bg-rose/30 backdrop-blur">Backend Development</span>
-            <span className="inline-flex items-center justify-center rounded-full border border-gray-200/70 dark:border-indigo-800/70 px-3 py-2 bg-indigo/50 dark:bg-fuchsia/30 backdrop-blur">Mobile Apps</span>
-            <span className="inline-flex items-center justify-center rounded-full border border-gray-200/70 dark:border-indigo-800/70 px-3 py-2 bg-rose/50 dark:bg-indigo/30 backdrop-blur">Web Apps</span>
-            <span className="inline-flex items-center justify-center rounded-full border border-gray-200/70 dark:border-indigo-800/70 px-3 py-2 bg-emerald/50 dark:bg-indigo/30 backdrop-blur">UI/UX Design</span>
+
+          <div data-hero-stagger className="flex flex-wrap gap-2 max-w-md">
+            {chips.map((chip) => (
+              <span
+                key={chip}
+                className="rounded-full glass px-3.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-default"
+              >
+                {chip}
+              </span>
+            ))}
           </div>
-          <div className="pt-2">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">Let's Build Your Project Today</div>
-            <div className="flex gap-3 justify-center">
-              <a href="#contact" className="px-5 py-3 rounded-md bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white hover:opacity-90 transition-opacity">Get a Free Quote</a>
-            </div>
+
+          <div data-hero-stagger className="flex flex-wrap items-center gap-4 pt-2">
+            <MagneticButton href="#contact">Start a Project</MagneticButton>
+            <a
+              href="#projects"
+              onClick={(e) => scrollTo(e, "projects")}
+              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors"
+            >
+              View My Work
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
+
+      {/* Scroll hint */}
+      <a
+        href="#about"
+        onClick={(e) => scrollTo(e, "about")}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-slate-500 hover:text-cyan-300 transition-colors"
+      >
+        Scroll
+        <span className="block h-8 w-px bg-gradient-to-b from-cyan-400 to-transparent float-y" />
+      </a>
     </section>
   );
 }
 
 export default Home;
-
-

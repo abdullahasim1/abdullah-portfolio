@@ -36,9 +36,10 @@ function MagneticButton({ href = "#", className = "", children }) {
       onMouseLeave={onMouseLeave}
       onClick={onClick}
       className={
-        "sheen-btn inline-flex items-center justify-center rounded-lg overflow-hidden relative " +
-        "bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white font-medium " +
-        "hover:opacity-95 transition-all duration-200 px-8 py-3 " +
+        "sheen-btn inline-flex items-center justify-center rounded-xl overflow-hidden relative " +
+        "bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold " +
+        "shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:shadow-[0_0_40px_rgba(139,92,246,0.35)] " +
+        "transition-all duration-200 px-8 py-3.5 " +
         className
       }
       data-cursor="hover"

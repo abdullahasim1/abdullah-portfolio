@@ -1,74 +1,115 @@
-import React from "react";
-import { useStaggerAnimation, useTextReveal } from "../hooks";
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SectionHeading from "../components/SectionHeading";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const skills = {
-  "Frontend Development": [
-    { name: "React", level: 90 },
-    { name: "JavaScript", level: 85 },
-    { name: "TypeScript", level: 80 },
-    { name: "HTML/CSS", level: 95 },
-    { name: "Tailwind CSS", level: 90 },
-    { name: "Next.js", level: 75 }
-  ],
-  "Backend Development": [
-    { name: "Node.js", level: 85 },
-    { name: "Express.js", level: 80 },
-    { name: "Python", level: 70 },
-    { name: "MySQL", level: 75 },
-    { name: "MongoDB", level: 70 },
-    { name: "REST APIs", level: 85 }
-  ],
-  "Mobile & Tools": [
-    { name: "React Native", level: 75 },
-    { name: "Git/GitHub", level: 90 },
-    { name: "Docker", level: 65 },
-    { name: "AWS", level: 60 },
-    { name: "Figma", level: 70 },
-    { name: "GSAP", level: 80 }
-  ]
+  "AI & Automation": {
+    icon: "🤖",
+    items: [
+      { name: "GoHighLevel (GHL)", level: 90 },
+      { name: "Make.com", level: 90 },
+      { name: "n8n", level: 85 },
+      { name: "Claude / LLM APIs", level: 85 },
+      { name: "OpenAI APIs", level: 80 },
+      { name: "Prompt Engineering", level: 88 }
+    ]
+  },
+  "Frontend": {
+    icon: "🎨",
+    items: [
+      { name: "React", level: 90 },
+      { name: "JavaScript", level: 85 },
+      { name: "TypeScript", level: 80 },
+      { name: "HTML/CSS", level: 95 },
+      { name: "Tailwind CSS", level: 90 },
+      { name: "Next.js", level: 75 }
+    ]
+  },
+  "Backend": {
+    icon: "⚙️",
+    items: [
+      { name: "Node.js", level: 85 },
+      { name: "Express.js", level: 80 },
+      { name: "Python", level: 70 },
+      { name: "MySQL", level: 75 },
+      { name: "MongoDB", level: 70 },
+      { name: "REST APIs", level: 85 }
+    ]
+  },
+  "Mobile & Tools": {
+    icon: "🧰",
+    items: [
+      { name: "React Native", level: 75 },
+      { name: "Git/GitHub", level: 90 },
+      { name: "Docker", level: 65 },
+      { name: "AWS", level: 60 },
+      { name: "Figma", level: 70 },
+      { name: "GSAP", level: 80 }
+    ]
+  }
 };
 
-function Skills() {
-  const staggerRef = useStaggerAnimation(0.1, 0.3);
-  const headingRef = useTextReveal("words", 0.2);
+function SkillBar({ name, level }) {
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+    const tween = gsap.fromTo(
+      el,
+      { width: "0%" },
+      {
+        width: `${level}%`,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 92%", once: true },
+      }
+    );
+    return () => tween.kill();
+  }, [level]);
 
   return (
-    <section id="skills" className="py-24">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-12 text-center">
-          <span className="inline-flex items-center gap-2 text-lg  font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
-            <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
-            Skills & Expertise
-          </span>
-          <div ref={headingRef} className="text-3xl md:text-4xl font-extrabold mt-2">
-            Technical Skills
-          </div>
-        </div>
-        
-        <div ref={staggerRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {Object.entries(skills).map(([category, skillList]) => (
-            <div key={category} data-stagger className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2">
-                {category}
-              </h3>
-              <div className="space-y-4">
-                {skillList.map((skill) => (
-                  <div key={skill.name} className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="font-medium text-gray-700 dark:text-gray-300">
-                        {skill.name}
-                      </span>
-                      <span className="text-gray-500 dark:text-gray-400">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div
-                        className="bg-gradient-to-r from-indigo-500 to-fuchsia-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
+    <div className="space-y-2">
+      <div className="flex justify-between text-sm">
+        <span className="font-medium text-slate-300">{name}</span>
+        <span className="font-mono text-xs text-cyan-300/80">{level}%</span>
+      </div>
+      <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
+        <div
+          ref={barRef}
+          className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 shadow-[0_0_10px_rgba(34,211,238,0.4)]"
+          style={{ width: "0%" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Skills() {
+  return (
+    <section id="skills" className="py-28">
+      <div className="max-w-6xl mx-auto px-6 md:px-0">
+        <SectionHeading
+          label="Skills & Expertise"
+          title="Technical Arsenal"
+          subtitle="The tools and technologies I use to ship production-grade products."
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {Object.entries(skills).map(([category, { icon, items }]) => (
+            <div key={category} className="glass rounded-2xl p-7 card-glow-hover hover:-translate-y-1 transition-transform duration-300">
+              <div className="flex items-center gap-3 pb-5 mb-6 border-b border-white/[0.06]">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-lg">
+                  {icon}
+                </span>
+                <h3 className="font-display text-lg font-semibold text-slate-100">{category}</h3>
+              </div>
+              <div className="space-y-5">
+                {items.map((skill) => (
+                  <SkillBar key={skill.name} {...skill} />
                 ))}
               </div>
             </div>
@@ -80,5 +121,3 @@ function Skills() {
 }
 
 export default Skills;
-
-

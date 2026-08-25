@@ -52,7 +52,7 @@ function SplitTextAnimation({ children, className = "", animationType = "chars",
           }
         );
       });
-    } catch (error) {
+    } catch {
       // Fallback animation
       gsap.fromTo(
         textRef.current,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GITHUB_USERNAME } from "../data/projects";
 
 export function useGithubRepos(username = GITHUB_USERNAME) {
@@ -6,16 +6,26 @@ export function useGithubRepos(username = GITHUB_USERNAME) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [rateLimited, setRateLimited] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
 
     async function fetchGithub() {
+      setLoading(true);
+      setError(null);
+      setRateLimited(false);
+
       try {
         const [userRes, reposRes] = await Promise.all([
           fetch(`https://api.github.com/users/${username}`),
           fetch(`https://api.github.com/users/${username}/repos?sort=pushed&per_page=100`),
         ]);
+
+        if (userRes.status === 403 || userRes.status === 429 || reposRes.status === 403 || reposRes.status === 429) {
+          throw Object.assign(new Error("GitHub API rate limit exceeded"), { rateLimited: true });
+        }
 
         if (!userRes.ok || !reposRes.ok) {
           throw new Error("Failed to fetch GitHub data");
@@ -32,7 +42,10 @@ export function useGithubRepos(username = GITHUB_USERNAME) {
             .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
         );
       } catch (err) {
-        if (!cancelled) setError(err.message);
+        if (!cancelled) {
+          setError(err.message);
+          setRateLimited(Boolean(err.rateLimited));
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -42,7 +55,9 @@ export function useGithubRepos(username = GITHUB_USERNAME) {
     return () => {
       cancelled = true;
     };
-  }, [username]);
+  }, [username, attempt]);
 
-  return { repos, profile, loading, error };
+  const retry = useCallback(() => setAttempt((a) => a + 1), []);
+
+  return { repos, profile, loading, error, rateLimited, retry };
 }

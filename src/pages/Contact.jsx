@@ -1,12 +1,15 @@
 import React from "react";
 import { useScrollReveal } from "../hooks";
+import SectionHeading from "../components/SectionHeading";
+
+const EMAIL = "abdullah.gc.18@gmail.com";
 
 const contactInfo = [
   {
     icon: "📧",
     title: "Email",
-    value: "abdullah.gc.18@gmail.com",
-    link: "mailto:abdullah.gc.18@gmail.com"
+    value: EMAIL,
+    link: `mailto:${EMAIL}`
   },
   {
     icon: "📱",
@@ -28,120 +31,112 @@ const contactInfo = [
   }
 ];
 
+function handleSubmit(e) {
+  e.preventDefault();
+  const data = new FormData(e.currentTarget);
+  const name = data.get("name")?.trim() || "";
+  const email = data.get("email")?.trim() || "";
+  const subject = data.get("subject")?.trim() || "Project Inquiry";
+  const message = data.get("message")?.trim() || "";
+
+  if (!name || !email || !message) {
+    alert("Please fill in your name, email, and message.");
+    return;
+  }
+
+  const body = `Hi Abdullah,\n\n${message}\n\n— ${name}\n${email}`;
+  window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+const inputClass =
+  "w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-slate-200 placeholder-slate-500 " +
+  "focus:border-cyan-400/60 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(34,211,238,0.12)] focus:outline-none transition-all duration-200";
+
 function Contact() {
   useScrollReveal("#contact .reveal");
 
   return (
-    <section id="contact" className="py-24">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-12 text-center">
-          <span className="inline-flex items-center gap-2 text-lg font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
-            <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
-            Contact
-          </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">
-            Let's Build Something Amazing Together
-          </h2>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-              Contact Information
-            </h3>
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
-                <a
-                  key={index}
-                  href={info.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="reveal group flex items-center p-4 rounded-lg border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur hover:border-indigo-500/50 transition-all duration-300"
-                >
-                  <div className="text-2xl mr-4 group-hover:scale-110 transition-transform">
-                    {info.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 dark:text-gray-200">
-                      {info.title}
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {info.value}
-                    </p>
-                  </div>
-                </a>
-              ))}
-            </div>
-            
-            <div className="reveal p-4 rounded-lg border border-green-200/60 dark:border-green-800/60 bg-green-50/60 dark:bg-green-900/20 backdrop-blur">
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                <span className="text-green-700 dark:text-green-300 font-medium">
-                  Available for new projects
+    <section id="contact" className="py-28">
+      <div className="max-w-6xl mx-auto px-6 md:px-0">
+        <SectionHeading
+          label="Contact"
+          title="Let's Build Something Amazing Together"
+          subtitle="Have a project in mind? Tell me about it — I usually reply within a few hours."
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* Contact information */}
+          <div className="space-y-4 reveal">
+            {contactInfo.map((info) => (
+              <a
+                key={info.title}
+                href={info.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 p-5 rounded-2xl glass card-glow-hover hover:-translate-y-0.5 transition-transform duration-300"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-xl group-hover:scale-110 transition-transform">
+                  {info.icon}
                 </span>
-              </div>
+                <div className="min-w-0">
+                  <h4 className="font-semibold text-slate-100 text-sm">{info.title}</h4>
+                  <p className="text-sm text-slate-400 truncate">{info.value}</p>
+                </div>
+                <svg
+                  className="w-4 h-4 ml-auto text-slate-600 group-hover:text-cyan-300 group-hover:translate-x-1 transition-all shrink-0"
+                  fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            ))}
+
+            <div className="flex items-center gap-3 p-4 rounded-2xl glass border-emerald-400/25">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+              </span>
+              <span className="text-emerald-300 font-medium text-sm">
+                Available for new projects
+              </span>
             </div>
           </div>
-          
-          {/* Contact Form */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-              Send me a message
-            </h3>
-            <form className="space-y-4">
-              <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur focus:border-indigo-500 focus:outline-none transition-colors"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur focus:border-indigo-500 focus:outline-none transition-colors"
-                />
-              </div>
-              <div className="reveal">
-                <input
-                  type="text"
-                  placeholder="Subject"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur focus:border-indigo-500 focus:outline-none transition-colors"
-                />
-              </div>
-              <div className="reveal">
-                <textarea
-                  placeholder="Your Message"
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200/60 dark:border-gray-800/60 bg-white/60 dark:bg-black/30 backdrop-blur focus:border-indigo-500 focus:outline-none transition-colors resize-none"
-                ></textarea>
-              </div>
-              <div className="reveal flex flex-col sm:flex-row gap-3">
-                <button
-                  type="submit"
-                  className="flex-1 px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white font-medium hover:opacity-90 transition-opacity"
-                >
-                  Let's Build Your Project
-                </button>
-                <a
-                  href="https://wa.link/o1bqnp."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg border border-gray-300/70 dark:border-gray-700/70 hover:bg-white/40 dark:hover:bg-white/5 backdrop-blur transition-colors"
-                  data-cursor="hover"
-                >
-                  WhatsApp Me
-                </a>
-                <a
-                  href="mailto:abdullah.gc.18@gmail.com?subject=Free%20Quote%20Request&body=Hi%20Abdullah%2C%0D%0A%0D%0AI%27d%20like%20a%20quote%20for%20my%20project.%20Here%20are%20some%20details%3A%0D%0A-%20Project%20type%3A%20%0D%0A-%20Timeline%3A%20%0D%0A-%20Budget%20range%3A%20%0D%0A%0D%0AThanks!"
-                  className="px-6 py-3 rounded-lg border border-gray-300/70 dark:border-gray-700/70 hover:bg-white/40 dark:hover:bg-white/5 backdrop-blur transition-colors"
-                  data-cursor="hover"
-                >
-                  Get a Free Quote
-                </a>
-              </div>
-            </form>
-          </div>
+
+          {/* Contact form */}
+          <form onSubmit={handleSubmit} className="space-y-4 reveal glass rounded-3xl p-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input type="text" name="name" placeholder="Your Name" className={inputClass} />
+              <input type="email" name="email" placeholder="Your Email" className={inputClass} />
+            </div>
+            <input type="text" name="subject" placeholder="Subject" className={inputClass} />
+            <textarea name="message" placeholder="Tell me about your project…" rows={5} className={`${inputClass} resize-none`} />
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-1">
+              <button
+                type="submit"
+                className="sheen-btn relative flex-1 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:opacity-90 transition-opacity cursor-pointer"
+              >
+                Send Message
+                <span className="sheen-layer" aria-hidden />
+              </button>
+              <a
+                href="https://wa.link/o1bqnp."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-emerald-300 hover:border-emerald-400/40 transition-colors text-sm font-medium"
+              >
+                WhatsApp Me
+              </a>
+              <a
+                href={`mailto:${EMAIL}?subject=${encodeURIComponent("Free Quote Request")}&body=${encodeURIComponent(
+                  "Hi Abdullah,\n\nI'd like a quote for my project. Here are some details:\n- Project type: \n- Timeline: \n- Budget range: \n\nThanks!"
+                )}`}
+                className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors text-sm font-medium"
+              >
+                Get a Free Quote
+              </a>
+            </div>
+          </form>
         </div>
       </div>
     </section>
@@ -149,5 +144,3 @@ function Contact() {
 }
 
 export default Contact;
-
-

@@ -5,9 +5,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollReveal(targetSelector, options = {}) {
+  const optionsKey = JSON.stringify(options);
+
   useEffect(() => {
-    const elements = typeof targetSelector === "string" ? document.querySelectorAll(targetSelector) : targetSelector;
+    const elements =
+      typeof targetSelector === "string"
+        ? document.querySelectorAll(targetSelector)
+        : targetSelector;
     if (!elements || elements.length === 0) return;
+
+    const parsedOptions = JSON.parse(optionsKey);
 
     const ctx = gsap.context(() => {
       gsap.utils.toArray(elements).forEach((el) => {
@@ -21,13 +28,11 @@ export function useScrollReveal(targetSelector, options = {}) {
             start: "top 85%",
             toggleActions: "play none none reverse",
           },
-          ...options,
+          ...parsedOptions,
         });
       });
     });
 
     return () => ctx.revert();
-  }, [targetSelector, JSON.stringify(options)]);
+  }, [targetSelector, optionsKey]);
 }
-
-

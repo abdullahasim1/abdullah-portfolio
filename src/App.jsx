@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import FloatingIcons from "./components/FloatingIcons";
-import ParticleEffect from "./components/ParticleEffect";
 import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
+import TechTicker from "./components/TechTicker";
+import SiteBackground from "./components/three/SiteBackground";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -18,34 +18,40 @@ import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
-
   return (
-    <div className={`relative min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-[#0b0b0e] dark:to-[#0a0a0c] text-gray-900 dark:text-gray-100 overflow-x-clip`}>
-      {/* Scroll Progress Bar */}
+    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip">
+      {/* Top progress bar */}
       <ScrollProgress />
-      
-      {/* Animated Background Effects */}
-      <FloatingIcons />
-      <ParticleEffect />
-      <CursorFollower />
-      
-      {/* Decorative background blobs */}
-      <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl dark:bg-indigo-500/20"></div>
-      <div aria-hidden className="pointer-events-none absolute top-1/3 -right-24 h-72 w-72 rounded-full bg-fuchsia-400/20 blur-3xl dark:bg-fuchsia-500/20"></div>
-      <div aria-hidden className="pointer-events-none absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl dark:bg-emerald-500/10"></div>
 
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <main className="max-w-7xl mx-auto px-6 relative z-10">
+      {/* Custom cursor */}
+      <CursorFollower />
+
+      {/* Film grain texture */}
+      <div className="noise-overlay" aria-hidden="true" />
+
+      {/* Fixed site-wide 3D background (starfield + drifting wireframes) */}
+      <SiteBackground />
+
+      {/* Ambient background glows */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-cyan-500/[0.07] blur-[120px]" />
+        <div className="absolute top-1/3 -right-48 h-[520px] w-[520px] rounded-full bg-violet-600/[0.08] blur-[130px]" />
+        <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-indigo-500/[0.06] blur-[120px]" />
+        {/* Subtle dot matrix texture */}
+        <div
+          className="absolute inset-0 opacity-[0.35]"
+          style={{
+            backgroundImage: "radial-gradient(rgba(148,163,184,0.055) 1px, transparent 1px)",
+            backgroundSize: "34px 34px",
+          }}
+        />
+      </div>
+
+      <Navbar />
+
+      <main className="relative z-10">
         <Home />
+        <TechTicker />
         <About />
         <Services />
         <Stats />
@@ -56,6 +62,7 @@ function App() {
         <Testimonials />
         <Contact />
       </main>
+
       <Footer />
       <ScrollToTop />
     </div>

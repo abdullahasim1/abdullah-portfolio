@@ -8,6 +8,10 @@ function CursorFollower() {
 	const positionRef = useRef({ x: 0, y: 0 });
 	const targetRef = useRef({ x: 0, y: 0 });
 	const isTouchRef = useRef(false);
+	const isHoveringRef = useRef(false);
+	const isVisibleRef = useRef(false);
+	const scaleRef = useRef(1);
+	const targetScaleRef = useRef(1);
 	const [isHovering, setIsHovering] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -26,38 +30,44 @@ function CursorFollower() {
 		const move = (e) => {
 			if (e.pointerType === "touch") {
 				isTouchRef.current = true;
+				isVisibleRef.current = false;
 				setIsVisible(false);
 				return;
 			}
 			isTouchRef.current = false;
 			targetRef.current.x = e.clientX;
 			targetRef.current.y = e.clientY;
-			if (!isVisible) setIsVisible(true);
+			if (!isVisibleRef.current) {
+				isVisibleRef.current = true;
+				setIsVisible(true);
+			}
 		};
+
+		const matchesHoverTarget = (e) =>
+			Boolean(e.target.closest?.('a, button, [role="button"], [data-cursor="hover"]'));
 
 		const handleOver = (e) => {
-			const el = e.target.closest('a, button, [role="button"], [data-cursor="hover"]');
-			if (el) setIsHovering(true);
+			if (!isTouchRef.current && matchesHoverTarget(e)) {
+				isHoveringRef.current = true;
+				targetScaleRef.current = 2;
+				setIsHovering(true);
+			}
 		};
 		const handleOut = (e) => {
-			const el = e.target.closest('a, button, [role="button"], [data-cursor="hover"]');
-			if (el) setIsHovering(false);
+			if (matchesHoverTarget(e)) {
+				isHoveringRef.current = false;
+				targetScaleRef.current = 1;
+				setIsHovering(false);
+			}
 		};
 
-		let clickTimeout = 0;
 		const handleDown = () => {
 			if (isTouchRef.current) return;
-			dot.style.transition = "transform 0.08s ease-out";
-			dot.style.transform += " scale(0.9)";
-			clearTimeout(clickTimeout);
-			clickTimeout = setTimeout(() => {
-				dot.style.transition = "";
-			}, 100);
+			scaleRef.current *= 0.9; // quick press feedback
 		};
 		const handleUp = () => {
 			if (isTouchRef.current) return;
-			dot.style.transition = "transform 0.12s ease-out";
-			// transition reset happens in the animation loop as we re-apply transform
+			scaleRef.current = isHoveringRef.current ? 2 : 1;
 		};
 
 		const animate = () => {
@@ -68,8 +78,10 @@ function CursorFollower() {
 			positionRef.current.x = nx;
 			positionRef.current.y = ny;
 
-			const scale = isHovering ? 2 : 1;
-			dot.style.transform = `translate3d(${nx}px, ${ny}px, 0) translate(-50%, -50%) scale(${scale})`;
+			// Smoothly ease toward target scale
+			scaleRef.current = lerp(scaleRef.current, targetScaleRef.current, 0.18);
+
+			dot.style.transform = `translate3d(${nx}px, ${ny}px, 0) translate(-50%, -50%) scale(${scaleRef.current})`;
 			rafRef.current = requestAnimationFrame(animate);
 		};
 		rafRef.current = requestAnimationFrame(animate);
@@ -87,9 +99,8 @@ function CursorFollower() {
 			document.removeEventListener("mouseout", handleOut, true);
 			window.removeEventListener("pointerdown", handleDown);
 			window.removeEventListener("pointerup", handleUp);
-			clearTimeout(clickTimeout);
 		};
-	}, [isVisible, isHovering]);
+	}, []);
 
 	// Respect reduced motion
 	const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -102,7 +113,7 @@ function CursorFollower() {
 				"fixed top-0 left-0 h-3 w-3 rounded-full pointer-events-none z-[10001] " +
 				"transition-colors duration-150 ease-out " +
 				(isHovering
-					? "bg-white/25 border border-white/70 shadow-[0_0_25px_rgba(255,255,255,0.5)] backdrop-blur"
+					? "bg-cyan-400/20 border border-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.55)] backdrop-blur"
 					: "bg-white mix-blend-difference")
 			}
 			style={{ opacity: isVisible ? 1 : 0 }}
@@ -112,5 +123,3 @@ function CursorFollower() {
 }
 
 export default CursorFollower;
-
-

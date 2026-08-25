@@ -70,7 +70,7 @@ export const useTextReveal = (type = "chars", delay = 0) => {
           }
         );
       });
-    } catch (error) {
+    } catch {
       // Fallback animation
       gsap.fromTo(
         textRef.current,

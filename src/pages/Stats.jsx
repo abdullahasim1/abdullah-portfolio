@@ -1,71 +1,47 @@
 import React from "react";
 import { useCounterAnimation, useStaggerAnimation } from "../hooks";
-import GlowCard from "../components/GlowCard";
+import SectionHeading from "../components/SectionHeading";
 
 const stats = [
-  {
-    number: 3,
-    label: "Years Experience",
-    icon: "🎯"
-  },
-  {
-    number: 25,
-    label: "Projects Done",
-    icon: "🚀"
-  },
-  {
-    number: 8,
-    label: "Certifications",
-    icon: "🏆"
-  },
-  {
-    number: 15,
-    label: "Technologies",
-    icon: "⚡"
-  }
+  { number: 3, suffix: "+", label: "Years Experience", icon: "🎯" },
+  { number: 25, suffix: "+", label: "Projects Done", icon: "🚀" },
+  { number: 8, suffix: "", label: "Certifications", icon: "🏆" },
+  { number: 15, suffix: "+", label: "Technologies", icon: "⚡" }
 ];
 
-function Stats() {
-  const staggerRef = useStaggerAnimation(0.2, 0.5);
-  
-  // Call hooks individually at the top level
-  const counter1Ref = useCounterAnimation(3, 2, 0);
-  const counter2Ref = useCounterAnimation(25, 2, 0.2);
-  const counter3Ref = useCounterAnimation(8, 2, 0.4);
-  const counter4Ref = useCounterAnimation(15, 2, 0.6);
+function StatNumber({ stat, index }) {
+  const counterRef = useCounterAnimation(stat.number, 2, index * 0.2);
+  return (
+    <div className="font-display text-4xl md:text-5xl font-bold text-gradient">
+      <span ref={counterRef.elementRef}>{stat.number}</span>
+      {stat.suffix}
+    </div>
+  );
+}
 
-  const counterRefs = [counter1Ref, counter2Ref, counter3Ref, counter4Ref];
+function Stats() {
+  const staggerRef = useStaggerAnimation(0.12, 0.3);
 
   return (
-    <section className="py-24 bg-gradient-to-br from-indigo-50 via-white to-fuchsia-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">
-            <span className="h-[2px] w-6 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></span>
-            Achievements
-          </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">
-            Numbers That Speak
-          </h2>
-        </div>
-        
-        <div ref={staggerRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <section className="py-28">
+      <div className="max-w-6xl mx-auto px-6 md:px-0">
+        <SectionHeading
+          label="Achievements"
+          title="Numbers That Speak"
+        />
+
+        <div ref={staggerRef} className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {stats.map((stat, index) => (
-            <div key={index} data-stagger className="text-center">
-              <GlowCard>
-                <div className="p-6">
-                  <div className="text-3xl mb-2 float-y">{stat.icon}</div>
-                  <div 
-                    ref={counterRefs[index].elementRef}
-                    className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-fuchsia-600 mb-2"
-                  >
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                    {stat.label}
-                  </div>
-                </div>
-              </GlowCard>
+            <div key={stat.label} data-stagger>
+              <div className="relative overflow-hidden rounded-2xl glass card-glow-hover p-8 text-center group">
+                <div
+                  aria-hidden
+                  className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                />
+                <div className="text-3xl mb-4 float-y">{stat.icon}</div>
+                <StatNumber stat={stat} index={index} />
+                <div className="mt-2 text-sm font-medium text-slate-400">{stat.label}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -75,5 +51,3 @@ function Stats() {
 }
 
 export default Stats;
-
-

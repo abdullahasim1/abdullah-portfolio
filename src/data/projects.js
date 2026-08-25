@@ -1,16 +1,5 @@
 export const featuredProjects = [
   {
-    repoName: "food-order-project",
-    title: "Food Ordering System",
-    description:
-      "Full-stack food ordering app with cart management, meal listings, and a polished React UI.",
-    tags: ["React", "Node.js", "MySQL", "Express"],
-    liveLink: "https://food-order-project.vercel.app",
-    gradient: "from-orange-500 to-red-500",
-    emoji: "🍔",
-    image: "/projects/food-order.jpg",
-  },
-  {
     repoName: "four-ai-ai-powered-voice-image-generation-platform",
     title: "Four-AI Platform",
     description:
@@ -20,6 +9,17 @@ export const featuredProjects = [
     gradient: "from-violet-500 to-purple-600",
     emoji: "🤖",
     image: "/projects/four-ai.jpg",
+  },
+  {
+    repoName: "GENAI",
+    title: "HireGen AI",
+    description:
+      "Smart hiring & communication automation — AI resume matching, email automation, and skill-gap insights.",
+    tags: ["Next.js", "Generative AI", "TypeScript", "Neon"],
+    liveLink: "https://hiregen-ai.vercel.app",
+    gradient: "from-sky-500 to-blue-600",
+    emoji: "✨",
+    image: "/projects/genai.jpg",
   },
   {
     repoName: "Job-Recuitment",
@@ -33,15 +33,15 @@ export const featuredProjects = [
     image: "/projects/job-recruitment.jpg",
   },
   {
-    repoName: "GENAI",
-    title: "HireGen AI",
+    repoName: "food-order-project",
+    title: "Food Ordering System",
     description:
-      "Smart hiring & communication automation — AI resume matching, email automation, and skill-gap insights.",
-    tags: ["Next.js", "Generative AI", "TypeScript", "Neon"],
-    liveLink: "https://hiregen-ai.vercel.app",
-    gradient: "from-sky-500 to-blue-600",
-    emoji: "✨",
-    image: "/projects/genai.jpg",
+      "Full-stack food ordering app with cart management, meal listings, and a polished React UI.",
+    tags: ["React", "Node.js", "MySQL", "Express"],
+    liveLink: "https://food-order-project.vercel.app",
+    gradient: "from-orange-500 to-red-500",
+    emoji: "🍔",
+    image: "/projects/food-order.jpg",
   },
   {
     repoName: "HomeServices",

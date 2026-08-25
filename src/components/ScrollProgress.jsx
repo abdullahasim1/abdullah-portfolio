@@ -16,9 +16,9 @@ function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200/20 dark:bg-gray-800/20 z-50">
+    <div className="fixed top-0 left-0 w-full h-[3px] z-[60]">
       <div
-        className="h-full bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-emerald-400 transition-all duration-300 ease-out"
+        className="h-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(34,211,238,0.6)] transition-all duration-150 ease-out"
         style={{ width: `${scrollProgress}%` }}
       />
     </div>

@@ -33,7 +33,7 @@ function GlowCard({ className = "", children }) {
       onMouseLeave={handleMouseLeave}
       className={
         "relative rounded-2xl p-[1px] overflow-hidden group " +
-        "bg-gradient-to-br from-indigo-500/30 via-fuchsia-500/30 to-rose-500/30 " +
+        "bg-gradient-to-br from-cyan-500/25 via-indigo-500/20 to-violet-500/25 " +
         "animate-glowPulse " +
         className
       }
@@ -44,9 +44,9 @@ function GlowCard({ className = "", children }) {
       data-cursor="hover"
     >
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
-        background: "radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(167,139,250,0.25), transparent 40%)"
+        background: "radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(34,211,238,0.16), transparent 40%)"
       }} />
-      <div className="relative rounded-2xl bg-white/60 dark:bg-black/30 backdrop-blur border border-gray-200/60 dark:border-gray-800/60">
+      <div className="relative rounded-2xl glass">
         {children}
       </div>
     </div>
