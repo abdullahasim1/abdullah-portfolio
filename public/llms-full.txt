@@ -1,0 +1,53 @@
+# Abdullah Bin Asim — Full Stack Developer & AI Builder
+
+> Results-driven Full Stack Developer and UI/UX designer with AWS Generative AI credentials. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
+
+Portfolio: https://abdullah-asim-dev.vercel.app/
+
+## About
+
+Abdullah Bin Asim is a passionate Full Stack Developer with expertise across frontend and backend, plus AWS Generative AI credentials. His journey started with curiosity and evolved into a commitment to shipping high-quality products that solve real problems. From AI-powered platforms to full-stack web apps — he builds things that work, scale, and look great doing it.
+
+Key strengths:
+- Problem solver: breaks complex challenges into manageable solutions
+- Clean code advocate: maintainable, scalable code
+- User-focused designer: every pixel and interaction crafted for users
+- Fast & reliable: quick turnaround without compromising quality
+
+## Core Stack
+
+React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, Claude & AI Agents, GoHighLevel, Make.com, n8n.
+
+## Services
+
+- Full-stack web development (React / Next.js / Node.js)
+- AI agents, chatbots & workflow automation (Make.com, n8n, GoHighLevel)
+- UI/UX design and animated marketing sites
+- AWS cloud & generative AI integrations
+
+## Featured Projects (with live demos)
+
+- Four-AI Platform — AI-powered web app with Text-to-Speech, Text-to-Image and voice effects. Stack: React, GSAP, Node.js, MySQL. Live: https://four-ai-dev.vercel.app
+- HireGen AI — Smart hiring & communication automation: AI resume matching, email automation, skill-gap insights. Stack: Next.js, Generative AI, TypeScript, Neon. Live: https://hiregen-ai.vercel.app
+- Upmatch Job Recruitment — Modern job portal with employer listings, candidate profiles and application management. Stack: TypeScript, React, Next.js, Tailwind. Live: https://job-recuitment.vercel.app
+- Food Ordering System — Full-stack food ordering app with cart management and meal listings. Stack: React, Node.js, MySQL, Express. Live: https://food-order-project.vercel.app
+- Home Services App — Service booking platform for home repair and service providers. Stack: HTML, CSS, JavaScript. Live: https://home-services-tau.vercel.app
+
+## Certifications
+
+- AWS Certified Generative AI Developer – Professional
+- AWS Certified AI Practitioner
+- AWS Certification Training
+
+## Highlights
+
+- 3+ years experience
+- 25+ projects shipped
+- 15+ technologies
+- 100% client satisfaction
+
+## Contact
+
+- Email: abdullah.gc.18@gmail.com
+- GitHub: https://github.com/abdullahasim1
+- Contact form: https://abdullah-asim-dev.vercel.app/#contact

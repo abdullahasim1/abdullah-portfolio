@@ -1,0 +1,29 @@
+# Abdullah Bin Asim — Full Stack Developer & AI Builder
+
+> Results-driven Full Stack Developer and UI/UX designer with AWS Generative AI credentials. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
+
+Portfolio: https://abdullah-asim-dev.vercel.app/
+Markdown summary (for agents): https://abdullah-asim-dev.vercel.app/index.md
+Full content: https://abdullah-asim-dev.vercel.app/llms-full.txt
+
+## Core Stack
+
+React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, Claude & AI Agents, GoHighLevel, Make.com, n8n.
+
+## Highlights
+
+- 3+ years experience
+- 25+ projects shipped
+- 15+ technologies
+- AWS Certified Generative AI Developer – Professional
+- AWS Certified AI Practitioner
+
+## Links
+
+- [GitHub](https://github.com/abdullahasim1): source code & open-source work
+- [Featured Projects](https://abdullah-asim-dev.vercel.app/#projects): live demos
+
+## Contact
+
+- Email: abdullah.gc.18@gmail.com
+- Contact form: https://abdullah-asim-dev.vercel.app/#contact

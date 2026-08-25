@@ -15,6 +15,7 @@ import Skills from "./pages/Skills";
 import Certifications from "./pages/Certifications";
 import Process from "./pages/Process";
 import Testimonials from "./pages/Testimonials";
+import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -72,6 +73,7 @@ function App() {
         <Certifications />
         <Process />
         <Testimonials />
+        <Faq />
         <Contact />
       </main>
 
