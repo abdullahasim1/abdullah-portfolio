@@ -1,10 +1,14 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
+import { IS_LOW_END } from "../lib/device";
 
 const PaperPlane = lazy(() => import("../components/three/PaperPlane"));
 
 const EMAIL = "abdullah.gc.18@gmail.com";
+/* Web3Forms (free) — https://web3forms.com se email daal kar access key lein.
+   Key khaali ho to form mailto: fallback use karta hai. */
+const WEB3FORMS_ACCESS_KEY = "";
 
 const contactInfo = [
   {
@@ -33,29 +37,57 @@ const contactInfo = [
   }
 ];
 
-function handleSubmit(e) {
-  e.preventDefault();
-  const data = new FormData(e.currentTarget);
-  const name = data.get("name")?.trim() || "";
-  const email = data.get("email")?.trim() || "";
-  const subject = data.get("subject")?.trim() || "Project Inquiry";
-  const message = data.get("message")?.trim() || "";
-
-  if (!name || !email || !message) {
-    alert("Please fill in your name, email, and message.");
-    return;
-  }
-
-  const body = `Hi Abdullah,\n\n${message}\n\n— ${name}\n${email}`;
-  window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
 const inputClass =
   "w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-slate-200 placeholder-slate-500 " +
   "focus:border-cyan-400/60 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(34,211,238,0.12)] focus:outline-none transition-all duration-200";
 
 function Contact() {
   useScrollReveal("#contact .reveal");
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const name = data.get("name")?.trim() || "";
+    const email = data.get("email")?.trim() || "";
+    const subject = data.get("subject")?.trim() || "Project Inquiry";
+    const message = data.get("message")?.trim() || "";
+
+    if (!name || !email || !message) {
+      alert("Please fill in your name, email, and message.");
+      return;
+    }
+
+    // Web3Forms configured nahi hai → mailto fallback
+    if (!WEB3FORMS_ACCESS_KEY) {
+      const body = `Hi Abdullah,\n\n${message}\n\n— ${name}\n${email}`;
+      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name,
+          email,
+          subject: `[Portfolio] ${subject}`,
+          message: `${message}\n\n— ${name} (${email})`,
+          from_name: "Portfolio Contact Form",
+        }),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || "Send failed");
+      setStatus("sent");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
+  }
 
   return (
     <section id="contact" className="py-28">
@@ -124,9 +156,10 @@ function Contact() {
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <button
                 type="submit"
-                className="sheen-btn relative flex-1 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:opacity-90 transition-opacity cursor-pointer"
+                disabled={status === "sending"}
+                className="sheen-btn relative flex-1 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-wait"
               >
-                Send Message
+                {status === "sending" ? "Sending…" : status === "sent" ? "Sent ✓" : "Send Message"}
                 <span className="sheen-layer" aria-hidden />
               </button>
               <a
@@ -146,6 +179,16 @@ function Contact() {
                 Get a Free Quote
               </a>
             </div>
+            {status === "sent" && (
+              <p className="text-emerald-300 text-sm font-medium">
+                Message sent — I'll get back to you within a few hours.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-amber-300 text-sm font-medium">
+                Something went wrong. Email me directly at {EMAIL}.
+              </p>
+            )}
             </form>
           </div>
         </div>

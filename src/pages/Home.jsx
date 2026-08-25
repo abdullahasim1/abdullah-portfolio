@@ -4,6 +4,7 @@ import SplitTextAnimation from "../components/SplitTextAnimation";
 import WordFlipper from "../components/WordFlipper";
 import MagneticButton from "../components/MagneticButton";
 import { scrollToSection } from "../lib/smoothScroll";
+import { IS_LOW_END } from "../lib/device";
 
 // Hero 3D scene — lazy chunk (heavy hai, sirf zaroorat par load hota hai)
 const HeroScene = lazy(() => import("../components/three/HeroScene"));
@@ -41,7 +42,7 @@ function Home({ introDone = true }) {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
       </div>
       <Suspense fallback={null}>
-        <HeroScene />
+        {!IS_LOW_END && <HeroScene />}
       </Suspense>
 
       {/* Cyber grid floor */}
@@ -100,6 +101,16 @@ function Home({ introDone = true }) {
 
           <div data-hero-stagger className="flex flex-wrap items-center gap-4 pt-2">
             <MagneticButton href="#contact">Start a Project</MagneticButton>
+            <a
+              href="/resume.pdf"
+              download="Abdullah-Bin-Asim-Resume.pdf"
+              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
+              </svg>
+              Download Resume
+            </a>
             <a
               href="#projects"
               onClick={(e) => scrollTo(e, "projects")}

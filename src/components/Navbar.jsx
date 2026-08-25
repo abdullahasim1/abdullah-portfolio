@@ -72,6 +72,17 @@ function Navbar() {
         {/* Right controls */}
         <div className="flex items-center gap-2">
           <a
+            href="/resume.pdf"
+            download="Abdullah-Bin-Asim-Resume.pdf"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl glass px-3.5 py-2 text-sm font-medium text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
+            </svg>
+            Resume
+          </a>
+
+          <a
             href="#contact"
             onClick={(e) => handleNavClick(e, "contact")}
             className="hidden sm:inline-flex sheen-btn items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 transition-all shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.35)]"

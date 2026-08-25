@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
+import { IS_LOW_END } from "../lib/device";
 
 const HoloOrb = lazy(() => import("../components/three/HoloOrb"));
 
@@ -64,11 +65,13 @@ function About() {
               </p>
 
               {/* Holographic 3D orb */}
-              <div className="relative h-40 sm:h-48 -mx-2">
-                <Suspense fallback={null}>
-                  <HoloOrb className="absolute inset-0" />
-                </Suspense>
-              </div>
+              {!IS_LOW_END && (
+                <div className="relative h-40 sm:h-48 -mx-2">
+                  <Suspense fallback={null}>
+                    <HoloOrb className="absolute inset-0" />
+                  </Suspense>
+                </div>
+              )}
 
               <div className="flex flex-wrap gap-x-8 gap-y-3 pt-3 border-t border-white/[0.06]">
                 {[

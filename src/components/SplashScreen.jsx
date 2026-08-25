@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
+import { IS_LOW_END } from "../lib/device";
 
 /* 3D core — loading progress ke saath spin speed barhta hai */
 function Core({ progressRef }) {
@@ -111,7 +112,7 @@ function SplashScreen({ onFinish }) {
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
+    if (reduced || IS_LOW_END) {
       onFinish();
       return;
     }

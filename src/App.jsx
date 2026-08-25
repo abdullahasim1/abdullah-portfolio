@@ -18,6 +18,7 @@ import Testimonials from "./pages/Testimonials";
 import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
+import { IS_LOW_END } from "./lib/device";
 
 function App() {
   // Splash har session mein sirf ek dafa (refresh pe skip hota hai)
@@ -42,8 +43,8 @@ function App() {
       {/* Film grain texture */}
       <div className="noise-overlay" aria-hidden="true" />
 
-      {/* Fixed site-wide 3D background (starfield + drifting wireframes) */}
-      <SiteBackground />
+      {/* Fixed site-wide 3D background (starfield + drifting wireframes) — low-end par skip */}
+      {!IS_LOW_END && <SiteBackground />}
 
       {/* Ambient background glows */}
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
