@@ -5,11 +5,7 @@ import WordFlipper from "../components/WordFlipper";
 import MagneticButton from "../components/MagneticButton";
 import { scrollToSection } from "../lib/smoothScroll";
 
-// Hero 3D engine: Spline (spline.design) ya built-in Three.js scene.
-// Dono heavy hain — sirf selected wala hi load hota hai (lazy chunk).
-// Apna Spline model ready ho toh: true karo + URL paste karo SplineHero.jsx mein.
-const USE_SPLINE_HERO = false;
-const SplineHero = lazy(() => import("../components/three/SplineHero"));
+// Hero 3D scene — lazy chunk (heavy hai, sirf zaroorat par load hota hai)
 const HeroScene = lazy(() => import("../components/three/HeroScene"));
 
 const chips = ["React", "Next.js", "Node.js", "Claude & AI Agents", "GoHighLevel", "Make.com", "n8n", "AWS"];
@@ -40,22 +36,13 @@ function Home({ introDone = true }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
-      {/* 3D hero scene (lazy) */}
-      {USE_SPLINE_HERO ? (
-        <Suspense fallback={null}>
-          <SplineHero />
-        </Suspense>
-      ) : (
-        <>
-          {/* CSS glow fallback while the R3F scene loads */}
-          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
-          </div>
-          <Suspense fallback={null}>
-            <HeroScene />
-          </Suspense>
-        </>
-      )}
+      {/* CSS glow fallback while the R3F scene loads */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
+      </div>
+      <Suspense fallback={null}>
+        <HeroScene />
+      </Suspense>
 
       {/* Cyber grid floor */}
       <div className="grid-floor" aria-hidden="true" />
