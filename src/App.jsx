@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
-import SplashScreen from "./components/SplashScreen";
-import SiteBackground from "./components/three/SiteBackground";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -17,8 +16,11 @@ import Process from "./pages/Process";
 import Testimonials from "./pages/Testimonials";
 import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
-import ScrollToTop from "./components/ScrollToTop";
 import { IS_LOW_END } from "./lib/device";
+
+/* Three.js wale components lazy — warna three main bundle mein aa jata hai */
+const SplashScreen = lazy(() => import("./components/SplashScreen"));
+const SiteBackground = lazy(() => import("./components/three/SiteBackground"));
 
 function App() {
   // Splash har session mein sirf ek dafa (refresh pe skip hota hai)
@@ -44,7 +46,11 @@ function App() {
       <div className="noise-overlay" aria-hidden="true" />
 
       {/* Fixed site-wide 3D background (starfield + drifting wireframes) — low-end par skip */}
-      {!IS_LOW_END && <SiteBackground />}
+      {!IS_LOW_END && (
+        <Suspense fallback={null}>
+          <SiteBackground />
+        </Suspense>
+      )}
 
       {/* Ambient background glows */}
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
@@ -82,7 +88,11 @@ function App() {
       <ScrollToTop />
 
       {/* 3D intro splash — site ke upar render hota hai */}
-      {!introDone && <SplashScreen onFinish={handleSplashFinish} />}
+      {!introDone && (
+        <Suspense fallback={null}>
+          <SplashScreen onFinish={handleSplashFinish} />
+        </Suspense>
+      )}
     </div>
   );
 }
