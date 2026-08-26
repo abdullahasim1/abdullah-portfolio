@@ -1,10 +1,11 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { techLogos } from "../data/techLogos";
 import TiltIcon from "./TiltIcon";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { IS_LOW_END } from "../lib/device";
 
 const FooterPlanet = lazy(() => import("./three/FooterPlanet"));
+const FooterMiniCore = lazy(() => import("./three/FooterMiniCore"));
 
 const quickLinks = [
   { name: "Home", href: "#home" },
@@ -28,6 +29,18 @@ const services = [
 function Footer() {
   const currentYear = new Date().getFullYear();
 
+  /* lg breakpoint par switch — desktop: FooterPlanet, small: light FooterMiniCore */
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = (e) => setIsDesktop(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   const handleNavClick = (e, href) => {
     e.preventDefault();
     const id = href.replace(/^#/, "");
@@ -44,7 +57,11 @@ function Footer() {
 
       {!IS_LOW_END && (
         <Suspense fallback={null}>
-          <FooterPlanet className="absolute -top-10 -right-16 hidden lg:block w-[440px] h-[440px] opacity-70" />
+          {isDesktop ? (
+            <FooterPlanet className="absolute -top-10 -right-16 w-[440px] h-[440px] opacity-70" />
+          ) : (
+            <FooterMiniCore className="absolute -top-4 -right-6 w-[220px] h-[220px] opacity-60" />
+          )}
         </Suspense>
       )}
 
