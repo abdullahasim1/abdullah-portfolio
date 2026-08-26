@@ -9,6 +9,16 @@ export const featuredProjects = [
     gradient: "from-violet-500 to-purple-600",
     emoji: "🤖",
     image: "/projects/four-ai.jpg",
+    role: "Full Stack Developer",
+    year: "2024",
+    overview:
+      "A browser-based AI studio that bundles text-to-speech, text-to-image and voice-effect tools behind one polished interface — no installs, no setup, straight from the tab.",
+    features: [
+      "Text-to-Speech & Text-to-Image pipelines powered by AI APIs",
+      "Voice-effects engine with real-time preview",
+      "Secure Node.js API layer with MySQL usage tracking",
+      "GSAP-driven micro-interactions across the UI",
+    ],
   },
   {
     repoName: "GENAI",
@@ -20,6 +30,16 @@ export const featuredProjects = [
     gradient: "from-sky-500 to-blue-600",
     emoji: "✨",
     image: "/projects/genai.jpg",
+    role: "Full Stack Developer & AI Integrator",
+    year: "2025",
+    overview:
+      "Hiring automation platform that matches resumes to roles with generative AI, auto-drafts candidate emails, and turns skill data into recruiter-friendly insights.",
+    features: [
+      "AI resume matching with scoring & reasoning",
+      "Automated email sequences for shortlisted candidates",
+      "Skill-gap analytics dashboard for recruiters",
+      "Next.js App Router + Neon serverless Postgres",
+    ],
   },
   {
     repoName: "Job-Recuitment",
@@ -31,6 +51,16 @@ export const featuredProjects = [
     gradient: "from-indigo-500 to-blue-600",
     emoji: "💼",
     image: "/projects/job-recruitment.jpg",
+    role: "Frontend Developer",
+    year: "2024",
+    overview:
+      "A modern job portal connecting employers and candidates — searchable listings, rich profiles, and a clean application pipeline end to end.",
+    features: [
+      "Employer-side job posting & listing management",
+      "Candidate profiles with applied-jobs tracking",
+      "Application status pipeline for recruiters",
+      "Fully responsive UI with Tailwind design system",
+    ],
   },
   {
     repoName: "food-order-project",
@@ -42,6 +72,16 @@ export const featuredProjects = [
     gradient: "from-orange-500 to-red-500",
     emoji: "🍔",
     image: "/projects/food-order.jpg",
+    role: "Full Stack Developer",
+    year: "2023",
+    overview:
+      "Full-stack food ordering flow — browse the menu, build a cart, place the order, and track it — backed by an Express + MySQL REST API.",
+    features: [
+      "Cart management with quantity & pricing logic",
+      "Category-based meal listings with search",
+      "Order placement & history per user",
+      "Express REST API with MySQL persistence",
+    ],
   },
   {
     repoName: "HomeServices",
@@ -53,6 +93,16 @@ export const featuredProjects = [
     gradient: "from-emerald-500 to-teal-600",
     emoji: "🏠",
     image: "/projects/home-services.jpg",
+    role: "Web Developer",
+    year: "2023",
+    overview:
+      "Booking platform that connects homeowners with trusted repair and maintenance providers — find a service, compare providers, book in minutes.",
+    features: [
+      "Provider discovery by service category",
+      "Simple multi-step booking flow",
+      "Lightweight vanilla-JS build — instant loads",
+      "Mobile-first responsive layout",
+    ],
   },
   {
     repoName: "abdullah-portfolio",
@@ -64,6 +114,16 @@ export const featuredProjects = [
     gradient: "from-indigo-500 to-fuchsia-500",
     emoji: "✨",
     image: "/projects/portfolio.jpg",
+    role: "Design & Development",
+    year: "2026",
+    overview:
+      "The site you're looking at — React 19 + Tailwind v4 portfolio with procedural Three.js scenes, scroll-driven storytelling, and low-end device fallbacks. Zero external 3D assets.",
+    features: [
+      "Procedural R3F scenes (laptop, planet, paper plane)",
+      "Scroll-linked GSAP animations via Lenis smooth scroll",
+      "60fps on capable devices, graceful fallbacks on low-end",
+      "SEO-ready: JSON-LD, OG tags, agent metadata (webmcp)",
+    ],
   },
 ];
 
