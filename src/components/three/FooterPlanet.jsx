@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import useInViewport from "../../hooks/useInViewport";
 
-/* Footer planet — wireframe sphere + tilted ring + orbiting moon */
-function Planet() {
+/* Footer planet — wireframe sphere + tilted ring + orbiting moon.
+   Cursor ke saath halka tilt-follow bhi karta hai (reduced-motion pe off). */
+function Planet({ pointerRef, reduced }) {
+  const group = useRef(null);
   const sphere = useRef(null);
   const moon = useRef(null);
   const moonPivot = useRef(null);
@@ -13,10 +15,16 @@ function Planet() {
     if (sphere.current) sphere.current.rotation.y += delta * 0.18;
     if (moonPivot.current) moonPivot.current.rotation.y += delta * 0.55;
     if (moon.current) moon.current.rotation.y += delta * 0.9;
+
+    if (!reduced && group.current) {
+      const g = group.current;
+      g.rotation.y += (pointerRef.current.x * 0.28 - g.rotation.y) * 0.045;
+      g.rotation.x += (0.18 - pointerRef.current.y * 0.18 - g.rotation.x) * 0.045;
+    }
   });
 
   return (
-    <group rotation={[0.18, 0, 0.08]}>
+    <group ref={group} rotation={[0.18, 0, 0.08]}>
       {/* planet body */}
       <mesh ref={sphere}>
         <icosahedronGeometry args={[1.05, 2]} />
@@ -65,6 +73,22 @@ function Planet() {
 
 export default function FooterPlanet({ className = "" }) {
   const [wrapRef, inView] = useInViewport();
+  const pointerRef = useRef({ x: 0, y: 0 });
+
+  const reduced =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  useEffect(() => {
+    if (reduced) return undefined;
+    const onMove = (e) => {
+      pointerRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointerRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [reduced]);
 
   return (
     <div ref={wrapRef} className={`pointer-events-none ${className}`} aria-hidden="true">
@@ -75,7 +99,7 @@ export default function FooterPlanet({ className = "" }) {
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={0.35} />
-        <Planet />
+        <Planet pointerRef={pointerRef} reduced={reduced} />
       </Canvas>
     </div>
   );

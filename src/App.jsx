@@ -36,6 +36,14 @@ function App() {
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip">
+      {/* Skip to content (keyboard users) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-xl focus:bg-cyan-500 focus:px-5 focus:py-3 focus:font-semibold focus:text-white focus:shadow-lg"
+      >
+        Skip to content
+      </a>
+
       {/* Top progress bar */}
       <ScrollProgress />
 
@@ -69,7 +77,7 @@ function App() {
 
       <Navbar />
 
-      <main className="relative z-10">
+      <main id="main-content" tabIndex={-1} className="relative z-10 focus:outline-none">
         <Home introDone={introDone} />
         <TechTicker />
         <About />
