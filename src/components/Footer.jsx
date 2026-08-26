@@ -1,7 +1,10 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { techLogos } from "../data/techLogos";
 import TiltIcon from "./TiltIcon";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
+import { IS_LOW_END } from "../lib/device";
+
+const FooterPlanet = lazy(() => import("./three/FooterPlanet"));
 
 const quickLinks = [
   { name: "Home", href: "#home" },
@@ -36,8 +39,14 @@ function Footer() {
   };
 
   return (
-    <footer className="relative mt-10 border-t border-white/[0.06] bg-black/40">
+    <footer className="relative mt-10 overflow-hidden border-t border-white/[0.06] bg-black/40">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+
+      {!IS_LOW_END && (
+        <Suspense fallback={null}>
+          <FooterPlanet className="absolute -top-10 -right-16 hidden lg:block w-[440px] h-[440px] opacity-70" />
+        </Suspense>
+      )}
 
       <div className="max-w-6xl mx-auto px-6 md:px-0 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
