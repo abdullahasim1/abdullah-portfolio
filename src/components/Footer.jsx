@@ -18,6 +18,8 @@ const quickLinks = [
 ];
 
 const services = [
+  "AI Integration",
+  "Workflow Automation",
   "Web Development",
   "Mobile Apps",
   "UI/UX Design",
@@ -81,7 +83,7 @@ function Footer() {
               </span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              Full Stack Developer crafting fast, scalable digital experiences with clean code and stunning design.
+              Full Stack Developer crafting fast, scalable digital experiences, AI agents &amp; workflow automations with clean code and stunning design.
             </p>
             <div className="flex space-x-3">
               <a
