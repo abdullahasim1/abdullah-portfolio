@@ -1,11 +1,7 @@
-import React, { useEffect, useRef, Suspense, lazy } from "react";
+import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "../components/SectionHeading";
-import { IS_LOW_END } from "../lib/device";
-import { skillsShapes } from "../data/shapes";
-
-const FloatingShapes = lazy(() => import("../components/three/FloatingShapes"));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -137,15 +133,8 @@ function SkillCard({ category, icon, items }) {
 
 function Skills() {
   return (
-    <section id="skills" className="py-28 relative overflow-hidden">
-      {/* 3D Floating shapes background */}
-      {!IS_LOW_END && (
-        <Suspense fallback={null}>
-          <FloatingShapes shapes={skillsShapes} />
-        </Suspense>
-      )}
-      
-      <div className="max-w-6xl mx-auto px-6 md:px-0 relative z-10">
+    <section id="skills" className="py-28">
+      <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
           label="Skills & Expertise"
           title="Technical Arsenal"

@@ -2,10 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import { IS_LOW_END } from "../lib/device";
-import { aboutShapes } from "../data/shapes";
 
 const HoloOrb = lazy(() => import("../components/three/HoloOrb"));
-const FloatingShapes = lazy(() => import("../components/three/FloatingShapes"));
 
 const strengths = [
   {
@@ -44,15 +42,8 @@ function About() {
   useScrollReveal("#about .reveal");
 
   return (
-    <section id="about" className="py-28 relative overflow-hidden">
-      {/* 3D Floating shapes background */}
-      {!IS_LOW_END && (
-        <Suspense fallback={null}>
-          <FloatingShapes shapes={aboutShapes} />
-        </Suspense>
-      )}
-      
-      <div className="max-w-6xl mx-auto px-6 md:px-0 relative z-10">
+    <section id="about" className="py-28">
+      <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
           label="About Me"
           title="Turning Ideas Into Digital Reality"
