@@ -16,10 +16,35 @@ body {
   color: #e2e8f0;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  will-change: transform;
+}
+
+/* GPU acceleration for animations */
+* {
+  will-change: auto;
+}
+
+.animated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize paint */
+.glass, .glass-strong {
+  contain: layout style paint;
+}
+
+/* Reduce paint complexity */
+.card-glow-hover {
+  contain: layout style;
 }
 
 h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -61,6 +86,7 @@ html.lenis body {
 .glass {
   background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  contain: layout style paint;
 }
 
 .glass-strong {
@@ -68,6 +94,7 @@ html.lenis body {
   border: 1px solid rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+  contain: layout style paint;
 }
 
 .text-gradient {
@@ -82,10 +109,12 @@ html.lenis body {
     0 0 0 1px rgba(34, 211, 238, 0.25),
     0 0 24px rgba(34, 211, 238, 0.12),
     inset 0 0 18px rgba(139, 92, 246, 0.06);
+  contain: layout style paint;
 }
 
 .card-glow-hover {
   transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  contain: layout style;
 }
 .card-glow-hover:hover {
   border-color: rgba(34, 211, 238, 0.45);
