@@ -12,12 +12,16 @@ function WordFlipper({
   const textRef = useRef(null);
   const intervalIdRef = useRef(null);
   const initialTimeoutRef = useRef(null);
+  const ctxRef = useRef(null);
 
   useEffect(() => {
     if (!Array.isArray(words) || words.length <= 1) return;
 
+    // Create GSAP context for proper cleanup
+    ctxRef.current = gsap.context(() => {});
+
     const playAnimation = () => {
-      if (!textRef.current) return;
+      if (!textRef.current || !ctxRef.current) return;
 
       // Animate out
       gsap.to(textRef.current, {
@@ -51,8 +55,20 @@ function WordFlipper({
     }, Math.max(0, initialDelayMs));
 
     return () => {
-      if (initialTimeoutRef.current) clearTimeout(initialTimeoutRef.current);
-      if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+      // Clear timeouts and intervals
+      if (initialTimeoutRef.current) {
+        clearTimeout(initialTimeoutRef.current);
+        initialTimeoutRef.current = null;
+      }
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+        intervalIdRef.current = null;
+      }
+      // Revert GSAP context
+      if (ctxRef.current) {
+        ctxRef.current.revert();
+        ctxRef.current = null;
+      }
     };
   }, [words, intervalMs, initialDelayMs]);
 

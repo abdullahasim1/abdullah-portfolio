@@ -74,8 +74,11 @@ function Footer() {
             <div className="flex items-center gap-3 mb-5">
               <img
                 src="/IMG-20240224-WA0006.jpg"
-                alt="Abdullah Asim"
+                alt="Abdullah Bin Asim - Full Stack Developer & AI Builder"
                 className="w-11 h-11 rounded-xl object-cover border border-cyan-400/30"
+                width="44"
+                height="44"
+                loading="lazy"
               />
               <span className="font-display text-lg font-bold">
                 <span className="text-white">abdullah</span>
@@ -116,7 +119,7 @@ function Footer() {
             <h3 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-slate-300 mb-5">
               Quick Links
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2.5" role="navigation" aria-label="Footer navigation">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <a
@@ -136,7 +139,7 @@ function Footer() {
             <h3 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-slate-300 mb-5">
               Services
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2.5" role="navigation" aria-label="Services navigation">
               {services.map((service) => (
                 <li key={service}>
                   <a

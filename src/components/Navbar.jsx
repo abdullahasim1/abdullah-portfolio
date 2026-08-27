@@ -40,12 +40,14 @@ function Navbar() {
         }`}
       >
         {/* Brand */}
-        <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center gap-3 group shrink-0">
+        <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center gap-3 group shrink-0" aria-label="Abdullah Asim - Home">
           <span className="relative">
             <img
               src="/IMG-20240224-WA0006.jpg"
-              alt="Abdullah Asim"
+              alt="Abdullah Bin Asim - Full Stack Developer"
               className="w-10 h-10 rounded-xl object-cover border border-cyan-400/40 group-hover:border-cyan-300 transition-colors"
+              width="40"
+              height="40"
             />
             <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 border-2 border-void blink-dot" />
           </span>
@@ -56,7 +58,7 @@ function Navbar() {
         </a>
 
         {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-1 text-sm">
+        <div className="hidden lg:flex items-center gap-1 text-sm" role="navigation" aria-label="Main navigation">
           {links.map((link) => (
             <a
               key={link.id}
@@ -103,7 +105,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden mt-2 max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm">
+        <div className="lg:hidden mt-2 max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm" role="navigation" aria-label="Mobile navigation">
           {links.map((link) => (
             <a
               key={link.id}

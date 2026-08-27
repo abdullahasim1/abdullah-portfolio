@@ -3,51 +3,283 @@
 > Results-driven Full Stack Developer and UI/UX designer with AWS Generative AI credentials. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
 
 Portfolio: https://abdullah-asim-dev.vercel.app/
+GitHub: https://github.com/abdullahasim1
+Email: abdullah.gc.18@gmail.com
 
 ## About
 
-Abdullah Bin Asim is a passionate Full Stack Developer with expertise across frontend and backend, plus AWS Generative AI credentials. His journey started with curiosity and evolved into a commitment to shipping high-quality products that solve real problems. From AI-powered platforms to full-stack web apps — he builds things that work, scale, and look great doing it.
+I'm a passionate Full Stack Developer with a love for creating seamless digital experiences. With expertise across frontend and backend — plus AWS Generative AI credentials — I bring ideas to life with clean code and intuitive design.
 
-Key strengths:
-- Problem solver: breaks complex challenges into manageable solutions
-- Clean code advocate: maintainable, scalable code
-- User-focused designer: every pixel and interaction crafted for users
-- Fast & reliable: quick turnaround without compromising quality
+My journey started with curiosity and evolved into a commitment to shipping high-quality products that solve real problems. From AI-powered platforms to full-stack web apps — I build things that work, scale, and look great doing it.
 
 ## Core Stack
 
 React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, Claude & AI Agents, GoHighLevel, Make.com, n8n.
 
+## Highlights
+
+- 3+ Years Experience
+- 25+ Projects Done
+- 15+ Technologies
+- 8 Certifications
+- 100% Client Satisfaction
+
 ## Services
 
-- Full-stack web development (React / Next.js / Node.js)
-- AI agents, chatbots & workflow automation (Make.com, n8n, GoHighLevel)
-- UI/UX design and animated marketing sites
-- AWS cloud & generative AI integrations
+### AI Integration
+- Claude & LLM APIs
+- Custom AI Chatbots
+- AI Agents & Assistants
+- RAG Applications
 
-## Featured Projects (with live demos)
+### Workflow Automation
+- Make.com Scenarios
+- n8n Workflows
+- Webhooks & API Glue
+- Business Process Automation
 
-- Four-AI Platform — AI-powered web app with Text-to-Speech, Text-to-Image and voice effects. Stack: React, GSAP, Node.js, MySQL. Live: https://four-ai-dev.vercel.app
-- HireGen AI — Smart hiring & communication automation: AI resume matching, email automation, skill-gap insights. Stack: Next.js, Generative AI, TypeScript, Neon. Live: https://hiregen-ai.vercel.app
-- Upmatch Job Recruitment — Modern job portal with employer listings, candidate profiles and application management. Stack: TypeScript, React, Next.js, Tailwind. Live: https://job-recuitment.vercel.app
-- Food Ordering System — Full-stack food ordering app with cart management and meal listings. Stack: React, Node.js, MySQL, Express. Live: https://food-order-project.vercel.app
-- Home Services App — Service booking platform for home repair and service providers. Stack: HTML, CSS, JavaScript. Live: https://home-services-tau.vercel.app
+### GoHighLevel (GHL)
+- Funnel Building
+- CRM Setup & Migration
+- Automated Follow-ups
+- White-label SaaS (SaaS Mode)
+
+### Web App Development
+- Custom Web Applications
+- E-commerce Platforms
+- Progressive Web Apps
+- Admin Dashboards
+
+### Mobile App Development
+- React Native Apps
+- Cross-platform Solutions
+- Native iOS/Android
+- App Maintenance
+
+### Backend Development
+- API Development
+- Database Design
+- Server Architecture
+- Cloud Integration
+
+### Frontend Development
+- React Applications
+- Responsive Design
+- Performance Optimization
+- UI/UX Implementation
+
+### UI/UX Design
+- User Interface Design
+- User Experience Design
+- Prototyping
+- Design Systems
+
+### Payment Gateway
+- Stripe Integration
+- PayPal Setup
+- Payment Security
+- Transaction Management
+
+## Featured Projects
+
+### Four-AI Platform
+AI-powered web app with Text-to-Speech, Text-to-Image, and voice effects built with React and Node.js.
+- Live: https://four-ai-dev.vercel.app
+- GitHub: https://github.com/abdullahasim1/four-ai-ai-powered-voice-image-generation-platform
+- Stack: React, GSAP, Node.js, MySQL
+- Role: Full Stack Developer
+- Year: 2024
+- Features:
+  - Text-to-Speech & Text-to-Image pipelines powered by AI APIs
+  - Voice-effects engine with real-time preview
+  - Secure Node.js API layer with MySQL usage tracking
+  - GSAP-driven micro-interactions across the UI
+
+### HireGen AI
+Smart hiring & communication automation — AI resume matching, email automation, and skill-gap insights.
+- Live: https://hiregen-ai.vercel.app
+- GitHub: https://github.com/abdullahasim1/GENAI
+- Stack: Next.js, Generative AI, TypeScript, Neon
+- Role: Full Stack Developer & AI Integrator
+- Year: 2025
+- Features:
+  - AI resume matching with scoring & reasoning
+  - Automated email sequences for shortlisted candidates
+  - Skill-gap analytics dashboard for recruiters
+  - Next.js App Router + Neon serverless Postgres
+
+### Upmatch — Job Recruitment
+Modern job portal with employer listings, candidate profiles, and application management.
+- Live: https://job-recuitment.vercel.app
+- GitHub: https://github.com/abdullahasim1/Job-Recuitment
+- Stack: TypeScript, React, Next.js, Tailwind
+- Role: Frontend Developer
+- Year: 2024
+- Features:
+  - Employer-side job posting & listing management
+  - Candidate profiles with applied-jobs tracking
+  - Application status pipeline for recruiters
+  - Fully responsive UI with Tailwind design system
+
+### Food Ordering System
+Full-stack food ordering app with cart management, meal listings, and a polished React UI.
+- Live: https://food-order-project.vercel.app
+- GitHub: https://github.com/abdullahasim1/food-order-project
+- Stack: React, Node.js, MySQL, Express
+- Role: Full Stack Developer
+- Year: 2023
+- Features:
+  - Cart management with quantity & pricing logic
+  - Category-based meal listings with search
+  - Order placement & history per user
+  - Express REST API with MySQL persistence
+
+### Home Services App
+Service booking platform for finding home repair and service providers near you.
+- Live: https://home-services-tau.vercel.app
+- GitHub: https://github.com/abdullahasim1/HomeServices
+- Stack: HTML, CSS, JavaScript
+- Role: Web Developer
+- Year: 2023
+- Features:
+  - Provider discovery by service category
+  - Simple multi-step booking flow
+  - Lightweight vanilla-JS build — instant loads
+  - Mobile-first responsive layout
+
+### Portfolio Website
+Animated developer portfolio built with React 19, Vite, Tailwind CSS v4, and GSAP.
+- Live: https://abdullah-asim-dev.vercel.app
+- GitHub: https://github.com/abdullahasim1/abdullah-portfolio
+- Stack: React, Tailwind CSS, GSAP
+- Role: Design & Development
+- Year: 2026
+- Features:
+  - Procedural R3F scenes (laptop, planet, paper plane)
+  - Scroll-linked GSAP animations via Lenis smooth scroll
+  - 60fps on capable devices, graceful fallbacks on low-end
+  - SEO-ready: JSON-LD, OG tags, agent metadata (webmcp)
+
+## Skills
+
+### AI & Automation
+- GoHighLevel (GHL): 90%
+- Make.com: 90%
+- n8n: 85%
+- Claude / LLM APIs: 85%
+- OpenAI APIs: 80%
+- Prompt Engineering: 88%
+
+### Frontend
+- React: 90%
+- JavaScript: 85%
+- TypeScript: 80%
+- HTML/CSS: 95%
+- Tailwind CSS: 90%
+- Next.js: 75%
+
+### Backend
+- Node.js: 85%
+- Express.js: 80%
+- Python: 70%
+- MySQL: 75%
+- MongoDB: 70%
+- REST APIs: 85%
+
+### Mobile & Tools
+- React Native: 75%
+- Git/GitHub: 90%
+- Docker: 65%
+- AWS: 60%
+- Figma: 70%
+- GSAP: 80%
 
 ## Certifications
 
-- AWS Certified Generative AI Developer – Professional
-- AWS Certified AI Practitioner
-- AWS Certification Training
+### AWS Certified Generative AI Developer — Professional
+- Issuer: Amazon Web Services (AWS)
+- Date: 2026
+- Skills: Generative AI, Amazon Bedrock, LLM Apps, AWS
+- Credential: https://www.credly.com/users/abdullah-asim/badges
 
-## Highlights
+### Generative AI Developer — Early Adopter
+- Issuer: Amazon Web Services (AWS)
+- Date: 2026
+- Skills: Early Adopter, Generative AI, AWS
 
-- 3+ years experience
-- 25+ projects shipped
-- 15+ technologies
-- 100% client satisfaction
+### AWS Certified AI Practitioner
+- Issuer: Amazon Web Services (AWS)
+- Date: 2025
+- Skills: AI Fundamentals, ML Concepts, AWS AI Services
+
+### Claude Code in Action
+- Issuer: Anthropic Education
+- Date: May 2026
+- Skills: Claude Code, AI Agents, Developer Tools
+- Credential: https://verify.skilljar.com/c/ea2aqwqdpsx2
+
+### Introduction to Model Context Protocol
+- Issuer: Anthropic Education
+- Date: May 2026
+- Skills: MCP, Tooling, AI Integrations
+- Credential: https://verify.skilljar.com/c/8sy7ahs4maju
+
+### Introduction to Agent Skills
+- Issuer: Anthropic
+- Date: 2026
+- Skills: Agent Skills, Claude, Automation
+
+### AWS Partner: Accreditation (Technical)
+- Issuer: AWS Training & Certification
+- Date: June 2026
+- Skills: AWS Partner, Cloud Architecture, Technical
+
+### AWS Partner: Sales Accreditation (Business)
+- Issuer: AWS Training & Certification
+- Date: June 2026
+- Skills: AWS Partner, Cloud Business, Sales
+
+## Process
+
+### Step 1: Discovery & Planning
+We start by understanding your vision, goals, and requirements to create a solid foundation.
+- Project requirements analysis
+- User research and personas
+- Technical architecture planning
+- Timeline and milestone setting
+
+### Step 2: Development & Design
+Bringing your ideas to life with clean code, beautiful design, and seamless user experiences.
+- UI/UX design and prototyping
+- Frontend and backend development
+- Database design and setup
+- API integration and testing
+
+### Step 3: Launch & Support
+Deploying to production and providing ongoing support to ensure long-term success.
+- Deployment and optimization
+- Performance monitoring
+- Bug fixes and updates
+- Ongoing maintenance support
+
+## Testimonials
+
+"We needed a scalable backend with secure payments. Abdullah built our e-commerce platform flawlessly. His attention to detail and performance optimization is outstanding." — Sarah Johnson, E-commerce Founder, TechStart Inc.
+
+"Abdullah transformed our concept into a polished platform with insightful guidance. His technical expertise and design sense made all the difference in user adoption." — Michael Chen, EdTech Co-Founder, LearnFlow
+
+"The app's real-time features and seamless UX exceeded our expectations. Abdullah is a true full-stack problem solver who delivers quality work on time." — Emily Rodriguez, NGO Coordinator, HealthConnect
+
+"Abdullah built us a dynamic admin panel with user management and analytics. His ability to balance backend efficiency with frontend usability is rare." — David Kim, SaaS Product Manager, DataFlow
+
+"We needed a branded, responsive tool for our website. Abdullah delivered a clean solution that boosted our engagement and reduced support queries significantly." — Lisa Thompson, Financial Consultant, FinancePro
+
+"Abdullah delivered a functional, fast application with advanced features. His proactive approach and technical skills set him apart from other developers." — Alex Morgan, Tech Recruiter, TalentHub
 
 ## Contact
 
 - Email: abdullah.gc.18@gmail.com
+- Phone/WhatsApp: +92 307 0796208
+- LinkedIn: https://www.linkedin.com/in/abdullahasim1/
 - GitHub: https://github.com/abdullahasim1
-- Contact form: https://abdullah-asim-dev.vercel.app/#contact
+- Portfolio: https://abdullah-asim-dev.vercel.app/

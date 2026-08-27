@@ -21,6 +21,8 @@ function CertImage({ src, alt, className = "" }) {
       alt={alt}
       className={`object-contain p-3 ${className}`}
       loading="lazy"
+      width="200"
+      height="200"
       onError={() => setFailed(true)}
     />
   );

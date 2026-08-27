@@ -41,9 +41,11 @@ function ProjectImage({ project }) {
   return (
     <img
       src={src}
-      alt={`${project.title} screenshot`}
+      alt={`${project.title} - ${project.description}`}
       className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.05]"
       loading="lazy"
+      width="800"
+      height="400"
       onError={() => {
         if (src === project.image) {
           setSrc(githubOgImage(project.repoName));
@@ -365,9 +367,11 @@ function Projects() {
         <div className="reveal flex flex-wrap items-center gap-x-6 gap-y-4 rounded-2xl glass-strong neon-ring px-6 py-5 mb-14">
           <img
             src={profile?.avatar_url || `https://github.com/${GITHUB_USERNAME}.png`}
-            alt="GitHub profile"
+            alt={`${GITHUB_USERNAME} GitHub profile`}
             className="w-11 h-11 rounded-full border border-cyan-400/40 shadow-[0_0_18px_rgba(34,211,238,0.25)]"
             loading="lazy"
+            width="44"
+            height="44"
           />
           <div className="min-w-0">
             <div className="font-display font-bold text-slate-100">@{GITHUB_USERNAME}</div>

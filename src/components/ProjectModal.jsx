@@ -19,8 +19,10 @@ function ModalImage({ project }) {
   return (
     <img
       src={src}
-      alt={`${project.title} case study`}
+      alt={`${project.title} - ${project.description}`}
       className="h-full w-full object-cover object-top"
+      width="800"
+      height="400"
       onError={() => {
         if (src === project.image) {
           setSrc(githubOgImage(project.repoName));
