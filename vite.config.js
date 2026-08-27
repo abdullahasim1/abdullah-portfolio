@@ -6,12 +6,14 @@ export default defineConfig({
     tailwindcss(),
   ],
   build: {
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         /* Heavy vendors alag chunks — caching + parallel download behtar */
         manualChunks: {
           react: ['react', 'react-dom'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          three: ['three'],
+          'r3f': ['@react-three/fiber', '@react-three/drei'],
           gsap: ['gsap'],
         },
       },

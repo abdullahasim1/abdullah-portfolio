@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useScrollReveal } from "../hooks/useScrollReveal";
+import { useScrollReveal } from "../hooks";
 import { useGithubRepos } from "../hooks/useGithubRepos";
 import SplitTextAnimation from "../components/SplitTextAnimation";
 import ProjectModal from "../components/ProjectModal";

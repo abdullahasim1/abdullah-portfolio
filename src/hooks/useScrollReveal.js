@@ -1,11 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollReveal(targetSelector, options = {}) {
-  const optionsKey = JSON.stringify(options);
+  const optionsRef = useRef(options);
+  const ctxRef = useRef(null);
+
+  useEffect(() => {
+    // Update options ref without causing re-render
+    optionsRef.current = options;
+  }, [options]);
 
   useEffect(() => {
     const elements =
@@ -14,9 +20,12 @@ export function useScrollReveal(targetSelector, options = {}) {
         : targetSelector;
     if (!elements || elements.length === 0) return;
 
-    const parsedOptions = JSON.parse(optionsKey);
+    // Clean up previous animation
+    if (ctxRef.current) {
+      ctxRef.current.revert();
+    }
 
-    const ctx = gsap.context(() => {
+    ctxRef.current = gsap.context(() => {
       gsap.utils.toArray(elements).forEach((el) => {
         gsap.from(el, {
           opacity: 0,
@@ -28,11 +37,16 @@ export function useScrollReveal(targetSelector, options = {}) {
             start: "top 85%",
             toggleActions: "play none none reverse",
           },
-          ...parsedOptions,
+          ...optionsRef.current,
         });
       });
     });
 
-    return () => ctx.revert();
-  }, [targetSelector, optionsKey]);
+    return () => {
+      if (ctxRef.current) {
+        ctxRef.current.revert();
+        ctxRef.current = null;
+      }
+    };
+  }, [targetSelector]);
 }

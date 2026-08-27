@@ -104,8 +104,12 @@ function Navbar() {
       </nav>
 
       {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="lg:hidden mt-2 max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm" role="navigation" aria-label="Mobile navigation">
+      <div 
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm" role="navigation" aria-label="Mobile navigation">
           {links.map((link) => (
             <a
               key={link.id}
@@ -124,7 +128,7 @@ function Navbar() {
             Hire Me
           </a>
         </div>
-      )}
+      </div>
     </header>
   );
 }

@@ -8,7 +8,7 @@ const PaperPlane = lazy(() => import("../components/three/PaperPlane"));
 const EMAIL = "abdullah.gc.18@gmail.com";
 /* Web3Forms (free) — https://web3forms.com se email daal kar access key lein.
    Key khaali ho to form mailto: fallback use karta hai. */
-const WEB3FORMS_ACCESS_KEY = "120e0564-1284-48ae-8132-61625701985b";
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "";
 
 const contactInfo = [
   {
@@ -53,6 +53,15 @@ function Contact() {
     const email = data.get("email")?.trim() || "";
     const subject = data.get("subject")?.trim() || "Project Inquiry";
     const message = data.get("message")?.trim() || "";
+    const honeypot = data.get("website")?.trim() || "";
+
+    // Honeypot check — bots fill hidden fields, humans don't
+    if (honeypot) {
+      // Silently reject bot submissions
+      setStatus("sent");
+      form.reset();
+      return;
+    }
 
     if (!name || !email || !message) {
       alert("Please fill in your name, email, and message.");
@@ -146,12 +155,16 @@ function Contact() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 glass rounded-3xl p-8">
+              {/* Honeypot field — hidden from humans, bots will fill it */}
+              <div className="absolute opacity-0 pointer-events-none" aria-hidden="true">
+                <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="text" name="name" placeholder="Your Name" className={inputClass} />
-                <input type="email" name="email" placeholder="Your Email" className={inputClass} />
+                <input type="text" name="name" placeholder="Your Name" className={inputClass} required />
+                <input type="email" name="email" placeholder="Your Email" className={inputClass} required />
               </div>
               <input type="text" name="subject" placeholder="Subject" className={inputClass} />
-              <textarea name="message" placeholder="Tell me about your project…" rows={5} className={`${inputClass} resize-none`} />
+              <textarea name="message" placeholder="Tell me about your project…" rows={5} className={`${inputClass} resize-none`} required />
 
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <button

@@ -19,6 +19,10 @@ function CursorFollower() {
 		const dot = dotRef.current;
 		if (!dot) return;
 
+		// Check if device is touch-only (no mouse)
+		const hasMouse = window.matchMedia("(pointer: fine)").matches;
+		if (!hasMouse) return;
+
 		// Center initially
 		targetRef.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 		positionRef.current = { ...targetRef.current };
@@ -32,6 +36,11 @@ function CursorFollower() {
 				isTouchRef.current = true;
 				isVisibleRef.current = false;
 				setIsVisible(false);
+				// Stop RAF loop on touch
+				if (rafRef.current) {
+					cancelAnimationFrame(rafRef.current);
+					rafRef.current = 0;
+				}
 				return;
 			}
 			isTouchRef.current = false;
@@ -40,6 +49,10 @@ function CursorFollower() {
 			if (!isVisibleRef.current) {
 				isVisibleRef.current = true;
 				setIsVisible(true);
+				// Restart RAF loop if it was stopped
+				if (!rafRef.current) {
+					rafRef.current = requestAnimationFrame(animate);
+				}
 			}
 		};
 
@@ -71,6 +84,12 @@ function CursorFollower() {
 		};
 
 		const animate = () => {
+			// Stop if touch detected
+			if (isTouchRef.current) {
+				rafRef.current = 0;
+				return;
+			}
+
 			const { x: tx, y: ty } = targetRef.current;
 			const { x, y } = positionRef.current;
 			const nx = lerp(x, tx, smoothing);
@@ -93,7 +112,9 @@ function CursorFollower() {
 		window.addEventListener("pointerup", handleUp, { passive: true });
 
 		return () => {
-			cancelAnimationFrame(rafRef.current);
+			if (rafRef.current) {
+				cancelAnimationFrame(rafRef.current);
+			}
 			window.removeEventListener("pointermove", move);
 			document.removeEventListener("mouseover", handleOver, true);
 			document.removeEventListener("mouseout", handleOut, true);
