@@ -159,13 +159,24 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.web3forms.com" />
+    <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" href="/src/main.jsx" as="script" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Critical CSS inline for above-the-fold content
+      (function(){
+        var style = document.createElement('style');
+        style.textContent = 'body{margin:0;background:#05060a;color:#fff;font-family:Inter,sans-serif}#root{min-height:100vh}';
+        document.head.appendChild(style);
+      })();
+    </script>
   </body>
 </html>

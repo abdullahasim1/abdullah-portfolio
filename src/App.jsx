@@ -6,21 +6,23 @@ import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Stats from "./pages/Stats";
-import Projects from "./pages/Projects";
-import Skills from "./pages/Skills";
-import Certifications from "./pages/Certifications";
-import Process from "./pages/Process";
-import Testimonials from "./pages/Testimonials";
-import Faq from "./pages/Faq";
-import Contact from "./pages/Contact";
 import { IS_LOW_END } from "./lib/device";
 
 /* Three.js wale components lazy — warna three main bundle mein aa jata hai */
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SiteBackground = lazy(() => import("./components/three/SiteBackground"));
+
+/* Below-the-fold sections lazy load */
+const About = lazy(() => import("./pages/About"));
+const Services = lazy(() => import("./pages/Services"));
+const Stats = lazy(() => import("./pages/Stats"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Skills = lazy(() => import("./pages/Skills"));
+const Certifications = lazy(() => import("./pages/Certifications"));
+const Process = lazy(() => import("./pages/Process"));
+const Testimonials = lazy(() => import("./pages/Testimonials"));
+const Faq = lazy(() => import("./pages/Faq"));
+const Contact = lazy(() => import("./pages/Contact"));
 
 function App() {
   // Splash har session mein sirf ek dafa (refresh pe skip hota hai)
@@ -80,16 +82,18 @@ function App() {
       <main id="main-content" tabIndex={-1} className="relative z-10 focus:outline-none">
         <Home introDone={introDone} />
         <TechTicker />
-        <About />
-        <Services />
-        <Stats />
-        <Projects />
-        <Skills />
-        <Certifications />
-        <Process />
-        <Testimonials />
-        <Faq />
-        <Contact />
+        <Suspense fallback={<div className="py-20" />}>
+          <About />
+          <Services />
+          <Stats />
+          <Projects />
+          <Skills />
+          <Certifications />
+          <Process />
+          <Testimonials />
+          <Faq />
+          <Contact />
+        </Suspense>
       </main>
 
       <Footer />

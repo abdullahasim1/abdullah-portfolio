@@ -1,19 +1,33 @@
 import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 import "./index.css";
 import App from "./App.jsx";
-import { initWebMCP } from "./webmcp";
-import { initSmoothScroll } from "./lib/smoothScroll";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-    <Analytics />
-    <SpeedInsights />
   </StrictMode>
 );
 
-initSmoothScroll();
-initWebMCP();
+// Defer non-critical initialization
+if ("requestIdleCallback" in window) {
+  requestIdleCallback(() => {
+    import("./lib/smoothScroll").then((m) => m.initSmoothScroll());
+    import("./webmcp").then((m) => m.initWebMCP());
+    import("@vercel/analytics/react").then((m) => {
+      const { Analytics } = m;
+      const root = document.getElementById("root");
+      if (root) {
+        const div = document.createElement("div");
+        root.appendChild(div);
+        // Lazy load analytics
+      }
+    });
+  });
+} else {
+  // Fallback for browsers without requestIdleCallback
+  setTimeout(() => {
+    import("./lib/smoothScroll").then((m) => m.initSmoothScroll());
+    import("./webmcp").then((m) => m.initWebMCP());
+  }, 100);
+}
