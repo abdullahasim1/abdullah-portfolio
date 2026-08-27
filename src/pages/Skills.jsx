@@ -1,7 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, Suspense, lazy } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "../components/SectionHeading";
+import { IS_LOW_END } from "../lib/device";
+import { skillsShapes } from "../data/shapes";
+
+const FloatingShapes = lazy(() => import("../components/three/FloatingShapes"));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,10 +92,60 @@ function SkillBar({ name, level }) {
   );
 }
 
+function SkillCard({ category, icon, items }) {
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 20;
+    const rotateY = (centerX - x) / 20;
+    
+    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (!cardRef.current) return;
+    cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
+  };
+
+  return (
+    <div 
+      ref={cardRef}
+      className="glass rounded-2xl p-7 card-glow-hover transition-transform duration-200 ease-out"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="flex items-center gap-3 pb-5 mb-6 border-b border-white/[0.06]">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-lg">
+          {icon}
+        </span>
+        <h3 className="font-display text-lg font-semibold text-slate-100">{category}</h3>
+      </div>
+      <div className="space-y-5">
+        {items.map((skill) => (
+          <SkillBar key={skill.name} {...skill} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Skills() {
   return (
-    <section id="skills" className="py-28">
-      <div className="max-w-6xl mx-auto px-6 md:px-0">
+    <section id="skills" className="py-28 relative overflow-hidden">
+      {/* 3D Floating shapes background */}
+      {!IS_LOW_END && (
+        <Suspense fallback={null}>
+          <FloatingShapes shapes={skillsShapes} />
+        </Suspense>
+      )}
+      
+      <div className="max-w-6xl mx-auto px-6 md:px-0 relative z-10">
         <SectionHeading
           label="Skills & Expertise"
           title="Technical Arsenal"
@@ -100,19 +154,7 @@ function Skills() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {Object.entries(skills).map(([category, { icon, items }]) => (
-            <div key={category} className="glass rounded-2xl p-7 card-glow-hover hover:-translate-y-1 transition-transform duration-300">
-              <div className="flex items-center gap-3 pb-5 mb-6 border-b border-white/[0.06]">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-lg">
-                  {icon}
-                </span>
-                <h3 className="font-display text-lg font-semibold text-slate-100">{category}</h3>
-              </div>
-              <div className="space-y-5">
-                {items.map((skill) => (
-                  <SkillBar key={skill.name} {...skill} />
-                ))}
-              </div>
-            </div>
+            <SkillCard key={category} category={category} icon={icon} items={items} />
           ))}
         </div>
       </div>

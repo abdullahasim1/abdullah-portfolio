@@ -5,6 +5,7 @@ import { useScrollReveal } from "../hooks";
 import { useGithubRepos } from "../hooks/useGithubRepos";
 import SplitTextAnimation from "../components/SplitTextAnimation";
 import ProjectModal from "../components/ProjectModal";
+import TiltCard from "../components/TiltCard";
 import {
   featuredProjects,
   languageColors,
@@ -116,12 +117,13 @@ function Tags({ project, max = 4 }) {
 
 function FeaturedProjectCard({ project, large = false, onOpenCaseStudy }) {
   return (
-    <article
-      onMouseMove={spotMove}
-      className={`reveal group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col ${
-        large ? "md:col-span-2 md:flex-row" : ""
-      }`}
-    >
+    <TiltCard className={`reveal ${large ? "md:col-span-2" : ""}`}>
+      <article
+        onMouseMove={spotMove}
+        className={`group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col ${
+          large ? "md:flex-row" : ""
+        }`}
+      >
       {/* Cursor spotlight */}
       <span
         aria-hidden
@@ -180,6 +182,7 @@ function FeaturedProjectCard({ project, large = false, onOpenCaseStudy }) {
         </div>
       </div>
     </article>
+    </TiltCard>
   );
 }
 
@@ -202,50 +205,52 @@ function RepoCard({ repo }) {
     `Open source project built with ${repo.language || "modern web technologies"}.`;
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl glass card-glow-hover p-5 hover:-translate-y-1 transition-transform duration-300 h-full flex flex-col">
-      <div className="flex items-start justify-between gap-3 mb-2.5">
-        <a
-          href={repo.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-display font-semibold text-[15px] text-slate-100 group-hover:text-cyan-300 transition-colors truncate"
-        >
-          {displayName}
-        </a>
-        {repo.stargazers_count > 0 && (
-          <span className="inline-flex items-center gap-1 text-xs text-amber-300/80 shrink-0">
-            ★ {repo.stargazers_count}
-          </span>
-        )}
-      </div>
-      <p className="text-[13px] text-slate-400 mb-4 line-clamp-2 leading-relaxed flex-grow">
-        {description}
-      </p>
-      <div className="flex items-center justify-between gap-2 pt-3 border-t border-white/[0.06]">
-        <LanguageDot language={repo.language} />
-        <span className="text-xs text-slate-500">{formatRelativeDate(repo.pushed_at)}</span>
-      </div>
-      <div className="flex gap-2 mt-3">
-        <a
-          href={repo.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 text-center text-xs font-medium px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300 hover:border-cyan-400/30 transition-colors"
-        >
-          Source
-        </a>
-        {repo.homepage && (
+    <TiltCard className="h-full">
+      <div className="group relative overflow-hidden rounded-2xl glass card-glow-hover p-5 hover:-translate-y-1 transition-transform duration-300 h-full flex flex-col">
+        <div className="flex items-start justify-between gap-3 mb-2.5">
           <a
-            href={repo.homepage}
+            href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 text-center text-xs font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-opacity"
+            className="font-display font-semibold text-[15px] text-slate-100 group-hover:text-cyan-300 transition-colors truncate"
           >
-            Live
+            {displayName}
           </a>
-        )}
+          {repo.stargazers_count > 0 && (
+            <span className="inline-flex items-center gap-1 text-xs text-amber-300/80 shrink-0">
+              ★ {repo.stargazers_count}
+            </span>
+          )}
+        </div>
+        <p className="text-[13px] text-slate-400 mb-4 line-clamp-2 leading-relaxed flex-grow">
+          {description}
+        </p>
+        <div className="flex items-center justify-between gap-2 pt-3 border-t border-white/[0.06]">
+          <LanguageDot language={repo.language} />
+          <span className="text-xs text-slate-500">{formatRelativeDate(repo.pushed_at)}</span>
+        </div>
+        <div className="flex gap-2 mt-3">
+          <a
+            href={repo.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 text-center text-xs font-medium px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300 hover:border-cyan-400/30 transition-colors"
+          >
+            Source
+          </a>
+          {repo.homepage && (
+            <a
+              href={repo.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 text-center text-xs font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-opacity"
+            >
+              Live
+            </a>
+          )}
+        </div>
       </div>
-    </div>
+    </TiltCard>
   );
 }
 

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import MagneticButton from "../components/MagneticButton";
+import { IS_LOW_END } from "../lib/device";
+import { servicesShapes } from "../data/shapes";
+
+const FloatingShapes = lazy(() => import("../components/three/FloatingShapes"));
 
 const services = [
   {
@@ -57,8 +61,15 @@ function Services() {
   useScrollReveal("#services .reveal");
 
   return (
-    <section id="services" className="py-28">
-      <div className="max-w-6xl mx-auto px-6 md:px-0">
+    <section id="services" className="py-28 relative overflow-hidden">
+      {/* 3D Floating shapes background */}
+      {!IS_LOW_END && (
+        <Suspense fallback={null}>
+          <FloatingShapes shapes={servicesShapes} />
+        </Suspense>
+      )}
+      
+      <div className="max-w-6xl mx-auto px-6 md:px-0 relative z-10">
         <SectionHeading
           label="Services"
           title="What I Can Build For You"
