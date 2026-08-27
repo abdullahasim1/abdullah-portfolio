@@ -13,11 +13,12 @@ export function initSmoothScroll() {
   gsap.registerPlugin(ScrollTrigger);
 
   lenis = new Lenis({
-    duration: 1.45,
+    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
-    wheelMultiplier: 0.9,
-    touchMultiplier: 1.4,
+    wheelMultiplier: 1.0,
+    touchMultiplier: 2.0,
+    infinite: false,
   });
 
   lenis.on("scroll", ScrollTrigger.update);
@@ -32,7 +33,7 @@ export function scrollToSection(id, offset = -84) {
   const el = document.getElementById(id);
   if (!el) return;
   if (lenis) {
-    lenis.scrollTo(el, { offset, duration: 1.5 });
+    lenis.scrollTo(el, { offset, duration: 1.2 });
   } else {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -40,7 +41,7 @@ export function scrollToSection(id, offset = -84) {
 
 export function scrollToTop() {
   if (lenis) {
-    lenis.scrollTo(0, { duration: 1.6 });
+    lenis.scrollTo(0, { duration: 1.2 });
   } else {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
