@@ -36,14 +36,11 @@ function Home({ introDone = true }) {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex flex-col items-center overflow-hidden">
       {/* CSS glow fallback while the R3F scene loads */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
       </div>
-      <Suspense fallback={null}>
-        {!IS_LOW_END && <HeroScene />}
-      </Suspense>
 
       {/* Cyber grid floor */}
       <div className="grid-floor" aria-hidden="true" />
@@ -52,7 +49,7 @@ function Home({ introDone = true }) {
       <div aria-hidden className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-void to-transparent pointer-events-none" />
 
       {/* Content */}
-      <div ref={contentRef} className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-28 w-full">
+      <div ref={contentRef} className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full">
         <div className="max-w-2xl space-y-7">
           <span data-hero-stagger className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
             <span className="relative flex h-2 w-2">
@@ -123,6 +120,20 @@ function Home({ introDone = true }) {
             </a>
           </div>
         </div>
+      </div>
+
+      {/* 3D Scene - hidden on mobile, shown on desktop as absolute overlay */}
+      <div className="hidden md:block absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Suspense fallback={null}>
+          {!IS_LOW_END && <HeroScene />}
+        </Suspense>
+      </div>
+
+      {/* 3D Scene - mobile: positioned below text */}
+      <div className="md:hidden relative w-full h-[300px] -mt-8" aria-hidden="true">
+        <Suspense fallback={null}>
+          {!IS_LOW_END && <HeroScene />}
+        </Suspense>
       </div>
 
       {/* Scroll hint */}
