@@ -9,23 +9,26 @@ createRoot(document.getElementById("root")).render(
   </StrictMode>
 );
 
+// Register service worker for caching
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('SW registered:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('SW registration failed:', error);
+      });
+  });
+}
+
 // Defer non-critical initialization
 if ("requestIdleCallback" in window) {
   requestIdleCallback(() => {
     import("./lib/smoothScroll").then((m) => m.initSmoothScroll());
     import("./webmcp").then((m) => m.initWebMCP());
-    import("@vercel/analytics/react").then((m) => {
-      const { Analytics } = m;
-      const root = document.getElementById("root");
-      if (root) {
-        const div = document.createElement("div");
-        root.appendChild(div);
-        // Lazy load analytics
-      }
-    });
   });
 } else {
-  // Fallback for browsers without requestIdleCallback
   setTimeout(() => {
     import("./lib/smoothScroll").then((m) => m.initSmoothScroll());
     import("./webmcp").then((m) => m.initWebMCP());
