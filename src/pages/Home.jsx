@@ -122,15 +122,8 @@ function Home({ introDone = true }) {
         </div>
       </div>
 
-      {/* 3D Scene - hidden on mobile, shown on desktop as absolute overlay */}
-      <div className="hidden md:block absolute inset-0 pointer-events-none" aria-hidden="true">
-        <Suspense fallback={null}>
-          {!IS_LOW_END && <HeroScene />}
-        </Suspense>
-      </div>
-
-      {/* 3D Scene - mobile: positioned below text */}
-      <div className="md:hidden relative w-full h-[300px] -mt-8" aria-hidden="true">
+      {/* 3D Scene */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <Suspense fallback={null}>
           {!IS_LOW_END && <HeroScene />}
         </Suspense>

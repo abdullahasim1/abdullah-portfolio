@@ -6,8 +6,8 @@ const DYNAMIC_CACHE = 'portfolio-dynamic-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/favicon.ico',
   '/og-image.png',
+  '/IMG-20240224-WA0006.jpg',
 ];
 
 // Install event - cache static assets
@@ -135,8 +135,8 @@ self.addEventListener('push', (event) => {
     event.waitUntil(
       self.registration.showNotification(data.title, {
         body: data.body,
-        icon: '/favicon.ico',
-        badge: '/favicon.ico'
+        icon: '/IMG-20240224-WA0006.jpg',
+        badge: '/IMG-20240224-WA0006.jpg'
       })
     );
   }

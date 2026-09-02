@@ -13,7 +13,7 @@ function StatNumber({ stat, index }) {
   const counterRef = useCounterAnimation(stat.number, 2, index * 0.2);
   return (
     <div className="font-display text-4xl md:text-5xl font-bold text-gradient">
-      <span ref={counterRef.elementRef}>{stat.number}</span>
+      <span ref={counterRef}>{stat.number}</span>
       {stat.suffix}
     </div>
   );

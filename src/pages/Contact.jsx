@@ -176,7 +176,7 @@ function Contact() {
                 <span className="sheen-layer" aria-hidden />
               </button>
               <a
-                href="https://wa.link/o1bqnp."
+                href="https://wa.link/o1bqnp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-emerald-300 hover:border-emerald-400/40 transition-colors text-sm font-medium"

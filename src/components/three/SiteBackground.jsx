@@ -54,10 +54,10 @@ function SceneContents({ reduced }) {
   });
 
   const drifters = [
-    { pos: [-7.6, 2.4, -5], color: "#22d3ee", opacity: 0.16 },
-    { pos: [7.4, -2.8, -4], color: "#a78bfa", opacity: 0.15 },
-    { pos: [-5.6, -3.6, -7], color: "#67e8f9", opacity: 0.11 },
-    { pos: [6.6, 3.2, -8], color: "#c084fc", opacity: 0.13 },
+    { position: [-7.6, 2.4, -5], color: "#22d3ee", opacity: 0.16 },
+    { position: [7.4, -2.8, -4], color: "#a78bfa", opacity: 0.15 },
+    { position: [-5.6, -3.6, -7], color: "#67e8f9", opacity: 0.11 },
+    { position: [6.6, 3.2, -8], color: "#c084fc", opacity: 0.13 },
   ];
 
   return (

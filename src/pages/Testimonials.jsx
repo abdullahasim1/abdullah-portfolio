@@ -13,7 +13,7 @@ function Testimonials() {
 
     const ctx = gsap.context(() => {
       gsap.to("[data-marquee]", {
-        xPercent: -100,
+        xPercent: -50,
         repeat: -1,
         ease: "none",
         duration: 30,

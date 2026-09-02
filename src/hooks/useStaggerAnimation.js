@@ -22,23 +22,7 @@ export const useStaggerAnimation = (stagger = 0.1, delay = 0) => {
 
       gsap.set(elements, { opacity: 0, y: 30 });
 
-      // Use ScrollTrigger for each element
-      elements.forEach((el) => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: delay,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        });
-      });
-
-      // Also apply stagger to the group
+      // Apply smooth stagger to the group on scroll
       gsap.to(elements, {
         opacity: 1,
         y: 0,
