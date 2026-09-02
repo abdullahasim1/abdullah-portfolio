@@ -41,7 +41,7 @@ function GlassOrb({ radius, speed, size, color, reduced }) {
     ref.current.position.set(
       Math.cos(t) * radius,
       Math.sin(t * 1.35) * radius * 0.32,
-      Math.sin(t) * radius
+      Math.sin(t) * radius,
     );
   });
 
@@ -104,29 +104,113 @@ function SceneContent({ pointerRef, reduced }) {
       <group ref={groupRef} position={[offsetX, 0, 0]} scale={scale}>
         <Float speed={1.1} rotationIntensity={0.12} floatIntensity={0.5}>
           <Laptop pointerRef={pointerRef} reduced={reduced} />
-          <Ring radius={2.5} tilt={[Math.PI / 2.3, 0.2, 0]} color="#22d3ee" opacity={0.55} speed={0.35} reduced={reduced} />
-          <Ring radius={2.95} tilt={[Math.PI / 2.8, -0.45, 0]} color="#a78bfa" opacity={0.38} speed={-0.22} reduced={reduced} />
-          <Ring radius={2.1} tilt={[Math.PI / 1.9, 0.6, 0]} color="#67e8f9" opacity={0.25} speed={0.5} reduced={reduced} />
-          <GlassOrb radius={2.5} speed={0.5} size={0.14} color="#67e8f9" reduced={reduced} />
-          <GlassOrb radius={2.95} speed={0.36} size={0.11} color="#c4b5fd" reduced={reduced} />
-          <GlassOrb radius={2.1} speed={0.62} size={0.08} color="#e0f2fe" reduced={reduced} />
+          <Ring
+            radius={2.5}
+            tilt={[Math.PI / 2.3, 0.2, 0]}
+            color="#22d3ee"
+            opacity={0.55}
+            speed={0.35}
+            reduced={reduced}
+          />
+          <Ring
+            radius={2.95}
+            tilt={[Math.PI / 2.8, -0.45, 0]}
+            color="#a78bfa"
+            opacity={0.38}
+            speed={-0.22}
+            reduced={reduced}
+          />
+          <Ring
+            radius={2.1}
+            tilt={[Math.PI / 1.9, 0.6, 0]}
+            color="#67e8f9"
+            opacity={0.25}
+            speed={0.5}
+            reduced={reduced}
+          />
+          <GlassOrb
+            radius={2.5}
+            speed={0.5}
+            size={0.14}
+            color="#67e8f9"
+            reduced={reduced}
+          />
+          <GlassOrb
+            radius={2.95}
+            speed={0.36}
+            size={0.11}
+            color="#c4b5fd"
+            reduced={reduced}
+          />
+          <GlassOrb
+            radius={2.1}
+            speed={0.62}
+            size={0.08}
+            color="#e0f2fe"
+            reduced={reduced}
+          />
         </Float>
       </group>
 
       {/* Studio environment — generated locally via Lightformers (no HDR download) */}
       <Environment resolution={256} frames={1}>
         <color attach="background" args={["#05060a"]} />
-        <Lightformer intensity={7} position={[0, 5, 0]} rotation-x={Math.PI / 2} scale={[12, 12, 1]} color="#22d3ee" />
-        <Lightformer intensity={3.5} position={[-6, 1, -1]} rotation-y={Math.PI / 2} scale={[7, 2, 1]} color="#8b5cf6" />
-        <Lightformer intensity={2.5} position={[6, -1, -1]} rotation-y={-Math.PI / 2} scale={[7, 2, 1]} color="#38bdf8" />
-        <Lightformer intensity={1.5} position={[0, -4, 3]} scale={[8, 2, 1]} color="#c084fc" />
+        <Lightformer
+          intensity={7}
+          position={[0, 5, 0]}
+          rotation-x={Math.PI / 2}
+          scale={[12, 12, 1]}
+          color="#22d3ee"
+        />
+        <Lightformer
+          intensity={3.5}
+          position={[-6, 1, -1]}
+          rotation-y={Math.PI / 2}
+          scale={[7, 2, 1]}
+          color="#8b5cf6"
+        />
+        <Lightformer
+          intensity={2.5}
+          position={[6, -1, -1]}
+          rotation-y={-Math.PI / 2}
+          scale={[7, 2, 1]}
+          color="#38bdf8"
+        />
+        <Lightformer
+          intensity={1.5}
+          position={[0, -4, 3]}
+          scale={[8, 2, 1]}
+          color="#c084fc"
+        />
       </Environment>
 
       {!reduced && (
         <>
-          <Stars radius={90} depth={50} count={2400} factor={3.2} saturation={0.4} fade speed={0.55} />
-          <Sparkles count={70} scale={[11, 7, 6]} size={2.2} speed={0.3} color="#67e8f9" opacity={0.5} />
-          <Sparkles count={40} scale={[13, 8, 6]} size={3.4} speed={0.22} color="#c084fc" opacity={0.38} />
+          <Stars
+            radius={90}
+            depth={50}
+            count={2400}
+            factor={3.2}
+            saturation={0.4}
+            fade
+            speed={0.55}
+          />
+          <Sparkles
+            count={70}
+            scale={[11, 7, 6]}
+            size={2.2}
+            speed={0.3}
+            color="#67e8f9"
+            opacity={0.5}
+          />
+          <Sparkles
+            count={40}
+            scale={[13, 8, 6]}
+            size={3.4}
+            speed={0.22}
+            color="#c084fc"
+            opacity={0.38}
+          />
         </>
       )}
       <fog attach="fog" args={["#05060a", 10, 26]} />
@@ -170,12 +254,20 @@ export default function HeroScene() {
   }, [reduced]);
 
   return (
-    <div ref={wrapRef} className="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div
+      ref={wrapRef}
+      className="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+    >
       <Canvas
         camera={{ position: [0, 0.4, 7], fov: 42 }}
         dpr={[1, 1.5]}
         frameloop={reduced ? "demand" : inView ? "always" : "never"}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+        }}
       >
         <SceneContent pointerRef={pointerRef} reduced={reduced} />
       </Canvas>

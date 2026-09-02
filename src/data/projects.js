@@ -163,7 +163,3 @@ export function formatRepoName(name) {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
-
-export function getProjectImage(project) {
-  return project.image || githubOgImage(project.repoName);
-}

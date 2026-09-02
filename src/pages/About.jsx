@@ -9,33 +9,33 @@ const strengths = [
   {
     icon: "🧩",
     title: "Problem Solver",
-    desc: "I break complex challenges into manageable solutions, keeping your project on track and results-driven."
+    desc: "I break complex challenges into manageable solutions, keeping your project on track and results-driven.",
   },
   {
     icon: "⌨️",
     title: "Clean Code Advocate",
-    desc: "Maintainable, scalable code that grows with your business and makes future updates effortless."
+    desc: "Maintainable, scalable code that grows with your business and makes future updates effortless.",
   },
   {
     icon: "🎯",
     title: "User-Focused Designer",
-    desc: "Every pixel and interaction is crafted for your users — experiences that convert and delight."
+    desc: "Every pixel and interaction is crafted for your users — experiences that convert and delight.",
   },
   {
     icon: "⚡",
     title: "Fast & Reliable",
-    desc: "Quick turnaround without compromising quality. Your deadlines are my deadlines."
+    desc: "Quick turnaround without compromising quality. Your deadlines are my deadlines.",
   },
   {
     icon: "💬",
     title: "Communication Pro",
-    desc: "Regular updates, clear explanations, and always available to discuss progress."
+    desc: "Regular updates, clear explanations, and always available to discuss progress.",
   },
   {
     icon: "🚀",
     title: "Future-Proof Tech",
-    desc: "Cutting-edge technologies that keep your product competitive and scalable for years."
-  }
+    desc: "Cutting-edge technologies that keep your product competitive and scalable for years.",
+  },
 ];
 
 function About() {
@@ -53,15 +53,22 @@ function About() {
           <div className="space-y-6 reveal">
             <div className="rounded-2xl glass card-glow-hover p-8 space-y-5 text-slate-400 leading-relaxed">
               <p>
-                I'm a passionate <span className="text-cyan-300 font-medium">Full Stack Developer</span> with a
-                love for creating seamless digital experiences. With expertise across frontend and backend —
-                plus <span className="text-violet-300 font-medium">AWS Generative AI credentials</span> — I bring
-                ideas to life with clean code and intuitive design.
+                I'm a passionate{" "}
+                <span className="text-cyan-300 font-medium">
+                  Full Stack Developer
+                </span>{" "}
+                with a love for creating seamless digital experiences. With
+                expertise across frontend and backend — plus{" "}
+                <span className="text-violet-300 font-medium">
+                  AWS Generative AI credentials
+                </span>{" "}
+                — I bring ideas to life with clean code and intuitive design.
               </p>
               <p>
-                My journey started with curiosity and evolved into a commitment to shipping high-quality
-                products that solve real problems. From AI-powered platforms to full-stack web apps —
-                I build things that work, scale, and look great doing it.
+                My journey started with curiosity and evolved into a commitment
+                to shipping high-quality products that solve real problems. From
+                AI-powered platforms to full-stack web apps — I build things
+                that work, scale, and look great doing it.
               </p>
 
               {/* Holographic 3D orb */}
@@ -80,7 +87,9 @@ function About() {
                   ["8+", "Certifications"],
                 ].map(([num, label]) => (
                   <div key={label}>
-                    <div className="font-display text-2xl font-bold text-gradient">{num}</div>
+                    <div className="font-display text-2xl font-bold text-gradient">
+                      {num}
+                    </div>
                     <div className="text-xs text-slate-500">{label}</div>
                   </div>
                 ))}
@@ -99,8 +108,12 @@ function About() {
                   className="reveal glass rounded-2xl p-5 card-glow-hover hover:-translate-y-1"
                 >
                   <div className="text-2xl mb-3">{strength.icon}</div>
-                  <h4 className="font-display font-semibold text-slate-100 mb-1.5">{strength.title}</h4>
-                  <p className="text-sm text-slate-400 leading-relaxed">{strength.desc}</p>
+                  <h4 className="font-display font-semibold text-slate-100 mb-1.5">
+                    {strength.title}
+                  </h4>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    {strength.desc}
+                  </p>
                 </div>
               ))}
             </div>
