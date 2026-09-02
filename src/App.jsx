@@ -92,7 +92,8 @@ function App() {
         <div
           className="absolute inset-0 opacity-[0.35]"
           style={{
-            backgroundImage: "radial-gradient(rgba(148,163,184,0.055) 1px, transparent 1px)",
+            backgroundImage:
+              "radial-gradient(rgba(148,163,184,0.055) 1px, transparent 1px)",
             backgroundSize: "34px 34px",
           }}
         />
@@ -100,7 +101,11 @@ function App() {
 
       <Navbar />
 
-      <main id="main-content" tabIndex={-1} className="relative z-10 focus:outline-none">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="relative z-10 focus:outline-none"
+      >
         <Home introDone={introDone} />
         <TechTicker />
         <Suspense fallback={<div className="py-20" />}>
@@ -119,7 +124,10 @@ function App() {
 
       <Footer />
       <ScrollToTop />
-      <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+      />
 
       {/* 3D intro splash — site ke upar render hota hai */}
       {!introDone && (

@@ -8,51 +8,103 @@ const services = [
   {
     icon: "🤖",
     category: "AI Integration",
-    items: ["Claude & LLM APIs", "Custom AI Chatbots", "AI Agents & Assistants", "RAG Applications"]
+    items: [
+      "Claude & LLM APIs",
+      "Custom AI Chatbots",
+      "AI Agents & Assistants",
+      "RAG Applications",
+    ],
   },
   {
     icon: "⚡",
     category: "Workflow Automation",
-    items: ["Make.com Scenarios", "n8n Workflows", "Webhooks & API Glue", "Business Process Automation"]
+    items: [
+      "Make.com Scenarios",
+      "n8n Workflows",
+      "Webhooks & API Glue",
+      "Business Process Automation",
+    ],
   },
   {
     icon: "📈",
     category: "GoHighLevel (GHL)",
-    items: ["Funnel Building", "CRM Setup & Migration", "Automated Follow-ups", "White-label SaaS (SaaS Mode)"]
+    items: [
+      "Funnel Building",
+      "CRM Setup & Migration",
+      "Automated Follow-ups",
+      "White-label SaaS (SaaS Mode)",
+    ],
   },
   {
     icon: "🌐",
     category: "Web App Development",
-    items: ["Custom Web Applications", "E-commerce Platforms", "Progressive Web Apps", "Admin Dashboards"]
+    items: [
+      "Custom Web Applications",
+      "E-commerce Platforms",
+      "Progressive Web Apps",
+      "Admin Dashboards",
+    ],
   },
   {
     icon: "📱",
     category: "Mobile App Development",
-    items: ["React Native Apps", "Cross-platform Solutions", "Native iOS/Android", "App Maintenance"]
+    items: [
+      "React Native Apps",
+      "Cross-platform Solutions",
+      "Native iOS/Android",
+      "App Maintenance",
+    ],
   },
   {
     icon: "⚙️",
     category: "Backend Development",
-    items: ["API Development", "Database Design", "Server Architecture", "Cloud Integration"]
+    items: [
+      "API Development",
+      "Database Design",
+      "Server Architecture",
+      "Cloud Integration",
+    ],
   },
   {
     icon: "🎨",
     category: "Frontend Development",
-    items: ["React Applications", "Responsive Design", "Performance Optimization", "UI/UX Implementation"]
+    items: [
+      "React Applications",
+      "Responsive Design",
+      "Performance Optimization",
+      "UI/UX Implementation",
+    ],
   },
   {
     icon: "✨",
     category: "UI/UX Design",
-    items: ["User Interface Design", "User Experience Design", "Prototyping", "Design Systems"]
+    items: [
+      "User Interface Design",
+      "User Experience Design",
+      "Prototyping",
+      "Design Systems",
+    ],
   },
   {
     icon: "💳",
     category: "Payment Gateway",
-    items: ["Stripe Integration", "PayPal Setup", "Payment Security", "Transaction Management"]
-  }
+    items: [
+      "Stripe Integration",
+      "PayPal Setup",
+      "Payment Security",
+      "Transaction Management",
+    ],
+  },
 ];
 
-const automationTools = ["GoHighLevel", "Make.com", "n8n", "Claude", "OpenAI", "Zapier"];
+const automationTools = [
+  "GoHighLevel",
+  "Make.com",
+  "n8n",
+  "Claude",
+  "OpenAI",
+  "Zapier",
+];
 
 function Services() {
   useScrollReveal("#services .reveal");
@@ -80,7 +132,10 @@ function Services() {
                 </div>
                 <ul className="space-y-2.5">
                   {service.items.map((item) => (
-                    <li key={item} className="flex items-center text-sm text-slate-400">
+                    <li
+                      key={item}
+                      className="flex items-center text-sm text-slate-400"
+                    >
                       <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-violet-500 rounded-full mr-3 shrink-0" />
                       {item}
                     </li>
@@ -93,7 +148,10 @@ function Services() {
 
         {/* AI & Automation spotlight */}
         <div className="reveal mt-14 relative overflow-hidden rounded-3xl glass-strong neon-ring p-8 md:p-10">
-          <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
+          />
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="text-center lg:text-left flex-1">
               <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/15 border border-violet-400/30 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300 mb-4">
@@ -104,8 +162,9 @@ function Services() {
                 I don't just build apps — I automate entire businesses.
               </h3>
               <p className="text-slate-400 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                From GoHighLevel funnels &amp; CRM automations to Make.com scenarios, n8n workflows,
-                and Claude-powered AI agents — I connect your tools so work happens on autopilot.
+                From GoHighLevel funnels &amp; CRM automations to Make.com
+                scenarios, n8n workflows, and Claude-powered AI agents — I
+                connect your tools so work happens on autopilot.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-3 shrink-0">
@@ -134,10 +193,12 @@ function Services() {
               Need Something Custom?
             </h3>
             <p className="text-slate-400 mb-8 max-w-xl mx-auto leading-relaxed">
-              Don't see exactly what you need? I'm always open to discussing custom
-              solutions that fit your specific requirements and goals.
+              Don't see exactly what you need? I'm always open to discussing
+              custom solutions that fit your specific requirements and goals.
             </p>
-            <MagneticButton href="#contact">Let's Discuss Your Project</MagneticButton>
+            <MagneticButton href="#contact">
+              Let's Discuss Your Project
+            </MagneticButton>
           </div>
         </div>
       </div>

@@ -4,20 +4,105 @@ import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { playClickSound, playOpenSound } from "../lib/sound";
 
 const actions = [
-  { id: "nav-home", label: "Home", group: "Navigation", icon: "🏠", action: () => scrollToTop() },
-  { id: "nav-about", label: "About Me", group: "Navigation", icon: "👤", action: () => scrollToSection("about") },
-  { id: "nav-services", label: "Services & Solutions", group: "Navigation", icon: "⚡", action: () => scrollToSection("services") },
-  { id: "nav-projects", label: "Projects & GitHub", group: "Navigation", icon: "💻", action: () => scrollToSection("projects") },
-  { id: "nav-certs", label: "Certifications & Credentials", group: "Navigation", icon: "🎓", action: () => scrollToSection("certifications") },
-  { id: "nav-skills", label: "Skills & Arsenal", group: "Navigation", icon: "🛠️", action: () => scrollToSection("skills") },
-  { id: "nav-process", label: "Work Process", group: "Navigation", icon: "📋", action: () => scrollToSection("process") },
-  { id: "nav-testimonials", label: "Client Testimonials", group: "Navigation", icon: "💬", action: () => scrollToSection("testimonials") },
-  { id: "nav-faq", label: "FAQ", group: "Navigation", icon: "❓", action: () => scrollToSection("faq") },
-  { id: "nav-contact", label: "Contact & Hire Me", group: "Navigation", icon: "✉️", action: () => scrollToSection("contact") },
-  { id: "act-resume", label: "Download Resume (PDF)", group: "Quick Actions", icon: "📄", action: () => window.open("/resume.pdf", "_blank") },
-  { id: "act-github", label: "Open GitHub Profile", group: "Quick Actions", icon: "🐙", action: () => window.open("https://github.com/abdullahasim1", "_blank") },
-  { id: "act-linkedin", label: "Open LinkedIn Profile", group: "Quick Actions", icon: "💼", action: () => window.open("https://www.linkedin.com/in/abdullahasim1/", "_blank") },
-  { id: "act-whatsapp", label: "Chat on WhatsApp", group: "Quick Actions", icon: "📱", action: () => window.open("https://wa.link/o1bqnp", "_blank") },
+  {
+    id: "nav-home",
+    label: "Home",
+    group: "Navigation",
+    icon: "🏠",
+    action: () => scrollToTop(),
+  },
+  {
+    id: "nav-about",
+    label: "About Me",
+    group: "Navigation",
+    icon: "👤",
+    action: () => scrollToSection("about"),
+  },
+  {
+    id: "nav-services",
+    label: "Services & Solutions",
+    group: "Navigation",
+    icon: "⚡",
+    action: () => scrollToSection("services"),
+  },
+  {
+    id: "nav-projects",
+    label: "Projects & GitHub",
+    group: "Navigation",
+    icon: "💻",
+    action: () => scrollToSection("projects"),
+  },
+  {
+    id: "nav-certs",
+    label: "Certifications & Credentials",
+    group: "Navigation",
+    icon: "🎓",
+    action: () => scrollToSection("certifications"),
+  },
+  {
+    id: "nav-skills",
+    label: "Skills & Arsenal",
+    group: "Navigation",
+    icon: "🛠️",
+    action: () => scrollToSection("skills"),
+  },
+  {
+    id: "nav-process",
+    label: "Work Process",
+    group: "Navigation",
+    icon: "📋",
+    action: () => scrollToSection("process"),
+  },
+  {
+    id: "nav-testimonials",
+    label: "Client Testimonials",
+    group: "Navigation",
+    icon: "💬",
+    action: () => scrollToSection("testimonials"),
+  },
+  {
+    id: "nav-faq",
+    label: "FAQ",
+    group: "Navigation",
+    icon: "❓",
+    action: () => scrollToSection("faq"),
+  },
+  {
+    id: "nav-contact",
+    label: "Contact & Hire Me",
+    group: "Navigation",
+    icon: "✉️",
+    action: () => scrollToSection("contact"),
+  },
+  {
+    id: "act-resume",
+    label: "Download Resume (PDF)",
+    group: "Quick Actions",
+    icon: "📄",
+    action: () => window.open("/resume.pdf", "_blank"),
+  },
+  {
+    id: "act-github",
+    label: "Open GitHub Profile",
+    group: "Quick Actions",
+    icon: "🐙",
+    action: () => window.open("https://github.com/abdullahasim1", "_blank"),
+  },
+  {
+    id: "act-linkedin",
+    label: "Open LinkedIn Profile",
+    group: "Quick Actions",
+    icon: "💼",
+    action: () =>
+      window.open("https://www.linkedin.com/in/abdullahasim1/", "_blank"),
+  },
+  {
+    id: "act-whatsapp",
+    label: "Chat on WhatsApp",
+    group: "Quick Actions",
+    icon: "📱",
+    action: () => window.open("https://wa.link/o1bqnp", "_blank"),
+  },
   {
     id: "act-copy-email",
     label: "Copy Email Address",
@@ -54,7 +139,7 @@ export default function CommandPalette({ isOpen, onClose }) {
     return all.filter(
       (item) =>
         item.label.toLowerCase().includes(q) ||
-        item.group.toLowerCase().includes(q)
+        item.group.toLowerCase().includes(q),
     );
   }, [query]);
 
@@ -82,7 +167,9 @@ export default function CommandPalette({ isOpen, onClose }) {
       setSelectedIndex((prev) => (prev + 1) % (items.length || 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setSelectedIndex((prev) => (prev - 1 + items.length) % (items.length || 1));
+      setSelectedIndex(
+        (prev) => (prev - 1 + items.length) % (items.length || 1),
+      );
     } else if (e.key === "Enter" && items[selectedIndex]) {
       e.preventDefault();
       playClickSound();
@@ -111,8 +198,18 @@ export default function CommandPalette({ isOpen, onClose }) {
       >
         {/* Search header */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-white/[0.08] bg-black/30">
-          <svg className="w-5 h-5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            className="w-5 h-5 text-cyan-400 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
           <input
             ref={inputRef}
@@ -132,7 +229,8 @@ export default function CommandPalette({ isOpen, onClose }) {
         <div className="max-h-[360px] overflow-y-auto p-2 space-y-1">
           {items.length === 0 ? (
             <div className="p-8 text-center text-sm text-slate-500">
-              No results found for "<span className="text-slate-300">{query}</span>"
+              No results found for "
+              <span className="text-slate-300">{query}</span>"
             </div>
           ) : (
             items.map((item, index) => {
@@ -154,7 +252,9 @@ export default function CommandPalette({ isOpen, onClose }) {
                   }`}
                 >
                   <span className="text-base shrink-0">{item.icon}</span>
-                  <span className="flex-1 font-medium truncate">{item.label}</span>
+                  <span className="flex-1 font-medium truncate">
+                    {item.label}
+                  </span>
                   <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 px-2 py-0.5 rounded bg-white/[0.04]">
                     {item.group}
                   </span>
@@ -167,8 +267,18 @@ export default function CommandPalette({ isOpen, onClose }) {
         {/* Footer shortcuts */}
         <div className="flex items-center justify-between px-5 py-2.5 bg-black/40 border-t border-white/[0.06] text-[11px] text-slate-500">
           <div className="flex items-center gap-3">
-            <span><kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">↑↓</kbd> to navigate</span>
-            <span><kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">↵</kbd> to select</span>
+            <span>
+              <kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">
+                ↑↓
+              </kbd>{" "}
+              to navigate
+            </span>
+            <span>
+              <kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">
+                ↵
+              </kbd>{" "}
+              to select
+            </span>
           </div>
           <span>Abdullah.dev Command Center</span>
         </div>

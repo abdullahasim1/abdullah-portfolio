@@ -10,7 +10,9 @@ function ModalImage({ project }) {
 
   if (failed) {
     return (
-      <div className={`h-full min-h-[240px] bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
+      <div
+        className={`h-full min-h-[240px] bg-gradient-to-br ${project.gradient} flex items-center justify-center`}
+      >
         <span className="text-7xl drop-shadow-lg">{project.emoji}</span>
       </div>
     );
@@ -47,12 +49,12 @@ export default function ProjectModal({ project, onClose }) {
       gsap.fromTo(
         backdropRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" }
+        { opacity: 1, duration: 0.3, ease: "power2.out" },
       );
       gsap.fromTo(
         panelRef.current,
         { y: 48, opacity: 0, scale: 0.96 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "power3.out" }
+        { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "power3.out" },
       );
     });
     closeBtnRef.current?.focus();
@@ -80,7 +82,11 @@ export default function ProjectModal({ project, onClose }) {
   /* Exit animation phir unmount */
   const handleClose = () => {
     const lenis = getLenis();
-    gsap.to(backdropRef.current, { opacity: 0, duration: 0.22, ease: "power2.in" });
+    gsap.to(backdropRef.current, {
+      opacity: 0,
+      duration: 0.22,
+      ease: "power2.in",
+    });
     gsap.to(panelRef.current, {
       y: 32,
       opacity: 0,
@@ -121,15 +127,28 @@ export default function ProjectModal({ project, onClose }) {
           aria-label="Close case study"
           className="absolute top-4 right-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/60 border border-white/15 text-slate-300 hover:text-white hover:border-cyan-400/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
         {/* Header image */}
         <div className="relative h-56 sm:h-72 overflow-hidden">
           <ModalImage project={project} />
-          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#0b1222] via-transparent to-black/30" />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-t from-[#0b1222] via-transparent to-black/30"
+          />
           <span className="absolute top-4 left-5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold text-cyan-300 bg-black/60 border border-cyan-400/30 backdrop-blur">
             <span className="h-1 w-1 rounded-full bg-cyan-400" />
             Case Study
@@ -144,13 +163,18 @@ export default function ProjectModal({ project, onClose }) {
           {/* Meta */}
           <div className="flex flex-wrap gap-2 mb-5">
             {[project.role, project.year].filter(Boolean).map((meta) => (
-              <span key={meta} className="px-3 py-1 rounded-full text-xs font-medium text-slate-300 bg-white/[0.05] border border-white/[0.08]">
+              <span
+                key={meta}
+                className="px-3 py-1 rounded-full text-xs font-medium text-slate-300 bg-white/[0.05] border border-white/[0.08]"
+              >
                 {meta}
               </span>
             ))}
           </div>
 
-          <p className="text-slate-300 leading-relaxed mb-6">{project.overview || project.description}</p>
+          <p className="text-slate-300 leading-relaxed mb-6">
+            {project.overview || project.description}
+          </p>
 
           {(project.features?.length ?? 0) > 0 && (
             <>
@@ -159,9 +183,22 @@ export default function ProjectModal({ project, onClose }) {
               </h4>
               <ul className="space-y-2.5 mb-7">
                 {project.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-400 leading-relaxed">
-                    <svg className="w-4 h-4 mt-0.5 shrink-0 text-cyan-400" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  <li
+                    key={feature}
+                    className="flex items-start gap-2.5 text-sm text-slate-400 leading-relaxed"
+                  >
+                    <svg
+                      className="w-4 h-4 mt-0.5 shrink-0 text-cyan-400"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.2}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     {feature}
                   </li>
@@ -181,7 +218,10 @@ export default function ProjectModal({ project, onClose }) {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {project.architectureFlow.map((node, i) => (
-                  <div key={node.step} className="relative rounded-xl glass p-3 border border-white/[0.06] flex flex-col justify-between">
+                  <div
+                    key={node.step}
+                    className="relative rounded-xl glass p-3 border border-white/[0.06] flex flex-col justify-between"
+                  >
                     <div>
                       <span className="text-[10px] font-mono text-cyan-400/80 font-bold block mb-1">
                         STEP 0{i + 1}
@@ -202,7 +242,10 @@ export default function ProjectModal({ project, onClose }) {
           {/* Tags */}
           <div className="flex flex-wrap gap-1.5 mb-7">
             {project.tags.map((tag) => (
-              <span key={tag} className="px-2.5 py-0.5 rounded-full text-xs bg-white/[0.05] border border-white/[0.07] text-slate-300">
+              <span
+                key={tag}
+                className="px-2.5 py-0.5 rounded-full text-xs bg-white/[0.05] border border-white/[0.07] text-slate-300"
+              >
                 {tag}
               </span>
             ))}

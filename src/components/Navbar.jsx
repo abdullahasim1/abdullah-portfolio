@@ -60,7 +60,12 @@ function Navbar() {
         }`}
       >
         {/* Brand */}
-        <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center gap-3 group shrink-0" aria-label="Abdullah Asim - Home">
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, "home")}
+          className="flex items-center gap-3 group shrink-0"
+          aria-label="Abdullah Asim - Home"
+        >
           <span className="relative">
             <img
               src="/IMG-20240224-WA0006.jpg"
@@ -78,7 +83,11 @@ function Navbar() {
         </a>
 
         {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-1 text-sm" role="navigation" aria-label="Main navigation">
+        <div
+          className="hidden lg:flex items-center gap-1 text-sm"
+          role="navigation"
+          aria-label="Main navigation"
+        >
           {links.map((link) => (
             <a
               key={link.id}
@@ -101,10 +110,22 @@ function Navbar() {
             title="Quick Search & Actions (Cmd + K)"
             className="inline-flex items-center gap-1.5 rounded-xl glass px-2.5 sm:px-3 py-2 text-xs font-medium text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-pointer"
           >
-            <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              className="w-3.5 h-3.5 text-cyan-400"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
-            <span className="hidden md:inline font-mono text-[10px] text-slate-400 bg-white/[0.08] px-1.5 py-0.5 rounded">⌘K</span>
+            <span className="hidden md:inline font-mono text-[10px] text-slate-400 bg-white/[0.08] px-1.5 py-0.5 rounded">
+              ⌘K
+            </span>
           </button>
 
           {/* Sound FX Toggle */}
@@ -112,17 +133,45 @@ function Navbar() {
             type="button"
             onClick={handleSoundToggle}
             aria-label={muted ? "Unmute sound effects" : "Mute sound effects"}
-            title={muted ? "Sound Effects: Muted (Click to enable)" : "Sound Effects: Active (Click to mute)"}
+            title={
+              muted
+                ? "Sound Effects: Muted (Click to enable)"
+                : "Sound Effects: Active (Click to mute)"
+            }
             className="inline-flex items-center justify-center w-9 h-9 rounded-xl glass text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-pointer"
           >
             {muted ? (
-              <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              <svg
+                className="w-4 h-4 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+                />
               </svg>
             ) : (
-              <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              <svg
+                className="w-4 h-4 text-cyan-400"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                />
               </svg>
             )}
           </button>
@@ -132,8 +181,18 @@ function Navbar() {
             download="Abdullah-Bin-Asim-Resume.pdf"
             className="hidden sm:inline-flex items-center gap-1.5 rounded-xl glass px-3.5 py-2 text-sm font-medium text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"
+              />
             </svg>
             Resume
           </a>
@@ -158,12 +217,16 @@ function Navbar() {
       </nav>
 
       {/* Mobile menu */}
-      <div 
+      <div
         className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           mobileOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0"
         }`}
       >
-        <div className="max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm" role="navigation" aria-label="Mobile navigation">
+        <div
+          className="max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm"
+          role="navigation"
+          aria-label="Mobile navigation"
+        >
           {links.map((link) => (
             <a
               key={link.id}

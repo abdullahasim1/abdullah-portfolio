@@ -20,10 +20,22 @@ export const featuredProjects = [
       "GSAP-driven micro-interactions across the UI",
     ],
     architectureFlow: [
-      { step: "Prompt / Audio Input", desc: "User inputs text or records voice stream" },
-      { step: "Node.js REST API", desc: "Rate limiting, payload validation & auth tokens" },
-      { step: "AI Inference Engine", desc: "TTS synthesis & Text-to-Image neural rendering" },
-      { step: "Live Client Stream", desc: "Real-time audio player & generated image preview" },
+      {
+        step: "Prompt / Audio Input",
+        desc: "User inputs text or records voice stream",
+      },
+      {
+        step: "Node.js REST API",
+        desc: "Rate limiting, payload validation & auth tokens",
+      },
+      {
+        step: "AI Inference Engine",
+        desc: "TTS synthesis & Text-to-Image neural rendering",
+      },
+      {
+        step: "Live Client Stream",
+        desc: "Real-time audio player & generated image preview",
+      },
     ],
   },
   {
@@ -47,10 +59,22 @@ export const featuredProjects = [
       "Next.js App Router + Neon serverless Postgres",
     ],
     architectureFlow: [
-      { step: "Resume Ingestion", desc: "PDF parsing & structured metadata extraction" },
-      { step: "Vector & Semantic Match", desc: "Embedding cosine similarity against job descriptions" },
-      { step: "LLM Reasoning & Scoring", desc: "Candidate suitability rationale & skill gap report" },
-      { step: "Automated Outreach", desc: "Auto-drafted personalized candidate email sequences" },
+      {
+        step: "Resume Ingestion",
+        desc: "PDF parsing & structured metadata extraction",
+      },
+      {
+        step: "Vector & Semantic Match",
+        desc: "Embedding cosine similarity against job descriptions",
+      },
+      {
+        step: "LLM Reasoning & Scoring",
+        desc: "Candidate suitability rationale & skill gap report",
+      },
+      {
+        step: "Automated Outreach",
+        desc: "Auto-drafted personalized candidate email sequences",
+      },
     ],
   },
   {

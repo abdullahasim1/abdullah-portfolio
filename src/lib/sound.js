@@ -26,7 +26,9 @@ export function toggleSound() {
   isMuted = !isMuted;
   if (typeof window !== "undefined") {
     localStorage.setItem("aa-sound-muted", String(isMuted));
-    window.dispatchEvent(new CustomEvent("aa-sound-toggle", { detail: { isMuted } }));
+    window.dispatchEvent(
+      new CustomEvent("aa-sound-toggle", { detail: { isMuted } }),
+    );
   }
   return isMuted;
 }
