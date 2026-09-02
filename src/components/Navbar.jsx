@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
+import { getSoundMuted, toggleSound, playClickSound } from "../lib/sound";
 
 const links = [
   { label: "Home", id: "home" },
@@ -14,13 +15,32 @@ const links = [
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [muted, setMuted] = useState(() => getSoundMuted());
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+
+    const onSoundToggle = (e) => setMuted(e.detail.isMuted);
+    window.addEventListener("aa-sound-toggle", onSoundToggle);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("aa-sound-toggle", onSoundToggle);
+    };
   }, []);
+
+  const handleSoundToggle = () => {
+    const next = toggleSound();
+    setMuted(next);
+    if (!next) playClickSound();
+  };
+
+  const handleOpenPalette = () => {
+    playClickSound();
+    window.dispatchEvent(new CustomEvent("aa-open-palette"));
+  };
 
   const handleNavClick = (event, targetId) => {
     event.preventDefault();
@@ -73,6 +93,40 @@ function Navbar() {
 
         {/* Right controls */}
         <div className="flex items-center gap-2">
+          {/* Quick Command Palette Button */}
+          <button
+            type="button"
+            onClick={handleOpenPalette}
+            aria-label="Open Command Palette (Cmd + K)"
+            title="Quick Search & Actions (Cmd + K)"
+            className="inline-flex items-center gap-1.5 rounded-xl glass px-2.5 sm:px-3 py-2 text-xs font-medium text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-pointer"
+          >
+            <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="hidden md:inline font-mono text-[10px] text-slate-400 bg-white/[0.08] px-1.5 py-0.5 rounded">⌘K</span>
+          </button>
+
+          {/* Sound FX Toggle */}
+          <button
+            type="button"
+            onClick={handleSoundToggle}
+            aria-label={muted ? "Unmute sound effects" : "Mute sound effects"}
+            title={muted ? "Sound Effects: Muted (Click to enable)" : "Sound Effects: Active (Click to mute)"}
+            className="inline-flex items-center justify-center w-9 h-9 rounded-xl glass text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-pointer"
+          >
+            {muted ? (
+              <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            )}
+          </button>
+
           <a
             href="/resume.pdf"
             download="Abdullah-Bin-Asim-Resume.pdf"

@@ -19,6 +19,12 @@ export const featuredProjects = [
       "Secure Node.js API layer with MySQL usage tracking",
       "GSAP-driven micro-interactions across the UI",
     ],
+    architectureFlow: [
+      { step: "Prompt / Audio Input", desc: "User inputs text or records voice stream" },
+      { step: "Node.js REST API", desc: "Rate limiting, payload validation & auth tokens" },
+      { step: "AI Inference Engine", desc: "TTS synthesis & Text-to-Image neural rendering" },
+      { step: "Live Client Stream", desc: "Real-time audio player & generated image preview" },
+    ],
   },
   {
     repoName: "GENAI",
@@ -39,6 +45,12 @@ export const featuredProjects = [
       "Automated email sequences for shortlisted candidates",
       "Skill-gap analytics dashboard for recruiters",
       "Next.js App Router + Neon serverless Postgres",
+    ],
+    architectureFlow: [
+      { step: "Resume Ingestion", desc: "PDF parsing & structured metadata extraction" },
+      { step: "Vector & Semantic Match", desc: "Embedding cosine similarity against job descriptions" },
+      { step: "LLM Reasoning & Scoring", desc: "Candidate suitability rationale & skill gap report" },
+      { step: "Automated Outreach", desc: "Auto-drafted personalized candidate email sequences" },
     ],
   },
   {
@@ -159,7 +171,5 @@ export function formatRelativeDate(dateString) {
 }
 
 export function formatRepoName(name) {
-  return name
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }

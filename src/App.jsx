@@ -1,10 +1,11 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
 import ScrollToTop from "./components/ScrollToTop";
+import CommandPalette from "./components/CommandPalette";
 import Home from "./pages/Home";
 import { IS_LOW_END } from "./lib/device";
 
@@ -30,6 +31,26 @@ function App() {
     if (typeof window === "undefined") return true;
     return sessionStorage.getItem("aa-splash-seen") === "1";
   });
+
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+        e.preventDefault();
+        setIsPaletteOpen((prev) => !prev);
+      }
+    };
+    const onOpenPalette = () => setIsPaletteOpen(true);
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("aa-open-palette", onOpenPalette);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("aa-open-palette", onOpenPalette);
+    };
+  }, []);
 
   const handleSplashFinish = () => {
     sessionStorage.setItem("aa-splash-seen", "1");
@@ -98,6 +119,7 @@ function App() {
 
       <Footer />
       <ScrollToTop />
+      <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
 
       {/* 3D intro splash — site ke upar render hota hai */}
       {!introDone && (

@@ -170,6 +170,35 @@ export default function ProjectModal({ project, onClose }) {
             </>
           )}
 
+          {/* AI Architecture Pipeline Flow */}
+          {project.architectureFlow && (
+            <div className="mb-7 rounded-2xl bg-white/[0.02] border border-cyan-400/20 p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
+                <h4 className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+                  System &amp; AI Architecture Pipeline
+                </h4>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                {project.architectureFlow.map((node, i) => (
+                  <div key={node.step} className="relative rounded-xl glass p-3 border border-white/[0.06] flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-mono text-cyan-400/80 font-bold block mb-1">
+                        STEP 0{i + 1}
+                      </span>
+                      <div className="text-xs font-semibold text-slate-200 leading-snug">
+                        {node.step}
+                      </div>
+                    </div>
+                    <div className="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                      {node.desc}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Tags */}
           <div className="flex flex-wrap gap-1.5 mb-7">
             {project.tags.map((tag) => (

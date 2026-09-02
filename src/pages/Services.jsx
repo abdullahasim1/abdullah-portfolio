@@ -2,6 +2,7 @@ import React from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import MagneticButton from "../components/MagneticButton";
+import ProjectEstimator from "../components/ProjectEstimator";
 
 const services = [
   {
@@ -119,6 +120,9 @@ function Services() {
             </div>
           </div>
         </div>
+
+        {/* Interactive Scope & Cost Estimator */}
+        <ProjectEstimator />
 
         <div className="reveal mt-14">
           <div className="relative overflow-hidden rounded-3xl glass-strong neon-ring p-10 text-center">
