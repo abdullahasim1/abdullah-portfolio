@@ -17,7 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Camera drifts subtly toward the cursor — cinematic parallax.
    Scroll ke saath dolly-out bhi karta hai (hero se door hote hue) */
-function CameraRig(pointerRef) {
+function CameraRig({ pointerRef }) {
   const { camera } = useThree();
   useFrame(() => {
     const { x, y } = pointerRef.current;
@@ -97,7 +97,7 @@ function SceneContent({ pointerRef, reduced }) {
 
   return (
     <>
-      <CameraRig {...pointerRef} />
+      <CameraRig pointerRef={pointerRef} />
       <ambientLight intensity={0.25} />
       <directionalLight position={[4, 6, 4]} intensity={1.1} color="#bae6fd" />
 

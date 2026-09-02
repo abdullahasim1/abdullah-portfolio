@@ -6,7 +6,7 @@ const stats = [
   { number: 3, suffix: "+", label: "Years Experience", icon: "🎯" },
   { number: 25, suffix: "+", label: "Projects Done", icon: "🚀" },
   { number: 8, suffix: "", label: "Certifications", icon: "🏆" },
-  { number: 15, suffix: "+", label: "Technologies", icon: "⚡" }
+  { number: 15, suffix: "+", label: "Technologies", icon: "⚡" },
 ];
 
 function StatNumber({ stat, index }) {
@@ -25,10 +25,7 @@ function Stats() {
   return (
     <section className="py-28">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
-        <SectionHeading
-          label="Achievements"
-          title="Numbers That Speak"
-        />
+        <SectionHeading label="Achievements" title="Numbers That Speak" />
 
         <div ref={staggerRef} className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {stats.map((stat, index) => (
@@ -40,7 +37,9 @@ function Stats() {
                 />
                 <div className="text-3xl mb-4 float-y">{stat.icon}</div>
                 <StatNumber stat={stat} index={index} />
-                <div className="mt-2 text-sm font-medium text-slate-400">{stat.label}</div>
+                <div className="mt-2 text-sm font-medium text-slate-400">
+                  {stat.label}
+                </div>
               </div>
             </div>
           ))}

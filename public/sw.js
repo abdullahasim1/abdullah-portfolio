@@ -1,64 +1,73 @@
-const CACHE_NAME = 'portfolio-v1';
-const STATIC_CACHE = 'portfolio-static-v1';
-const DYNAMIC_CACHE = 'portfolio-dynamic-v1';
+const CACHE_NAME = "portfolio-v1";
+const STATIC_CACHE = "portfolio-static-v1";
+const DYNAMIC_CACHE = "portfolio-dynamic-v1";
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/og-image.png',
-  '/IMG-20240224-WA0006.jpg',
+  "/",
+  "/index.html",
+  "/og-image.png",
+  "/IMG-20240224-WA0006.jpg",
 ];
 
 // Install event - cache static assets
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE)
+    caches
+      .open(STATIC_CACHE)
       .then((cache) => {
-        console.log('Caching static assets');
+        console.log("Caching static assets");
         return cache.addAll(STATIC_ASSETS);
       })
-      .then(() => self.skipWaiting())
+      .then(() => self.skipWaiting()),
   );
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys()
+    caches
+      .keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames
-            .filter((cacheName) => cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE)
-            .map((cacheName) => caches.delete(cacheName))
+            .filter(
+              (cacheName) =>
+                cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE,
+            )
+            .map((cacheName) => caches.delete(cacheName)),
         );
       })
-      .then(() => self.clients.claim())
+      .then(() => self.clients.claim()),
   );
 });
 
 // Fetch event - serve from cache, fallback to network
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
   // Skip non-GET requests
-  if (request.method !== 'GET') return;
+  if (request.method !== "GET") return;
 
   // Skip chrome-extension and other non-http requests
-  if (!url.protocol.startsWith('http')) return;
+  if (!url.protocol.startsWith("http")) return;
 
   // API requests - network first, cache fallback
-  if (url.pathname.startsWith('/api/') || url.hostname.includes('web3forms.com')) {
+  if (
+    url.pathname.startsWith("/api/") ||
+    url.hostname.includes("web3forms.com")
+  ) {
     event.respondWith(
       fetch(request)
         .then((response) => {
           const responseClone = response.clone();
-          caches.open(DYNAMIC_CACHE)
+          caches
+            .open(DYNAMIC_CACHE)
             .then((cache) => cache.put(request, responseClone));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request)),
     );
     return;
   }
@@ -66,41 +75,42 @@ self.addEventListener('fetch', (event) => {
   // Static assets - cache first, network fallback
   if (url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/)) {
     event.respondWith(
-      caches.match(request)
-        .then((cachedResponse) => {
-          if (cachedResponse) {
-            // Return cached version and update in background
-            fetch(request)
-              .then((networkResponse) => {
-                caches.open(STATIC_CACHE)
-                  .then((cache) => cache.put(request, networkResponse));
-              })
-              .catch(() => {});
-            return cachedResponse;
-          }
-          return fetch(request)
-            .then((response) => {
-              const responseClone = response.clone();
-              caches.open(STATIC_CACHE)
-                .then((cache) => cache.put(request, responseClone));
-              return response;
-            });
-        })
+      caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          // Return cached version and update in background
+          fetch(request)
+            .then((networkResponse) => {
+              caches
+                .open(STATIC_CACHE)
+                .then((cache) => cache.put(request, networkResponse));
+            })
+            .catch(() => {});
+          return cachedResponse;
+        }
+        return fetch(request).then((response) => {
+          const responseClone = response.clone();
+          caches
+            .open(STATIC_CACHE)
+            .then((cache) => cache.put(request, responseClone));
+          return response;
+        });
+      }),
     );
     return;
   }
 
   // HTML pages - network first, cache fallback
-  if (request.headers.get('accept')?.includes('text/html')) {
+  if (request.headers.get("accept")?.includes("text/html")) {
     event.respondWith(
       fetch(request)
         .then((response) => {
           const responseClone = response.clone();
-          caches.open(DYNAMIC_CACHE)
+          caches
+            .open(DYNAMIC_CACHE)
             .then((cache) => cache.put(request, responseClone));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request)),
     );
     return;
   }
@@ -110,34 +120,35 @@ self.addEventListener('fetch', (event) => {
     fetch(request)
       .then((response) => {
         const responseClone = response.clone();
-        caches.open(DYNAMIC_CACHE)
+        caches
+          .open(DYNAMIC_CACHE)
           .then((cache) => cache.put(request, responseClone));
         return response;
       })
-      .catch(() => caches.match(request))
+      .catch(() => caches.match(request)),
   );
 });
 
 // Background sync for offline form submissions
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'contact-form') {
+self.addEventListener("sync", (event) => {
+  if (event.tag === "contact-form") {
     event.waitUntil(
       // Handle pending form submissions when back online
-      Promise.resolve()
+      Promise.resolve(),
     );
   }
 });
 
 // Push notifications (if needed in future)
-self.addEventListener('push', (event) => {
+self.addEventListener("push", (event) => {
   if (event.data) {
     const data = event.data.json();
     event.waitUntil(
       self.registration.showNotification(data.title, {
         body: data.body,
-        icon: '/IMG-20240224-WA0006.jpg',
-        badge: '/IMG-20240224-WA0006.jpg'
-      })
+        icon: "/IMG-20240224-WA0006.jpg",
+        badge: "/IMG-20240224-WA0006.jpg",
+      }),
     );
   }
 });

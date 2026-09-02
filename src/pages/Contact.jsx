@@ -15,26 +15,26 @@ const contactInfo = [
     icon: "📧",
     title: "Email",
     value: EMAIL,
-    link: `mailto:${EMAIL}`
+    link: `mailto:${EMAIL}`,
   },
   {
     icon: "📱",
     title: "Phone/WhatsApp",
     value: "+92 307 0796208",
-    link: "tel:+923070796208"
+    link: "tel:+923070796208",
   },
   {
     icon: "💼",
     title: "LinkedIn",
     value: "abdullahasim1",
-    link: "https://www.linkedin.com/in/abdullahasim1/"
+    link: "https://www.linkedin.com/in/abdullahasim1/",
   },
   {
     icon: "🐙",
     title: "GitHub",
     value: "abdullahasim1",
-    link: "https://github.com/abdullahasim1"
-  }
+    link: "https://github.com/abdullahasim1",
+  },
 ];
 
 const inputClass =
@@ -79,7 +79,10 @@ function Contact() {
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
           name,
@@ -122,14 +125,25 @@ function Contact() {
                   {info.icon}
                 </span>
                 <div className="min-w-0">
-                  <h4 className="font-semibold text-slate-100 text-sm">{info.title}</h4>
-                  <p className="text-sm text-slate-400 truncate">{info.value}</p>
+                  <h4 className="font-semibold text-slate-100 text-sm">
+                    {info.title}
+                  </h4>
+                  <p className="text-sm text-slate-400 truncate">
+                    {info.value}
+                  </p>
                 </div>
                 <svg
                   className="w-4 h-4 ml-auto text-slate-600 group-hover:text-cyan-300 group-hover:translate-x-1 transition-all shrink-0"
-                  fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
                 </svg>
               </a>
             ))}
@@ -154,54 +168,92 @@ function Contact() {
               </Suspense>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 glass rounded-3xl p-8">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 glass rounded-3xl p-8"
+            >
               {/* Honeypot field — hidden from humans, bots will fill it */}
-              <div className="absolute opacity-0 pointer-events-none" aria-hidden="true">
-                <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+              <div
+                className="absolute opacity-0 pointer-events-none"
+                aria-hidden="true"
+              >
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="text" name="name" placeholder="Your Name" className={inputClass} required />
-                <input type="email" name="email" placeholder="Your Email" className={inputClass} required />
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  className={inputClass}
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  className={inputClass}
+                  required
+                />
               </div>
-              <input type="text" name="subject" placeholder="Subject" className={inputClass} />
-              <textarea name="message" placeholder="Tell me about your project…" rows={5} className={`${inputClass} resize-none`} required />
+              <input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                className={inputClass}
+              />
+              <textarea
+                name="message"
+                placeholder="Tell me about your project…"
+                rows={5}
+                className={`${inputClass} resize-none`}
+                required
+              />
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="sheen-btn relative flex-1 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-wait"
-              >
-                {status === "sending" ? "Sending…" : status === "sent" ? "Sent ✓" : "Send Message"}
-                <span className="sheen-layer" aria-hidden />
-              </button>
-              <a
-                href="https://wa.link/o1bqnp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-emerald-300 hover:border-emerald-400/40 transition-colors text-sm font-medium"
-              >
-                WhatsApp Me
-              </a>
-              <a
-                href={`mailto:${EMAIL}?subject=${encodeURIComponent("Free Quote Request")}&body=${encodeURIComponent(
-                  "Hi Abdullah,\n\nI'd like a quote for my project. Here are some details:\n- Project type: \n- Timeline: \n- Budget range: \n\nThanks!"
-                )}`}
-                className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors text-sm font-medium"
-              >
-                Get a Free Quote
-              </a>
-            </div>
-            {status === "sent" && (
-              <p className="text-emerald-300 text-sm font-medium">
-                Message sent — I'll get back to you within a few hours.
-              </p>
-            )}
-            {status === "error" && (
-              <p className="text-amber-300 text-sm font-medium">
-                Something went wrong. Email me directly at {EMAIL}.
-              </p>
-            )}
+              <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className="sheen-btn relative flex-1 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                >
+                  {status === "sending"
+                    ? "Sending…"
+                    : status === "sent"
+                      ? "Sent ✓"
+                      : "Send Message"}
+                  <span className="sheen-layer" aria-hidden />
+                </button>
+                <a
+                  href="https://wa.link/o1bqnp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-emerald-300 hover:border-emerald-400/40 transition-colors text-sm font-medium"
+                >
+                  WhatsApp Me
+                </a>
+                <a
+                  href={`mailto:${EMAIL}?subject=${encodeURIComponent("Free Quote Request")}&body=${encodeURIComponent(
+                    "Hi Abdullah,\n\nI'd like a quote for my project. Here are some details:\n- Project type: \n- Timeline: \n- Budget range: \n\nThanks!",
+                  )}`}
+                  className="px-6 py-3.5 rounded-xl glass text-center text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors text-sm font-medium"
+                >
+                  Get a Free Quote
+                </a>
+              </div>
+              {status === "sent" && (
+                <p className="text-emerald-300 text-sm font-medium">
+                  Message sent — I'll get back to you within a few hours.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="text-amber-300 text-sm font-medium">
+                  Something went wrong. Email me directly at {EMAIL}.
+                </p>
+              )}
             </form>
           </div>
         </div>

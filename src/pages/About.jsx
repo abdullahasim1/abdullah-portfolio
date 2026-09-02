@@ -77,7 +77,7 @@ function About() {
                 {[
                   ["3+", "Years Experience"],
                   ["25+", "Projects Shipped"],
-                  ["8", "Certifications"],
+                  ["8+", "Certifications"],
                 ].map(([num, label]) => (
                   <div key={label}>
                     <div className="font-display text-2xl font-bold text-gradient">{num}</div>

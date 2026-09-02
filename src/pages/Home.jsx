@@ -9,7 +9,16 @@ import { IS_LOW_END } from "../lib/device";
 // Hero 3D scene — lazy chunk (heavy hai, sirf zaroorat par load hota hai)
 const HeroScene = lazy(() => import("../components/three/HeroScene"));
 
-const chips = ["React", "Next.js", "Node.js", "Claude & AI Agents", "GoHighLevel", "Make.com", "n8n", "AWS"];
+const chips = [
+  "React",
+  "Next.js",
+  "Node.js",
+  "Claude & AI Agents",
+  "GoHighLevel",
+  "Make.com",
+  "n8n",
+  "AWS",
+];
 
 function Home({ introDone = true }) {
   const contentRef = useRef(null);
@@ -36,7 +45,10 @@ function Home({ introDone = true }) {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center overflow-hidden">
+    <section
+      id="home"
+      className="relative min-h-screen flex flex-col items-center overflow-hidden"
+    >
       {/* CSS glow fallback while the R3F scene loads */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
@@ -46,12 +58,21 @@ function Home({ introDone = true }) {
       <div className="grid-floor" aria-hidden="true" />
 
       {/* Bottom fade into next section */}
-      <div aria-hidden className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-void to-transparent pointer-events-none" />
+      <div
+        aria-hidden
+        className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-void to-transparent pointer-events-none"
+      />
 
       {/* Content */}
-      <div ref={contentRef} className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full">
+      <div
+        ref={contentRef}
+        className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full"
+      >
         <div className="max-w-2xl space-y-7">
-          <span data-hero-stagger className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
+          <span
+            data-hero-stagger
+            className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300"
+          >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
@@ -59,7 +80,10 @@ function Home({ introDone = true }) {
             Available for new opportunities
           </span>
 
-          <h1 data-hero-stagger className="font-display font-bold leading-[1.05] tracking-tight text-4xl sm:text-6xl lg:text-7xl">
+          <h1
+            data-hero-stagger
+            className="font-display font-bold leading-[1.05] tracking-tight text-4xl sm:text-6xl lg:text-7xl"
+          >
             <span className="block text-white">Full Stack</span>
             <span className="block">
               <WordFlipper
@@ -79,10 +103,15 @@ function Home({ introDone = true }) {
             I build fast, scalable products with clean code and stunning design.
           </SplitTextAnimation>
 
-          <p data-hero-stagger className="text-slate-400 leading-relaxed max-w-xl">
-            Hi, I'm <span className="text-white font-semibold">Abdullah Bin Asim</span> — a results-driven
-            developer &amp; designer with AWS Generative AI credentials. From AI-powered platforms to
-            full-stack web apps, I turn ideas into digital products that perform.
+          <p
+            data-hero-stagger
+            className="text-slate-400 leading-relaxed max-w-xl"
+          >
+            Hi, I'm{" "}
+            <span className="text-white font-semibold">Abdullah Bin Asim</span>{" "}
+            — a results-driven developer &amp; designer with AWS Generative AI
+            credentials. From AI-powered platforms to full-stack web apps, I
+            turn ideas into digital products that perform.
           </p>
 
           <div data-hero-stagger className="flex flex-wrap gap-2 max-w-md">
@@ -96,15 +125,28 @@ function Home({ introDone = true }) {
             ))}
           </div>
 
-          <div data-hero-stagger className="flex flex-wrap items-center gap-4 pt-2">
+          <div
+            data-hero-stagger
+            className="flex flex-wrap items-center gap-4 pt-2"
+          >
             <MagneticButton href="#contact">Start a Project</MagneticButton>
             <a
               href="/resume.pdf"
               download="Abdullah-Bin-Asim-Resume.pdf"
               className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"
+                />
               </svg>
               Download Resume
             </a>
@@ -114,8 +156,18 @@ function Home({ introDone = true }) {
               className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors"
             >
               View My Work
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </a>
           </div>
@@ -124,9 +176,7 @@ function Home({ introDone = true }) {
 
       {/* 3D Scene */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <Suspense fallback={null}>
-          {!IS_LOW_END && <HeroScene />}
-        </Suspense>
+        <Suspense fallback={null}>{!IS_LOW_END && <HeroScene />}</Suspense>
       </div>
 
       {/* Scroll hint */}

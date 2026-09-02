@@ -67,7 +67,8 @@ function CursorFollower() {
 			}
 		};
 		const handleOut = (e) => {
-			if (matchesHoverTarget(e)) {
+			const stillInside = e.relatedTarget?.closest?.('a, button, [role="button"], [data-cursor="hover"]');
+			if (!stillInside && matchesHoverTarget(e)) {
 				isHoveringRef.current = false;
 				targetScaleRef.current = 1;
 				setIsHovering(false);
