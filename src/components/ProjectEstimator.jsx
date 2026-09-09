@@ -132,9 +132,12 @@ export default function ProjectEstimator() {
 
   return (
     <div className="reveal mt-16 rounded-3xl glass-strong neon-ring p-6 sm:p-10 border border-cyan-400/25">
+    <div className="reveal mt-16 rounded-3xl bento-card p-6 sm:p-10">
       <div className="flex items-center gap-2.5 mb-3">
         <span className="h-2 w-2 rounded-full bg-cyan-400 blink-dot" />
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+        <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+        <span className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
           Interactive Tool
         </span>
       </div>

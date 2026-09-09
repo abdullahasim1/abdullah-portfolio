@@ -122,8 +122,10 @@ function Services() {
           {services.map((service) => (
             <div key={service.category} data-stagger className="reveal group">
               <div className="glass rounded-2xl p-6 card-glow-hover hover:-translate-y-1.5 h-full transition-transform duration-300">
+              <div className="bento-card rounded-2xl p-6 hover:-translate-y-1 h-full transition-all duration-300">
                 <div className="flex items-center gap-3 mb-5">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-xl">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.08] text-xl group-hover:scale-105 transition-transform">
                     {service.icon}
                   </span>
                   <h3 className="font-display text-lg font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
