@@ -170,11 +170,40 @@ export default function ProjectModal({ project, onClose }) {
                 {meta}
               </span>
             ))}
+            {project.stars > 0 && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium text-amber-300 bg-amber-500/10 border border-amber-400/25">
+                ★ {project.stars} GitHub stars
+              </span>
+            )}
           </div>
 
           <p className="text-slate-300 leading-relaxed mb-6">
             {project.overview || project.description}
           </p>
+
+          {/* Results & Impact — data mein `results` array bharne par render hota hai */}
+          {(project.results?.length ?? 0) > 0 && (
+            <div className="mb-7">
+              <h4 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-slate-400 mb-3">
+                Results &amp; Impact
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {project.results.map((r) => (
+                  <div
+                    key={r.label}
+                    className="rounded-xl glass p-4 text-center border border-white/[0.06]"
+                  >
+                    <div className="font-display text-2xl font-bold text-gradient">
+                      {r.value}
+                    </div>
+                    <div className="text-[11px] text-slate-400 mt-1 leading-snug">
+                      {r.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {(project.features?.length ?? 0) > 0 && (
             <>

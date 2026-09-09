@@ -227,7 +227,7 @@ function RepoCard({ repo }) {
         </p>
         <div className="flex items-center justify-between gap-2 pt-3 border-t border-white/[0.06]">
           <LanguageDot language={repo.language} />
-          <span className="text-xs text-slate-500">{formatRelativeDate(repo.pushed_at)}</span>
+          <span className="text-xs text-slate-400">{formatRelativeDate(repo.pushed_at)}</span>
         </div>
         <div className="flex gap-2 mt-3">
           <a
@@ -288,7 +288,9 @@ function Projects() {
   useEffect(() => {
     if (!stackRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    // Touch devices par scrub effect skip — main-thread load kam rakho (perf)
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    if (reduced || coarsePointer) return;
 
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray("[data-stack-card]");
@@ -340,11 +342,11 @@ function Projects() {
           </span>
           <SplitTextAnimation
             animationType="words"
-            className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white"
+            className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900"
           >
             Projects &amp; GitHub
           </SplitTextAnimation>
-          <p className="reveal text-slate-400 mt-4 max-w-2xl leading-relaxed">
+          <p className="reveal text-slate-400 mt-4 max-w-2xl leading-relaxed light:text-slate-600">
             Selected work I've designed, built and shipped — keep scrolling, each project stacks onto the next.
           </p>
         </div>
@@ -399,10 +401,10 @@ function Projects() {
 
         {/* ---------- All repositories ---------- */}
         <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
-          <h3 className="font-display text-2xl font-bold text-white">
+          <h3 className="font-display text-2xl font-bold text-white light:text-slate-900">
             More Repositories
           </h3>
-          <span className="text-sm text-slate-500 pb-0.5">
+          <span className="text-sm text-slate-400 pb-0.5 light:text-slate-600">
             {loading ? "Fetching…" : error ? "Unavailable right now" : `${filteredRepos.length} repositories · live from GitHub`}
           </span>
         </div>
@@ -444,7 +446,7 @@ function Projects() {
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                   activeFilter === lang
                     ? "bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-[0_0_16px_rgba(34,211,238,0.3)]"
-                    : "glass text-slate-400 hover:text-cyan-300 hover:border-cyan-400/30"
+                    : "glass text-slate-400 hover:text-cyan-300 hover:border-cyan-400/30 light:bg-white light:border-slate-300 light:text-slate-600 light:hover:text-cyan-600"
                 }`}
               >
                 {lang}
@@ -460,7 +462,9 @@ function Projects() {
             ))}
           </div>
         ) : filteredRepos.length === 0 && !error ? (
-          <p className="text-slate-500 text-sm py-10 text-center">No repositories match this filter.</p>
+          <p className="text-slate-400 text-sm py-10 text-center light:text-slate-600">
+            No repositories match this filter.
+          </p>
         ) : (
           !error && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -478,7 +482,7 @@ function Projects() {
               href={`https://github.com/${GITHUB_USERNAME}?tab=repositories`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl glass card-glow-hover text-slate-200 hover:text-cyan-300 transition-colors font-medium"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl glass card-glow-hover text-slate-200 hover:text-cyan-300 transition-colors font-medium light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
             >
               Explore All on GitHub
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

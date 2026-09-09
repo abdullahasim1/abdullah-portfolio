@@ -1,3 +1,10 @@
+/* NOTE: Har project mein `results` array (optional) — case-study modal mein
+   "Results & Impact" section dikhata hai. REAL numbers bharein, e.g.:
+   results: [
+     { value: "10k+", label: "Monthly active users" },
+     { value: "-45%", label: "Load time vs previous build" },
+   ] */
+
 export const featuredProjects = [
   {
     repoName: "four-ai-ai-powered-voice-image-generation-platform",
@@ -11,6 +18,7 @@ export const featuredProjects = [
     image: "/projects/four-ai.jpg",
     role: "Full Stack Developer",
     year: "2024",
+    results: [],
     overview:
       "A browser-based AI studio that bundles text-to-speech, text-to-image and voice-effect tools behind one polished interface — no installs, no setup, straight from the tab.",
     features: [
@@ -50,6 +58,7 @@ export const featuredProjects = [
     image: "/projects/genai.jpg",
     role: "Full Stack Developer & AI Integrator",
     year: "2025",
+    results: [],
     overview:
       "Hiring automation platform that matches resumes to roles with generative AI, auto-drafts candidate emails, and turns skill data into recruiter-friendly insights.",
     features: [
@@ -89,6 +98,7 @@ export const featuredProjects = [
     image: "/projects/job-recruitment.jpg",
     role: "Frontend Developer",
     year: "2024",
+    results: [],
     overview:
       "A modern job portal connecting employers and candidates — searchable listings, rich profiles, and a clean application pipeline end to end.",
     features: [
@@ -110,6 +120,7 @@ export const featuredProjects = [
     image: "/projects/food-order.jpg",
     role: "Full Stack Developer",
     year: "2023",
+    results: [],
     overview:
       "Full-stack food ordering flow — browse the menu, build a cart, place the order, and track it — backed by an Express + MySQL REST API.",
     features: [
@@ -131,6 +142,7 @@ export const featuredProjects = [
     image: "/projects/home-services.jpg",
     role: "Web Developer",
     year: "2023",
+    results: [],
     overview:
       "Booking platform that connects homeowners with trusted repair and maintenance providers — find a service, compare providers, book in minutes.",
     features: [
@@ -152,6 +164,7 @@ export const featuredProjects = [
     image: "/projects/portfolio.jpg",
     role: "Design & Development",
     year: "2026",
+    results: [],
     overview:
       "The site you're looking at — React 19 + Tailwind v4 portfolio with procedural Three.js scenes, scroll-driven storytelling, and low-end device fallbacks. Zero external 3D assets.",
     features: [

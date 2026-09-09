@@ -1,11 +1,33 @@
 @import "tailwindcss";
 
+/* CLS mitigation: metric-matched fallbacks — webfont load hone par layout shift nahi hota.
+   size-adjust/ascent-override fallback ko Space Grotesk / Inter ke approx metrics dete hain. */
+@font-face {
+  font-family: "Space Grotesk Fallback";
+  src: local("Arial");
+  size-adjust: 104%;
+  ascent-override: 95%;
+  descent-override: 26%;
+}
+
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  size-adjust: 107%;
+  ascent-override: 92%;
+  descent-override: 24%;
+}
+
 @theme {
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --color-void: #05060a;
   --color-panel: #0b0d14;
 }
+
+/* Class-based light variant — <html class="light"> par light: utilities activate.
+   Default (no class) = dark. Cards/overlays dark rehte hain, sirf canvas flip hota hai. */
+@custom-variant light (&:where(.light, .light *));
 
 html {
   scroll-behavior: smooth;
@@ -16,6 +38,33 @@ body {
   color: #e2e8f0;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Light canvas surface */
+html.light body {
+  background: #f4f6fb;
+  color: #0f172a;
+}
+
+/* Smooth theme switch (theme.js temporary class) */
+html.theme-transition,
+html.theme-transition * {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease !important;
+}
+
+/* Light mode scrollbar + selection */
+html.light ::-webkit-scrollbar-track {
+  background: #e9edf5;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #67e8f9, #a78bfa);
+}
+html.light ::selection {
+  color: #0f172a;
 }
 
 h1, h2, h3, h4, .font-display {
@@ -43,7 +92,7 @@ h1, h2, h3, h4, .font-display {
 
 /* ---------- Design utilities ---------- */
 
-/* ---------- Lenis smooth scroll ---------- */
+/* Lenis smooth scroll */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -58,40 +107,70 @@ html.lenis body {
   overflow: hidden;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
+/* Surface classes components layer mein — taake Tailwind utilities (light: variants)
+   inhe override kar saken. Unlayered CSS utilities ko beat karta hai, isliye yeh zaroori hai. */
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
 
-.glass-strong {
-  background: rgba(13, 16, 26, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
+  /* Light mode: canvas light hota hai, glass cards DARK rehte hain —
+     taake unka text (slate-200/300) readable rahe. Chips/buttons jinko
+     white chahiye wo `light:bg-white` se override karte hain (utilities
+     layer components ko beat karta hai). */
+  html.light .glass {
+    background: rgba(13, 16, 26, 0.72);
+    border-color: rgba(255, 255, 255, 0.09);
+  }
 
-.text-gradient {
-  background: linear-gradient(90deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+  .glass-strong {
+    background: rgba(13, 16, 26, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
 
-.neon-ring {
-  box-shadow:
-    0 0 0 1px rgba(34, 211, 238, 0.25),
-    0 0 24px rgba(34, 211, 238, 0.12),
-    inset 0 0 18px rgba(139, 92, 246, 0.06);
-}
+  .text-gradient {
+    background: linear-gradient(90deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-.card-glow-hover {
-  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
-}
-.card-glow-hover:hover {
-  border-color: rgba(34, 211, 238, 0.45);
-  box-shadow:
-    0 0 32px rgba(34, 211, 238, 0.10),
-    0 0 64px rgba(139, 92, 246, 0.08);
+  .neon-ring {
+    box-shadow:
+      0 0 0 1px rgba(34, 211, 238, 0.25),
+      0 0 24px rgba(34, 211, 238, 0.12),
+      inset 0 0 18px rgba(139, 92, 246, 0.06);
+  }
+
+  .card-glow-hover {
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  }
+  .card-glow-hover:hover {
+    border-color: rgba(34, 211, 238, 0.45);
+    box-shadow:
+      0 0 32px rgba(34, 211, 238, 0.10),
+      0 0 64px rgba(139, 92, 246, 0.08);
+  }
+
+  /* 3D tilt logo tiles */
+  .tilt-tile {
+    transform-style: preserve-3d;
+    transform: perspective(600px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+  }
+  .tilt-tile:hover {
+    border-color: rgba(34, 211, 238, 0.45);
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.5),
+      0 0 26px rgba(34, 211, 238, 0.18);
+  }
+  .pop-3d {
+    transform: translateZ(26px);
+  }
 }
 
 /* ---------- Cyber grid floor ---------- */
@@ -183,24 +262,6 @@ html.lenis body {
   pointer-events: none;
   opacity: 0.032;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ---------- 3D tilt logo tiles ---------- */
-
-.tilt-tile {
-  transform-style: preserve-3d;
-  transform: perspective(600px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
-}
-.tilt-tile:hover {
-  border-color: rgba(34, 211, 238, 0.45);
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.5),
-    0 0 26px rgba(34, 211, 238, 0.18);
-}
-.pop-3d {
-  transform: translateZ(26px);
 }
 
 /* ---------- 3D flip cards (certifications) ---------- */

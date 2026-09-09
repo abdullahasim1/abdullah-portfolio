@@ -228,7 +228,7 @@ export default function CommandPalette({ isOpen, onClose }) {
         {/* Results List */}
         <div className="max-h-[360px] overflow-y-auto p-2 space-y-1">
           {items.length === 0 ? (
-            <div className="p-8 text-center text-sm text-slate-500">
+            <div className="p-8 text-center text-sm text-slate-400">
               No results found for "
               <span className="text-slate-300">{query}</span>"
             </div>
@@ -255,7 +255,7 @@ export default function CommandPalette({ isOpen, onClose }) {
                   <span className="flex-1 font-medium truncate">
                     {item.label}
                   </span>
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 px-2 py-0.5 rounded bg-white/[0.04]">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 px-2 py-0.5 rounded bg-white/[0.04]">
                     {item.group}
                   </span>
                 </button>
@@ -265,7 +265,7 @@ export default function CommandPalette({ isOpen, onClose }) {
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-5 py-2.5 bg-black/40 border-t border-white/[0.06] text-[11px] text-slate-500">
+        <div className="flex items-center justify-between px-5 py-2.5 bg-black/40 border-t border-white/[0.06] text-[11px] text-slate-400">
           <div className="flex items-center gap-3">
             <span>
               <kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">

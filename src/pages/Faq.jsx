@@ -52,7 +52,7 @@ function Faq() {
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-display font-semibold text-slate-100 hover:text-cyan-300 transition-colors [&::-webkit-details-marker]:hidden">
                 {item.q}
                 <svg
-                  className="w-4 h-4 shrink-0 text-slate-500 group-open:rotate-45 group-open:text-cyan-300 transition-transform"
+                  className="w-4 h-4 shrink-0 text-slate-400 group-open:rotate-45 group-open:text-cyan-300 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}

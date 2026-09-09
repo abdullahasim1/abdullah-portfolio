@@ -125,7 +125,7 @@ function Footer() {
                   <a
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className="text-sm text-slate-500 hover:text-cyan-300 transition-colors"
+                    className="text-sm text-slate-400 hover:text-cyan-300 transition-colors"
                   >
                     {link.name}
                   </a>
@@ -145,7 +145,7 @@ function Footer() {
                   <a
                     href="#services"
                     onClick={(e) => handleNavClick(e, "#services")}
-                    className="text-sm text-slate-500 hover:text-cyan-300 transition-colors"
+                    className="text-sm text-slate-400 hover:text-cyan-300 transition-colors"
                   >
                     {service}
                   </a>
@@ -168,7 +168,7 @@ function Footer() {
               ].map(([number, label]) => (
                 <div key={label} className="glass rounded-xl p-3 text-center card-glow-hover">
                   <div className="font-display text-xl font-bold text-gradient">{number}</div>
-                  <div className="text-[11px] text-slate-500 mt-0.5">{label}</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
@@ -177,7 +177,7 @@ function Footer() {
 
         {/* Tech stack — 3D logo tiles */}
         <div className="mt-16 pt-12 border-t border-white/[0.06]">
-          <p className="text-center font-display text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500 mb-9">
+          <p className="text-center font-display text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400 mb-9">
             Powered by modern tech
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-7">
@@ -187,7 +187,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06] mt-14 pt-8 text-center text-xs text-slate-600">
+        <div className="border-t border-white/[0.06] mt-14 pt-8 text-center text-xs text-slate-400">
           <p>© {currentYear} Abdullah Asim. All rights reserved.</p>
         </div>
       </div>

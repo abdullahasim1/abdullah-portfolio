@@ -10,15 +10,17 @@ function SectionHeading({ label, title, subtitle, align = "center" }) {
 
   return (
     <div className={`flex flex-col gap-4 ${alignment} mb-14`}>
-      <span className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90">
+      <span className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 light:bg-white light:border-slate-300/80 light:text-cyan-700">
         <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
         {label}
       </span>
-      <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl">
+      <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl light:text-slate-900">
         {title}
       </h2>
       {subtitle && (
-        <p className="text-slate-400 max-w-2xl leading-relaxed">{subtitle}</p>
+        <p className="text-slate-400 max-w-2xl leading-relaxed light:text-slate-600">
+          {subtitle}
+        </p>
       )}
       <span
         aria-hidden

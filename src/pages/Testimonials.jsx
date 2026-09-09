@@ -60,17 +60,51 @@ function Testimonials() {
                 "{t.quote}"
               </blockquote>
               <figcaption className="flex items-center gap-3 pt-4 border-t border-white/[0.06]">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/25 to-violet-500/25 border border-white/10 flex items-center justify-center text-sm font-bold text-gradient font-display">
-                  {t.author
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <div>
-                  <div className="font-medium text-slate-100 text-sm">
-                    {t.author}
+                {t.image ? (
+                  <img
+                    src={t.image}
+                    alt={t.author}
+                    loading="lazy"
+                    width="40"
+                    height="40"
+                    className="w-10 h-10 rounded-xl object-cover border border-white/10"
+                  />
+                ) : (
+                  <div
+                    aria-hidden
+                    className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/25 to-violet-500/25 border border-white/10 flex items-center justify-center text-sm font-bold text-gradient font-display"
+                  >
+                    {t.author
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
                   </div>
-                  <div className="text-xs text-slate-500">
+                )}
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-slate-100 text-sm truncate">
+                      {t.author}
+                    </span>
+                    {t.link && (
+                      <a
+                        href={t.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${t.author} profile`}
+                        className="shrink-0 text-slate-400 hover:text-cyan-300 transition-colors"
+                      >
+                        <svg
+                          className="w-3.5 h-3.5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                  <div className="text-xs text-slate-400 truncate">
                     {t.role} · {t.company}
                   </div>
                 </div>

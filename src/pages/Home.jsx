@@ -22,6 +22,7 @@ const chips = [
 
 function Home({ introDone = true }) {
   const contentRef = useRef(null);
+  const parallaxRef = useRef(null);
 
   useEffect(() => {
     // Splash screen ke baad hi hero entrance chale
@@ -38,6 +39,29 @@ function Home({ introDone = true }) {
     }, contentRef);
     return () => ctx.revert();
   }, [introDone]);
+
+  /* Mouse parallax — sirf desktops par (touch/low-end skip), subtle depth effect */
+  useEffect(() => {
+    if (IS_LOW_END || !parallaxRef.current) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    let raf = 0;
+    const onMove = (e) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const dx = e.clientX / window.innerWidth - 0.5;
+        const dy = e.clientY / window.innerHeight - 0.5;
+        parallaxRef.current.style.transform = `translate3d(${dx * -16}px, ${dy * -12}px, 0)`;
+      });
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const scrollTo = (e, id) => {
     e.preventDefault();
@@ -65,13 +89,14 @@ function Home({ introDone = true }) {
 
       {/* Content */}
       <div
-        ref={contentRef}
-        className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full"
+        ref={parallaxRef}
+        className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full will-change-transform"
       >
+        <div ref={contentRef}>
         <div className="max-w-2xl space-y-7">
           <span
             data-hero-stagger
-            className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300"
+            className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300 light:bg-white light:border-slate-300/80 light:text-slate-700"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -84,7 +109,7 @@ function Home({ introDone = true }) {
             data-hero-stagger
             className="font-display font-bold leading-[1.05] tracking-tight text-4xl sm:text-6xl lg:text-7xl"
           >
-            <span className="block text-white">Full Stack</span>
+            <span className="block text-white light:text-slate-900">Full Stack</span>
             <span className="block">
               <WordFlipper
                 words={["Developer.", "UI/UX Designer.", "AI Builder."]}
@@ -98,17 +123,19 @@ function Home({ introDone = true }) {
           <SplitTextAnimation
             animationType="lines"
             delay={0.6}
-            className="text-lg md:text-2xl font-medium text-slate-300"
+            className="text-lg md:text-2xl font-medium text-slate-300 light:text-slate-600"
           >
             I build fast, scalable products with clean code and stunning design.
           </SplitTextAnimation>
 
           <p
             data-hero-stagger
-            className="text-slate-400 leading-relaxed max-w-xl"
+            className="text-slate-400 leading-relaxed max-w-xl light:text-slate-600"
           >
             Hi, I'm{" "}
-            <span className="text-white font-semibold">Abdullah Bin Asim</span>{" "}
+            <span className="text-white font-semibold light:text-slate-900">
+              Abdullah Bin Asim
+            </span>{" "}
             — a results-driven developer &amp; designer with AWS Generative AI
             credentials. From AI-powered platforms to full-stack web apps, I
             turn ideas into digital products that perform.
@@ -118,7 +145,7 @@ function Home({ introDone = true }) {
             {chips.map((chip) => (
               <span
                 key={chip}
-                className="rounded-full glass px-3.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-default"
+                className="rounded-full glass px-3.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-default light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
               >
                 {chip}
               </span>
@@ -133,7 +160,7 @@ function Home({ introDone = true }) {
             <a
               href="/resume.pdf"
               download="Abdullah-Bin-Asim-Resume.pdf"
-              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
             >
               <svg
                 className="w-4 h-4"
@@ -153,7 +180,7 @@ function Home({ introDone = true }) {
             <a
               href="#projects"
               onClick={(e) => scrollTo(e, "projects")}
-              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
             >
               View My Work
               <svg
@@ -172,6 +199,7 @@ function Home({ introDone = true }) {
             </a>
           </div>
         </div>
+        </div>
       </div>
 
       {/* 3D Scene */}
@@ -183,7 +211,7 @@ function Home({ introDone = true }) {
       <a
         href="#about"
         onClick={(e) => scrollTo(e, "about")}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-slate-500 hover:text-cyan-300 transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-slate-400 hover:text-cyan-300 transition-colors light:text-slate-500"
       >
         Scroll
         <span className="block h-8 w-px bg-gradient-to-b from-cyan-400 to-transparent float-y" />

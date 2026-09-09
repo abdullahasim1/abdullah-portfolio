@@ -89,7 +89,7 @@ function Process() {
                     {step.description}
                   </p>
 
-                  <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 mb-4">
+                  <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 mb-4">
                     What's included
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

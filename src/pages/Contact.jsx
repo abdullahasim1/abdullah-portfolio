@@ -125,9 +125,9 @@ function Contact() {
                   {info.icon}
                 </span>
                 <div className="min-w-0">
-                  <h4 className="font-semibold text-slate-100 text-sm">
+                  <h3 className="font-semibold text-slate-100 text-sm">
                     {info.title}
-                  </h4>
+                  </h3>
                   <p className="text-sm text-slate-400 truncate">
                     {info.value}
                   </p>
@@ -148,12 +148,12 @@ function Contact() {
               </a>
             ))}
 
-            <div className="flex items-center gap-3 p-4 rounded-2xl glass border-emerald-400/25">
+            <div className="flex items-center gap-3 p-4 rounded-2xl glass border-emerald-400/25 light:bg-white light:border-emerald-400/40">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
               </span>
-              <span className="text-emerald-300 font-medium text-sm">
+              <span className="text-emerald-300 font-medium text-sm light:text-emerald-600">
                 Available for new projects
               </span>
             </div>
@@ -161,12 +161,14 @@ function Contact() {
 
           {/* Contact form */}
           <div className="space-y-4 reveal">
-            {/* Paper plane 3D visual */}
-            <div className="relative h-40 sm:h-48 rounded-3xl overflow-hidden border border-white/[0.07] bg-white/[0.02]">
-              <Suspense fallback={null}>
-                <PaperPlane className="absolute inset-0" />
-              </Suspense>
-            </div>
+            {/* Paper plane 3D visual — low-end/touch par skip (perf) */}
+            {!IS_LOW_END && (
+              <div className="relative h-40 sm:h-48 rounded-3xl overflow-hidden border border-white/[0.07] bg-white/[0.02] light:border-slate-300 light:bg-slate-100/60">
+                <Suspense fallback={null}>
+                  <PaperPlane className="absolute inset-0" />
+                </Suspense>
+              </div>
+            )}
 
             <form
               onSubmit={handleSubmit}

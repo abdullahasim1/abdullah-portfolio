@@ -215,7 +215,7 @@ function SplashScreen({ onFinish }) {
       {/* Bottom progress rail */}
       <div data-splash-fade className="absolute bottom-10 inset-x-0 px-8 sm:px-14 max-w-3xl mx-auto w-full">
         <div className="flex items-end justify-between mb-3">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-slate-500">Initializing</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-slate-400">Initializing</span>
           <span ref={percentRef} className="font-mono text-sm text-cyan-300">000%</span>
         </div>
         <div className="h-px w-full bg-white/[0.08] overflow-hidden rounded-full">

@@ -38,7 +38,7 @@ function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-[3px] z-[60]" role="progressbar" aria-valuenow={Math.round(scrollProgress)} aria-valuemin={0} aria-valuemax={100}>
+    <div className="fixed top-0 left-0 w-full h-[3px] z-[60]" role="progressbar" aria-label="Page scroll progress" aria-valuenow={Math.round(scrollProgress)} aria-valuemin={0} aria-valuemax={100}>
       <div
         className="h-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(34,211,238,0.6)] transition-all duration-150 ease-out"
         style={{ width: `${scrollProgress}%` }}

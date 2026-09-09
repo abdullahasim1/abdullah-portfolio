@@ -26,9 +26,12 @@ const Faq = lazy(() => import("./pages/Faq"));
 const Contact = lazy(() => import("./pages/Contact"));
 
 function App() {
-  // Splash har session mein sirf ek dafa (refresh pe skip hota hai)
+  // Splash har session mein sirf ek dafa (refresh pe skip hota hai).
+  // Low-end/touch devices par splash bilkul mount nahi hota — warna
+  // three/r3f chunks mobile par load ho jaate hain (perf hit).
   const [introDone, setIntroDone] = useState(() => {
     if (typeof window === "undefined") return true;
+    if (IS_LOW_END) return true;
     return sessionStorage.getItem("aa-splash-seen") === "1";
   });
 
@@ -58,7 +61,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip">
+    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-slate-50 light:text-slate-900">
       {/* Skip to content (keyboard users) */}
       <a
         href="#main-content"
@@ -84,10 +87,10 @@ function App() {
       )}
 
       {/* Ambient background glows */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-cyan-500/[0.07] blur-[120px]" />
-        <div className="absolute top-1/3 -right-48 h-[520px] w-[520px] rounded-full bg-violet-600/[0.08] blur-[130px]" />
-        <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-indigo-500/[0.06] blur-[120px]" />
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 light:opacity-60">
+        <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-cyan-500/[0.07] blur-[120px] light:bg-cyan-500/[0.05]" />
+        <div className="absolute top-1/3 -right-48 h-[520px] w-[520px] rounded-full bg-violet-600/[0.08] blur-[130px] light:bg-violet-600/[0.05]" />
+        <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-indigo-500/[0.06] blur-[120px] light:bg-indigo-500/[0.04]" />
         {/* Subtle dot matrix texture */}
         <div
           className="absolute inset-0 opacity-[0.35]"

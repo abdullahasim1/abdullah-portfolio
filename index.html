@@ -12,6 +12,20 @@
     <meta name="author" content="Abdullah Bin Asim" />
     <meta name="theme-color" content="#05060a" />
     <link rel="canonical" href="https://abdullah-asim-dev.vercel.app/" />
+    <script>
+      // Early theme apply — flash (FOUC) prevent, CSS/JS load se pehle
+      (function () {
+        try {
+          var t = localStorage.getItem("aa-theme");
+          if (
+            t === "light" ||
+            (!t && window.matchMedia("(prefers-color-scheme: light)").matches)
+          ) {
+            document.documentElement.classList.add("light");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <meta
       name="google-site-verification"
       content="EqVwfyJoiLvbEcImb0Yv34xz5eAV6FJ9jH_oA3xe3LA"
@@ -205,6 +219,21 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
+    />
+    <!-- Preload display font (LCP/CLS — hero heading Space Grotesk hai) -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2"
     />
     <link rel="preload" href="/src/main.jsx" as="script" />
   </head>

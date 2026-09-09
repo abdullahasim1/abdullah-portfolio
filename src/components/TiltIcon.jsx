@@ -74,7 +74,7 @@ function TiltIcon({ logo, size = 56, iconSize = 28, showLabel = false }) {
       </div>
 
       {showLabel && (
-        <span className="text-[11px] font-medium text-slate-500">{logo.name}</span>
+        <span className="text-[11px] font-medium text-slate-400">{logo.name}</span>
       )}
     </div>
   );
