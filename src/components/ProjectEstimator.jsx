@@ -131,11 +131,8 @@ export default function ProjectEstimator() {
   };
 
   return (
-    <div className="reveal mt-16 rounded-3xl glass-strong neon-ring p-6 sm:p-10 border border-cyan-400/25">
     <div className="reveal mt-16 rounded-3xl bento-card p-6 sm:p-10">
       <div className="flex items-center gap-2.5 mb-3">
-        <span className="h-2 w-2 rounded-full bg-cyan-400 blink-dot" />
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
         <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
         <span className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
           Interactive Tool
@@ -193,6 +190,8 @@ export default function ProjectEstimator() {
               <button
                 key={f.id}
                 type="button"
+                role="checkbox"
+                aria-checked={isChecked}
                 onClick={() => toggleFeature(f.id)}
                 className={`px-3.5 py-3 rounded-xl text-left text-xs font-medium transition-all duration-150 flex items-center gap-2.5 cursor-pointer ${
                   isChecked
@@ -230,6 +229,7 @@ export default function ProjectEstimator() {
                 <button
                   key={tm.id}
                   type="button"
+                  aria-pressed={isSelected}
                   onClick={() => handleTimelineSelect(tm.id)}
                   className={`p-3.5 rounded-xl text-left text-xs transition-all cursor-pointer ${
                     isSelected

@@ -10,6 +10,8 @@ export default async function middleware(request) {
 
   const mdUrl = new URL("/index.md", request.url);
   const res = await fetch(mdUrl);
+  if (!res.ok) return;
+
   const body = await res.text();
 
   return new Response(body, {

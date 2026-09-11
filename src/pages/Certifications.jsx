@@ -101,14 +101,13 @@ function FlipCertCard({ cert }) {
       role="button"
       tabIndex={0}
       aria-label={`${cert.title} — flip for details`}
-      onClick={() => setFlipped((f) => !f)}
+      aria-pressed={flipped}
       onClick={handleToggle}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setFlipped((f) => !f);
           handleToggle();
         }
       }}
@@ -118,17 +117,13 @@ function FlipCertCard({ cert }) {
       <div className="cert-flip-inner">
         {/* ── FRONT ── */}
         <div className="cert-flip-face glass rounded-2xl overflow-hidden flex flex-col">
-          <div className="relative h-[56%] flex items-center justify-center bg-gradient-to-br from-slate-900 to-black border-b border-white/[0.06] shrink-0">
-        <div className="cert-flip-face bento-card rounded-2xl overflow-hidden flex flex-col">
           <div className="relative h-[56%] flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black border-b border-white/[0.06] shrink-0">
             <CertImage src={cert.image} alt={cert.title} className="w-full h-full" />
-            <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-300 bg-black/60 border border-white/10 backdrop-blur">
             <span className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[11px] font-medium text-slate-300 bg-black/60 border border-white/10 backdrop-blur">
               {cert.date}
             </span>
           </div>
           <div className="flex flex-col flex-grow p-5 min-h-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-violet-300/80 mb-1 truncate">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-violet-300/90 mb-1 truncate">
               {cert.issuer}
             </p>
@@ -147,8 +142,6 @@ function FlipCertCard({ cert }) {
         {/* ── BACK ── */}
         <div className="cert-flip-face cert-flip-back glass-strong rounded-2xl p-6 flex flex-col neon-ring">
           <span className="inline-flex self-start items-center gap-2 rounded-full bg-cyan-500/10 border border-cyan-400/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-300 mb-4">
-        <div className="cert-flip-face cert-flip-back bento-card rounded-2xl p-6 flex flex-col">
-          <span className="inline-flex self-start items-center gap-2 rounded-full bg-cyan-500/10 border border-cyan-400/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-300 mb-4">
             <span className="h-1 w-1 rounded-full bg-cyan-400" />
             Skills gained
           </span>
@@ -241,7 +234,7 @@ function Certifications() {
   useScrollReveal("#certifications .reveal");
   const staggerRef = useStaggerAnimation(0.07, 0.15);
 
-  const featured = certifications.find((c) => c.featured);
+  const featured = certifications.filter((c) => c.featured);
   const others = certifications.filter((c) => !c.featured);
 
   return (
@@ -253,7 +246,9 @@ function Certifications() {
           subtitle="AWS Professional & AI credentials plus Anthropic and partner training. Hover or tap any card to see the skills behind it."
         />
 
-        {featured && <FeaturedCert cert={featured} />}
+        {featured.map((cert) => (
+          <FeaturedCert key={cert.id} cert={cert} />
+        ))}
 
         <div ref={staggerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {others.map((cert) => (

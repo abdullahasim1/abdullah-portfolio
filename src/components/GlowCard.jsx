@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
+import { useRafThrottle } from "../hooks/useRafThrottle";
 
 function GlowCard({ className = "", children }) {
   const cardRef = useRef(null);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useRafThrottle((e) => {
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -17,7 +18,7 @@ function GlowCard({ className = "", children }) {
     el.style.setProperty("--ry", `${rotateY}deg`);
     el.style.setProperty("--mx", `${x}px`);
     el.style.setProperty("--my", `${y}px`);
-  };
+  });
 
   const handleMouseLeave = () => {
     const el = cardRef.current;

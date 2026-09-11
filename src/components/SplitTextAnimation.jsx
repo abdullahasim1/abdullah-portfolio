@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-function SplitTextAnimation({ children, className = "", animationType = "chars", delay = 0 }) {
+function SplitTextAnimation({ children, className = "", delay = 0 }) {
   const textRef = useRef(null);
   const ctxRef = useRef(null);
 
@@ -38,7 +38,7 @@ function SplitTextAnimation({ children, className = "", animationType = "chars",
         ctxRef.current = null;
       }
     };
-  }, [children, animationType, delay]);
+  }, [children, delay]);
 
   return (
     <div ref={textRef} className={className}>

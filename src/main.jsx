@@ -13,16 +13,10 @@ createRoot(document.getElementById("root")).render(
   </StrictMode>
 );
 
-// Register service worker for caching
-if ('serviceWorker' in navigator) {
+// Register service worker for caching (production only — dev assets cache ho kar stale ho jate hain)
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('SW registration failed:', error);
-      });
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
 

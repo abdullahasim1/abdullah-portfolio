@@ -17,12 +17,22 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* Cursor-following spotlight handler (per-card CSS vars) */
+/* Cursor-following spotlight handler (per-card CSS vars) — rAF coalesced */
+const spotFrames = new WeakMap();
 function spotMove(e) {
   const el = e.currentTarget;
-  const r = el.getBoundingClientRect();
-  el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-  el.style.setProperty("--my", `${e.clientY - r.top}px`);
+  if (spotFrames.has(el)) return;
+  const clientX = e.clientX;
+  const clientY = e.clientY;
+  spotFrames.set(
+    el,
+    requestAnimationFrame(() => {
+      spotFrames.delete(el);
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${clientX - r.left}px`);
+      el.style.setProperty("--my", `${clientY - r.top}px`);
+    }),
+  );
 }
 
 /* ---------------- Featured project card (large = bento hero) ---------------- */
@@ -341,7 +351,7 @@ function Projects() {
             Portfolio
           </span>
           <SplitTextAnimation
-            animationType="words"
+            
             className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900"
           >
             Projects &amp; GitHub
@@ -442,6 +452,7 @@ function Projects() {
               <button
                 key={lang}
                 type="button"
+                aria-pressed={activeFilter === lang}
                 onClick={() => setActiveFilter(lang)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                   activeFilter === lang

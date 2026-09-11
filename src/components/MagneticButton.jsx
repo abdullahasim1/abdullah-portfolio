@@ -1,11 +1,12 @@
 import React, { useRef } from "react";
 import { scrollToSection } from "../lib/smoothScroll";
+import { useRafThrottle } from "../hooks/useRafThrottle";
 
 function MagneticButton({ href = "#", className = "", children }) {
   const wrapRef = useRef(null);
   const innerRef = useRef(null);
 
-  const onMouseMove = (e) => {
+  const onMouseMove = useRafThrottle((e) => {
     const wrap = wrapRef.current;
     const inner = innerRef.current;
     if (!wrap || !inner) return;
@@ -13,7 +14,7 @@ function MagneticButton({ href = "#", className = "", children }) {
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
     inner.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-  };
+  });
 
   const onMouseLeave = () => {
     const inner = innerRef.current;

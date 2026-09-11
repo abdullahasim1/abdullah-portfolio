@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useRafThrottle } from "../hooks/useRafThrottle";
 
 /**
  * 3D tilt logo tile — cursor follow karta hai, tile perspective mein
@@ -7,7 +8,7 @@ import React, { useRef } from "react";
 function TiltIcon({ logo, size = 56, iconSize = 28, showLabel = false }) {
   const ref = useRef(null);
 
-  const onMove = (e) => {
+  const onMove = useRafThrottle((e) => {
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -17,7 +18,7 @@ function TiltIcon({ logo, size = 56, iconSize = 28, showLabel = false }) {
     el.style.setProperty("--ry", `${(x / r.width - 0.5) * 20}deg`);
     el.style.setProperty("--mx", `${x}px`);
     el.style.setProperty("--my", `${y}px`);
-  };
+  });
 
   const onLeave = () => {
     const el = ref.current;

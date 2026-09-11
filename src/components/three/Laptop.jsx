@@ -271,6 +271,14 @@ function Laptop({ pointerRef, reduced }) {
     return t;
   }, [screenCanvas]);
 
+  // GPU memory leak se bachav — textures unmount par dispose karo
+  useEffect(() => {
+    return () => {
+      deckTexture.dispose();
+      screenTexture.dispose();
+    };
+  }, [deckTexture, screenTexture]);
+
   useEffect(() => {
     if (reduced) {
       drawScreen(screenCanvas, 3); // static mid-way frame

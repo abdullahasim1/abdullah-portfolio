@@ -121,7 +121,7 @@ function Home({ introDone = true }) {
           </h1>
 
           <SplitTextAnimation
-            animationType="lines"
+            
             delay={0.6}
             className="text-lg md:text-2xl font-medium text-slate-300 light:text-slate-600"
           >

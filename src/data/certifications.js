@@ -6,9 +6,7 @@ export const certifications = [
     date: "2026",
     credentialUrl: "https://www.credly.com/users/abdullah-asim/badges",
     skills: ["Generative AI", "Amazon Bedrock", "LLM Apps", "AWS"],
-    color: "from-sky-500 to-cyan-600",
     image: "/certifications/aws-certified-generative-ai-developer-professional.png",
-    badgeStyle: true,
     featured: true,
     description:
       "Professional-level credential for building and deploying production generative AI applications on AWS.",
@@ -20,9 +18,7 @@ export const certifications = [
     date: "2026",
     credentialUrl: "https://www.credly.com/users/abdullah-asim/badges",
     skills: ["Early Adopter", "Generative AI", "AWS"],
-    color: "from-teal-500 to-cyan-600",
     image: "/certifications/aws-genai-early-adopter.png",
-    badgeStyle: true,
   },
   {
     id: "aws-ai-practitioner",
@@ -31,9 +27,7 @@ export const certifications = [
     date: "2025",
     credentialUrl: "https://www.credly.com/users/abdullah-asim/badges",
     skills: ["AI Fundamentals", "ML Concepts", "AWS AI Services"],
-    color: "from-slate-500 to-slate-700",
     image: "/certifications/aws-certified-ai-practitioner.png",
-    badgeStyle: true,
   },
   {
     id: "anthropic-claude-code",
@@ -42,7 +36,6 @@ export const certifications = [
     date: "May 2026",
     credentialUrl: "https://verify.skilljar.com/c/ea2aqwqdpsx2",
     skills: ["Claude Code", "AI Agents", "Developer Tools"],
-    color: "from-amber-500 to-orange-600",
     image: "/certifications/anthropic-claude-code.png",
   },
   {
@@ -52,7 +45,6 @@ export const certifications = [
     date: "May 2026",
     credentialUrl: "https://verify.skilljar.com/c/8sy7ahs4maju",
     skills: ["MCP", "Tooling", "AI Integrations"],
-    color: "from-rose-500 to-pink-600",
     image: "/certifications/anthropic-mcp.png",
   },
   {
@@ -62,7 +54,6 @@ export const certifications = [
     date: "2026",
     credentialUrl: "#",
     skills: ["Agent Skills", "Claude", "Automation"],
-    color: "from-blue-500 to-indigo-600",
     image: "/certifications/anthropic-agent-skills.png",
   },
   {
@@ -72,7 +63,6 @@ export const certifications = [
     date: "June 2026",
     credentialUrl: "#",
     skills: ["AWS Partner", "Cloud Architecture", "Technical"],
-    color: "from-orange-500 to-amber-600",
     image: "/certifications/aws-partner-technical.png",
   },
   {
@@ -82,7 +72,6 @@ export const certifications = [
     date: "June 2026",
     credentialUrl: "#",
     skills: ["AWS Partner", "Cloud Business", "Sales"],
-    color: "from-amber-500 to-yellow-600",
     image: "/certifications/aws-partner-sales.png",
   },
 ];

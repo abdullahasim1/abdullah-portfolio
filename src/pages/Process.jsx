@@ -58,7 +58,6 @@ function Process() {
               <div key={step.step} className="reveal grid lg:grid-cols-[72px_1fr] gap-6 lg:gap-8">
                 {/* Rail: number + connector */}
                 <div className="hidden lg:flex flex-col items-center">
-                  <span className="relative font-display inline-flex items-center justify-center w-16 h-16 shrink-0 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-400/30 text-xl font-bold text-gradient">
                   <span className="relative font-display inline-flex items-center justify-center w-14 h-14 shrink-0 rounded-2xl bg-white/[0.04] border border-white/[0.1] text-lg font-bold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]">
                     {step.step}
                     <span aria-hidden className="absolute inset-0 rounded-2xl bg-cyan-400/15 blur-xl -z-10" />
@@ -66,21 +65,15 @@ function Process() {
                   {!isLast && (
                     <span
                       aria-hidden
-                      className="relative w-px flex-1 min-h-[70px] my-4 bg-gradient-to-b from-cyan-400/40 via-violet-500/25 to-transparent"
-                    >
-                      <span className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-cyan-300/70 to-transparent blur-[2px]" />
-                    </span>
                       className="relative w-px flex-1 min-h-[60px] my-3 bg-gradient-to-b from-white/20 via-white/5 to-transparent"
                     />
                   )}
                 </div>
 
                 {/* Card */}
-                <div className="glass rounded-3xl p-8 card-glow-hover hover:-translate-y-1 transition-transform duration-300">
                 <div className="bento-card rounded-3xl p-8 hover:-translate-y-0.5 transition-transform duration-300">
                   {/* Mobile header */}
                   <div className="flex items-center gap-4 mb-5 lg:hidden">
-                    <span className="font-display inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-400/30 text-lg font-bold text-gradient shrink-0">
                     <span className="font-display inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white/[0.05] border border-white/10 text-base font-bold text-white shrink-0">
                       {step.step}
                     </span>
@@ -94,20 +87,15 @@ function Process() {
                     {step.description}
                   </p>
 
-                  <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 mb-4">
-                    What's included
                   <h4 className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500 mb-4">
                     Key Deliverables
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {step.features.map((feature) => (
                       <div
                         key={feature}
-                        className="flex items-center gap-3 rounded-xl bg-white/[0.03] border border-white/[0.05] px-4 py-3 hover:border-cyan-400/25 transition-colors"
                         className="flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] px-4 py-3 hover:bg-white/[0.04] hover:border-white/10 transition-all"
                       >
-                        <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                         <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
@@ -119,23 +107,6 @@ function Process() {
               </div>
             );
           })}
-        </div>
-
-        <div className="reveal mt-14 relative overflow-hidden rounded-3xl glass-strong neon-ring p-10 text-center">
-          <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400 to-transparent" />
-          <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">
-            Ready to Start Your Project?
-          </h3>
-          <p className="text-slate-400 mb-8 max-w-xl mx-auto leading-relaxed">
-            Let's discuss your requirements and create something amazing together.
-          </p>
-          <a
-            href="#contact"
-            className="sheen-btn relative inline-flex items-center px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold shadow-[0_0_28px_rgba(34,211,238,0.22)] hover:opacity-90 transition-opacity"
-          >
-            Get Started Today
-            <span className="sheen-layer" aria-hidden />
-          </a>
         </div>
       </div>
     </section>

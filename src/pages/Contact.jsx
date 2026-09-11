@@ -16,24 +16,28 @@ const contactInfo = [
     title: "Email",
     value: EMAIL,
     link: `mailto:${EMAIL}`,
+    external: false,
   },
   {
     icon: "📱",
     title: "Phone/WhatsApp",
     value: "+92 307 0796208",
     link: "tel:+923070796208",
+    external: false,
   },
   {
     icon: "💼",
     title: "LinkedIn",
     value: "abdullahasim1",
     link: "https://www.linkedin.com/in/abdullahasim1/",
+    external: true,
   },
   {
     icon: "🐙",
     title: "GitHub",
     value: "abdullahasim1",
     link: "https://github.com/abdullahasim1",
+    external: true,
   },
 ];
 
@@ -44,6 +48,7 @@ const inputClass =
 function Contact() {
   useScrollReveal("#contact .reveal");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const statusRef = React.useRef(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -64,7 +69,8 @@ function Contact() {
     }
 
     if (!name || !email || !message) {
-      alert("Please fill in your name, email, and message.");
+      setStatus("error");
+      statusRef.current?.focus();
       return;
     }
 
@@ -72,6 +78,7 @@ function Contact() {
     if (!WEB3FORMS_ACCESS_KEY) {
       const body = `Hi Abdullah,\n\n${message}\n\n— ${name}\n${email}`;
       window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      form.reset();
       return;
     }
 
@@ -96,8 +103,10 @@ function Contact() {
       if (!json.success) throw new Error(json.message || "Send failed");
       setStatus("sent");
       form.reset();
+      statusRef.current?.focus();
     } catch {
       setStatus("error");
+      statusRef.current?.focus();
     }
   }
 
@@ -117,8 +126,9 @@ function Contact() {
               <a
                 key={info.title}
                 href={info.link}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...(info.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="group flex items-center gap-4 p-5 rounded-2xl glass card-glow-hover hover:-translate-y-0.5 transition-transform duration-300"
               >
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-xl group-hover:scale-110 transition-transform">
@@ -187,34 +197,53 @@ function Contact() {
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="contact-name" className="sr-only">Your Name</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    name="name"
+                    placeholder="Your Name"
+                    className={inputClass}
+                    autoComplete="name"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="contact-email" className="sr-only">Your Email</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    name="email"
+                    placeholder="Your Email"
+                    className={inputClass}
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="contact-subject" className="sr-only">Subject</label>
                 <input
+                  id="contact-subject"
                   type="text"
-                  name="name"
-                  placeholder="Your Name"
+                  name="subject"
+                  placeholder="Subject"
                   className={inputClass}
-                  required
                 />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  className={inputClass}
+              </div>
+              <div>
+                <label htmlFor="contact-message" className="sr-only">Tell me about your project</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  placeholder="Tell me about your project…"
+                  rows={5}
+                  maxLength={3000}
+                  className={`${inputClass} resize-none`}
                   required
                 />
               </div>
-              <input
-                type="text"
-                name="subject"
-                placeholder="Subject"
-                className={inputClass}
-              />
-              <textarea
-                name="message"
-                placeholder="Tell me about your project…"
-                rows={5}
-                className={`${inputClass} resize-none`}
-                required
-              />
 
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
                 <button
@@ -246,16 +275,23 @@ function Contact() {
                   Get a Free Quote
                 </a>
               </div>
-              {status === "sent" && (
-                <p className="text-emerald-300 text-sm font-medium">
-                  Message sent — I'll get back to you within a few hours.
-                </p>
-              )}
-              {status === "error" && (
-                <p className="text-amber-300 text-sm font-medium">
-                  Something went wrong. Email me directly at {EMAIL}.
-                </p>
-              )}
+              <div
+                ref={statusRef}
+                role="status"
+                aria-live="polite"
+                className="min-h-[1.25rem]"
+              >
+                {status === "sent" && (
+                  <p className="text-emerald-300 text-sm font-medium">
+                    Message sent — I'll get back to you within a few hours.
+                  </p>
+                )}
+                {status === "error" && (
+                  <p className="text-amber-300 text-sm font-medium">
+                    Something went wrong. Please email me directly at {EMAIL}.
+                  </p>
+                )}
+              </div>
             </form>
           </div>
         </div>

@@ -299,8 +299,9 @@ function Navbar() {
       {/* Mobile menu */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          mobileOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0"
+          mobileOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0 invisible"
         }`}
+        aria-hidden={!mobileOpen}
       >
         <div
           className="max-w-6xl mx-auto rounded-2xl glass-strong p-4 grid gap-1 text-sm"

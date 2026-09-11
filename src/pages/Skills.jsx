@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "../components/SectionHeading";
+import { useRafThrottle } from "../hooks/useRafThrottle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,7 +92,7 @@ function SkillBar({ name, level }) {
 function SkillCard({ category, icon, items }) {
   const cardRef = useRef(null);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useRafThrottle((e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -100,9 +101,9 @@ function SkillCard({ category, icon, items }) {
     const centerY = rect.height / 2;
     const rotateX = (y - centerY) / 20;
     const rotateY = (centerX - x) / 20;
-    
+
     cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-  };
+  });
 
   const handleMouseLeave = () => {
     if (!cardRef.current) return;

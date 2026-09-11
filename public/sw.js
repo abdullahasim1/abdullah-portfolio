@@ -1,6 +1,5 @@
-const CACHE_NAME = "portfolio-v1";
-const STATIC_CACHE = "portfolio-static-v1";
-const DYNAMIC_CACHE = "portfolio-dynamic-v1";
+const STATIC_CACHE = "portfolio-static-v2";
+const DYNAMIC_CACHE = "portfolio-dynamic-v2";
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
@@ -8,17 +7,26 @@ const STATIC_ASSETS = [
   "/index.html",
   "/og-image.png",
   "/IMG-20240224-WA0006.jpg",
+  "/manifest.webmanifest",
 ];
+
+// Helper — sirf successful responses cache karo (404/500 cache poisoning se bachav)
+function cachePut(cacheName, request, response) {
+  if (!response || !response.ok || response.type === "opaque") {
+    return Promise.resolve();
+  }
+  return caches
+    .open(cacheName)
+    .then((cache) => cache.put(request, response))
+    .catch(() => {});
+}
 
 // Install event - cache static assets
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(STATIC_CACHE)
-      .then((cache) => {
-        console.log("Caching static assets");
-        return cache.addAll(STATIC_ASSETS);
-      })
+      .then((cache) => cache.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting()),
   );
 });
@@ -53,64 +61,60 @@ self.addEventListener("fetch", (event) => {
   // Skip chrome-extension and other non-http requests
   if (!url.protocol.startsWith("http")) return;
 
-  // API requests - network first, cache fallback
+  // Skip cross-origin non-asset requests (analytics etc.)
+  if (url.origin !== self.location.origin && !/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/.test(url.pathname)) {
+    return;
+  }
+
+  // API requests - network first, NO cache fallback (stale form submissions ka risk)
   if (
     url.pathname.startsWith("/api/") ||
     url.hostname.includes("web3forms.com")
   ) {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const responseClone = response.clone();
-          caches
-            .open(DYNAMIC_CACHE)
-            .then((cache) => cache.put(request, responseClone));
-          return response;
-        })
-        .catch(() => caches.match(request)),
+      fetch(request).catch(() =>
+        new Response(JSON.stringify({ success: false, message: "Offline" }), {
+          status: 503,
+          headers: { "Content-Type": "application/json" },
+        }),
+      ),
     );
     return;
   }
 
-  // Static assets - cache first, network fallback
-  if (url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/)) {
+  // Hashed static assets - stale-while-revalidate (URLs immutable hoti hain)
+  if (url.pathname.startsWith("/assets/") || url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/)) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
-        if (cachedResponse) {
-          // Return cached version and update in background
-          fetch(request)
-            .then((networkResponse) => {
-              caches
-                .open(STATIC_CACHE)
-                .then((cache) => cache.put(request, networkResponse));
-            })
-            .catch(() => {});
-          return cachedResponse;
-        }
-        return fetch(request).then((response) => {
-          const responseClone = response.clone();
-          caches
-            .open(STATIC_CACHE)
-            .then((cache) => cache.put(request, responseClone));
+        const fetchAndCache = fetch(request).then((response) => {
+          if (response && response.ok) {
+            const responseClone = response.clone();
+            cachePut(STATIC_CACHE, request, responseClone);
+          }
           return response;
         });
+        return cachedResponse ? cachedResponse : fetchAndCache;
       }),
     );
     return;
   }
 
-  // HTML pages - network first, cache fallback
-  if (request.headers.get("accept")?.includes("text/html")) {
+  // HTML navigations - network first, cache fallback, phir offline fallback
+  if (request.mode === "navigate" || request.headers.get("accept")?.includes("text/html")) {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const responseClone = response.clone();
-          caches
-            .open(DYNAMIC_CACHE)
-            .then((cache) => cache.put(request, responseClone));
+          if (response && response.ok) {
+            const responseClone = response.clone();
+            cachePut(DYNAMIC_CACHE, request, responseClone);
+          }
           return response;
         })
-        .catch(() => caches.match(request)),
+        .catch(() =>
+          caches
+            .match(request)
+            .then((cached) => cached || caches.match("/index.html")),
+        ),
     );
     return;
   }
@@ -119,36 +123,12 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(request)
       .then((response) => {
-        const responseClone = response.clone();
-        caches
-          .open(DYNAMIC_CACHE)
-          .then((cache) => cache.put(request, responseClone));
+        if (response && response.ok) {
+          const responseClone = response.clone();
+          cachePut(DYNAMIC_CACHE, request, responseClone);
+        }
         return response;
       })
       .catch(() => caches.match(request)),
   );
-});
-
-// Background sync for offline form submissions
-self.addEventListener("sync", (event) => {
-  if (event.tag === "contact-form") {
-    event.waitUntil(
-      // Handle pending form submissions when back online
-      Promise.resolve(),
-    );
-  }
-});
-
-// Push notifications (if needed in future)
-self.addEventListener("push", (event) => {
-  if (event.data) {
-    const data = event.data.json();
-    event.waitUntil(
-      self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: "/IMG-20240224-WA0006.jpg",
-        badge: "/IMG-20240224-WA0006.jpg",
-      }),
-    );
-  }
 });

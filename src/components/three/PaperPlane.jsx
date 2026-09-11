@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
@@ -28,6 +28,9 @@ function PlaneGeometry() {
     g.computeVertexNormals();
     return g;
   }, []);
+
+  // primitive attach ho kar R3F auto-dispose nahi hota — manual cleanup
+  useEffect(() => () => geometry.dispose(), [geometry]);
 
   return <primitive object={geometry} attach="geometry" />;
 }

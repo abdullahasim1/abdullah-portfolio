@@ -6,14 +6,10 @@ function ScrollToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.scrollY > 300);
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
@@ -23,11 +19,12 @@ function ScrollToTop() {
     <button
       onClick={scrollToTop}
       className={`fixed bottom-8 right-8 z-50 w-12 h-14 bg-gradient-to-br from-cyan-500 to-violet-600 text-white rounded-2xl neon-ring hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center group ${
-        isVisible 
-          ? "translate-y-0 opacity-100" 
-          : "translate-y-4 opacity-0 pointer-events-none"
+        isVisible
+          ? "translate-y-0 opacity-100"
+          : "translate-y-4 opacity-0 pointer-events-none invisible"
       }`}
       aria-label="Scroll to top"
+      tabIndex={isVisible ? 0 : -1}
     >
       <svg 
         className="w-5 h-5 transform group-hover:-translate-y-0.5 transition-transform" 

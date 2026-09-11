@@ -196,6 +196,7 @@ export function githubOgImage(repoName) {
 
 export function formatRelativeDate(dateString) {
   const date = new Date(dateString);
+  if (!dateString || Number.isNaN(date.getTime())) return "Updated recently";
   const now = new Date();
   const diffMs = now - date;
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));

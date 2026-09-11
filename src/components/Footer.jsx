@@ -161,11 +161,9 @@ function Footer() {
             <h3 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-slate-300 mb-5">
               By the Numbers
             </h3>
-            <div className="grid grid-cols-2 gap-4">
             <div className="grid grid-cols-2 gap-3">
               {[
                 ["3+", "Years Experience"],
-                ["25+", "Projects Done"],
                 ["25+", "Projects Shipped"],
                 ["8+", "Certifications"],
                 ["15+", "Technologies"]
@@ -173,9 +171,6 @@ function Footer() {
                 <div key={label} className="glass rounded-xl p-3 text-center card-glow-hover">
                   <div className="font-display text-xl font-bold text-gradient">{number}</div>
                   <div className="text-[11px] text-slate-500 mt-0.5">{label}</div>
-                <div key={label} className="bento-card rounded-xl p-3 text-center">
-                  <div className="font-display text-lg font-bold text-gradient">{number}</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
