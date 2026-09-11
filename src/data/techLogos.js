@@ -8,6 +8,19 @@ import {
   siN8n,
   siClaude,
   siMake,
+  siAnthropic,
+  siFigma,
+  siStripe,
+  siPaypal,
+  siMongodb,
+  siPostgresql,
+  siDocker,
+  siFlutter,
+  siAndroid,
+  siApple,
+  siWordpress,
+  siShopify,
+  siZapier,
 } from "simple-icons";
 
 const pick = (si) => ({
@@ -34,3 +47,30 @@ export const techLogos = [
   { name: "Tailwind CSS", icon: pick(siTailwindcss) },
   { name: "GSAP", icon: pick(siGsap) },
 ];
+
+/* Services section ke liye brand logos — emoji replace karne ke liye */
+export const serviceLogos = {
+  ai: pick(siAnthropic),
+  automation: pick(siZapier),
+  ghl: null, // mono tile use hoti hai
+  web: pick(siReact),
+  mobile: pick(siFlutter),
+  backend: pick(siNodedotjs),
+  frontend: pick(siTypescript),
+  design: pick(siFigma),
+  payment: pick(siStripe),
+};
+
+/* Additional service-item level logos (list items ke liye) */
+export const itemLogos = {
+  stripe: pick(siStripe),
+  paypal: pick(siPaypal),
+  mongodb: pick(siMongodb),
+  postgresql: pick(siPostgresql),
+  docker: pick(siDocker),
+  android: pick(siAndroid),
+  apple: pick(siApple),
+  wordpress: pick(siWordpress),
+  shopify: pick(siShopify),
+  flutter: pick(siFlutter),
+};

@@ -3,10 +3,40 @@ import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import MagneticButton from "../components/MagneticButton";
 import ProjectEstimator from "../components/ProjectEstimator";
+import { serviceLogos } from "../data/techLogos";
+
+/* Brand logo tile — service icon ki jagah. Mono tile GHL/AWS-type ke liye. */
+function ServiceLogo({ logo, mono }) {
+  if (mono) {
+    return (
+      <span
+        className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-sm font-bold"
+        style={{
+          background: `linear-gradient(135deg, ${mono.from}22, ${mono.to}22)`,
+          border: `1px solid ${mono.from}55`,
+          color: mono.from,
+        }}
+      >
+        {mono.label}
+      </span>
+    );
+  }
+  if (!logo) return null;
+  return (
+    <span
+      className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.08] group-hover:scale-105 transition-transform"
+      style={{ boxShadow: `0 0 18px #${logo.hex}22` }}
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d={logo.path} fill={`#${logo.hex}`} />
+      </svg>
+    </span>
+  );
+}
 
 const services = [
   {
-    icon: "🤖",
+    logo: serviceLogos.ai,
     category: "AI Integration",
     items: [
       "Claude & LLM APIs",
@@ -16,7 +46,7 @@ const services = [
     ],
   },
   {
-    icon: "⚡",
+    logo: serviceLogos.automation,
     category: "Workflow Automation",
     items: [
       "Make.com Scenarios",
@@ -26,7 +56,7 @@ const services = [
     ],
   },
   {
-    icon: "📈",
+    mono: { label: "GHL", from: "#2dd4bf", to: "#22c55e" },
     category: "GoHighLevel (GHL)",
     items: [
       "Funnel Building",
@@ -36,7 +66,7 @@ const services = [
     ],
   },
   {
-    icon: "🌐",
+    logo: serviceLogos.web,
     category: "Web App Development",
     items: [
       "Custom Web Applications",
@@ -46,7 +76,7 @@ const services = [
     ],
   },
   {
-    icon: "📱",
+    logo: serviceLogos.mobile,
     category: "Mobile App Development",
     items: [
       "React Native Apps",
@@ -56,7 +86,7 @@ const services = [
     ],
   },
   {
-    icon: "⚙️",
+    logo: serviceLogos.backend,
     category: "Backend Development",
     items: [
       "API Development",
@@ -66,7 +96,7 @@ const services = [
     ],
   },
   {
-    icon: "🎨",
+    logo: serviceLogos.frontend,
     category: "Frontend Development",
     items: [
       "React Applications",
@@ -76,7 +106,7 @@ const services = [
     ],
   },
   {
-    icon: "✨",
+    logo: serviceLogos.design,
     category: "UI/UX Design",
     items: [
       "User Interface Design",
@@ -86,7 +116,7 @@ const services = [
     ],
   },
   {
-    icon: "💳",
+    logo: serviceLogos.payment,
     category: "Payment Gateway",
     items: [
       "Stripe Integration",
@@ -123,9 +153,7 @@ function Services() {
             <div key={service.category} data-stagger className="reveal group">
               <div className="bento-card rounded-2xl p-6 hover:-translate-y-1 h-full transition-all duration-300">
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.08] text-xl group-hover:scale-105 transition-transform">
-                    {service.icon}
-                  </span>
+                  <ServiceLogo logo={service.logo} mono={service.mono} />
                   <h3 className="font-display text-lg font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
                     {service.category}
                   </h3>
