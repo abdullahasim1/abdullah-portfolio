@@ -1,81 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Sparkles } from "@react-three/drei";
 import { IS_LOW_END } from "../lib/device";
 
-/* 3D core — loading progress ke saath spin speed barhta hai */
-function Core({ progressRef }) {
-  const group = useRef(null);
-  const outer = useRef(null);
-  const inner = useRef(null);
-  const ringA = useRef(null);
-  const ringB = useRef(null);
-
-  useEffect(() => {
-    // Entrance: elastic scale-in
-    gsap.from(group.current.scale, {
-      x: 0, y: 0, z: 0,
-      duration: 1.2,
-      ease: "elastic.out(1, 0.55)",
-    });
-  }, []);
-
-  useFrame((state, delta) => {
-    const p = progressRef.current; // 0 → 1
-    const speed = 0.35 + p * 2.4;
-    if (outer.current) {
-      outer.current.rotation.y += delta * speed;
-      outer.current.rotation.x += delta * speed * 0.55;
-    }
-    if (inner.current) {
-      inner.current.rotation.y -= delta * (speed * 1.4);
-      inner.current.rotation.z += delta * speed * 0.8;
-    }
-    if (ringA.current) ringA.current.rotation.z += delta * (0.4 + p * 1.6);
-    if (ringB.current) {
-      ringB.current.rotation.z -= delta * (0.3 + p * 1.3);
-      ringB.current.rotation.x = Math.PI / 2.6 + Math.sin(state.clock.elapsedTime * 0.7) * 0.18;
-    }
-    if (group.current) {
-      const pulse = 1 + Math.sin(state.clock.elapsedTime * 2.2) * 0.03 + p * 0.08;
-      group.current.scale.setScalar(pulse);
-    }
-  });
-
-  return (
-    <group ref={group}>
-      {/* Wireframe shell */}
-      <mesh ref={outer}>
-        <icosahedronGeometry args={[1.45, 0]} />
-        <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.5} />
-      </mesh>
-      {/* Glowing core */}
-      <mesh ref={inner}>
-        <octahedronGeometry args={[0.62, 0]} />
-        <meshStandardMaterial
-          color="#0b1120"
-          metalness={0.9}
-          roughness={0.25}
-          emissive="#8b5cf6"
-          emissiveIntensity={0.85}
-        />
-      </mesh>
-      {/* Orbit rings */}
-      <mesh ref={ringA} rotation={[Math.PI / 2.3, 0.3, 0]}>
-        <torusGeometry args={[2.05, 0.014, 8, 120]} />
-        <meshBasicMaterial color="#22d3ee" transparent opacity={0.65} />
-      </mesh>
-      <mesh ref={ringB}>
-        <torusGeometry args={[2.5, 0.01, 8, 120]} />
-        <meshBasicMaterial color="#a78bfa" transparent opacity={0.42} />
-      </mesh>
-
-      <pointLight position={[3, 3, 3]} intensity={26} color="#22d3ee" />
-      <pointLight position={[-3, -2, -2]} intensity={18} color="#8b5cf6" />
-    </group>
-  );
-}
+/* R3F lazy — SplashScreen App ka static import hai, is liye Canvas yahan
+   lazy kiya hai warna three/r3f chunks HAR page load pe initial JS mein
+   aa jate hain (mobile pe bhi, jahan splash kabhi chalta hi nahi). */
+const SplashCanvas = lazy(() =>
+  import("./three/SplashCanvas").then((m) => ({ default: m.SplashCanvas }))
+);
 
 const NAME = "ABDULLAH ASIM";
 
@@ -181,15 +113,9 @@ function SplashScreen({ onFinish }) {
       {/* 3D stage */}
       <div ref={stageRef} className="relative flex flex-col items-center will-change-transform">
         <div className="w-[min(64vw,340px)] aspect-square pointer-events-none" aria-hidden="true">
-          <Canvas
-            camera={{ position: [0, 0, 6.4], fov: 45 }}
-            dpr={[1, 1.75]}
-            gl={{ alpha: true, antialias: true }}
-          >
-            <ambientLight intensity={0.35} />
-            <Core progressRef={progressRef} />
-            <Sparkles count={50} scale={[7, 7, 4]} size={2} speed={0.4} color="#67e8f9" opacity={0.5} />
-          </Canvas>
+          <Suspense fallback={null}>
+            <SplashCanvas progressRef={progressRef} />
+          </Suspense>
         </div>
 
         <p data-splash-fade className="mt-2 text-[10px] font-semibold uppercase tracking-[0.4em] text-cyan-300/70">

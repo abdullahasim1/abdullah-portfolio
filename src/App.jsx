@@ -8,6 +8,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import CommandPalette from "./components/CommandPalette";
 import Home from "./pages/Home";
 import { IS_LOW_END } from "./lib/device";
+import { useIdleDeferred } from "./hooks/useIdleDeferred";
 
 /* Three.js wale components lazy — warna three main bundle mein aa jata hai */
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
@@ -36,6 +37,9 @@ function App() {
   });
 
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+
+  // SiteBackground ko idle pe defer karo — initial paint/TBT pe load na ho
+  const deferBackground = useIdleDeferred(2600, 1200);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -79,8 +83,9 @@ function App() {
       {/* Film grain texture */}
       <div className="noise-overlay" aria-hidden="true" />
 
-      {/* Fixed site-wide 3D background (starfield + drifting wireframes) — low-end par skip */}
-      {!IS_LOW_END && (
+      {/* Fixed site-wide 3D background (starfield + drifting wireframes) —
+          low-end skip + idle-deferred (TBT fix: pehle content, phir decoration) */}
+      {!IS_LOW_END && deferBackground && (
         <Suspense fallback={null}>
           <SiteBackground />
         </Suspense>

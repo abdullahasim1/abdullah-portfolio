@@ -1,21 +1,24 @@
 @import "tailwindcss";
 
-/* CLS mitigation: metric-matched fallbacks — webfont load hone par layout shift nahi hota.
-   size-adjust/ascent-override fallback ko Space Grotesk / Inter ke approx metrics dete hain. */
+/* CLS mitigation: metric-matched fallbacks (real font metrics se calculated).
+   Formula: ascent-override = (ascent/em) / size-adjust, same for descent.
+   Font-swap pe line boxes ka size same rehta hai → zero layout shift. */
 @font-face {
   font-family: "Space Grotesk Fallback";
   src: local("Arial");
-  size-adjust: 104%;
-  ascent-override: 95%;
-  descent-override: 26%;
+  size-adjust: 100.5%;
+  ascent-override: 97.91%;
+  descent-override: 29.05%;
+  line-gap-override: 0%;
 }
 
 @font-face {
   font-family: "Inter Fallback";
   src: local("Arial");
-  size-adjust: 107%;
-  ascent-override: 92%;
-  descent-override: 24%;
+  size-adjust: 101.5%;
+  ascent-override: 95.44%;
+  descent-override: 23.76%;
+  line-gap-override: 0%;
 }
 
 @theme {

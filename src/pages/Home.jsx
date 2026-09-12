@@ -5,6 +5,7 @@ import WordFlipper from "../components/WordFlipper";
 import MagneticButton from "../components/MagneticButton";
 import { scrollToSection } from "../lib/smoothScroll";
 import { IS_LOW_END } from "../lib/device";
+import { useIdleDeferred } from "../hooks/useIdleDeferred";
 
 // Hero 3D scene — lazy chunk (heavy hai, sirf zaroorat par load hota hai)
 const HeroScene = lazy(() => import("../components/three/HeroScene"));
@@ -23,6 +24,9 @@ const chips = [
 function Home({ introDone = true }) {
   const contentRef = useRef(null);
   const parallaxRef = useRef(null);
+
+  // HeroScene ko idle-defer karo — pehle text render ho (LCP), 3D baad mein.
+  const deferHero = useIdleDeferred(3000, 600);
 
   useEffect(() => {
     // Splash screen ke baad hi hero entrance chale
@@ -73,7 +77,8 @@ function Home({ introDone = true }) {
       id="home"
       className="relative min-h-screen flex flex-col items-center overflow-hidden"
     >
-      {/* CSS glow fallback while the R3F scene loads */}
+      {/* CSS glow fallback while the R3F scene loads — inset-0 centered:
+          font-swap pe hero content height badal-ne se glow CLS nahi karta */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
       </div>
@@ -107,10 +112,13 @@ function Home({ introDone = true }) {
 
           <h1
             data-hero-stagger
-            className="font-display font-bold leading-[1.05] tracking-tight text-4xl sm:text-6xl lg:text-7xl"
+            className="font-display font-bold leading-[1.05] tracking-tight text-[34px] sm:text-6xl lg:text-7xl"
           >
             <span className="block text-white light:text-slate-900">Full Stack</span>
-            <span className="block">
+            {/* whitespace-nowrap + min-h: font-swap/word-flip pe line count
+                change nahi hota → hero height stable → zero CLS.
+                text-[34px]: "UI/UX Designer." mobile viewport mein nowrap fit */}
+            <span className="block whitespace-nowrap min-h-[1.05em]">
               <WordFlipper
                 words={["Developer.", "UI/UX Designer.", "AI Builder."]}
                 intervalMs={2600}
@@ -202,9 +210,11 @@ function Home({ introDone = true }) {
         </div>
       </div>
 
-      {/* 3D Scene */}
+      {/* 3D Scene — idle-deferred, low-end skip (TBT fix) */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <Suspense fallback={null}>{!IS_LOW_END && <HeroScene />}</Suspense>
+        <Suspense fallback={null}>
+          {!IS_LOW_END && deferHero && <HeroScene />}
+        </Suspense>
       </div>
 
       {/* Scroll hint */}

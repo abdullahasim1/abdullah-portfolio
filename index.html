@@ -217,26 +217,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://api.web3forms.com" />
-    <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
+    <!-- Fonts async load (render-blocking remove) — display=swap se text turant
+         fallback font pe render hota hai, font background mein load hota hai -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
-    <!-- Preload display font (LCP/CLS — hero heading Space Grotesk hai) -->
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      crossorigin
-      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2"
-    />
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      crossorigin
-      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2"
-    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>
