@@ -3,6 +3,7 @@ import { featuredProjects } from "../data/projects";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { playClickSound, playOpenSound } from "../lib/sound";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import { showToast } from "../lib/toast";
 
 const actions = [
   {
@@ -116,9 +117,13 @@ const actions = [
     label: "Copy Email Address",
     group: "Quick Actions",
     icon: "📋",
-    action: () => {
-      navigator.clipboard.writeText("abdullah.gc.18@gmail.com");
-      alert("Email copied to clipboard: abdullah.gc.18@gmail.com");
+    action: async () => {
+      try {
+        await navigator.clipboard.writeText("abdullah.gc.18@gmail.com");
+        showToast("Email copied: abdullah.gc.18@gmail.com");
+      } catch {
+        showToast("Failed to copy email");
+      }
     },
   },
 ];

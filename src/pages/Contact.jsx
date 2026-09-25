@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState, useRef, useEffect } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import { IS_LOW_END } from "../lib/device";
@@ -10,6 +10,8 @@ const EMAIL = "abdullah.gc.18@gmail.com";
 /* Web3Forms (free) — https://web3forms.com se email daal kar access key lein.
    Key khaali ho to form mailto: fallback use karta hai. */
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "";
+
+const MIN_FILL_TIME = 2000; // 2 seconds minimum
 
 const contactInfo = [
   {
@@ -50,6 +52,48 @@ function Contact() {
   useScrollReveal("#contact .reveal");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const statusRef = React.useRef(null);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const mountTimeRef = useRef(Date.now());
+
+  useEffect(() => {
+    mountTimeRef.current = Date.now();
+  }, []);
+
+  function validateField(name, value) {
+    const newErrors = { ...errors };
+    if (name === "name" && !value.trim()) {
+      newErrors.name = "Name is required";
+    } else if (name === "name") {
+      delete newErrors.name;
+    }
+    if (name === "email" && !value.trim()) {
+      newErrors.email = "Email is required";
+    } else if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+      newErrors.email = "Please enter a valid email";
+    } else if (name === "email") {
+      delete newErrors.email;
+    }
+    if (name === "message" && !value.trim()) {
+      newErrors.message = "Message is required";
+    } else if (name === "message") {
+      delete newErrors.message;
+    }
+    setErrors(newErrors);
+  }
+
+  function handleBlur(e) {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    validateField(name, value);
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    if (touched[name]) {
+      validateField(name, value);
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -61,15 +105,31 @@ function Contact() {
     const message = data.get("message")?.trim() || "";
     const honeypot = data.get("website")?.trim() || "";
 
-    // Honeypot check — bots fill hidden fields, humans don't
-    if (honeypot) {
-      // Silently reject bot submissions
-      setStatus("sent");
-      form.reset();
+    // Min fill time check — bots submit instantly
+    const fillTime = Date.now() - mountTimeRef.current;
+    if (fillTime < MIN_FILL_TIME) {
+      setStatus("error");
+      statusRef.current?.focus();
       return;
     }
 
-    if (!name || !email || !message) {
+    // Honeypot check — bots fill hidden fields, humans don't
+    if (honeypot) {
+      setStatus("sent");
+      form.reset();
+      mountTimeRef.current = Date.now();
+      return;
+    }
+
+    // Validate all fields
+    const newErrors = {};
+    if (!name) newErrors.name = "Name is required";
+    if (!email) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = "Please enter a valid email";
+    if (!message) newErrors.message = "Message is required";
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setTouched({ name: true, email: true, message: true });
       setStatus("error");
       statusRef.current?.focus();
       return;
@@ -80,10 +140,12 @@ function Contact() {
       const body = `Hi Abdullah,\n\n${message}\n\n— ${name}\n${email}`;
       window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       form.reset();
+      mountTimeRef.current = Date.now();
       return;
     }
 
     setStatus("sending");
+    setErrors({});
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
@@ -105,6 +167,7 @@ function Contact() {
       setStatus("sent");
       track("contact-submit");
       form.reset();
+      mountTimeRef.current = Date.now();
       statusRef.current?.focus();
     } catch {
       setStatus("error");
@@ -206,10 +269,19 @@ function Contact() {
                     type="text"
                     name="name"
                     placeholder="Your Name"
-                    className={inputClass}
+                    className={`${inputClass} ${errors.name && touched.name ? "border-amber-400/60" : ""}`}
                     autoComplete="name"
                     required
+                    aria-invalid={!!(errors.name && touched.name)}
+                    aria-describedby={errors.name && touched.name ? "name-error" : undefined}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                   />
+                  {errors.name && touched.name && (
+                    <p id="name-error" className="mt-1.5 text-sm text-amber-300" role="alert">
+                      {errors.name}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="contact-email" className="sr-only">Your Email</label>
@@ -218,10 +290,19 @@ function Contact() {
                     type="email"
                     name="email"
                     placeholder="Your Email"
-                    className={inputClass}
+                    className={`${inputClass} ${errors.email && touched.email ? "border-amber-400/60" : ""}`}
                     autoComplete="email"
                     required
+                    aria-invalid={!!(errors.email && touched.email)}
+                    aria-describedby={errors.email && touched.email ? "email-error" : undefined}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                   />
+                  {errors.email && touched.email && (
+                    <p id="email-error" className="mt-1.5 text-sm text-amber-300" role="alert">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
               </div>
               <div>
@@ -242,9 +323,18 @@ function Contact() {
                   placeholder="Tell me about your project…"
                   rows={5}
                   maxLength={3000}
-                  className={`${inputClass} resize-none`}
+                  className={`${inputClass} resize-none ${errors.message && touched.message ? "border-amber-400/60" : ""}`}
                   required
+                  aria-invalid={!!(errors.message && touched.message)}
+                  aria-describedby={errors.message && touched.message ? "message-error" : undefined}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                 />
+                {errors.message && touched.message && (
+                  <p id="message-error" className="mt-1.5 text-sm text-amber-300" role="alert">
+                    {errors.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-1">

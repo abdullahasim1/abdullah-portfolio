@@ -1,0 +1,123 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#05060a" />
+    <title>AWS Certified Generative AI Developer (Professional) — my study path — Abdullah Bin Asim</title>
+    <meta name="description" content="A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safety, and cost trade-offs." />
+    <link rel="canonical" href="https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional" />
+    <meta property="og:title" content="AWS Certified Generative AI Developer (Professional) — my study path" />
+    <meta property="og:description" content="A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safety, and cost trade-offs." />
+    <meta property="og:image" content="https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AWS Certified Generative AI Developer (Professional) — my study path" />
+    <meta name="twitter:description" content="A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safety, and cost trade-offs." />
+    <meta name="twitter:image" content="https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional.jpg" />
+    <link rel="stylesheet" href="/fonts.css" />
+  </head>
+  <body>
+    <header style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <nav><a href="/" style="color:#e2e8f0;text-decoration:none;font-weight:bold;">← Back to Portfolio</a></nav>
+    </header>
+    <main style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <article>
+        <h1>AWS Certified Generative AI Developer (Professional) — my study path</h1>
+        <p><time datetime="2026-07-15">Jul 15, 2026</time> · 2 min read</p>
+        <span class="tag">AWS</span> <span class="tag">Generative AI</span> <span class="tag">Certification</span> <span class="tag">Bedrock</span>
+        <div class="prose-content"><p>I passed the <strong>AWS Certified Generative AI Developer — Professional</strong> certification (and held the Early Adopter badge from the earlier track). This is the study path that worked for me, organised the way the exam actually tests you.</p>
+<h2>What the exam really measures</h2>
+<p>It is not a trivia quiz about model names. The Professional tier expects you to <strong>design and operate</strong> GenAI solutions: pick patterns, put them in production, evaluate them, and control cost and safety. Every question had a &quot;what would you do first&quot; flavour.</p>
+<h2>The four blocks I studied</h2>
+<h3>1. Model access and selection on Bedrock</h3>
+<p>Know the trade-off matrix cold: latency vs. quality, on-demand vs. provisioned throughput, and when <em>not</em> to use the largest model. Multi-model strategy (route cheap requests to small models) showed up repeatedly.</p>
+<h3>2. RAG architecture</h3>
+<p>The core pattern. Chunking strategies, embedding model choice, hybrid search (semantic + keyword), reranking, and metadata filtering. Be able to diagnose a RAG pipeline that returns technically-similar but factually-wrong passages — usually a chunking or ranking problem, not a model problem.</p>
+<h3>3. Evaluation and safety</h3>
+<p>Offline vs. online evaluation, building a golden dataset, guardrails, prompt-injection defences, and content filtering. This block carried the most &quot;production readiness&quot; questions — the stuff that separates a demo from a shipped feature.</p>
+<h3>4. Cost and scaling</h3>
+<p>Token accounting, caching repeated context, right-sizing models, and monitoring with CloudWatch. I actually built a small usage-tracking dashboard for a client project, and the cost questions were much easier after that.</p>
+<h2>How I studied</h2>
+<ul>
+<li><strong>Two weeks, ~1 hour/day.</strong> Consistency beat cramming.</li>
+<li><strong>Hands-on over videos.</strong> Every concept got a tiny Bedrock experiment — a RAG notebook, a guardrail test, a cost calculation.</li>
+<li><strong>Practice exams for pacing only.</strong> They teach you to read the question stem carefully, not the content.</li>
+<li><strong>Built projects with the patterns.</strong> Applying retrieval and evaluation to a real portfolio project cemented far more than any slide deck.</li>
+</ul>
+<h2>Would I recommend it?</h2>
+<p>If you are already shipping LLM features and want a structured, AWS-flavoured mental model for production GenAI — yes. If you have never called an API with a prompt, start smaller first.</p>
+<p>The certification is a checkpoint. The actual skill is knowing <strong>why</strong> a pipeline behaves the way it does.</p>
+</div>
+        <p style="margin:2em 0 0;font-size:0.9rem;color:#67e8f9;"><a href="/rss.xml" style="color:#67e8f9;">Subscribe via RSS</a></p>
+      </article>
+    </main>
+    <footer style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  "><nav><a href="/" style="color:#e2e8f0;">Home</a> | <a href="/rss.xml" style="color:#67e8f9;">RSS</a></nav></footer>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"BlogPosting","headline":"AWS Certified Generative AI Developer (Professional) — my study path","description":"A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safety, and cost trade-offs.","datePublished":"2026-07-15","url":"https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional","author":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"publisher":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"mainEntityOfPage":"https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional","image":"https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional.jpg"}
+    </script>
+  </body>
+</html>

@@ -283,3 +283,17 @@ Deploying to production and providing ongoing support to ensure long-term succes
 - LinkedIn: https://www.linkedin.com/in/abdullahasim1/
 - GitHub: https://github.com/abdullahasim1
 - Portfolio: https://abdullah-asim-dev.vercel.app/
+
+<!-- LLMS-BLOG:START -->
+
+## Blog
+
+- **Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit** (9/12/2026) — The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and wh...
+- **How I split a React 19 + Three.js app without breaking the bundle** (8/28/2026) — Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-de...
+- **AWS Certified Generative AI Developer (Professional) — my study path** (7/15/2026) — A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safet...
+
+---
+
+*Full blog archive at https://abdullah-asim-dev.vercel.app/rss.xml*
+
+<!-- LLMS-BLOG:END -->

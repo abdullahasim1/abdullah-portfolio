@@ -1,0 +1,137 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#05060a" />
+    <title>Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit — Abdullah Bin Asim</title>
+    <meta name="description" content="The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and what I measured at each step." />
+    <link rel="canonical" href="https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s" />
+    <meta property="og:title" content="Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit" />
+    <meta property="og:description" content="The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and what I measured at each step." />
+    <meta property="og:image" content="https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit" />
+    <meta name="twitter:description" content="The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and what I measured at each step." />
+    <meta name="twitter:image" content="https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s.jpg" />
+    <link rel="stylesheet" href="/fonts.css" />
+  </head>
+  <body>
+    <header style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <nav><a href="/" style="color:#e2e8f0;text-decoration:none;font-weight:bold;">← Back to Portfolio</a></nav>
+    </header>
+    <main style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <article>
+        <h1>Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit</h1>
+        <p><time datetime="2026-09-12">Sep 12, 2026</time> · 2 min read</p>
+        <span class="tag">Performance</span> <span class="tag">Vite</span> <span class="tag">Three.js</span> <span class="tag">Core Web Vitals</span>
+        <div class="prose-content"><p>My portfolio had a Lighthouse performance score that looked fine on desktop and fell apart on a mid-range phone. Field numbers told the real story: <strong>LCP 3.7s, TBT 866ms</strong>. Here is exactly what was wrong and what I changed.</p>
+<h2>1. Three.js was riding along on first load</h2>
+<p>The hero scene is nice, but nothing about a starfield is content. I was importing <code>three</code>, <code>@react-three/fiber</code> and <code>@react-three/drei</code> eagerly, so the browser had to download and parse a <strong>~730KB chunk before first paint</strong> even finished competing for the main thread.</p>
+<p><strong>Fix:</strong> every R3F component is now behind <code>React.lazy()</code>, and Vite&#39;s <code>manualChunks</code> keeps <code>three</code> in its own chunk so it never lands in the entry graph. The site background is deferred further with an idle hook, so it mounts only after the main thread has been quiet for a while.</p>
+<h2>2. The service worker was doing too much, too early</h2>
+<p>Cache-priming during install meant the SW was fetching assets while the page was still hydrating.</p>
+<p><strong>Fix:</strong> static pre-caching is now tolerant (a single 404 no longer fails the whole install), hashed assets use stale-while-revalidate, and navigations are network-first with a cache fallback. The SW only registers in production builds.</p>
+<h2>3. Mouse handlers were fighting the main thread</h2>
+<p>The cursor follower and tilt cards attached raw <code>mousemove</code> listeners that ran layout reads on every event.</p>
+<p><strong>Fix:</strong> a shared <code>useRafThrottle</code> hook collapses events into one callback per frame. Combined with viewport-gated frameloops (<code>useInViewport</code>) and DPR clamping on every canvas, the GPU work dropped to what is actually visible.</p>
+<h2>The result</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LCP</td>
+<td>3.7s</td>
+<td>0.9s</td>
+</tr>
+<tr>
+<td>TBT</td>
+<td>866ms</td>
+<td>406ms</td>
+</tr>
+<tr>
+<td>3D on first load</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+</tbody></table>
+<p>The lesson: <strong>performance is mostly subtraction.</strong> Defer the decoration, keep the content, and measure on a phone — not on the laptop that wrote the code.</p>
+</div>
+        <p style="margin:2em 0 0;font-size:0.9rem;color:#67e8f9;"><a href="/rss.xml" style="color:#67e8f9;">Subscribe via RSS</a></p>
+      </article>
+    </main>
+    <footer style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  "><nav><a href="/" style="color:#e2e8f0;">Home</a> | <a href="/rss.xml" style="color:#67e8f9;">RSS</a></nav></footer>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"BlogPosting","headline":"Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit","description":"The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and what I measured at each step.","datePublished":"2026-09-12","url":"https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s","author":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"publisher":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"mainEntityOfPage":"https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s","image":"https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s.jpg"}
+    </script>
+  </body>
+</html>

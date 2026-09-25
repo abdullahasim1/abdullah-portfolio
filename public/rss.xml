@@ -6,7 +6,7 @@
     <atom:link href="https://abdullah-asim-dev.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
     <description>Articles on full-stack development, AI engineering and web performance by Abdullah Bin Asim.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 25 Sep 2026 13:09:32 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 25 Sep 2026 17:33:50 GMT</lastBuildDate>
     <item>
       <title>Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit</title>
       <link>https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s</link>

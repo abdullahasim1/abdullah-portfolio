@@ -10,6 +10,10 @@ import { playClickSound } from "../lib/sound";
 const SITE_URL = "https://abdullah-asim-dev.vercel.app";
 const BLOG_PATH_RE = /^\/blog\/([^/]+)\/?$/;
 
+const DEFAULT_TITLE = "Abdullah Bin Asim — Full Stack Developer & AI Builder";
+const DEFAULT_DESCRIPTION = "Full Stack Developer with AWS Generative AI credentials. React, Next.js, Node.js, AI agents & automation. 25+ projects shipped. Available for new opportunities.";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+
 function formatDate(iso) {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
     year: "numeric",
@@ -17,6 +21,55 @@ function formatDate(iso) {
     day: "numeric",
     timeZone: "UTC",
   });
+}
+
+function setMeta(attr, selector, content) {
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute(attr, content);
+}
+
+function applyPostMeta(post) {
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  document.title = `${post.title} — Abdullah Bin Asim`;
+  setMeta("content", 'meta[name="description"]', post.description);
+  setMeta("href", 'link[rel="canonical"]', url);
+  setMeta("content", 'meta[property="og:url"]', url);
+  setMeta("content", 'meta[property="og:type"]', "article");
+  setMeta("content", 'meta[property="og:title"]', post.title);
+  setMeta("content", 'meta[property="og:description"]', post.description);
+  setMeta("content", 'meta[name="twitter:title"]', post.title);
+  setMeta("content", 'meta[name="twitter:description"]', post.description);
+  setMeta("content", 'meta[property="og:image"]', `${SITE_URL}/blog/${post.slug}.jpg`);
+
+  // Inject BlogPosting JSON-LD
+  const ld = document.createElement("script");
+  ld.type = "application/ld+json";
+  ld.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    url,
+    author: { "@id": `${SITE_URL}/#person` },
+    publisher: { "@id": `${SITE_URL}/#person` },
+    mainEntityOfPage: url,
+    image: `${SITE_URL}/blog/${post.slug}.jpg`,
+  });
+  document.head.appendChild(ld);
+}
+
+function restoreDefaultMeta() {
+  document.title = DEFAULT_TITLE;
+  setMeta("content", 'meta[name="description"]', DEFAULT_DESCRIPTION);
+  setMeta("href", 'link[rel="canonical"]', SITE_URL);
+  setMeta("content", 'meta[property="og:url"]', SITE_URL);
+  setMeta("content", 'meta[property="og:type"]', "website");
+  setMeta("content", 'meta[property="og:title"]', DEFAULT_TITLE);
+  setMeta("content", 'meta[property="og:description"]', DEFAULT_DESCRIPTION);
+  setMeta("content", 'meta[name="twitter:title"]', DEFAULT_TITLE);
+  setMeta("content", 'meta[name="twitter:description"]', DEFAULT_DESCRIPTION);
+  setMeta("content", 'meta[property="og:image"]', DEFAULT_OG_IMAGE);
 }
 
 /* ---------------- Reader overlay ---------------- */
@@ -105,11 +158,13 @@ function Blog() {
   const openPost = (post, { push = true } = {}) => {
     setActive(post);
     track("blog-open", { slug: post.slug });
+    applyPostMeta(post);
     if (push) history.pushState({ slug: post.slug }, "", `/blog/${post.slug}`);
   };
 
   const closePost = () => {
     setActive(null);
+    restoreDefaultMeta();
     if (BLOG_PATH_RE.test(location.pathname)) {
       if (history.state?.slug) history.back();
       else history.replaceState({}, "", "/");

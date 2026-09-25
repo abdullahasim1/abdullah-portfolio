@@ -1,0 +1,126 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#05060a" />
+    <title>How I split a React 19 + Three.js app without breaking the bundle — Abdullah Bin Asim</title>
+    <meta name="description" content="Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-dependency trap with react-three-fiber." />
+    <link rel="canonical" href="https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting" />
+    <meta property="og:title" content="How I split a React 19 + Three.js app without breaking the bundle" />
+    <meta property="og:description" content="Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-dependency trap with react-three-fiber." />
+    <meta property="og:image" content="https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How I split a React 19 + Three.js app without breaking the bundle" />
+    <meta name="twitter:description" content="Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-dependency trap with react-three-fiber." />
+    <meta name="twitter:image" content="https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting.jpg" />
+    <link rel="stylesheet" href="/fonts.css" />
+  </head>
+  <body>
+    <header style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <nav><a href="/" style="color:#e2e8f0;text-decoration:none;font-weight:bold;">← Back to Portfolio</a></nav>
+    </header>
+    <main style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <article>
+        <h1>How I split a React 19 + Three.js app without breaking the bundle</h1>
+        <p><time datetime="2026-08-28">Aug 28, 2026</time> · 2 min read</p>
+        <span class="tag">React</span> <span class="tag">Vite</span> <span class="tag">Architecture</span> <span class="tag">Three.js</span>
+        <div class="prose-content"><p>Code splitting looks easy until one day your &quot;optimised&quot; build downloads the 3D engine on a 3G connection. These are the patterns that actually held up in production on my portfolio.</p>
+<h2>Split the page, not just the components</h2>
+<p>My app is a single scrolling page with eleven sections. Lazy-loading <code>Contact</code> while eagerly importing <code>Projects</code> buys you nothing — the browser still waits for the entry graph.</p>
+<p>So <strong>every below-the-fold section</strong> is a <code>React.lazy()</code> import wrapped in one <code>&lt;Suspense&gt;</code>. The entry chunk contains the hero, the navbar and the shell. Everything else streams in after first paint.</p>
+<h2>Let Vite&#39;s modulepreload work for you — carefully</h2>
+<p>Vite adds <code>&lt;link rel=&quot;modulepreload&quot;&gt;</code> for every dependency of your entry. If your entry touches <code>three</code> even once, the browser preloads the whole 3D chunk for every visitor, and your split was theatre.</p>
+<p>The fix is boring: keep heavy imports inside <code>lazy()</code> callbacks only, and turn off the polyfill you do not need:</p>
+<pre><code class="language-js">build: {
+  modulePreload: { polyfill: false },
+  rollupOptions: {
+    output: {
+      manualChunks(id) {
+        if (id.includes(&quot;node_modules/three/&quot;)) return &quot;three&quot;;
+        if (id.includes(&quot;node_modules/gsap/&quot;)) return &quot;gsap&quot;;
+      },
+    },
+  },
+}
+</code></pre>
+<h2>Do not hand-split react-three-fiber</h2>
+<p>It is tempting to pull <code>react</code>, <code>react-dom</code> and <code>r3f</code> into separate vendor chunks. <strong>Do not.</strong> <code>react-reconciler</code> (r3f&#39;s dependency) reaches into React internals; manual splitting creates circular chunk dependencies and can drag r3f back into the entry graph. Let small vendors stay next to the index chunk — gzip keeps them honest.</p>
+<h2>Defer by idle, not by timer</h2>
+<p>A <code>setTimeout(() =&gt; mountBackground(), 2000)</code> fires during a user&#39;s scroll and competes with it. An idle-deferred hook (<code>requestIdleCallback</code> with a timeout guard) waits for quiet time, which is exactly when you want decoration to arrive.</p>
+<h2>Rule of thumb</h2>
+<p>If a chunk contains <strong>zero bytes of content the user came for</strong>, it must not be in the critical path. Split it, preload-guard it, and verify on a throttled mobile profile — not in your devtools on fibre.</p>
+</div>
+        <p style="margin:2em 0 0;font-size:0.9rem;color:#67e8f9;"><a href="/rss.xml" style="color:#67e8f9;">Subscribe via RSS</a></p>
+      </article>
+    </main>
+    <footer style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  "><nav><a href="/" style="color:#e2e8f0;">Home</a> | <a href="/rss.xml" style="color:#67e8f9;">RSS</a></nav></footer>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"BlogPosting","headline":"How I split a React 19 + Three.js app without breaking the bundle","description":"Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-dependency trap with react-three-fiber.","datePublished":"2026-08-28","url":"https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting","author":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"publisher":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"mainEntityOfPage":"https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting","image":"https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting.jpg"}
+    </script>
+  </body>
+</html>

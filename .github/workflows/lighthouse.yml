@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  lighthouse:
+  lighthouse-desktop:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,10 +23,32 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run Lighthouse CI
+      - name: Run Lighthouse CI (Desktop)
         uses: treosh/lighthouse-ci-action@v12
         with:
           uploadArtifacts: true
           temporaryPublicStorage: true
-          budgetPath: ./lighthouse-budget.json
-          configPath: ./lighthouserc.json
+          configPath: ./lighthouserc.desktop.json
+
+  lighthouse-mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run Lighthouse CI (Mobile)
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./lighthouserc.mobile.json

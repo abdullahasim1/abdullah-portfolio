@@ -58,6 +58,13 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+// Listen for skipWaiting message from clients
+self.addEventListener("message", (event) => {
+  if (event.data === "skipWaiting") {
+    self.skipWaiting();
+  }
+});
+
 // Fetch event - serve from cache, fallback to network
 self.addEventListener("fetch", (event) => {
   const { request } = event;

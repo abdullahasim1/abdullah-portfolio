@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "predev": "node scripts/build-content.mjs",
@@ -27,17 +30,19 @@
     "react-dom": "^19.1.1",
     "simple-icons": "^16.28.0",
     "tailwindcss": "^4.1.12",
-    "three": "^0.185.1"
+    "three": "^0.186.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.33.0",
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/js": "^10.11.0",
+    "@playwright/test": "^1.63.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.0",
-    "eslint": "^9.33.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
@@ -46,8 +51,9 @@
     "lint-staged": "^17.5.1",
     "marked": "^18.0.14",
     "rollup-plugin-visualizer": "^7.1.1",
+    "sharp": "^0.35.4",
     "typescript": "^7.0.2",
-    "vite": "^7.1.2",
+    "vite": "^8.3.1",
     "vitest": "^5.0.2"
   },
   "lint-staged": {

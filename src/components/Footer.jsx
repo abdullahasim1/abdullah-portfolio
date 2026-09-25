@@ -15,7 +15,8 @@ const quickLinks = [
   { name: "Projects", href: "#projects" },
   { name: "Certifications", href: "#certifications" },
   { name: "Skills", href: "#skills" },
-  { name: "Contact", href: "#contact" }
+  { name: "Contact", href: "#contact" },
+  { name: "Privacy", href: "/privacy.html" }
 ];
 
 const services = [
