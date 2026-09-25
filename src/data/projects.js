@@ -1,3 +1,4 @@
+// @ts-check
 /* NOTE: Har project mein `results` array (optional) — case-study modal mein
    "Results & Impact" section dikhata hai. REAL numbers bharein, e.g.:
    results: [
@@ -15,7 +16,7 @@ export const featuredProjects = [
     liveLink: "https://four-ai-dev.vercel.app",
     gradient: "from-violet-500 to-purple-600",
     emoji: "🤖",
-    image: "/projects/four-ai.jpg",
+    image: "/projects/four-ai.webp",
     role: "Full Stack Developer",
     year: "2024",
     results: [],
@@ -55,7 +56,7 @@ export const featuredProjects = [
     liveLink: "https://hiregen-ai.vercel.app",
     gradient: "from-sky-500 to-blue-600",
     emoji: "✨",
-    image: "/projects/genai.jpg",
+    image: "/projects/genai.webp",
     role: "Full Stack Developer & AI Integrator",
     year: "2025",
     results: [],
@@ -95,7 +96,7 @@ export const featuredProjects = [
     liveLink: "https://job-recuitment.vercel.app",
     gradient: "from-indigo-500 to-blue-600",
     emoji: "💼",
-    image: "/projects/job-recruitment.jpg",
+    image: "/projects/job-recruitment.webp",
     role: "Frontend Developer",
     year: "2024",
     results: [],
@@ -117,7 +118,7 @@ export const featuredProjects = [
     liveLink: "https://food-order-project.vercel.app",
     gradient: "from-orange-500 to-red-500",
     emoji: "🍔",
-    image: "/projects/food-order.jpg",
+    image: "/projects/food-order.webp",
     role: "Full Stack Developer",
     year: "2023",
     results: [],
@@ -139,7 +140,7 @@ export const featuredProjects = [
     liveLink: "https://home-services-tau.vercel.app",
     gradient: "from-emerald-500 to-teal-600",
     emoji: "🏠",
-    image: "/projects/home-services.jpg",
+    image: "/projects/home-services.webp",
     role: "Web Developer",
     year: "2023",
     results: [],
@@ -161,7 +162,7 @@ export const featuredProjects = [
     liveLink: "https://abdullah-asim-dev.vercel.app",
     gradient: "from-indigo-500 to-fuchsia-500",
     emoji: "✨",
-    image: "/projects/portfolio.jpg",
+    image: "/projects/portfolio.webp",
     role: "Design & Development",
     year: "2026",
     results: [],
@@ -190,15 +191,21 @@ export const languageColors = {
   default: "#8b949e",
 };
 
+/**
+ * @param {string} repoName
+ */
 export function githubOgImage(repoName) {
   return `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${repoName}`;
 }
 
+/**
+ * @param {string} dateString
+ */
 export function formatRelativeDate(dateString) {
   const date = new Date(dateString);
   if (!dateString || Number.isNaN(date.getTime())) return "Updated recently";
   const now = new Date();
-  const diffMs = now - date;
+  const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
   if (diffDays < 1) return "Updated today";
@@ -208,6 +215,9 @@ export function formatRelativeDate(dateString) {
   return `Updated ${Math.floor(diffDays / 365)} years ago`;
 }
 
+/**
+ * @param {string} name
+ */
 export function formatRepoName(name) {
-  return name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  return name.replace(/-/g, " ").replace(/\b\w/g, (/** @type {string} */ c) => c.toUpperCase());
 }

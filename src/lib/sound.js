@@ -1,6 +1,8 @@
+// @ts-check
 /* Web Audio API synthesizer — 0KB audio files, zero latency, works offline.
    Persistent sound toggle stored in localStorage. */
 
+/** @type {AudioContext | null} */
 let audioCtx = null;
 let isMuted = false;
 
@@ -11,7 +13,8 @@ if (typeof window !== "undefined") {
 function getAudioContext() {
   if (typeof window === "undefined") return null;
   if (!audioCtx) {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    const AudioContextClass =
+      window.AudioContext || /** @type {any} */ (window).webkitAudioContext;
     if (AudioContextClass) {
       audioCtx = new AudioContextClass();
     }

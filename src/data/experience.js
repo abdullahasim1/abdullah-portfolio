@@ -1,3 +1,4 @@
+// @ts-check
 /* Experience & milestones — site ke public content se derived (stats, certifications, services).
    NOTE: Agar exact dates/roles alag hain to yahan update kar dein — yeh data About section
    ki timeline mein render hota hai. */

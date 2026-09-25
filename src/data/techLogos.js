@@ -1,3 +1,4 @@
+// @ts-check
 import {
   siReact,
   siNextdotjs,
@@ -23,6 +24,9 @@ import {
   siZapier,
 } from "simple-icons";
 
+/**
+ * @param {{ hex: string, path: string }} si
+ */
 const pick = (si) => ({
   // Dark backgrounds pe black logos dikhte hi nahi — white fallback
   hex: si.hex === "000000" ? "FFFFFF" : si.hex,

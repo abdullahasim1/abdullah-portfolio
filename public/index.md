@@ -44,6 +44,13 @@ React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, Claude & AI A
 - AWS Certified AI Practitioner
 - AWS Certification Training
 
+## Blog
+
+- [Cutting portfolio LCP from 3.7s to 0.9s](https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s)
+- [How I split a React 19 + Three.js app without breaking the bundle](https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting)
+- [AWS Certified Generative AI Developer (Professional) — study path](https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional)
+- RSS: https://abdullah-asim-dev.vercel.app/rss.xml
+
 ## Contact
 
 - Email: abdullah.gc.18@gmail.com

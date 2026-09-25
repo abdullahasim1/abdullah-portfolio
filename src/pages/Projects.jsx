@@ -6,6 +6,7 @@ import { useGithubRepos } from "../hooks/useGithubRepos";
 import SplitTextAnimation from "../components/SplitTextAnimation";
 import ProjectModal from "../components/ProjectModal";
 import TiltCard from "../components/TiltCard";
+import { track } from "../lib/analytics";
 import {
   featuredProjects,
   languageColors,
@@ -373,7 +374,10 @@ function Projects() {
                 <FeaturedProjectCard
                   project={project}
                   large
-                  onOpenCaseStudy={() => setActiveProject(project)}
+                  onOpenCaseStudy={() => {
+                    track("project-open", { id: project.id });
+                    setActiveProject(project);
+                  }}
                 />
               </div>
             </div>

@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useState } from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import { IS_LOW_END } from "../lib/device";
+import { track } from "../lib/analytics";
 
 const PaperPlane = lazy(() => import("../components/three/PaperPlane"));
 
@@ -102,6 +103,7 @@ function Contact() {
       const json = await res.json();
       if (!json.success) throw new Error(json.message || "Send failed");
       setStatus("sent");
+      track("contact-submit");
       form.reset();
       statusRef.current?.focus();
     } catch {

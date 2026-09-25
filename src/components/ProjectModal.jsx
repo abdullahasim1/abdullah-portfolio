@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { githubOgImage, GITHUB_USERNAME } from "../data/projects";
 import { getLenis } from "../lib/smoothScroll";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 /* Modal image — project screenshot, fallback OG image, phir gradient */
 function ModalImage({ project }) {
@@ -42,6 +43,9 @@ export default function ProjectModal({ project, onClose }) {
   const backdropRef = useRef(null);
   const panelRef = useRef(null);
   const closeBtnRef = useRef(null);
+
+  /* Tab focus dialog ke bahar na bhaage */
+  useFocusTrap(backdropRef);
 
   /* Entrance animation */
   useEffect(() => {

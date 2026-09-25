@@ -1,3 +1,4 @@
+// @ts-check
 /* Device capability detection — 3D scenes (Three.js/R3F) sirf capable desktops par
    render hote hain. Phones/tablets par 3D skip hota hai kyunki:
    1. Hardware weak hota hai (fewer cores, less RAM)
@@ -9,7 +10,7 @@ function detectLowEnd() {
   if (typeof WebGLRenderingContext === "undefined") return true; // WebGL hi nahi
 
   const cores = navigator.hardwareConcurrency || 8;
-  const mem = navigator.deviceMemory || 8; // GB (Chrome/Android only)
+  const mem = /** @type {any} */ (navigator).deviceMemory || 8; // GB (Chrome/Android only)
 
   // pointer: coarse = touch (phones/tablets) — 3D skip, CSS fallback dikhao
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;

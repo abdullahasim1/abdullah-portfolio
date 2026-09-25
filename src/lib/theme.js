@@ -1,3 +1,4 @@
+// @ts-check
 /* Theme management — dark (default) / light.
    - localStorage mein `aa-theme` save hota hai
    - Pehli visit par system preference (prefers-color-scheme) use hoti hai
@@ -28,6 +29,9 @@ export function getTheme() {
   return "dark";
 }
 
+/**
+ * @param {string} theme
+ */
 export function applyTheme(theme) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;

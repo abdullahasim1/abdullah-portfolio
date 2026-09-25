@@ -1,3 +1,4 @@
+// @ts-check
 /* R3F useFrame ke andar React state nahi padha jaata —
    is liye scroll progress ek mutable shared store mein rakhte hain */
 export const scrollState = {

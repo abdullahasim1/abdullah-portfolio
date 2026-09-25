@@ -1,3 +1,4 @@
+// @ts-check
 /* NOTE: `image` (photo URL) aur `link` (LinkedIn/GitHub profile) optional hain —
    jab tak add nahi karte, initials avatar aur koi link nahi dikhega.
    Real clients ke photos + profile links add karne se E-E-A-T boost hota hai. */

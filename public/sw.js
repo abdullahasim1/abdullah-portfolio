@@ -1,14 +1,16 @@
-const STATIC_CACHE = "portfolio-static-v2";
-const DYNAMIC_CACHE = "portfolio-dynamic-v2";
+const STATIC_CACHE = "portfolio-static-v3";
+const DYNAMIC_CACHE = "portfolio-dynamic-v3";
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
   "/",
   "/index.html",
-  "/og-image.png",
+  "/og-image.jpg",
   "/IMG-20240224-WA0006.jpg",
   "/manifest.webmanifest",
 ];
+
+const ASSET_EXT_RE = /\.(js|css|png|jpe?g|gif|ico|svg|webp|avif|woff2?)$/;
 
 // Helper — sirf successful responses cache karo (404/500 cache poisoning se bachav)
 function cachePut(cacheName, request, response) {
@@ -21,12 +23,18 @@ function cachePut(cacheName, request, response) {
     .catch(() => {});
 }
 
-// Install event - cache static assets
+// Install event - cache static assets (ek 404 poora install fail na kare)
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(STATIC_CACHE)
-      .then((cache) => cache.addAll(STATIC_ASSETS))
+      .then((cache) =>
+        Promise.all(
+          STATIC_ASSETS.map((url) =>
+            cache.add(url).catch(() => undefined),
+          ),
+        ),
+      )
       .then(() => self.skipWaiting()),
   );
 });
@@ -62,7 +70,7 @@ self.addEventListener("fetch", (event) => {
   if (!url.protocol.startsWith("http")) return;
 
   // Skip cross-origin non-asset requests (analytics etc.)
-  if (url.origin !== self.location.origin && !/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/.test(url.pathname)) {
+  if (url.origin !== self.location.origin && !ASSET_EXT_RE.test(url.pathname)) {
     return;
   }
 
@@ -83,16 +91,28 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Hashed static assets - stale-while-revalidate (URLs immutable hoti hain)
-  if (url.pathname.startsWith("/assets/") || url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/)) {
+  // Offline + cache miss par fetch reject hota tha → ab explicit fallback
+  if (url.pathname.startsWith("/assets/") || ASSET_EXT_RE.test(url.pathname)) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
-        const fetchAndCache = fetch(request).then((response) => {
-          if (response && response.ok) {
-            const responseClone = response.clone();
-            cachePut(STATIC_CACHE, request, responseClone);
-          }
-          return response;
-        });
+        const fetchAndCache = fetch(request)
+          .then((response) => {
+            if (response && response.ok) {
+              const responseClone = response.clone();
+              cachePut(STATIC_CACHE, request, responseClone);
+            }
+            return response;
+          })
+          .catch(() => {
+            // Purana deploy + offline = missing hashed chunk → clear error
+            return (
+              cachedResponse ||
+              new Response("Asset unavailable offline", {
+                status: 503,
+                headers: { "Content-Type": "text/plain" },
+              })
+            );
+          });
         return cachedResponse ? cachedResponse : fetchAndCache;
       }),
     );

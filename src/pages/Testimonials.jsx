@@ -25,7 +25,7 @@ function Testimonials() {
   }, []);
 
   return (
-    <section className="py-28 overflow-hidden">
+    <section id="testimonials" className="py-28 overflow-hidden scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
           label="Testimonials"

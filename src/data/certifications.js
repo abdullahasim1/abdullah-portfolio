@@ -1,3 +1,4 @@
+// @ts-check
 export const certifications = [
   {
     id: "aws-genai-professional",
@@ -6,7 +7,7 @@ export const certifications = [
     date: "2026",
     credentialUrl: "https://www.credly.com/users/abdullah-asim/badges",
     skills: ["Generative AI", "Amazon Bedrock", "LLM Apps", "AWS"],
-    image: "/certifications/aws-certified-generative-ai-developer-professional.png",
+    image: "/certifications/aws-certified-generative-ai-developer-professional.webp",
     featured: true,
     description:
       "Professional-level credential for building and deploying production generative AI applications on AWS.",
@@ -18,7 +19,7 @@ export const certifications = [
     date: "2026",
     credentialUrl: "https://www.credly.com/users/abdullah-asim/badges",
     skills: ["Early Adopter", "Generative AI", "AWS"],
-    image: "/certifications/aws-genai-early-adopter.png",
+    image: "/certifications/aws-genai-early-adopter.webp",
   },
   {
     id: "aws-ai-practitioner",
@@ -27,7 +28,7 @@ export const certifications = [
     date: "2025",
     credentialUrl: "https://www.credly.com/users/abdullah-asim/badges",
     skills: ["AI Fundamentals", "ML Concepts", "AWS AI Services"],
-    image: "/certifications/aws-certified-ai-practitioner.png",
+    image: "/certifications/aws-certified-ai-practitioner.webp",
   },
   {
     id: "anthropic-claude-code",
@@ -36,7 +37,7 @@ export const certifications = [
     date: "May 2026",
     credentialUrl: "https://verify.skilljar.com/c/ea2aqwqdpsx2",
     skills: ["Claude Code", "AI Agents", "Developer Tools"],
-    image: "/certifications/anthropic-claude-code.png",
+    image: "/certifications/anthropic-claude-code.webp",
   },
   {
     id: "anthropic-mcp",
@@ -45,7 +46,7 @@ export const certifications = [
     date: "May 2026",
     credentialUrl: "https://verify.skilljar.com/c/8sy7ahs4maju",
     skills: ["MCP", "Tooling", "AI Integrations"],
-    image: "/certifications/anthropic-mcp.png",
+    image: "/certifications/anthropic-mcp.webp",
   },
   {
     id: "anthropic-agent-skills",
@@ -54,7 +55,7 @@ export const certifications = [
     date: "2026",
     credentialUrl: "#",
     skills: ["Agent Skills", "Claude", "Automation"],
-    image: "/certifications/anthropic-agent-skills.png",
+    image: "/certifications/anthropic-agent-skills.webp",
   },
   {
     id: "aws-partner-technical",
@@ -63,7 +64,7 @@ export const certifications = [
     date: "June 2026",
     credentialUrl: "#",
     skills: ["AWS Partner", "Cloud Architecture", "Technical"],
-    image: "/certifications/aws-partner-technical.png",
+    image: "/certifications/aws-partner-technical.webp",
   },
   {
     id: "aws-partner-sales",
@@ -72,6 +73,6 @@ export const certifications = [
     date: "June 2026",
     credentialUrl: "#",
     skills: ["AWS Partner", "Cloud Business", "Sales"],
-    image: "/certifications/aws-partner-sales.png",
+    image: "/certifications/aws-partner-sales.webp",
   },
 ];

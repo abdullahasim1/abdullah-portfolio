@@ -23,6 +23,14 @@ React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, C
 - [GitHub](https://github.com/abdullahasim1): source code & open-source work
 - [Featured Projects](https://abdullah-asim-dev.vercel.app/#projects): live demos
 
+## Blog
+
+Articles (also at /blog/<slug>, RSS: https://abdullah-asim-dev.vercel.app/rss.xml):
+
+- [Cutting portfolio LCP from 3.7s to 0.9s](https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s): real Core Web Vitals fixes with measured before/after numbers.
+- [How I split a React 19 + Three.js app](https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting): code-splitting patterns for WebGL apps on Vite.
+- [AWS Certified Generative AI Developer (Professional)](https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional): my exam-aligned study path — Bedrock, RAG, evaluation, safety, cost.
+
 ## Contact
 
 - Email: abdullah.gc.18@gmail.com

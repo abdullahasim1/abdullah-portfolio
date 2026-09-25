@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { featuredProjects } from "../data/projects";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { playClickSound, playOpenSound } from "../lib/sound";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 const actions = [
   {
@@ -45,6 +46,13 @@ const actions = [
     group: "Navigation",
     icon: "🛠️",
     action: () => scrollToSection("skills"),
+  },
+  {
+    id: "nav-blog",
+    label: "Blog & Articles",
+    group: "Navigation",
+    icon: "📝",
+    action: () => scrollToSection("blog"),
   },
   {
     id: "nav-process",
@@ -119,6 +127,10 @@ export default function CommandPalette({ isOpen, onClose }) {
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
+  const dialogRef = useRef(null);
+
+  // Tab focus dialog ke andar hi rakho (open hone par hi active)
+  useFocusTrap(dialogRef, isOpen);
 
   // Generate dynamic items combining static actions + featured projects
   const items = useMemo(() => {
@@ -182,6 +194,7 @@ export default function CommandPalette({ isOpen, onClose }) {
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Command Palette"

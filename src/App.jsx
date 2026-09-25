@@ -6,6 +6,7 @@ import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
 import ScrollToTop from "./components/ScrollToTop";
 import CommandPalette from "./components/CommandPalette";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import { IS_LOW_END } from "./lib/device";
 import { useIdleDeferred } from "./hooks/useIdleDeferred";
@@ -24,6 +25,7 @@ const Certifications = lazy(() => import("./pages/Certifications"));
 const Process = lazy(() => import("./pages/Process"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Faq = lazy(() => import("./pages/Faq"));
+const Blog = lazy(() => import("./pages/Blog"));
 const Contact = lazy(() => import("./pages/Contact"));
 
 function App() {
@@ -117,16 +119,39 @@ function App() {
         <Home introDone={introDone} />
         <TechTicker />
         <Suspense fallback={<div className="py-20" />}>
-          <About />
-          <Services />
-          <Stats />
-          <Projects />
-          <Skills />
-          <Certifications />
-          <Process />
-          <Testimonials />
-          <Faq />
-          <Contact />
+          <ErrorBoundary>
+            <About />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Services />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Stats />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Projects />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Skills />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Certifications />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Process />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Testimonials />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Blog />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Faq />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Contact />
+          </ErrorBoundary>
         </Suspense>
       </main>
 

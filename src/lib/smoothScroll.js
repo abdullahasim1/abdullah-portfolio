@@ -1,7 +1,9 @@
+// @ts-check
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+/** @type {import("lenis").default | null} */
 let lenis = null;
 
 /* Site-wide buttery smooth scroll (Lenis + GSAP ScrollTrigger sync) */
@@ -12,7 +14,7 @@ export function initSmoothScroll() {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  lenis = new Lenis({
+  const instance = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
@@ -20,15 +22,20 @@ export function initSmoothScroll() {
     touchMultiplier: 2.0,
     infinite: false,
   });
+  lenis = instance;
 
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  instance.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => instance.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 
   return lenis;
 }
 
 /* Anchor navigation — Lenis active ho to wahi use karo */
+/**
+ * @param {string} id
+ * @param {number} [offset]
+ */
 export function scrollToSection(id, offset = -84) {
   const el = document.getElementById(id);
   if (!el) return;
