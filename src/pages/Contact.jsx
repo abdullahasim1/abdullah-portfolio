@@ -180,8 +180,8 @@ function Contact() {
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
           label="Contact"
-          title="Let's Build Something Amazing Together"
-          subtitle="Have a project in mind? Tell me about it — I usually reply within a few hours."
+          title="Work with Abdullah — Freelance Projects & Full-Time Roles"
+          subtitle="Have a project in mind, or a role to discuss? Tell me about it — I usually reply within a few hours."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
