@@ -33,4 +33,24 @@ export const faqs = [
     q: "How can I contact him?",
     a: "Email abdullah.gc.18@gmail.com, GitHub github.com/abdullahasim1, or the contact form below.",
   },
+  {
+    q: "How do I hire Abdullah for an n8n or workflow automation project?",
+    a: "Email abdullah.gc.18@gmail.com with a short brief of what you want automated — he usually replies within a few hours. Typical engagements: n8n and Make.com workflow builds, AI agent integrations, and GoHighLevel CRM automation for agencies and small businesses.",
+  },
+  {
+    q: "What does a freelance AI automation project cost?",
+    a: "It depends on scope: a single n8n or Make.com workflow typically runs a few hundred dollars, while multi-system AI agent builds with CRM integration run into the low thousands. Share your requirements for a fixed quote — no hourly billing surprises.",
+  },
+  {
+    q: "Is Abdullah open to full-time roles?",
+    a: "Yes — open to full-time remote roles in AI engineering, automation, and full-stack development. With 3+ years of experience, 25+ shipped projects, and AWS Generative AI Developer Professional certification, he ramps up fast on production codebases.",
+  },
+  {
+    q: "Why hire Abdullah instead of an agency for AI automation?",
+    a: "You work directly with the engineer — no account managers, no handoffs. That means faster delivery, lower cost, and automation built on n8n, Make.com, and GoHighLevel by someone who has shipped 25+ real projects.",
+  },
+  {
+    q: "Does Abdullah work with clients outside Pakistan?",
+    a: "Yes — based in Lahore, Pakistan, working remotely with clients in the US, Europe, and worldwide. Async-friendly communication across time zones, with overlap hours for calls when needed.",
+  },
 ];

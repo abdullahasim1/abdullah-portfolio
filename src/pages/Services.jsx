@@ -144,8 +144,8 @@ function Services() {
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
           label="Services"
-          title="What I Can Build For You"
-          subtitle="End-to-end product development — from first wireframe to production deployment."
+          title="Hire a Freelance n8n Developer & AI Automation Expert"
+          subtitle="AI agents, n8n/Make.com workflow automation, GoHighLevel CRM and full-stack web apps — from first wireframe to production deployment."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
