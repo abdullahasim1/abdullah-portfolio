@@ -479,3 +479,90 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .animate-in { animation: none !important; }
 }
+
+/* ============ CINEMATIC SYSTEM ============ */
+
+/* Letterbox bars — cinema framing */
+.cine-letterbox-top,
+.cine-letterbox-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(40px, 7vh, 72px);
+  background: #000;
+  z-index: 20;
+  pointer-events: none;
+}
+.cine-letterbox-top { top: 0; }
+.cine-letterbox-bottom { bottom: 0; }
+
+/* Vignette — darkened frame edges */
+.cine-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 45%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.42) 100%
+  );
+}
+
+/* Scene tag — "SCENE 01" timecode aesthetic */
+.scene-tag {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(103, 232, 249, 0.75);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.scene-tag::before,
+.scene-tag::after {
+  content: "";
+  height: 1px;
+  width: 2.5rem;
+  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.5));
+}
+.scene-tag::after {
+  background: linear-gradient(90deg, rgba(103, 232, 249, 0.5), transparent);
+}
+
+/* Title card eyebrow — opening credits style */
+.title-card-eyebrow {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.6);
+}
+
+/* Fade-through-black section divider */
+.cine-divider {
+  height: clamp(60px, 10vh, 120px);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* End credits roll */
+.credits-roll {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cine-letterbox-top,
+  .cine-letterbox-bottom {
+    display: none;
+  }
+}

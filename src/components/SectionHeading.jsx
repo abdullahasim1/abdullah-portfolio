@@ -1,6 +1,6 @@
 import React from "react";
 
-function SectionHeading({ label, title, subtitle, align = "center" }) {
+function SectionHeading({ label, title, subtitle, align = "center", scene }) {
   const alignment =
     align === "left"
       ? "items-start text-left"
@@ -10,6 +10,11 @@ function SectionHeading({ label, title, subtitle, align = "center" }) {
 
   return (
     <div className={`flex flex-col gap-4 ${alignment} mb-14`}>
+      {scene && (
+        <span className="scene-tag" aria-hidden="true">
+          Scene {scene}
+        </span>
+      )}
       <span className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 light:bg-white light:border-slate-300/80 light:text-cyan-700">
         <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
         {label}
