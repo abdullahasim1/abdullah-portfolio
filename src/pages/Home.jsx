@@ -24,13 +24,15 @@ const chips = [
 function Home({ introDone = true }) {
   const contentRef = useRef(null);
   const parallaxRef = useRef(null);
+  const sectionRef = useRef(null);
 
   // HeroScene ko idle-defer karo — pehle text render ho (LCP), 3D baad mein.
   const deferHero = useIdleDeferred(3000, 600);
 
   useEffect(() => {
     // Splash screen ke baad hi hero entrance chale
-    if (!introDone || !contentRef.current) return;
+    if (!introDone || !contentRef.current || !sectionRef.current) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
       gsap.from("[data-hero-stagger]", {
         y: 28,
@@ -40,11 +42,29 @@ function Home({ introDone = true }) {
         ease: "power3.out",
         delay: 0.15,
       });
-    }, contentRef);
+      // Letterbox bars: 3D curtain unfold (top unfolds down, bottom unfolds up)
+      if (!reduced) {
+        gsap.from('[data-letterbox="top"]', {
+          scaleY: 0,
+          transformOrigin: "top center",
+          duration: 1.1,
+          ease: "power3.inOut",
+          delay: 0.1,
+        });
+        gsap.from('[data-letterbox="bottom"]', {
+          scaleY: 0,
+          transformOrigin: "bottom center",
+          duration: 1.1,
+          ease: "power3.inOut",
+          delay: 0.1,
+        });
+      }
+    }, sectionRef);
     return () => ctx.revert();
   }, [introDone]);
 
-  /* Mouse parallax — sirf desktops par (touch/low-end skip), subtle depth effect */
+  /* Mouse parallax + 3D tilt — sirf desktops par (touch/low-end skip).
+     Title card "poster in space" feel: subtle rotateX/rotateY. */
   useEffect(() => {
     if (IS_LOW_END || !parallaxRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -57,7 +77,9 @@ function Home({ introDone = true }) {
         raf = 0;
         const dx = e.clientX / window.innerWidth - 0.5;
         const dy = e.clientY / window.innerHeight - 0.5;
-        parallaxRef.current.style.transform = `translate3d(${dx * -16}px, ${dy * -12}px, 0)`;
+        parallaxRef.current.style.transform =
+          `translate3d(${dx * -16}px, ${dy * -12}px, 0) ` +
+          `rotateY(${dx * 5}deg) rotateX(${dy * -5}deg)`;
       });
     };
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -75,11 +97,13 @@ function Home({ introDone = true }) {
   return (
     <section
       id="home"
+      ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center overflow-hidden"
+      style={{ perspective: "1400px" }}
     >
-      {/* Cinematic letterbox bars — animate in with hero entrance */}
-      <div className="cine-letterbox-top" data-hero-stagger aria-hidden="true" />
-      <div className="cine-letterbox-bottom" data-hero-stagger aria-hidden="true" />
+      {/* Cinematic letterbox bars — 3D scaleY entrance (cinema curtain feel) */}
+      <div className="cine-letterbox-top" data-letterbox="top" aria-hidden="true" />
+      <div className="cine-letterbox-bottom" data-letterbox="bottom" aria-hidden="true" />
 
       {/* Vignette */}
       <div className="cine-vignette" aria-hidden="true" />
@@ -99,10 +123,11 @@ function Home({ introDone = true }) {
         className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-void to-transparent pointer-events-none"
       />
 
-      {/* Content */}
+      {/* Content — perspective wrapper for 3D title tilt */}
       <div
         ref={parallaxRef}
         className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full will-change-transform"
+        style={{ transformStyle: "preserve-3d" }}
       >
         <div ref={contentRef}>
         <div className="max-w-2xl space-y-7">
