@@ -45,6 +45,7 @@ function Process() {
     <section id="process" className="py-28 scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
+          scene="06"
           label="Process"
           title="How I Work"
           subtitle="A proven process that ensures your project is delivered on time, within budget, and exceeds expectations."

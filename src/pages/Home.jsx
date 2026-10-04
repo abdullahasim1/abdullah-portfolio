@@ -77,6 +77,13 @@ function Home({ introDone = true }) {
       id="home"
       className="relative min-h-screen flex flex-col items-center overflow-hidden"
     >
+      {/* Cinematic letterbox bars — animate in with hero entrance */}
+      <div className="cine-letterbox-top" data-hero-stagger aria-hidden="true" />
+      <div className="cine-letterbox-bottom" data-hero-stagger aria-hidden="true" />
+
+      {/* Vignette */}
+      <div className="cine-vignette" aria-hidden="true" />
+
       {/* CSS glow fallback while the R3F scene loads — inset-0 centered:
           font-swap pe hero content height badal-ne se glow CLS nahi karta */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -99,6 +106,13 @@ function Home({ introDone = true }) {
       >
         <div ref={contentRef}>
         <div className="max-w-2xl space-y-7">
+          <span
+            data-hero-stagger
+            className="title-card-eyebrow"
+          >
+            A film by Abdullah Bin Asim
+          </span>
+
           <span
             data-hero-stagger
             className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300 light:bg-white light:border-slate-300/80 light:text-slate-700"

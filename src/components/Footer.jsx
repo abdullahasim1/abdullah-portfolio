@@ -190,8 +190,12 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06] mt-14 pt-8 text-center text-xs text-slate-600">
-          <p>© {currentYear} Abdullah Asim. All rights reserved.</p>
+        <div className="border-t border-white/[0.06] mt-14 pt-8 text-center">
+          {/* End credits */}
+          <p className="credits-roll text-slate-500 mb-3" aria-hidden="true">
+            — End of Reel —
+          </p>
+          <p className="text-xs text-slate-600">© {currentYear} Abdullah Asim. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -347,6 +347,9 @@ function Projects() {
 
         {/* ---------- Section header ---------- */}
         <div className="mb-14">
+          <span className="scene-tag mb-4" aria-hidden="true">
+            Scene 03
+          </span>
           <span className="reveal inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 mb-4">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
             Portfolio

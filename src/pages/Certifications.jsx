@@ -241,6 +241,7 @@ function Certifications() {
     <section id="certifications" className="py-28 scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
+          scene="05"
           label="Certifications"
           title="Credentials & Learning"
           subtitle="AWS Professional & AI credentials plus Anthropic and partner training. Hover or tap any card to see the skills behind it."

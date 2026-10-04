@@ -137,6 +137,7 @@ function Skills() {
     <section id="skills" className="py-28">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
+          scene="04"
           label="Skills & Expertise"
           title="Technical Arsenal"
           subtitle="The tools and technologies I use to ship production-grade products."

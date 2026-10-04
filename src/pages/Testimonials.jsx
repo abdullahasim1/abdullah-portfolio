@@ -28,6 +28,7 @@ function Testimonials() {
     <section id="testimonials" className="py-28 overflow-hidden scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
+          scene="07"
           label="Testimonials"
           title="What Clients Say"
           subtitle="Real feedback from clients who trusted me with their projects."
