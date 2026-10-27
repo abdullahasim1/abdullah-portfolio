@@ -244,7 +244,7 @@ function Certifications() {
           scene="05"
           label="Certifications"
           title="Credentials & Learning"
-          subtitle="AWS Professional & AI credentials plus Anthropic and partner training. Hover or tap any card to see the skills behind it."
+          subtitle="AWS Professional, Claude Certified Architect and OpenAI credentials, plus Anthropic and partner training. Hover or tap any card to see the skills behind it."
         />
 
         {featured.map((cert) => (

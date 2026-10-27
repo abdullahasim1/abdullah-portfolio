@@ -5,7 +5,7 @@ import SectionHeading from "../components/SectionHeading";
 const stats = [
   { number: 3, suffix: "+", label: "Years Experience", icon: "🎯" },
   { number: 25, suffix: "+", label: "Projects Shipped", icon: "🚀" },
-  { number: 8, suffix: "", label: "Certifications", icon: "🏆" },
+  { number: 11, suffix: "", label: "Certifications", icon: "🏆" },
   { number: 15, suffix: "+", label: "Technologies", icon: "⚡" },
 ];
 

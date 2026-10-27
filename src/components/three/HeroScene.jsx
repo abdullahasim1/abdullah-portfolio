@@ -9,7 +9,7 @@ import {
 } from "@react-three/drei";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Laptop from "./Laptop";
+import Particles from "./Particles";
 import { scrollState } from "../../lib/scrollState";
 import useInViewport from "../../hooks/useInViewport";
 
@@ -103,7 +103,7 @@ function SceneContent({ pointerRef, reduced }) {
 
       <group ref={groupRef} position={[offsetX, 0, 0]} scale={scale}>
         <Float speed={1.1} rotationIntensity={0.12} floatIntensity={0.5}>
-          <Laptop pointerRef={pointerRef} reduced={reduced} />
+          <Particles reduced={reduced} />
           <Ring
             radius={2.5}
             tilt={[Math.PI / 2.3, 0.2, 0]}
@@ -196,7 +196,7 @@ function SceneContent({ pointerRef, reduced }) {
             speed={0.55}
           />
           <Sparkles
-            count={70}
+            count={110}
             scale={[11, 7, 6]}
             size={2.2}
             speed={0.3}
@@ -204,7 +204,7 @@ function SceneContent({ pointerRef, reduced }) {
             opacity={0.5}
           />
           <Sparkles
-            count={40}
+            count={60}
             scale={[13, 8, 6]}
             size={3.4}
             speed={0.22}
@@ -237,7 +237,7 @@ export default function HeroScene() {
   }, []);
 
   /* Scroll-linked 3D: #home ke scroll-out progress (0→1) ko shared
-     state mein likhte hain — Laptop aur CameraRig useFrame mein padhte hain */
+     state mein likhte hain — Particles aur CameraRig useFrame mein padhte hain */
   useEffect(() => {
     if (reduced) return undefined;
 
