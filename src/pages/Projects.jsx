@@ -1,10 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useMemo, useState } from "react";
 import { useScrollReveal } from "../hooks";
 import { useGithubRepos } from "../hooks/useGithubRepos";
-import SplitTextAnimation from "../components/SplitTextAnimation";
-import SceneTag from "../components/SceneTag";
+import SectionHeading from "../components/SectionHeading";
 import ProjectModal from "../components/ProjectModal";
 import TiltCard from "../components/TiltCard";
 import { track } from "../lib/analytics";
@@ -16,26 +13,6 @@ import {
   githubOgImage,
   GITHUB_USERNAME,
 } from "../data/projects";
-
-gsap.registerPlugin(ScrollTrigger);
-
-/* Cursor-following spotlight handler (per-card CSS vars) — rAF coalesced */
-const spotFrames = new WeakMap();
-function spotMove(e) {
-  const el = e.currentTarget;
-  if (spotFrames.has(el)) return;
-  const clientX = e.clientX;
-  const clientY = e.clientY;
-  spotFrames.set(
-    el,
-    requestAnimationFrame(() => {
-      spotFrames.delete(el);
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", `${clientX - r.left}px`);
-      el.style.setProperty("--my", `${clientY - r.top}px`);
-    }),
-  );
-}
 
 /* ---------------- Featured project card (large = bento hero) ---------------- */
 
@@ -79,7 +56,7 @@ function CardLinks({ project, large = false, onOpenCaseStudy }) {
           href={project.liveLink}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex-1 text-center font-semibold rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-opacity ${pad}`}
+          className={`flex-1 text-center font-semibold rounded-full bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-opacity ${pad}`}
         >
           Live Demo
         </a>
@@ -88,7 +65,7 @@ function CardLinks({ project, large = false, onOpenCaseStudy }) {
         <button
           type="button"
           onClick={onOpenCaseStudy}
-          className={`inline-flex items-center justify-center gap-1.5 rounded-xl glass font-medium text-cyan-300 hover:border-cyan-400/40 transition-colors ${pad}`}
+          className={`inline-flex items-center justify-center gap-1.5 rounded-full glass font-medium text-cyan-300 hover:border-cyan-400/40 transition-colors ${pad}`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -101,7 +78,7 @@ function CardLinks({ project, large = false, onOpenCaseStudy }) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${project.title} source code on GitHub`}
-        className={`inline-flex items-center justify-center rounded-xl glass font-medium text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors ${pad}`}
+        className={`inline-flex items-center justify-center rounded-full glass font-medium text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors ${pad}`}
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -127,74 +104,40 @@ function Tags({ project, max = 4 }) {
   );
 }
 
-function FeaturedProjectCard({ project, large = false, onOpenCaseStudy }) {
+function FeaturedProjectCard({ project, flip = false, onOpenCaseStudy }) {
   return (
-    <TiltCard className={`reveal ${large ? "md:col-span-2" : ""}`}>
-      <article
-        onMouseMove={spotMove}
-        className={`group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col light:bg-white light:border-slate-200 light:shadow-[0_1px_3px_rgba(20,18,10,0.06)] ${
-          large ? "md:flex-row" : ""
+    <article className="reveal group grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      {/* Image zone — saaf frame, hairline border, koi overlay theatrics nahi */}
+      <div
+        className={`relative overflow-hidden rounded-2xl border border-white/[0.08] aspect-[16/10] light:border-[#e8e4da] ${
+          flip ? "md:order-2" : ""
         }`}
       >
-      {/* Cursor spotlight */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background:
-            "radial-gradient(480px circle at var(--mx, 50%) var(--my, 50%), rgba(34,211,238,0.10), transparent 55%)",
-        }}
-      />
-
-      {/* Image zone */}
-      <div className={`relative overflow-hidden shrink-0 ${large ? "md:w-[54%] min-h-[260px] md:min-h-[380px]" : "h-56"}`}>
         <ProjectImage project={project} />
-        <div aria-hidden className={`absolute inset-0 pointer-events-none ${large ? "bg-gradient-to-r from-black/50 via-black/10 to-transparent md:bg-gradient-to-r" : "bg-gradient-to-t from-black/70 via-black/10 to-transparent"}`} />
-
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold text-cyan-300 bg-black/50 border border-cyan-400/30 backdrop-blur">
-          <span className="h-1 w-1 rounded-full bg-cyan-400" />
-          Featured
-        </span>
-
         {project.stars > 0 && (
           <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-amber-300 bg-black/50 border border-white/10 backdrop-blur">
             ★ {project.stars}
           </span>
         )}
-
-        {/* Title overlay (small cards only — large card title lives in body) */}
-        {!large && (
-          <h3 className="absolute bottom-4 left-5 right-5 font-display text-xl font-bold text-white leading-snug drop-shadow">
-            {project.title}
-          </h3>
-        )}
       </div>
 
       {/* Body */}
-      <div className={`relative z-10 flex flex-col flex-grow ${large ? "md:w-[46%] p-8 md:p-10 justify-center" : "p-6"}`}>
-        {large && (
-          <>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300 mb-3">
-              Spotlight Project
-            </p>
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-white leading-tight mb-4">
-              {project.title}
-            </h3>
-          </>
-        )}
-
-        <p className={`text-slate-400 leading-relaxed mb-5 ${large ? "text-[15px]" : "text-sm line-clamp-2"}`}>
+      <div className={flip ? "md:order-1" : ""}>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500 mb-3">
+          Spotlight Project
+        </p>
+        <h3 className="font-display text-3xl md:text-4xl font-medium text-white leading-tight mb-4 light:text-slate-900">
+          {project.title}
+        </h3>
+        <p className="text-slate-400 leading-relaxed mb-6 light:text-slate-600">
           {project.description}
         </p>
-
-        <Tags project={project} max={large ? 8 : 4} />
-
-        <div className={`${large ? "mt-8" : "mt-auto pt-5"}`}>
-          <CardLinks project={project} large={large} onOpenCaseStudy={onOpenCaseStudy} />
+        <Tags project={project} max={8} />
+        <div className="mt-8 max-w-md">
+          <CardLinks project={project} large onOpenCaseStudy={onOpenCaseStudy} />
         </div>
       </div>
     </article>
-    </TiltCard>
   );
 }
 
@@ -275,7 +218,6 @@ function Projects() {
   const { repos, profile, loading, error, rateLimited, retry } = useGithubRepos();
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeProject, setActiveProject] = useState(null);
-  const stackRef = useRef(null);
 
   const featuredRepoNames = useMemo(
     () => new Set(featuredProjects.map((p) => p.repoName)),
@@ -293,40 +235,6 @@ function Projects() {
       };
     });
   }, [repos]);
-
-  /* Stacked-cards scroll effect:
-     agli card aane par pichli card clean fade-out + halka scale-down —
-     koi tilt/blur nahi, sirf smooth recede (smoothed scrub ke saath) */
-  useEffect(() => {
-    if (!stackRef.current) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Touch devices par scrub effect skip — main-thread load kam rakho (perf)
-    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-    if (reduced || coarsePointer) return;
-
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray("[data-stack-card]");
-      cards.forEach((card, i) => {
-        if (i === cards.length - 1) return;
-        gsap.to(card.querySelector("[data-stack-inner]"), {
-          scale: 0.94,
-          y: -26,
-          autoAlpha: 0,
-          transformOrigin: "50% 0%",
-          ease: "none",
-          scrollTrigger: {
-            trigger: cards[i + 1],
-            start: "top bottom",
-            end: "top 110px",
-            scrub: 0.75,
-          },
-        });
-      });
-    }, stackRef);
-
-    return () => ctx.revert();
-  }, [enrichedFeatured.length]);
-
 
   const otherRepos = useMemo(() => {
     return repos.filter((repo) => !featuredRepoNames.has(repo.name));
@@ -346,54 +254,33 @@ function Projects() {
     <section id="projects" className="py-28 scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
 
-        {/* ---------- Section header ---------- */}
-        <div className="mb-14">
-          <div style={{ perspective: "800px" }} className="mb-4">
-            <SceneTag scene="03" />
-          </div>
-          <span className="reveal inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
-            Portfolio
-          </span>
-          <SplitTextAnimation
-            
-            className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900"
-          >
-            Projects &amp; GitHub
-          </SplitTextAnimation>
-          <p className="reveal text-slate-400 mt-4 max-w-2xl leading-relaxed light:text-slate-600">
-            Selected work I've designed, built and shipped — keep scrolling, each project stacks onto the next.
-          </p>
-        </div>
+        <SectionHeading
+          label="Portfolio"
+          title="Projects & GitHub"
+          subtitle="Selected work I've designed, built and shipped — each one a real product solving a real problem."
+        />
 
-        {/* ---------- Featured work — sticky stacking cards ---------- */}
-        <div ref={stackRef} className="mb-24">
-          {enrichedFeatured.map((project) => (
-            <div
+        {/* ---------- Featured work — editorial rows ---------- */}
+        <div className="mb-24 space-y-20">
+          {enrichedFeatured.map((project, i) => (
+            <FeaturedProjectCard
               key={project.repoName}
-              data-stack-card
-              className="sticky top-24 md:top-28 mb-[9vh] px-6 md:px-0"
-            >
-              <div data-stack-inner className="will-change-transform">
-                <FeaturedProjectCard
-                  project={project}
-                  large
-                  onOpenCaseStudy={() => {
-                    track("project-open", { id: project.id });
-                    setActiveProject(project);
-                  }}
-                />
-              </div>
-            </div>
+              project={project}
+              flip={i % 2 === 1}
+              onOpenCaseStudy={() => {
+                track("project-open", { id: project.id });
+                setActiveProject(project);
+              }}
+            />
           ))}
         </div>
 
         {/* ---------- Slim GitHub strip ---------- */}
-        <div className="reveal flex flex-wrap items-center gap-x-6 gap-y-4 rounded-2xl glass-strong neon-ring px-6 py-5 mb-14">
+        <div className="reveal flex flex-wrap items-center gap-x-6 gap-y-4 border-y border-white/[0.07] py-6 mb-14 light:border-[#e8e4da]">
           <img
             src={profile?.avatar_url || `https://github.com/${GITHUB_USERNAME}.png`}
             alt={`${GITHUB_USERNAME} GitHub profile`}
-            className="w-11 h-11 rounded-full border border-cyan-400/40 shadow-[0_0_18px_rgba(34,211,238,0.25)]"
+            className="w-11 h-11 rounded-full border border-white/[0.12] light:border-[#e8e4da]"
             loading="lazy"
             width="44"
             height="44"
@@ -408,7 +295,7 @@ function Projects() {
             href={`https://github.com/${GITHUB_USERNAME}?tab=repositories`}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.09] text-sm font-medium text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors"
+            className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.09] text-sm font-medium text-slate-200 transition-colors light:bg-white light:border-slate-300 light:text-slate-700"
           >
             View GitHub Profile
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

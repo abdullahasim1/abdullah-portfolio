@@ -3,7 +3,6 @@ import { useScrollReveal, useStaggerAnimation } from "../hooks";
 import { certifications } from "../data/certifications";
 import GlowCard from "../components/GlowCard";
 import SectionHeading from "../components/SectionHeading";
-import { playClickSound } from "../lib/sound";
 
 function CertImage({ src, alt, className = "" }) {
   const [failed, setFailed] = useState(false);
@@ -85,103 +84,46 @@ function FeaturedCert({ cert }) {
   );
 }
 
-/* ---------------- Interactive 3D flip card ---------------- */
+/* ---------------- Certification row (Light Minimal list) ---------------- */
 
-function FlipCertCard({ cert }) {
-  const [flipped, setFlipped] = useState(false);
+function CertRow({ cert }) {
   const hasLink = cert.credentialUrl && cert.credentialUrl !== "#";
-
-  const handleToggle = () => {
-    playClickSound();
-    setFlipped((f) => !f);
-  };
-
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label={`${cert.title} — flip for details`}
-      aria-pressed={flipped}
-      onClick={handleToggle}
-      onMouseEnter={() => setFlipped(true)}
-      onMouseLeave={() => setFlipped(false)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          handleToggle();
-        }
-      }}
-      data-cursor="hover"
-      className={`cert-flip h-[330px] cursor-pointer outline-none rounded-2xl focus-visible:ring-2 focus-visible:ring-cyan-400 ${flipped ? "is-flipped" : ""}`}
-    >
-      <div className="cert-flip-inner">
-        {/* ── FRONT ── */}
-        <div className="cert-flip-face glass rounded-2xl overflow-hidden flex flex-col">
-          <div className="relative h-[56%] flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black border-b border-white/[0.06] shrink-0 light:bg-none light:bg-[#f4f1ea] light:border-slate-200">
-            <CertImage src={cert.image} alt={cert.title} className="w-full h-full" />
-            <span className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[11px] font-medium text-slate-300 bg-black/60 border border-white/10 backdrop-blur">
-              {cert.date}
-            </span>
-          </div>
-          <div className="flex flex-col flex-grow p-5 min-h-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-violet-300/90 mb-1 truncate">
-              {cert.issuer}
-            </p>
-            <h3 className="font-display text-[15px] font-bold text-white leading-snug line-clamp-2">
-              {cert.title}
-            </h3>
-            <div className="mt-auto pt-3 flex items-center gap-1.5 text-[11px] text-slate-500">
-              <svg className="w-3.5 h-3.5 text-cyan-400/70" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Hover / tap to flip
-            </div>
-          </div>
-        </div>
-
-        {/* ── BACK ── */}
-        <div className="cert-flip-face cert-flip-back glass-strong rounded-2xl p-6 flex flex-col neon-ring">
-          <span className="inline-flex self-start items-center gap-2 rounded-full bg-cyan-500/10 border border-cyan-400/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-300 mb-4">
-            <span className="h-1 w-1 rounded-full bg-cyan-400" />
-            Skills gained
-          </span>
-
-          <div className="flex flex-wrap gap-2 content-start overflow-hidden">
-            {cert.skills.map((skill) => (
-              <span
-                key={skill}
-                className="px-2.5 py-1 rounded-lg text-xs font-medium text-slate-200 bg-white/[0.05] border border-white/[0.08]"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-auto pt-4 border-t border-white/[0.07]">
-            {hasLink ? (
-              <a
-                href={cert.credentialUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white text-xs font-semibold hover:opacity-90 transition-opacity"
-              >
-                View Credential
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
-                <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Completed training
-              </span>
-            )}
-          </div>
-        </div>
+    <div className="reveal flex items-center gap-5 py-5 border-b border-white/[0.07] light:border-[#e8e4da]">
+      <div className="hidden sm:flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white/[0.03] border border-white/[0.06] overflow-hidden light:bg-[#f4f1ea] light:border-[#e8e4da]">
+        <CertImage src={cert.image} alt={cert.title} className="w-full h-full" />
       </div>
+      <div className="flex-1 min-w-0">
+        <h3 className="font-display text-lg font-medium text-white leading-snug light:text-slate-900">
+          {cert.title}
+        </h3>
+        <p className="text-sm text-slate-400 mt-0.5 light:text-slate-600">
+          {cert.issuer} · {cert.date}
+        </p>
+        <p className="text-xs text-slate-500 mt-1 truncate">
+          {cert.skills.join(" · ")}
+        </p>
+      </div>
+      {hasLink ? (
+        <a
+          href={cert.credentialUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-slate-200 underline underline-offset-4 decoration-slate-500 hover:decoration-current light:text-slate-900"
+        >
+          Verify
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      ) : (
+        <span className="shrink-0 inline-flex items-center gap-1.5 text-xs text-slate-500">
+          <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Completed
+        </span>
+      )}
     </div>
   );
 }
@@ -194,23 +136,14 @@ function CredlyTile() {
       href="https://www.credly.com/users/abdullah-asim/badges"
       target="_blank"
       rel="noopener noreferrer"
-      className="reveal group relative overflow-hidden rounded-2xl glass-strong neon-ring min-h-[330px] p-7 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300"
+      className="reveal group mt-14 flex flex-col items-center justify-center text-center"
     >
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(34,211,238,0.12) 1px, transparent 1px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
       <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/25 to-violet-500/25 border border-cyan-400/40 mb-5 group-hover:scale-110 transition-transform duration-300">
         <svg className="w-7 h-7 text-cyan-300" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
         </svg>
       </span>
-      <h3 className="relative font-display text-lg font-bold text-white leading-snug">
+      <h3 className="relative font-display text-2xl font-medium text-white leading-snug light:text-slate-900">
         All Credentials,
         <br />
         One Place
@@ -244,23 +177,20 @@ function Certifications() {
           scene="05"
           label="Certifications"
           title="Credentials & Learning"
-          subtitle="AWS Professional, Claude Certified Architect and OpenAI credentials, plus Anthropic and partner training. Hover or tap any card to see the skills behind it."
+          subtitle="AWS Professional, Claude Certified Architect and OpenAI credentials, plus Anthropic and partner training — har aik ke skills sath listed hain."
         />
 
         {featured.map((cert) => (
           <FeaturedCert key={cert.id} cert={cert} />
         ))}
 
-        <div ref={staggerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div ref={staggerRef} className="border-t border-white/[0.07] light:border-[#e8e4da]">
           {others.map((cert) => (
-            <div key={cert.id} data-stagger>
-              <FlipCertCard cert={cert} />
-            </div>
+            <CertRow key={cert.id} cert={cert} />
           ))}
-          <div data-stagger>
-            <CredlyTile />
-          </div>
         </div>
+
+        <CredlyTile />
       </div>
     </section>
   );

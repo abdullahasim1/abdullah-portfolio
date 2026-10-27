@@ -648,6 +648,13 @@ html.light .animate-glowPulse {
   box-shadow: 0 1px 3px rgba(23, 21, 15, 0.06);
 }
 
+/* Skill bars ka gradient light mein solid black */
+html.light .bg-gradient-to-r.from-cyan-400.to-violet-500 {
+  background-image: none;
+  background-color: #17150f;
+  box-shadow: none;
+}
+
 /* Cinematic leftovers light mein band */
 html.light .noise-overlay,
 html.light .grid-floor,

@@ -149,38 +149,35 @@ function Services() {
           subtitle="AI agents, n8n/Make.com workflow automation, GoHighLevel CRM and full-stack web apps — from first wireframe to production deployment."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <div key={service.category} data-stagger className="reveal group">
-              <div className="bento-card rounded-2xl p-6 hover:-translate-y-1 h-full transition-all duration-300">
-                <div className="flex items-center gap-3 mb-5">
-                  <ServiceLogo logo={service.logo} mono={service.mono} />
-                  <h3 className="font-display text-lg font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
-                    {service.category}
-                  </h3>
-                </div>
-                <ul className="space-y-2.5">
-                  {service.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-center text-sm text-slate-400"
-                    >
-                      <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-violet-500 rounded-full mr-3 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+        <div className="border-t border-white/[0.07] light:border-[#e8e4da]">
+          {services.map((service, idx) => (
+            <div
+              key={service.category}
+              data-stagger
+              className="reveal group grid md:grid-cols-[64px_1fr_1.1fr] gap-3 md:gap-8 items-start py-7 border-b border-white/[0.07] light:border-[#e8e4da]"
+            >
+              <div className="font-display text-xl text-slate-500 light:text-[#b6b09c]">
+                {String(idx + 1).padStart(2, "0")}
               </div>
+              <div className="flex items-center gap-3">
+                <ServiceLogo logo={service.logo} mono={service.mono} />
+                <h3 className="font-display text-xl font-medium text-slate-100 light:text-slate-900">
+                  {service.category}
+                </h3>
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                {service.items.map((item) => (
+                  <li key={item} className="text-sm text-slate-400 light:text-slate-600">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
 
         {/* AI & Automation spotlight */}
-        <div className="reveal mt-14 relative overflow-hidden rounded-3xl glass-strong neon-ring p-8 md:p-10">
-          <div
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-          />
+        <div className="reveal mt-16 border-y border-white/[0.07] py-12 light:border-[#e8e4da]">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="text-center lg:text-left flex-1">
               <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/15 border border-violet-400/30 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300 mb-4">
@@ -213,11 +210,7 @@ function Services() {
         <ProjectEstimator />
 
         <div className="reveal mt-14">
-          <div className="relative overflow-hidden rounded-3xl glass-strong neon-ring p-10 text-center">
-            <div
-              aria-hidden
-              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-            />
+          <div className="text-center pt-4">
             <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">
               Need Something Custom?
             </h3>

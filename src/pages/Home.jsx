@@ -167,6 +167,30 @@ function Home({ introDone = true }) {
           </div>
         </div>
       </div>
+
+      {/* Editorial stats strip — hero ka naya layout anchor */}
+      <div className="relative z-10 w-full border-t border-white/[0.07] light:border-[#e8e4da]">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4">
+          {[
+            ["3+", "Years Experience"],
+            ["25+", "Projects Shipped"],
+            ["11", "Certifications"],
+            ["100%", "Client Satisfaction"],
+          ].map(([num, label], i) => (
+            <div
+              key={label}
+              className={`py-8 pr-4 ${i > 0 ? "border-l border-white/[0.07] pl-6 light:border-[#e8e4da]" : ""}`}
+            >
+              <div className="font-display text-3xl md:text-4xl font-medium text-white light:text-slate-900">
+                {num}
+              </div>
+              <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                {label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "../components/SectionHeading";
-import { useRafThrottle } from "../hooks/useRafThrottle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,7 +77,7 @@ function SkillBar({ name, level }) {
         <span className="font-medium text-slate-300">{name}</span>
         <span className="font-mono text-xs text-cyan-300/80">{level}%</span>
       </div>
-      <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
+      <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden light:bg-[#e8e4da]">
         <div
           ref={barRef}
           className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 shadow-[0_0_10px_rgba(34,211,238,0.4)]"
@@ -90,38 +89,11 @@ function SkillBar({ name, level }) {
 }
 
 function SkillCard({ category, icon, items }) {
-  const cardRef = useRef(null);
-
-  const handleMouseMove = useRafThrottle((e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = (y - centerY) / 20;
-    const rotateY = (centerX - x) / 20;
-
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-  });
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return;
-    cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
-  };
-
   return (
-    <div 
-      ref={cardRef}
-      className="glass rounded-2xl p-7 card-glow-hover transition-transform duration-200 ease-out"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="flex items-center gap-3 pb-5 mb-6 border-b border-white/[0.06]">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-lg">
-          {icon}
-        </span>
-        <h3 className="font-display text-lg font-semibold text-slate-100">{category}</h3>
+    <div>
+      <div className="flex items-center gap-3 pb-4 mb-6 border-b border-white/[0.07] light:border-[#e8e4da]">
+        <span className="text-xl">{icon}</span>
+        <h3 className="font-display text-xl font-medium text-slate-100 light:text-slate-900">{category}</h3>
       </div>
       <div className="space-y-5">
         {items.map((skill) => (
@@ -143,7 +115,7 @@ function Skills() {
           subtitle="The tools and technologies I use to ship production-grade products."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-14">
           {Object.entries(skills).map(([category, { icon, items }]) => (
             <SkillCard key={category} category={category} icon={icon} items={items} />
           ))}

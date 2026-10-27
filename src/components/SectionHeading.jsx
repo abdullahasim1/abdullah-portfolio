@@ -1,21 +1,23 @@
 import React from "react";
 
-function SectionHeading({ label, title, subtitle, align = "center" }) {
+function SectionHeading({ label, title, subtitle, align = "left" }) {
   const alignment =
-    align === "left"
-      ? "items-start text-left"
+    align === "center"
+      ? "items-center text-center"
       : align === "right"
         ? "items-end text-right"
-        : "items-center text-center";
+        : "items-start text-left";
 
   return (
-    <div className={`flex flex-col gap-4 ${alignment} mb-14`}>
-      {/* Light Minimal: cinematic Scene tags hata diye — sirf saaf label pill */}
-      <span className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 light:bg-white light:border-slate-300/80 light:text-cyan-700">
-        <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
+    <div
+      className={`flex flex-col gap-4 ${alignment} mb-14 border-b border-white/[0.07] pb-10 light:border-[#e8e4da]`}
+    >
+      {/* Light Minimal editorial heading: chhota caps label, serif title,
+          neeche full-width hairline — koi pill/gradient nahi */}
+      <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
         {label}
       </span>
-      <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl light:text-slate-900">
+      <h2 className="font-display text-4xl md:text-5xl font-medium tracking-tight text-white leading-[1.1] max-w-3xl light:text-slate-900">
         {title}
       </h2>
       {subtitle && (
@@ -23,10 +25,6 @@ function SectionHeading({ label, title, subtitle, align = "center" }) {
           {subtitle}
         </p>
       )}
-      <span
-        aria-hidden
-        className="h-px w-24 bg-gradient-to-r from-cyan-400 via-violet-500 to-transparent"
-      />
     </div>
   );
 }

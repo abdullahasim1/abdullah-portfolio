@@ -187,7 +187,7 @@ function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Contact information */}
-          <div className="space-y-4 reveal">
+          <div className="reveal border-t border-white/[0.07] light:border-[#e8e4da]">
             {contactInfo.map((info) => (
               <a
                 key={info.title}
@@ -195,9 +195,9 @@ function Contact() {
                 {...(info.external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className="group flex items-center gap-4 p-5 rounded-2xl glass card-glow-hover hover:-translate-y-0.5 transition-transform duration-300"
+                className="group flex items-center gap-4 py-5 border-b border-white/[0.07] light:border-[#e8e4da]"
               >
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-violet-500/15 border border-cyan-400/20 text-xl group-hover:scale-110 transition-transform">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/[0.1] text-xl light:border-[#e8e4da] light:bg-white">
                   {info.icon}
                 </span>
                 <div className="min-w-0">
@@ -224,7 +224,7 @@ function Contact() {
               </a>
             ))}
 
-            <div className="flex items-center gap-3 p-4 rounded-2xl glass border-emerald-400/25 light:bg-white light:border-emerald-400/40">
+            <div className="flex items-center gap-3 py-5">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
@@ -237,18 +237,9 @@ function Contact() {
 
           {/* Contact form */}
           <div className="space-y-4 reveal">
-            {/* Paper plane 3D visual — low-end/touch par skip (perf) */}
-            {!IS_LOW_END && (
-              <div className="relative h-40 sm:h-48 rounded-3xl overflow-hidden border border-white/[0.07] bg-white/[0.02] light:border-slate-300 light:bg-slate-100/60">
-                <Suspense fallback={null}>
-                  <PaperPlane className="absolute inset-0" />
-                </Suspense>
-              </div>
-            )}
-
             <form
               onSubmit={handleSubmit}
-              className="space-y-4 glass rounded-3xl p-8"
+              className="space-y-4 rounded-2xl border border-white/[0.08] p-8 light:border-[#e8e4da] light:bg-white"
             >
               {/* Honeypot field — hidden from humans, bots will fill it */}
               <div
