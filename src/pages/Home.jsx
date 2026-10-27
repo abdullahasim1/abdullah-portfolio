@@ -1,14 +1,9 @@
-import React, { Suspense, lazy, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import SplitTextAnimation from "../components/SplitTextAnimation";
 import WordFlipper from "../components/WordFlipper";
 import MagneticButton from "../components/MagneticButton";
 import { scrollToSection } from "../lib/smoothScroll";
-import { IS_LOW_END } from "../lib/device";
-import { useIdleDeferred } from "../hooks/useIdleDeferred";
-
-// Hero 3D scene — lazy chunk (heavy hai, sirf zaroorat par load hota hai)
-const HeroScene = lazy(() => import("../components/three/HeroScene"));
 
 const chips = [
   "React",
@@ -24,71 +19,23 @@ const chips = [
 
 function Home({ introDone = true }) {
   const contentRef = useRef(null);
-  const parallaxRef = useRef(null);
   const sectionRef = useRef(null);
 
-  // HeroScene ko idle-defer karo — pehle text render ho (LCP), 3D baad mein.
-  const deferHero = useIdleDeferred(3000, 600);
-
   useEffect(() => {
-    // Splash screen ke baad hi hero entrance chale
+    // Splash screen ke baad hi hero entrance chale — simple fade/rise, bas.
     if (!introDone || !contentRef.current || !sectionRef.current) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
       gsap.from("[data-hero-stagger]", {
-        y: 28,
+        y: 24,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.12,
+        duration: 0.85,
+        stagger: 0.11,
         ease: "power3.out",
-        delay: 0.15,
+        delay: 0.1,
       });
-      // Letterbox bars: 3D curtain unfold (top unfolds down, bottom unfolds up)
-      if (!reduced) {
-        gsap.from('[data-letterbox="top"]', {
-          scaleY: 0,
-          transformOrigin: "top center",
-          duration: 1.1,
-          ease: "power3.inOut",
-          delay: 0.1,
-        });
-        gsap.from('[data-letterbox="bottom"]', {
-          scaleY: 0,
-          transformOrigin: "bottom center",
-          duration: 1.1,
-          ease: "power3.inOut",
-          delay: 0.1,
-        });
-      }
     }, sectionRef);
     return () => ctx.revert();
   }, [introDone]);
-
-  /* Mouse parallax + 3D tilt — sirf desktops par (touch/low-end skip).
-     Title card "poster in space" feel: subtle rotateX/rotateY. */
-  useEffect(() => {
-    if (IS_LOW_END || !parallaxRef.current) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-
-    let raf = 0;
-    const onMove = (e) => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const dx = e.clientX / window.innerWidth - 0.5;
-        const dy = e.clientY / window.innerHeight - 0.5;
-        parallaxRef.current.style.transform =
-          `translate3d(${dx * -16}px, ${dy * -12}px, 0) ` +
-          `rotateY(${dx * 5}deg) rotateX(${dy * -5}deg)`;
-      });
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
 
   const scrollTo = (e, id) => {
     e.preventDefault();
@@ -99,174 +46,127 @@ function Home({ introDone = true }) {
     <section
       id="home"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center overflow-hidden"
-      style={{ perspective: "1400px" }}
+      className="relative flex flex-col overflow-hidden"
     >
-      {/* Cinematic letterbox bars — 3D scaleY entrance (cinema curtain feel) */}
-      <div className="cine-letterbox-top" data-letterbox="top" aria-hidden="true" />
-      <div className="cine-letterbox-bottom" data-letterbox="bottom" aria-hidden="true" />
-
-      {/* Vignette */}
-      <div className="cine-vignette" aria-hidden="true" />
-
-      {/* CSS glow fallback while the R3F scene loads — inset-0 centered:
-          font-swap pe hero content height badal-ne se glow CLS nahi karta */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-cyan-500/[0.08] blur-[110px]" />
-      </div>
-
-      {/* Cyber grid floor */}
-      <div className="grid-floor" aria-hidden="true" />
-
-      {/* Bottom fade into next section */}
-      <div
-        aria-hidden
-        className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-void to-transparent pointer-events-none"
-      />
-
-      {/* Content — perspective wrapper for 3D title tilt */}
-      <div
-        ref={parallaxRef}
-        className="relative z-10 max-w-6xl mx-auto px-6 pt-36 pb-8 md:pb-28 w-full will-change-transform"
-        style={{ transformStyle: "preserve-3d" }}
-      >
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-40 pb-24 md:pb-32 w-full">
         <div ref={contentRef}>
-        <div className="max-w-2xl space-y-7">
-          <span
-            data-hero-stagger
-            className="title-card-eyebrow"
-          >
-            A film by Abdullah Bin Asim
-          </span>
-
-          <span
-            data-hero-stagger
-            className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300 light:bg-white light:border-slate-300/80 light:text-slate-700"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          <div className="max-w-2xl space-y-7">
+            <span
+              data-hero-stagger
+              className="block text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500 light:text-slate-500"
+            >
+              AI Cloud Engineer — Experts Cloud, Lahore
             </span>
-            Available for new opportunities
-          </span>
 
-          <h1
-            data-hero-stagger
-            className="font-display font-bold leading-[1.05] tracking-tight text-[34px] sm:text-6xl lg:text-7xl"
-          >
-            <span className="block text-white light:text-slate-900">AI Cloud</span>
-            {/* whitespace-nowrap + min-h: font-swap/word-flip pe line count
-                change nahi hota → hero height stable → zero CLS.
-                text-[34px]: "UI/UX Designer." mobile viewport mein nowrap fit */}
-            <span className="block whitespace-nowrap min-h-[1.05em]">
-              <WordFlipper
-                words={["Engineer.", "Developer.", "AI Builder."]}
-                intervalMs={2600}
-                initialDelayMs={1400}
-                textClassName="text-gradient"
-              />
-            </span>
-          </h1>
-
-          <SplitTextAnimation
-            
-            delay={0.6}
-            className="text-lg md:text-2xl font-medium text-slate-300 light:text-slate-600"
-          >
-            I build fast, scalable products with clean code and stunning design.
-          </SplitTextAnimation>
-
-          <p
-            data-hero-stagger
-            className="text-slate-400 leading-relaxed max-w-xl light:text-slate-600"
-          >
-            Hi, I'm{" "}
-            <span className="text-white font-semibold light:text-slate-900">
-              Abdullah Bin Asim
-            </span>{" "}
-            — an AI Cloud Engineer at Experts Cloud with AWS Generative AI
-            Professional &amp; Claude Certified Architect credentials. From
-            Bedrock-powered AI apps and RAG systems to full-stack products and
-            automations, I turn ideas into production-ready products that perform.
-          </p>
-
-          <div data-hero-stagger className="flex flex-wrap gap-2 max-w-md">
-            {chips.map((chip) => (
-              <span
-                key={chip}
-                className="rounded-full glass px-3.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-default light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
-              >
-                {chip}
+            <span
+              data-hero-stagger
+              className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300 light:bg-white light:border-slate-300/80 light:text-slate-700"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
-            ))}
-          </div>
+              Available for new opportunities
+            </span>
 
-          <div
-            data-hero-stagger
-            className="flex flex-wrap items-center gap-4 pt-2"
-          >
-            <MagneticButton href="#contact">Start a Project</MagneticButton>
-            <a
-              href="/resume.pdf"
-              download="Abdullah-Bin-Asim-Resume.pdf"
-              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
+            <h1
+              data-hero-stagger
+              className="font-display font-medium leading-[1.05] tracking-tight text-[40px] sm:text-6xl lg:text-7xl"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"
+              <span className="block text-white light:text-slate-900">AI Cloud</span>
+              {/* whitespace-nowrap + min-h: font-swap/word-flip pe line count
+                  change nahi hota → hero height stable → zero CLS */}
+              <span className="block whitespace-nowrap min-h-[1.05em]">
+                <WordFlipper
+                  words={["Engineer.", "Developer.", "AI Builder."]}
+                  intervalMs={2600}
+                  initialDelayMs={1400}
+                  textClassName="text-gradient"
                 />
-              </svg>
-              Download Resume
-            </a>
-            <a
-              href="#projects"
-              onClick={(e) => scrollTo(e, "projects")}
-              className="inline-flex items-center gap-2 rounded-xl glass px-6 py-3.5 font-semibold text-slate-200 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
+              </span>
+            </h1>
+
+            <SplitTextAnimation
+              delay={0.6}
+              className="text-lg md:text-2xl font-medium text-slate-300 light:text-slate-600"
             >
-              View My Work
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
+              I build fast, scalable products with clean code and stunning design.
+            </SplitTextAnimation>
+
+            <p
+              data-hero-stagger
+              className="text-slate-400 leading-relaxed max-w-xl light:text-slate-600"
+            >
+              Hi, I'm{" "}
+              <span className="text-white font-semibold light:text-slate-900">
+                Abdullah Bin Asim
+              </span>{" "}
+              — an AI Cloud Engineer at Experts Cloud with AWS Generative AI
+              Professional &amp; Claude Certified Architect credentials. From
+              Bedrock-powered AI apps and RAG systems to full-stack products and
+              automations, I turn ideas into production-ready products that perform.
+            </p>
+
+            <div data-hero-stagger className="flex flex-wrap gap-2 max-w-md">
+              {chips.map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full glass px-3.5 py-1.5 text-xs font-medium text-slate-300 transition-colors cursor-default light:bg-white light:border-slate-300 light:text-slate-700"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+
+            <div
+              data-hero-stagger
+              className="flex flex-wrap items-center gap-4 pt-2"
+            >
+              <MagneticButton href="#contact">Start a Project</MagneticButton>
+              <a
+                href="/resume.pdf"
+                download="Abdullah-Bin-Asim-Resume.pdf"
+                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3.5 font-semibold text-slate-200 transition-colors light:bg-white light:border-slate-300 light:text-slate-700"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </a>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"
+                  />
+                </svg>
+                Download Resume
+              </a>
+              <a
+                href="#projects"
+                onClick={(e) => scrollTo(e, "projects")}
+                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3.5 font-semibold text-slate-200 transition-colors light:bg-white light:border-slate-300 light:text-slate-700"
+              >
+                View My Work
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
-        </div>
       </div>
-
-      {/* 3D Scene — idle-deferred, low-end skip (TBT fix) */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <Suspense fallback={null}>
-          {!IS_LOW_END && deferHero && <HeroScene />}
-        </Suspense>
-      </div>
-
-      {/* Scroll hint */}
-      <a
-        href="#about"
-        onClick={(e) => scrollTo(e, "about")}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-slate-400 hover:text-cyan-300 transition-colors light:text-slate-500"
-      >
-        Scroll
-        <span className="block h-8 w-px bg-gradient-to-b from-cyan-400 to-transparent float-y" />
-      </a>
     </section>
   );
 }

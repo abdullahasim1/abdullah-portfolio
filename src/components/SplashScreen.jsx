@@ -1,13 +1,8 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { IS_LOW_END } from "../lib/device";
 
-/* R3F lazy — SplashScreen App ka static import hai, is liye Canvas yahan
-   lazy kiya hai warna three/r3f chunks HAR page load pe initial JS mein
-   aa jate hain (mobile pe bhi, jahan splash kabhi chalta hi nahi). */
-const SplashCanvas = lazy(() =>
-  import("./three/SplashCanvas").then((m) => ({ default: m.SplashCanvas }))
-);
+/* Light Minimal: splash ab sirf saaf naam + progress hai — koi 3D canvas nahi. */
 
 const NAME = "ABDULLAH ASIM";
 
@@ -101,26 +96,15 @@ function SplashScreen({ onFinish }) {
   return (
     <div
       ref={rootRef}
-      className="fixed inset-0 z-[9999] bg-void overflow-hidden flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[9999] bg-[#fbfbfa] overflow-hidden flex flex-col items-center justify-center"
       style={{ clipPath: "circle(150% at 50% 50%)" }}
       aria-label="Loading portfolio"
     >
-      {/* Ambient glows */}
-      <div aria-hidden className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-cyan-500/[0.07] blur-[110px]" />
-      <div aria-hidden className="absolute bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-violet-600/[0.08] blur-[110px]" />
-
-      {/* 3D stage */}
       <div ref={stageRef} className="relative flex flex-col items-center will-change-transform">
-        <div className="w-[min(64vw,340px)] aspect-square pointer-events-none" aria-hidden="true">
-          <Suspense fallback={null}>
-            <SplashCanvas progressRef={progressRef} />
-          </Suspense>
-        </div>
-
-        <p data-splash-fade className="mt-2 text-[10px] font-semibold uppercase tracking-[0.4em] text-cyan-300/70">
-          Welcome to my universe
+        <p data-splash-fade className="mt-2 text-[10px] font-semibold uppercase tracking-[0.4em] text-slate-500">
+          Portfolio
         </p>
-        <h1 className="mt-3 font-display font-bold text-white text-2xl sm:text-4xl tracking-tight flex flex-wrap justify-center">
+        <h1 className="mt-3 font-display font-medium text-slate-900 text-3xl sm:text-5xl tracking-tight flex flex-wrap justify-center">
           {NAME.split("").map((ch, i) => (
             <span
               key={`${ch}-${i}`}
@@ -133,7 +117,7 @@ function SplashScreen({ onFinish }) {
           ))}
         </h1>
         <p data-splash-fade className="mt-2 text-xs sm:text-sm text-slate-400 tracking-wide">
-          Full Stack Developer · AI &amp; Automation
+          AI Cloud Engineer · AI &amp; Automation
         </p>
       </div>
 
@@ -141,12 +125,12 @@ function SplashScreen({ onFinish }) {
       <div data-splash-fade className="absolute bottom-10 inset-x-0 px-8 sm:px-14 max-w-3xl mx-auto w-full">
         <div className="flex items-end justify-between mb-3">
           <span className="text-[10px] uppercase tracking-[0.3em] text-slate-400">Initializing</span>
-          <span ref={percentRef} className="font-mono text-sm text-cyan-300">000%</span>
+          <span ref={percentRef} className="font-mono text-sm text-slate-700">000%</span>
         </div>
-        <div className="h-px w-full bg-white/[0.08] overflow-hidden rounded-full">
+        <div className="h-px w-full bg-slate-900/10 overflow-hidden rounded-full">
           <div
             ref={barRef}
-            className="h-full w-full origin-left bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+            className="h-full w-full origin-left bg-slate-900"
             style={{ transform: "scaleX(0)" }}
           />
         </div>
@@ -156,7 +140,7 @@ function SplashScreen({ onFinish }) {
       {showSkip && (
         <button
           onClick={finish}
-          className="absolute bottom-4 right-6 text-[11px] text-slate-600 hover:text-cyan-300 transition-colors"
+          className="absolute bottom-4 right-6 text-[11px] text-slate-500 hover:text-slate-900 transition-colors"
         >
           Skip intro →
         </button>

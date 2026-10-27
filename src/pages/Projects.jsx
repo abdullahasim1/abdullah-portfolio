@@ -132,7 +132,7 @@ function FeaturedProjectCard({ project, large = false, onOpenCaseStudy }) {
     <TiltCard className={`reveal ${large ? "md:col-span-2" : ""}`}>
       <article
         onMouseMove={spotMove}
-        className={`group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col ${
+        className={`group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col light:bg-white light:border-slate-200 light:shadow-[0_1px_3px_rgba(20,18,10,0.06)] ${
           large ? "md:flex-row" : ""
         }`}
       >

@@ -7,8 +7,8 @@ describe("theme", () => {
     localStorage.clear();
   });
 
-  it("defaults to dark when no stored preference", () => {
-    expect(getTheme()).toBe("dark");
+  it("defaults to light when no stored preference (Light Minimal redesign)", () => {
+    expect(getTheme()).toBe("light");
   });
 
   it("applyTheme adds `light` class on <html> and persists", () => {
@@ -31,7 +31,7 @@ describe("theme", () => {
   });
 
   it("honours a stored theme over default", () => {
-    localStorage.setItem("aa-theme", "light");
-    expect(getTheme()).toBe("light");
+    localStorage.setItem("aa-theme", "dark");
+    expect(getTheme()).toBe("dark");
   });
 });

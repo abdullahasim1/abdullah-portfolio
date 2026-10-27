@@ -12,7 +12,7 @@
       content="Abdullah Bin Asim — AI Cloud Engineer at Experts Cloud & Full Stack Developer. AWS Certified Generative AI Developer (Professional) and Claude Certified Architect. Bedrock, RAG, n8n & AI automation — 25+ projects shipped, open to full-time remote roles and freelance projects."
     />
     <meta name="author" content="Abdullah Bin Asim" />
-    <meta name="theme-color" content="#05060a" />
+    <meta name="theme-color" content="#fbfbfa" />
     <link rel="canonical" href="https://abdullah-asim-dev.vercel.app/" />
     <link
       rel="alternate"
@@ -25,10 +25,7 @@
       (function () {
         try {
           var t = localStorage.getItem("aa-theme");
-          if (
-            t === "light" ||
-            (!t && window.matchMedia("(prefers-color-scheme: light)").matches)
-          ) {
+          if (t !== "dark") {
             document.documentElement.classList.add("light");
           }
         } catch (e) {}

@@ -20,13 +20,9 @@ function getStoredTheme() {
 export function getTheme() {
   const stored = getStoredTheme();
   if (stored) return stored;
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-color-scheme: light)").matches
-  ) {
-    return "light";
-  }
-  return "dark";
+  // Light Minimal redesign (2026-10-27): default theme ab light hai.
+  // Stored preference (toggle se set) ab bhi respect hoti hai.
+  return "light";
 }
 
 /**

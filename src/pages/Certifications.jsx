@@ -36,7 +36,7 @@ function FeaturedCert({ cert }) {
     <GlowCard className="reveal mb-14">
       <div className="grid lg:grid-cols-5 rounded-2xl overflow-hidden">
         {/* Badge zone */}
-        <div className="lg:col-span-2 relative min-h-[260px] md:min-h-[300px] bg-gradient-to-br from-slate-900 via-black to-slate-950 flex items-center justify-center">
+        <div className="lg:col-span-2 relative min-h-[260px] md:min-h-[300px] bg-gradient-to-br from-slate-900 via-black to-slate-950 flex items-center justify-center light:bg-none light:bg-[#f4f1ea]">
           <CertImage src={cert.image} alt={cert.title} className="w-full h-full max-h-[300px]" />
           <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-cyan-300 bg-black/50 border border-cyan-400/30 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
@@ -117,7 +117,7 @@ function FlipCertCard({ cert }) {
       <div className="cert-flip-inner">
         {/* ── FRONT ── */}
         <div className="cert-flip-face glass rounded-2xl overflow-hidden flex flex-col">
-          <div className="relative h-[56%] flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black border-b border-white/[0.06] shrink-0">
+          <div className="relative h-[56%] flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black border-b border-white/[0.06] shrink-0 light:bg-none light:bg-[#f4f1ea] light:border-slate-200">
             <CertImage src={cert.image} alt={cert.title} className="w-full h-full" />
             <span className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[11px] font-medium text-slate-300 bg-black/60 border border-white/10 backdrop-blur">
               {cert.date}
