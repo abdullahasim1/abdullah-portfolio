@@ -55,22 +55,28 @@ function About() {
           <div className="space-y-6 reveal">
             <div className="rounded-2xl glass card-glow-hover p-8 space-y-5 text-slate-400 leading-relaxed">
               <p>
-                I'm a passionate{" "}
+                I'm an{" "}
                 <span className="text-cyan-300 font-medium">
-                  Full Stack Developer
-                </span>{" "}
-                with a love for creating seamless digital experiences. With
-                expertise across frontend and backend — plus{" "}
+                  AI Cloud Engineer &amp; Full-Stack Developer at Experts Cloud
+                </span>
+                , specializing in Generative AI, AWS cloud and business
+                automation. As an{" "}
                 <span className="text-violet-300 font-medium">
-                  AWS Generative AI credentials
+                  AWS Certified Generative AI Developer (Professional, Early
+                  Adopter)
                 </span>{" "}
-                — I bring ideas to life with clean code and intuitive design.
+                and Claude Certified Architect, I build production AI systems
+                end to end — Bedrock-powered apps, RAG architectures and
+                serverless backends on Lambda, S3, DynamoDB and API Gateway.
               </p>
               <p>
-                My journey started with curiosity and evolved into a commitment
-                to shipping high-quality products that solve real problems. From
-                AI-powered platforms to full-stack web apps — I build things
-                that work, scale, and look great doing it.
+                Alongside that, I build intelligent automations with n8n,
+                Make.com and GoHighLevel that cut manual work and operating
+                cost, and I run DevRox — my AI &amp; automation agency for
+                client projects. With 25+ projects shipped, from
+                secret-management platforms to AI hiring automation, I turn
+                complex requirements into scalable, secure, production-ready
+                products.
               </p>
 
               {/* Holographic 3D orb */}
@@ -86,7 +92,7 @@ function About() {
                 {[
                   ["3+", "Years Experience"],
                   ["25+", "Projects Shipped"],
-                  ["8+", "Certifications"],
+                  ["11+", "Certifications"],
                 ].map(([num, label]) => (
                   <div key={label}>
                     <div className="font-display text-2xl font-bold text-gradient">

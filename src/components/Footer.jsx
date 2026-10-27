@@ -166,7 +166,7 @@ function Footer() {
               {[
                 ["3+", "Years Experience"],
                 ["25+", "Projects Shipped"],
-                ["8+", "Certifications"],
+                ["11+", "Certifications"],
                 ["15+", "Technologies"]
               ].map(([number, label]) => (
                 <div key={label} className="glass rounded-xl p-3 text-center card-glow-hover">

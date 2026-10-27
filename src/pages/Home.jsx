@@ -19,6 +19,7 @@ const chips = [
   "Make.com",
   "n8n",
   "AWS",
+  "Amazon Bedrock",
 ];
 
 function Home({ introDone = true }) {
@@ -153,13 +154,13 @@ function Home({ introDone = true }) {
             data-hero-stagger
             className="font-display font-bold leading-[1.05] tracking-tight text-[34px] sm:text-6xl lg:text-7xl"
           >
-            <span className="block text-white light:text-slate-900">Full Stack</span>
+            <span className="block text-white light:text-slate-900">AI Cloud</span>
             {/* whitespace-nowrap + min-h: font-swap/word-flip pe line count
                 change nahi hota → hero height stable → zero CLS.
                 text-[34px]: "UI/UX Designer." mobile viewport mein nowrap fit */}
             <span className="block whitespace-nowrap min-h-[1.05em]">
               <WordFlipper
-                words={["Developer.", "UI/UX Designer.", "AI Builder."]}
+                words={["Engineer.", "Developer.", "AI Builder."]}
                 intervalMs={2600}
                 initialDelayMs={1400}
                 textClassName="text-gradient"
@@ -183,9 +184,10 @@ function Home({ introDone = true }) {
             <span className="text-white font-semibold light:text-slate-900">
               Abdullah Bin Asim
             </span>{" "}
-            — a results-driven developer &amp; designer with AWS Generative AI
-            credentials. From AI-powered platforms to full-stack web apps, I
-            turn ideas into digital products that perform.
+            — an AI Cloud Engineer at Experts Cloud with AWS Generative AI
+            Professional &amp; Claude Certified Architect credentials. From
+            Bedrock-powered AI apps and RAG systems to full-stack products and
+            automations, I turn ideas into production-ready products that perform.
           </p>
 
           <div data-hero-stagger className="flex flex-wrap gap-2 max-w-md">
