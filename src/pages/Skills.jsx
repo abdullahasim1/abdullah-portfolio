@@ -75,7 +75,7 @@ function SkillBar({ name, level }) {
     <div className="space-y-2">
       <div className="flex justify-between text-sm">
         <span className="font-medium text-slate-300">{name}</span>
-        <span className="font-mono text-xs text-cyan-300/80">{level}%</span>
+        <span className="font-mono text-xs text-slate-500">{level}%</span>
       </div>
       <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden light:bg-[#e8e4da]">
         <div

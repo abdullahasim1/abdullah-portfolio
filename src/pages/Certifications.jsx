@@ -37,7 +37,7 @@ function FeaturedCert({ cert }) {
         {/* Badge zone */}
         <div className="lg:col-span-2 relative min-h-[260px] md:min-h-[300px] bg-gradient-to-br from-slate-900 via-black to-slate-950 flex items-center justify-center light:bg-none light:bg-[#f4f1ea]">
           <CertImage src={cert.image} alt={cert.title} className="w-full h-full max-h-[300px]" />
-          <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-cyan-300 bg-black/50 border border-cyan-400/30 backdrop-blur">
+          <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-cyan-300 bg-black/50 border border-cyan-400/30 backdrop-blur light:bg-slate-900 light:text-white light:border-slate-900">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
             AWS Professional
           </span>
@@ -57,7 +57,7 @@ function FeaturedCert({ cert }) {
             {cert.skills.map((skill) => (
               <span
                 key={skill}
-                className="px-3 py-1 rounded-full text-xs font-medium text-cyan-200/90 bg-cyan-500/[0.08] border border-cyan-400/20"
+                className="px-3 py-1 rounded-full text-xs font-medium text-cyan-200/90 bg-cyan-500/[0.08] border border-cyan-400/20 light:text-slate-700 light:bg-slate-900/5 light:border-slate-300"
               >
                 {skill}
               </span>
