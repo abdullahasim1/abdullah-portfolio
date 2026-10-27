@@ -18,7 +18,7 @@ function ScrollToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-8 right-8 z-50 w-12 h-14 bg-gradient-to-br from-cyan-500 to-violet-600 text-white rounded-2xl neon-ring hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center group ${
+      className={`fixed bottom-8 right-8 z-50 w-12 h-14 bg-gradient-to-br from-cyan-500 to-violet-600 text-white rounded-2xl neon-ring hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center group light:bg-none light:bg-[#17150f] light:text-white ${
         isVisible
           ? "translate-y-0 opacity-100"
           : "translate-y-4 opacity-0 pointer-events-none invisible"

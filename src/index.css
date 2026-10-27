@@ -22,7 +22,7 @@
 }
 
 @theme {
-  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: Georgia, "Times New Roman", Times, serif;
   --font-body: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --color-void: #05060a;
   --color-panel: #0b0d14;
@@ -45,8 +45,8 @@ body {
 
 /* Light canvas surface */
 html.light body {
-  background: #f4f6fb;
-  color: #0f172a;
+  background: #fbfbfa;
+  color: #17150f;
 }
 
 /* Smooth theme switch (theme.js temporary class) */
@@ -64,7 +64,7 @@ html.light ::-webkit-scrollbar-track {
   background: #e9edf5;
 }
 html.light ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #67e8f9, #a78bfa);
+  background: #c9c2b2;
 }
 html.light ::selection {
   color: #0f172a;
@@ -566,3 +566,149 @@ html.lenis body {
     display: none;
   }
 }
+
+/* ============ LIGHT MINIMAL REDESIGN (2026-10-27) ============
+   Design 2 — Light Minimal: saaf cream-white canvas, white cards,
+   hairline borders, serif display headings, near-black text.
+   Ye rules unlayered hain is liye Tailwind ki layered utilities par
+   light mode mein jeet jati hain — purane dark-first components ko
+   bina har file edit kiye light surfaces mil jati hain. */
+
+html.light .glass {
+  background: #ffffff;
+  border-color: #e8e4da;
+  box-shadow: 0 1px 2px rgba(23, 21, 15, 0.04);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.light .glass-strong {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: #e8e4da;
+  box-shadow: 0 12px 32px -16px rgba(23, 21, 15, 0.18);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.light .bento-card {
+  background: #ffffff;
+  border-color: #e8e4da;
+  box-shadow: 0 1px 2px rgba(23, 21, 15, 0.04);
+}
+html.light .bento-card:hover {
+  border-color: #c9c2b2;
+}
+
+/* Text palette — dark-first utilities ko light par dark text */
+html.light .text-white { color: #17150f; }
+html.light .text-slate-100,
+html.light .text-slate-200 { color: #26241e; }
+html.light .text-slate-300 { color: #45423b; }
+html.light .text-slate-400 { color: #5f5c54; }
+html.light .text-slate-500 { color: #6e6b62; }
+html.light .text-slate-600 { color: #55534c; }
+html.light .text-cyan-200 { color: #155e75; }
+html.light .text-cyan-300 { color: #0e7490; }
+html.light .text-cyan-400 { color: #0891b2; }
+html.light .text-violet-300,
+html.light .text-violet-400 { color: #7c3aed; }
+
+/* Gradient headline text -> solid near-black (serif ke sath saaf lagta hai) */
+html.light .text-gradient {
+  background: none;
+  -webkit-text-fill-color: #17150f;
+  color: #17150f;
+}
+
+/* Primary CTA gradients (cyan->violet) -> solid black pill, white text.
+   Sirf from-cyan-500/to-violet-600 combo target hai — image overlays
+   (from-black/...) is se mutasir nahi hote. */
+html.light .bg-gradient-to-r.from-cyan-500.to-violet-600 {
+  background-image: none;
+  background-color: #17150f;
+  color: #ffffff;
+  box-shadow: 0 8px 20px -10px rgba(23, 21, 15, 0.45);
+}
+html.light .bg-gradient-to-r.from-cyan-500.to-violet-600:hover {
+  background-color: #2a2822;
+}
+
+/* Glow/shadow effects -> halki neutral shadows */
+html.light .neon-ring {
+  box-shadow: 0 0 0 1px #e8e4da, 0 1px 3px rgba(23, 21, 15, 0.05);
+}
+html.light .card-glow-hover:hover {
+  border-color: #c9c2b2;
+  box-shadow: 0 10px 26px -14px rgba(23, 21, 15, 0.22);
+}
+html.light .tilt-tile:hover {
+  border-color: #c9c2b2;
+  box-shadow: 0 10px 24px -12px rgba(23, 21, 15, 0.2);
+}
+html.light .animate-glowPulse {
+  animation: none;
+  box-shadow: 0 1px 3px rgba(23, 21, 15, 0.06);
+}
+
+/* Skill bars ka gradient light mein solid black */
+html.light .bg-gradient-to-r.from-cyan-400.to-violet-500 {
+  background-image: none;
+  background-color: #17150f;
+  box-shadow: none;
+}
+
+/* Cinematic leftovers light mein band */
+html.light .noise-overlay,
+html.light .grid-floor,
+html.light .cine-vignette,
+html.light .cine-divider,
+html.light .cine-letterbox-top,
+html.light .cine-letterbox-bottom {
+  display: none;
+}
+html.light .scene-tag,
+html.light .title-card-eyebrow {
+  color: #6e6b62;
+}
+html.light .scene-tag::before,
+html.light .scene-tag::after {
+  background: #d8d2c2;
+}
+
+/* Form fields */
+html.light input,
+html.light textarea,
+html.light select {
+  background-color: #ffffff;
+  border-color: #ddd8ca;
+  color: #17150f;
+}
+html.light ::placeholder {
+  color: #a3a099;
+}
+html.light :focus-visible {
+  outline-color: rgba(23, 21, 15, 0.65);
+}
+
+/* Blog article prose — light */
+html.light .prose-content { color: #3f3d38; }
+html.light .prose-content h2,
+html.light .prose-content h3,
+html.light .prose-content strong { color: #17150f; }
+html.light .prose-content h2 { border-bottom-color: #e8e4da; }
+html.light .prose-content a { color: #0e7490; }
+html.light .prose-content li::marker { color: #17150f; }
+html.light .prose-content code {
+  background: #f4f1ea;
+  border-color: #e8e4da;
+  color: #155e75;
+}
+html.light .prose-content blockquote {
+  border-left-color: #c9c2b2;
+  color: #5f5c54;
+}
+html.light .prose-content th,
+html.light .prose-content td { border-color: #e8e4da; }
+html.light .prose-content th {
+  background: #f4f1ea;
+  color: #17150f;
+}
+html.light .prose-content hr { border-top-color: #e8e4da; }

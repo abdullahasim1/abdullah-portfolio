@@ -1,7 +1,6 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
 import ScrollToTop from "./components/ScrollToTop";
@@ -9,11 +8,9 @@ import CommandPalette from "./components/CommandPalette";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import { IS_LOW_END } from "./lib/device";
-import { useIdleDeferred } from "./hooks/useIdleDeferred";
 
 /* Three.js wale components lazy — warna three main bundle mein aa jata hai */
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
-const SiteBackground = lazy(() => import("./components/three/SiteBackground"));
 
 /* Below-the-fold sections lazy load */
 const About = lazy(() => import("./pages/About"));
@@ -40,9 +37,6 @@ function App() {
 
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
-  // SiteBackground ko idle pe defer karo — initial paint/TBT pe load na ho
-  const deferBackground = useIdleDeferred(2600, 1200);
-
   useEffect(() => {
     const onKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
@@ -67,7 +61,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-slate-50 light:text-slate-900">
+    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#fbfbfa] light:text-slate-900">
       {/* Skip to content (keyboard users) */}
       <a
         href="#main-content"
@@ -79,22 +73,9 @@ function App() {
       {/* Top progress bar */}
       <ScrollProgress />
 
-      {/* Custom cursor */}
-      <CursorFollower />
-
-      {/* Film grain texture */}
-      <div className="noise-overlay" aria-hidden="true" />
-
-      {/* Fixed site-wide 3D background (starfield + drifting wireframes) —
-          low-end skip + idle-deferred (TBT fix: pehle content, phir decoration) */}
-      {!IS_LOW_END && deferBackground && (
-        <Suspense fallback={null}>
-          <SiteBackground />
-        </Suspense>
-      )}
-
-      {/* Ambient background glows */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 light:opacity-60">
+      {/* Light Minimal: koi 3D background / grain / custom cursor nahi —
+          saaf canvas hi design hai. Glows sirf dark mode ke liye rehne diye. */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 light:hidden">
         <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-cyan-500/[0.07] blur-[120px] light:bg-cyan-500/[0.05]" />
         <div className="absolute top-1/3 -right-48 h-[520px] w-[520px] rounded-full bg-violet-600/[0.08] blur-[130px] light:bg-violet-600/[0.05]" />
         <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-indigo-500/[0.06] blur-[120px] light:bg-indigo-500/[0.04]" />

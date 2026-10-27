@@ -1,10 +1,7 @@
-import React, { Suspense, lazy } from "react";
+import React from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
-import { IS_LOW_END } from "../lib/device";
 import { timeline } from "../data/experience";
-
-const HoloOrb = lazy(() => import("../components/three/HoloOrb"));
 
 const strengths = [
   {
@@ -53,7 +50,7 @@ function About() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-6 reveal">
-            <div className="rounded-2xl glass card-glow-hover p-8 space-y-5 text-slate-400 leading-relaxed">
+            <div className="space-y-5 text-slate-400 leading-relaxed light:text-slate-600">
               <p>
                 I'm an{" "}
                 <span className="text-cyan-300 font-medium">
@@ -79,16 +76,7 @@ function About() {
                 products.
               </p>
 
-              {/* Holographic 3D orb */}
-              {!IS_LOW_END && (
-                <div className="relative h-40 sm:h-48 -mx-2">
-                  <Suspense fallback={null}>
-                    <HoloOrb className="absolute inset-0" />
-                  </Suspense>
-                </div>
-              )}
-
-              <div className="flex flex-wrap gap-x-8 gap-y-3 pt-3 border-t border-white/[0.06]">
+              <div className="flex flex-wrap gap-x-8 gap-y-3 pt-5 border-t border-white/[0.06] light:border-[#e8e4da]">
                 {[
                   ["3+", "Years Experience"],
                   ["25+", "Projects Shipped"],
@@ -105,23 +93,22 @@ function About() {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <h3 className="font-display text-xl font-semibold text-white reveal light:text-slate-900">
+          <div className="space-y-2">
+            <h3 className="font-display text-xl font-medium text-white reveal light:text-slate-900">
               My Strengths &amp; What They Mean for You
             </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="divide-y divide-white/[0.06] light:divide-[#e8e4da]">
               {strengths.map((strength) => (
-                <div
-                  key={strength.title}
-                  className="reveal glass rounded-2xl p-5 card-glow-hover hover:-translate-y-1"
-                >
-                  <div className="text-2xl mb-3">{strength.icon}</div>
-                  <h4 className="font-display font-semibold text-slate-100 mb-1.5">
-                    {strength.title}
-                  </h4>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    {strength.desc}
-                  </p>
+                <div key={strength.title} className="reveal flex gap-4 py-5">
+                  <div className="text-2xl shrink-0">{strength.icon}</div>
+                  <div>
+                    <h4 className="font-display font-medium text-slate-100 mb-1">
+                      {strength.title}
+                    </h4>
+                    <p className="text-sm text-slate-400 leading-relaxed light:text-slate-600">
+                      {strength.desc}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -133,18 +120,17 @@ function About() {
           <h3 className="reveal font-display text-2xl md:text-3xl font-bold text-white mb-10 light:text-slate-900">
             Experience &amp; Milestones
           </h3>
-          <div className="relative border-l border-white/[0.09] ml-3 space-y-12 light:border-slate-300">
+          <div className="border-t border-white/[0.07] light:border-[#e8e4da]">
             {timeline.map((item) => (
-              <div key={item.title + item.period} className="reveal relative pl-8">
-                {/* Timeline dot */}
-                <span
-                  aria-hidden
-                  className="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500 border-2 border-void shadow-[0_0_14px_rgba(34,211,238,0.55)] light:border-white"
-                />
-                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-300/90 light:text-cyan-700">
+              <div
+                key={item.title + item.period}
+                className="reveal grid md:grid-cols-[190px_1fr] gap-2 md:gap-8 py-8 border-b border-white/[0.07] light:border-[#e8e4da]"
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500 md:pt-1.5">
                   {item.period}
                 </div>
-                <h4 className="font-display font-bold text-slate-100 mt-1.5 light:text-slate-900">
+                <div>
+                <h4 className="font-display text-xl font-medium text-slate-100 light:text-slate-900">
                   {item.title}
                 </h4>
                 <div className="text-sm font-medium text-violet-300/90 mt-0.5 light:text-violet-700">
@@ -162,6 +148,7 @@ function About() {
                       {tag}
                     </span>
                   ))}
+                </div>
                 </div>
               </div>
             ))}

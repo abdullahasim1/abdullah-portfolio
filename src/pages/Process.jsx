@@ -45,69 +45,41 @@ function Process() {
     <section id="process" className="py-28 scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
-          scene="06"
           label="Process"
           title="How I Work"
           subtitle="A proven process that ensures your project is delivered on time, within budget, and exceeds expectations."
         />
 
-        {/* Timeline */}
-        <div className="space-y-10">
-          {processSteps.map((step, index) => {
-            const isLast = index === processSteps.length - 1;
-            return (
-              <div key={step.step} className="reveal grid lg:grid-cols-[72px_1fr] gap-6 lg:gap-8">
-                {/* Rail: number + connector */}
-                <div className="hidden lg:flex flex-col items-center">
-                  <span className="relative font-display inline-flex items-center justify-center w-14 h-14 shrink-0 rounded-2xl bg-white/[0.04] border border-white/[0.1] text-lg font-bold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]">
-                    {step.step}
-                    <span aria-hidden className="absolute inset-0 rounded-2xl bg-cyan-400/15 blur-xl -z-10" />
-                  </span>
-                  {!isLast && (
-                    <span
-                      aria-hidden
-                      className="relative w-px flex-1 min-h-[60px] my-3 bg-gradient-to-b from-white/20 via-white/5 to-transparent"
-                    />
-                  )}
-                </div>
-
-                {/* Card */}
-                <div className="bento-card rounded-3xl p-8 hover:-translate-y-0.5 transition-transform duration-300">
-                  {/* Mobile header */}
-                  <div className="flex items-center gap-4 mb-5 lg:hidden">
-                    <span className="font-display inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white/[0.05] border border-white/10 text-base font-bold text-white shrink-0">
-                      {step.step}
-                    </span>
-                    <h3 className="font-display text-xl font-bold text-white">{step.title}</h3>
-                  </div>
-
-                  <h3 className="hidden lg:block font-display text-2xl font-bold text-white mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-2xl">
-                    {step.description}
-                  </p>
-
-                  <h4 className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500 mb-4">
-                    Key Deliverables
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {step.features.map((feature) => (
-                      <div
-                        key={feature}
-                        className="flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] px-4 py-3 hover:bg-white/[0.04] hover:border-white/10 transition-all"
-                      >
-                        <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-sm text-slate-300">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
+        {/* Light Minimal: timeline cards ki jagah numbered editorial rows */}
+        <div className="border-t border-white/[0.07] light:border-[#e8e4da]">
+          {processSteps.map((step) => (
+            <div
+              key={step.step}
+              className="reveal grid md:grid-cols-[140px_1fr] gap-4 md:gap-10 py-10 border-b border-white/[0.07] light:border-[#e8e4da]"
+            >
+              <div className="font-display text-6xl md:text-7xl font-medium leading-none text-slate-600 light:text-[#cfc8b8]">
+                {step.step}
+              </div>
+              <div>
+                <h3 className="font-display text-2xl md:text-3xl font-medium text-white light:text-slate-900">
+                  {step.title}
+                </h3>
+                <p className="text-slate-400 leading-relaxed mt-3 max-w-2xl light:text-slate-600">
+                  {step.description}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 mt-6 max-w-2xl">
+                  {step.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-3">
+                      <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-slate-300 light:text-slate-600">{feature}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>

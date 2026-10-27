@@ -43,13 +43,13 @@ function Testimonials() {
           {testimonials.concat(testimonials).map((t, i) => (
             <figure
               key={i}
-              className="min-w-[340px] max-w-sm rounded-2xl glass p-6 card-glow-hover"
+              className="min-w-[340px] max-w-sm border-l-2 border-white/[0.08] pl-6 pr-4 py-2 light:border-[#ddd8ca]"
             >
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, star) => (
                   <svg
                     key={star}
-                    className="w-4 h-4 text-cyan-300/80"
+                    className="w-4 h-4 text-amber-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -57,10 +57,10 @@ function Testimonials() {
                   </svg>
                 ))}
               </div>
-              <blockquote className="text-slate-300 mb-5 leading-relaxed text-[15px]">
+              <blockquote className="font-display text-xl text-slate-200 mb-5 leading-relaxed light:text-slate-800">
                 "{t.quote}"
               </blockquote>
-              <figcaption className="flex items-center gap-3 pt-4 border-t border-white/[0.06]">
+              <figcaption className="flex items-center gap-3 pt-1">
                 {t.image ? (
                   <img
                     src={t.image}
