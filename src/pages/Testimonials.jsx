@@ -31,7 +31,7 @@ function Testimonials() {
           scene="07"
           label="Testimonials"
           title="What Clients Say"
-          subtitle="Real feedback from clients who trusted me with their projects."
+          subtitle="Anonymous feedback from clients — names withheld for privacy. Roles and industries shared with permission."
         />
       </div>
 
@@ -105,9 +105,7 @@ function Testimonials() {
                       </a>
                     )}
                   </div>
-                  <div className="text-xs text-slate-400 truncate">
-                    {t.role} · {t.company}
-                  </div>
+                  <div className="text-xs text-slate-400 truncate">{t.role}</div>
                 </div>
               </figcaption>
             </figure>

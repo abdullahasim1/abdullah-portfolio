@@ -1,6 +1,6 @@
 # Abdullah Bin Asim — Portfolio
 
-A modern, animated portfolio built with React 19, Vite 7, Tailwind CSS v4, GSAP, and Three.js (R3F). It showcases projects, skills, services, certifications, animated stats, and a polished contact section with micro-interactions.
+A modern, animated portfolio built with React 19, Vite 8, Tailwind CSS v4, GSAP, and Three.js (R3F). It showcases projects, skills, services, certifications, animated stats, and a polished contact section with micro-interactions.
 
 Live demo: https://abdullah-asim-dev.vercel.app
 
@@ -53,10 +53,10 @@ Live demo: https://abdullah-asim-dev.vercel.app
 
 ## 🛠 Tech Stack
 
-- React `^19.1.1`, Vite `^7.1.2`
+- React `^19.1.1`, Vite `^8.3.1`
 - Tailwind CSS `^4.1.12` (via `@tailwindcss/vite`)
 - GSAP `^3.13.0`, Lenis (smooth scroll)
-- Three.js `^0.185.1`, `@react-three/fiber`, `@react-three/drei`
+- Three.js `^0.186.1`, `@react-three/fiber`, `@react-three/drei`
 - simple-icons, ESLint 9
 
 ## 📁 Project Structure
@@ -113,7 +113,7 @@ abdullah-portfolio/
 
 ## 🚀 Getting Started
 
-Prerequisites: Node.js 18+
+Prerequisites: Node.js 20+
 
 ```bash
 npm install

@@ -1,0 +1,131 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#05060a" />
+    <title>How I automated hiring communication with AI workflows — a HireGen AI case study — Abdullah Bin Asim</title>
+    <meta name="description" content="Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — and what it taught me about automation that actually ships." />
+    <link rel="canonical" href="https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows" />
+    <meta property="og:title" content="How I automated hiring communication with AI workflows — a HireGen AI case study" />
+    <meta property="og:description" content="Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — and what it taught me about automation that actually ships." />
+    <meta property="og:image" content="https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How I automated hiring communication with AI workflows — a HireGen AI case study" />
+    <meta name="twitter:description" content="Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — and what it taught me about automation that actually ships." />
+    <meta name="twitter:image" content="https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows.jpg" />
+    <link rel="stylesheet" href="/fonts.css" />
+  </head>
+  <body>
+    <header style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <nav><a href="/" style="color:#e2e8f0;text-decoration:none;font-weight:bold;">← Back to Portfolio</a></nav>
+    </header>
+    <main style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  ">
+      <article>
+        <h1>How I automated hiring communication with AI workflows — a HireGen AI case study</h1>
+        <p><time datetime="2026-10-02">Oct 2, 2026</time> · 5 min read</p>
+        <span class="tag">Case Study</span> <span class="tag">AI Agents</span> <span class="tag">Automation</span> <span class="tag">n8n</span>
+        <div class="prose-content"><p>Most hiring automation fails in the same place: it automates the easy 10% (posting jobs) and leaves the painful 90% (screening resumes, chasing candidates, writing follow-up emails) fully manual. I built <strong>HireGen AI</strong> to attack the painful part — an automation platform that matches resumes to roles with generative AI, runs candidate email sequences on autopilot, and turns skill data into recruiter-friendly insights.</p>
+<p>This is the story of how it was built, what worked, and what I would do differently.</p>
+<h2>The problem</h2>
+<p>A recruiter hiring for one role routinely faces hundreds of applications. The actual workflow looks like this: open resume, skim for 30 seconds, make a gut call, move on — then, for the shortlisted few, write personalized outreach emails, remember to follow up, and track everything in a spreadsheet. It is slow, inconsistent, and the follow-up is where great candidates silently slip away. Studies of hiring funnels consistently show that response speed is one of the biggest factors in whether a good candidate stays engaged — and manual processes are never fast.</p>
+<p>The goal for HireGen AI was not &quot;AI that hires people.&quot; It was narrower and more useful: <strong>automate the repetitive communication and screening mechanics so humans spend their time on judgment calls.</strong></p>
+<h2>The system: four automated stages</h2>
+<p><strong>1. Resume ingestion.</strong> Candidates&#39; PDFs are parsed and converted into structured metadata — skills, experience years, education, role titles. Unstructured documents in, queryable candidate profiles out. This is the unglamorous foundation everything else stands on; bad parsing here poisons every downstream step.</p>
+<p><strong>2. AI matching with scoring and reasoning.</strong> Each candidate is scored against the job description using embedding similarity plus LLM reasoning. Crucially, the system does not just output a number — it outputs <em>why</em>: which requirements the candidate meets, which are missing, and where the evidence came from. That reasoning trace is what makes the score trustworthy enough for a recruiter to act on. A black-box score gets ignored; an explained score gets used.</p>
+<p><strong>3. Automated email sequences.</strong> Shortlisted candidates enter email sequences automatically — initial outreach, follow-ups at sensible intervals, and status updates. This is the highest-ROI automation in the whole system: consistent, instant follow-up without anyone remembering to send it. The templates are recruiter-editable, because automation should amplify a human voice, not replace it with robotext.</p>
+<p><strong>4. Skill-gap analytics.</strong> Aggregated across applicants, the platform shows recruiters where their pipeline is strong and thin — which skills are abundant, which requirements nobody meets. That feedback loop improves future job descriptions, which improves future applicant quality. Automation that learns beats automation that just repeats.</p>
+<h2>The stack</h2>
+<p>HireGen AI is built on <strong>Next.js (App Router)</strong> with <strong>TypeScript</strong>, <strong>Neon serverless Postgres</strong> for data, and generative AI models for the matching and reasoning layer. I deliberately kept the architecture boring where it could be: the interesting complexity lives in the AI evaluation pipeline and the email orchestration, not in exotic infrastructure. For client projects with similar needs, I often implement the orchestration layer in <strong>n8n</strong> — its visual workflows, retry handling, and 400+ integrations make it ideal for the &quot;connect AI decisions to real-world actions&quot; part of systems like this.</p>
+<h2>What it taught me about automation that ships</h2>
+<p><strong>Automate the follow-up first.</strong> Across every automation project I have done, the follow-up sequence — emails, reminders, nudges — consistently delivers the most visible value the fastest. It is also the easiest to get right, because the failure mode (a delayed email) is gentle compared to, say, auto-rejecting a candidate.</p>
+<p><strong>Explainability is a feature, not a luxury.</strong> The resume score only became useful when it came with reasoning. This generalizes: any AI automation that makes decisions affecting people needs to show its work, or humans will route around it.</p>
+<p><strong>Start with the communication layer.</strong> Teams often want to automate complex decision-making first. In practice, automating the <em>communication around</em> decisions (notifications, sequences, status updates) is lower-risk, faster to build, and builds the trust needed for deeper automation later.</p>
+<h2>The honest limitations</h2>
+<p>HireGen AI does not eliminate bias — it systematizes whatever patterns exist in its training signals, which is why the human-in-the-loop design matters. It also does not replace sourcing: automation multiplies the top of the funnel, but someone still has to attract candidates worth funneling. I am upfront about both with anyone considering similar systems.</p>
+<h2>Frequently asked questions</h2>
+<p><strong>How long does it take to build hiring automation like this?</strong>
+A focused version — intake, AI screening, email sequences — is typically a multi-week project, not a multi-month one, when the scope is defined up front. The analytics layer adds more.</p>
+<p><strong>Can this connect to our existing ATS or HR tools?</strong>
+Yes — that is usually the first integration step. Most modern ATS platforms have APIs, and where they do not, n8n-style automation can bridge via email parsing or scheduled imports.</p>
+<p><strong>Does AI screening risk filtering out good candidates?</strong>
+Any screening system can. The mitigation is the same one I built in: explainable scores, human review of edge cases, and regular audits of who gets filtered and why.</p>
+<p><strong>What does something like this cost?</strong>
+It depends on scope — a single automated email sequence is a small project; a full platform with matching, analytics, and integrations is a serious engagement. My <a href="https://abdullah-asim-dev.vercel.app/blog/how-much-does-it-cost-to-hire-n8n-developer-2026">n8n developer cost guide</a> breaks down how automation projects are typically priced.</p>
+<h2>The bottom line</h2>
+<p>HireGen AI worked because it automated the tedious mechanics of hiring communication while keeping humans firmly in charge of decisions. That is the pattern I bring to every automation project: find the repetitive communication layer, automate it reliably, and let people spend their time on judgment.</p>
+<p>If you need AI automation, agent workflows, or hiring-tech built — freelance or as a full-time remote hire — <a href="https://abdullah-asim-dev.vercel.app/#contact">let&#39;s talk</a>.</p>
+</div>
+        <p style="margin:2em 0 0;font-size:0.9rem;color:#67e8f9;"><a href="/rss.xml" style="color:#67e8f9;">Subscribe via RSS</a></p>
+      </article>
+    </main>
+    <footer style="
+    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
+    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
+    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
+    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
+    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
+    p{line-height:1.75;margin:0.8em 0}
+    strong{color:#f8fafc}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    ul{list-style:disc}
+    ol{list-style:decimal}
+    li::marker{color:#22d3ee}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
+    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
+    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    .prose-content > * + *{margin-top:1.1em}
+  "><nav><a href="/" style="color:#e2e8f0;">Home</a> | <a href="/rss.xml" style="color:#67e8f9;">RSS</a></nav></footer>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"BlogPosting","headline":"How I automated hiring communication with AI workflows — a HireGen AI case study","description":"Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — and what it taught me about automation that actually ships.","datePublished":"2026-10-02","url":"https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows","author":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"publisher":{"@id":"https://abdullah-asim-dev.vercel.app/#person"},"mainEntityOfPage":"https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows","image":"https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows.jpg"}
+    </script>
+  </body>
+</html>

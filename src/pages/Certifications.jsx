@@ -65,7 +65,7 @@ function FeaturedCert({ cert }) {
             ))}
           </div>
 
-          {cert.credentialUrl && cert.credentialUrl !== "#" && (
+          {cert.credentialUrl && (
             <a
               href={cert.credentialUrl}
               target="_blank"
@@ -89,7 +89,7 @@ function FeaturedCert({ cert }) {
 
 function FlipCertCard({ cert }) {
   const [flipped, setFlipped] = useState(false);
-  const hasLink = cert.credentialUrl && cert.credentialUrl !== "#";
+  const hasLink = Boolean(cert.credentialUrl);
 
   const handleToggle = () => {
     playClickSound();

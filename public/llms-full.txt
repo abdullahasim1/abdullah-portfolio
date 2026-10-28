@@ -264,17 +264,19 @@ Deploying to production and providing ongoing support to ensure long-term succes
 
 ## Testimonials
 
-"We needed a scalable backend with secure payments. Abdullah built our e-commerce platform flawlessly. His attention to detail and performance optimization is outstanding." — Sarah Johnson, E-commerce Founder, TechStart Inc.
+Anonymous client feedback (names withheld for privacy; roles/industries shared with permission):
 
-"Abdullah transformed our concept into a polished platform with insightful guidance. His technical expertise and design sense made all the difference in user adoption." — Michael Chen, EdTech Co-Founder, LearnFlow
+"We needed a scalable backend with secure payments. Abdullah built our e-commerce platform flawlessly. His attention to detail and performance optimization is outstanding." — E-commerce Founder, Online Retail
 
-"The app's real-time features and seamless UX exceeded our expectations. Abdullah is a true full-stack problem solver who delivers quality work on time." — Emily Rodriguez, NGO Coordinator, HealthConnect
+"Abdullah transformed our concept into a polished platform with insightful guidance. His technical expertise and design sense made all the difference in user adoption." — EdTech Co-Founder, E-Learning
 
-"Abdullah built us a dynamic admin panel with user management and analytics. His ability to balance backend efficiency with frontend usability is rare." — David Kim, SaaS Product Manager, DataFlow
+"The app's real-time features and seamless UX exceeded our expectations. Abdullah is a true full-stack problem solver who delivers quality work on time." — NGO Coordinator, Healthcare
 
-"We needed a branded, responsive tool for our website. Abdullah delivered a clean solution that boosted our engagement and reduced support queries significantly." — Lisa Thompson, Financial Consultant, FinancePro
+"Abdullah built us a dynamic admin panel with user management and analytics. His ability to balance backend efficiency with frontend usability is rare." — SaaS Product Manager, B2B Software
 
-"Abdullah delivered a functional, fast application with advanced features. His proactive approach and technical skills set him apart from other developers." — Alex Morgan, Tech Recruiter, TalentHub
+"We needed a branded, responsive tool for our website. Abdullah delivered a clean solution that boosted our engagement and reduced support queries significantly." — Financial Consultant, Finance
+
+"Abdullah delivered a functional, fast application with advanced features. His proactive approach and technical skills set him apart from other developers." — Tech Recruiter, Recruiting
 
 ## Contact
 
@@ -288,9 +290,9 @@ Deploying to production and providing ongoing support to ensure long-term succes
 
 ## Blog
 
-- **Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit** (9/12/2026) — The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and wh...
-- **How I split a React 19 + Three.js app without breaking the bundle** (8/28/2026) — Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-de...
-- **AWS Certified Generative AI Developer (Professional) — my study path** (7/15/2026) — A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safet...
+- **How I automated hiring communication with AI workflows — a HireGen AI case study** (10/2/2026) — Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — ...
+- **How much does it cost to hire an n8n developer in 2026?** (10/2/2026) — A practical pricing guide to hiring an n8n developer — what drives the cost, typical project tiers, n8n vs Zapier/Make at scale, and how to scope your...
+- **n8n vs Make.com for small business automation — an honest 2026 comparison** (10/2/2026) — n8n vs Make.com compared on pricing, self-hosting, ease of use, integrations, and AI — plus a simple framework for which one your small business shoul...
 
 ---
 
