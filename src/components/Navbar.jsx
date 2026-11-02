@@ -95,11 +95,11 @@ function Navbar() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    /* Scroll-spy: jis section par ho uski nav link highlight */
+    /* Scroll-spy: jis section par ho uski nav link highlight.
+       Sections lazy-load hoti hain — mount ke waqt DOM mein nahi hotin,
+       is liye jo section jab appear ho use tab observe karo
+       (pehle sirf "home" observe hota tha, highlight wahin atka rehta tha). */
     const ids = links.map((l) => l.id);
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -108,7 +108,26 @@ function Navbar() {
       },
       { rootMargin: "-35% 0px -60% 0px", threshold: 0 },
     );
-    sections.forEach((s) => observer.observe(s));
+    const observed = new Set();
+    const collect = () => {
+      ids.forEach((id) => {
+        if (observed.has(id)) return;
+        const el = document.getElementById(id);
+        if (el) {
+          observed.add(id);
+          observer.observe(el);
+        }
+      });
+    };
+    collect();
+    let mo = null;
+    if (observed.size < ids.length) {
+      mo = new MutationObserver(() => {
+        collect();
+        if (observed.size >= ids.length && mo) mo.disconnect();
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
 
     const onSoundToggle = (e) => setMuted(e.detail.isMuted);
     window.addEventListener("aa-sound-toggle", onSoundToggle);
@@ -117,6 +136,7 @@ function Navbar() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("aa-sound-toggle", onSoundToggle);
       observer.disconnect();
+      if (mo) mo.disconnect();
     };
   }, []);
 

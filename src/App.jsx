@@ -8,10 +8,12 @@ import ScrollToTop from "./components/ScrollToTop";
 import CommandPalette from "./components/CommandPalette";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
+import SplashScreen from "./components/SplashScreen";
 import { IS_LOW_END } from "./lib/device";
 
-/* Three.js wale components lazy — warna three main bundle mein aa jata hai */
-const SplashScreen = lazy(() => import("./components/SplashScreen"));
+/* Splash EAGER import hai (lazy nahi): ye sirf CSS/SVG hai, three is
+   mein nahi. Lazy hone par pehle portfolio flash hota tha, phir splash
+   aata tha — ab pehli paint se hi splash nazar aata hai. */
 
 /* Below-the-fold sections lazy load */
 const About = lazy(() => import("./pages/About"));
@@ -61,6 +63,17 @@ function App() {
     sessionStorage.setItem("aa-splash-seen", "1");
     setIntroDone(true);
   };
+
+  /* Splash ke doran page scroll lock — peeche ki site hilti nahi,
+     reveals apne sahi waqt par hi chalte hain. */
+  useEffect(() => {
+    if (introDone) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [introDone]);
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">
@@ -151,12 +164,8 @@ function App() {
         onClose={() => setIsPaletteOpen(false)}
       />
 
-      {/* 3D intro splash — site ke upar render hota hai */}
-      {!introDone && (
-        <Suspense fallback={null}>
-          <SplashScreen onFinish={handleSplashFinish} />
-        </Suspense>
-      )}
+      {/* Intro splash — site ke upar render hota hai, pehli paint se */}
+      {!introDone && <SplashScreen onFinish={handleSplashFinish} />}
     </div>
   );
 }
