@@ -100,7 +100,7 @@ function CertCard({ cert }) {
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-violet-300/90 mb-1.5">
           {cert.issuer}
         </p>
-        <h3 className="font-display text-base font-semibold text-white leading-snug mb-3">
+        <h3 className="font-display text-base font-semibold text-white light:text-slate-900 leading-snug mb-3">
           {cert.title}
         </h3>
         <p className="text-xs text-slate-500 leading-relaxed mb-4">

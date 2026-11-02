@@ -26,7 +26,7 @@ function Testimonials() {
                   </svg>
                 ))}
               </div>
-              <blockquote className="text-slate-300 mb-6 leading-relaxed text-[15px]">
+              <blockquote className="text-slate-300 light:text-slate-600 mb-6 leading-relaxed text-[15px]">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-auto flex items-center gap-3 pt-5 border-t border-white/[0.06]">
@@ -48,7 +48,7 @@ function Testimonials() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <div className="font-medium text-slate-100 text-sm truncate">
+                  <div className="font-medium text-slate-100 light:text-slate-900 text-sm truncate">
                     {t.author}
                   </div>
                   <div className="text-xs text-slate-400 truncate">

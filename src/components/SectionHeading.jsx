@@ -14,7 +14,7 @@ function SectionHeading({ label, title, subtitle, align = "left" }) {
         <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
         {label}
       </span>
-      <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl">
+      <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight max-w-3xl">
         {title}
       </h2>
       {subtitle && (

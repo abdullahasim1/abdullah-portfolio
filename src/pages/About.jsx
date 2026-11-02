@@ -24,7 +24,7 @@ function StackTile({ item }) {
           <path d={item.icon.path} fill={`#${item.icon.hex}`} />
         </svg>
       )}
-      <span className="text-[11px] font-medium text-slate-300 text-center leading-tight">
+      <span className="text-[11px] font-medium text-slate-300 light:text-slate-600 text-center leading-tight">
         {item.name}
       </span>
     </div>
@@ -63,7 +63,7 @@ function About() {
 
           {/* Text */}
           <div className="reveal lg:col-span-4 space-y-5 text-slate-400 leading-relaxed">
-            <h3 className="font-display text-2xl font-bold text-white leading-snug">
+            <h3 className="font-display text-2xl font-bold text-white light:text-slate-900 leading-snug">
               Building Web Experiences That Make an Impact
             </h3>
             <p>
@@ -111,7 +111,7 @@ function About() {
           {/* Tech stack panel — mockup style */}
           <div className="reveal lg:col-span-5">
             <div className="rounded-3xl glass p-6 md:p-7">
-              <h3 className="flex items-center gap-2 font-display text-base font-semibold text-white mb-5">
+              <h3 className="flex items-center gap-2 font-display text-base font-semibold text-white light:text-slate-900 mb-5">
                 <span aria-hidden>⭐</span> My Tech Stack
               </h3>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
@@ -126,7 +126,7 @@ function About() {
         {/* Experience & milestones — mockup timeline style */}
         <div id="experience" className="mt-24 scroll-mt-28">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
-            <h3 className="reveal font-display text-2xl md:text-3xl font-bold text-white">
+            <h3 className="reveal font-display text-2xl md:text-3xl font-bold text-white light:text-slate-900">
               Work Experience
             </h3>
             <a
@@ -150,7 +150,7 @@ function About() {
                 />
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <h4 className="font-display font-bold text-slate-100">
+                    <h4 className="font-display font-bold text-slate-100 light:text-slate-900">
                       {item.title}
                     </h4>
                     <div className="text-sm font-medium text-violet-300/90 mt-0.5">

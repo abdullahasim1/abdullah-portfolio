@@ -113,11 +113,11 @@ function Home({ introDone = true }) {
               data-hero-stagger
               className="font-display font-bold leading-[1.04] tracking-tight text-5xl sm:text-6xl lg:text-7xl"
             >
-              <span className="text-white">Abdullah </span>
+              <span className="text-white light:text-slate-900">Abdullah </span>
               <span className="text-gradient">Asim</span>
             </h1>
 
-            <p data-hero-stagger className="font-display text-xl md:text-2xl font-semibold text-slate-200">
+            <p data-hero-stagger className="font-display text-xl md:text-2xl font-semibold text-slate-200 light:text-slate-700">
               Full-Stack Developer &amp; AI Engineer
             </p>
 
@@ -134,7 +134,7 @@ function Home({ introDone = true }) {
               <a
                 href="/resume.pdf"
                 download="Abdullah-Bin-Asim-Resume.pdf"
-                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3.5 font-semibold text-slate-200 hover:border-violet-400/40 hover:text-violet-300 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3.5 font-semibold text-slate-200 light:text-slate-700 hover:border-violet-400/40 hover:text-violet-300 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
@@ -151,7 +151,7 @@ function Home({ introDone = true }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-slate-300 hover:text-violet-300 hover:border-violet-400/40 transition-colors"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-slate-300 light:text-slate-600 hover:text-violet-300 hover:border-violet-400/40 transition-colors"
                 >
                   <svg className="w-4.5 h-4.5 w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
                     <path d={s.path} />
@@ -162,7 +162,7 @@ function Home({ introDone = true }) {
                 href="#contact"
                 onClick={(e) => scrollTo(e, "contact")}
                 aria-label="Email"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-slate-300 hover:text-violet-300 hover:border-violet-400/40 transition-colors"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-slate-300 light:text-slate-600 hover:text-violet-300 hover:border-violet-400/40 transition-colors"
               >
                 <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -186,14 +186,14 @@ function Home({ introDone = true }) {
                 height="640"
                 fetchPriority="high"
               />
-              <span className="absolute -top-4 right-6 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 float-y">
+              <span className="absolute -top-4 right-6 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y">
                 <span className="text-violet-400">⚡</span> 3+ Years
                 <span className="block text-[10px] font-medium text-slate-400">Experience</span>
               </span>
-              <span className="absolute top-1/3 -left-3 sm:-left-6 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 float-y">
+              <span className="absolute top-1/3 -left-3 sm:-left-6 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y">
                 <span aria-hidden>💻</span> Full-Stack Developer
               </span>
-              <span className="absolute -bottom-4 right-8 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 float-y">
+              <span className="absolute -bottom-4 right-8 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y">
                 <span aria-hidden>☁️</span> AWS · Cloud &amp; AI
               </span>
             </div>
@@ -209,7 +209,7 @@ function Home({ introDone = true }) {
             <div key={s.label} className="flex items-center gap-4">
               <StatIcon name={s.icon} />
               <div>
-                <div className="font-display text-2xl font-bold text-white leading-none">
+                <div className="font-display text-2xl font-bold text-white light:text-slate-900 leading-none">
                   {s.num}
                 </div>
                 <div className="text-xs text-slate-400 mt-1.5">{s.label}</div>

@@ -119,7 +119,7 @@ function FeaturedProjectCard({ project, onOpenCaseStudy }) {
 
       {/* Body */}
       <div className="flex flex-col flex-grow p-6">
-        <h3 className="font-display text-lg font-semibold text-white leading-snug mb-2">
+        <h3 className="font-display text-lg font-semibold text-white light:text-slate-900 leading-snug mb-2">
           {project.title}
         </h3>
         <p className="text-sm text-slate-400 leading-relaxed mb-4 line-clamp-2">
@@ -255,7 +255,7 @@ function Projects() {
               <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
               Featured Projects
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+            <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight">
               My Recent Work
             </h2>
             <p className="text-slate-400 mt-4 max-w-2xl leading-relaxed">

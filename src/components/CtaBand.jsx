@@ -20,7 +20,7 @@ function CtaBand() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-violet-300 mb-2">
                 Let&apos;s Work Together
               </p>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-white light:text-slate-900 leading-tight">
                 Have a Project in Mind?
               </h2>
             </div>

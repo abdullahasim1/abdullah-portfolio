@@ -60,7 +60,7 @@ function Services() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
                 </svg>
               </div>
-              <h3 className="font-display text-lg font-semibold text-white mb-2">
+              <h3 className="font-display text-lg font-semibold text-white light:text-slate-900 mb-2">
                 {s.title}
               </h3>
               <p className="text-sm text-slate-400 leading-relaxed">{s.desc}</p>
