@@ -1,7 +1,7 @@
 // @ts-check
 /* Theme management — dark (default) / light.
    - localStorage mein `aa-theme` save hota hai
-   - Pehli visit par system preference (prefers-color-scheme) use hoti hai
+   - Pehli visit par dark default hai (neon mockup); stored choice hamesha respect hoti hai
    - `light` class <html> par lagti hai; Tailwind `light:` variant isi se chalta hai */
 
 const THEME_KEY = "aa-theme";
@@ -20,12 +20,8 @@ function getStoredTheme() {
 export function getTheme() {
   const stored = getStoredTheme();
   if (stored) return stored;
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-color-scheme: light)").matches
-  ) {
-    return "light";
-  }
+  /* Neon redesign dark-first hai (mockup) — pehli visit par hamesha dark,
+     system preference se light nahi hota. Toggle/stored choice phir bhi kaam karti hai. */
   return "dark";
 }
 

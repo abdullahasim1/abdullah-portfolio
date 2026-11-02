@@ -4,6 +4,28 @@ import TiltIcon from "./TiltIcon";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { playClickSound } from "../lib/sound";
 
+const quickLinks = [
+  { name: "Home", href: "#home" },
+  { name: "About", href: "#about" },
+  { name: "Services", href: "#services" },
+  { name: "Projects", href: "#projects" },
+  { name: "Certifications", href: "#certifications" },
+  { name: "Skills", href: "#skills" },
+  { name: "Contact", href: "#contact" },
+  { name: "Privacy", href: "/privacy.html" }
+];
+
+const services = [
+  "AI Integration",
+  "Workflow Automation",
+  "Web Development",
+  "Mobile Apps",
+  "UI/UX Design",
+  "Backend Development",
+  "API Integration",
+  "Consulting"
+];
+
 function Footer() {
   const currentYear = new Date().getFullYear();
 
