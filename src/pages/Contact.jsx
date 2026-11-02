@@ -237,15 +237,6 @@ function Contact() {
 
           {/* Contact form */}
           <div className="space-y-4 reveal">
-            {/* Paper plane 3D visual — low-end/touch par skip (perf) */}
-            {!IS_LOW_END && (
-              <div className="relative h-40 sm:h-48 rounded-3xl overflow-hidden border border-white/[0.07] bg-white/[0.02] light:border-slate-300 light:bg-slate-100/60">
-                <Suspense fallback={null}>
-                  <PaperPlane className="absolute inset-0" />
-                </Suspense>
-              </div>
-            )}
-
             <form
               onSubmit={handleSubmit}
               className="space-y-4 glass rounded-3xl p-8"

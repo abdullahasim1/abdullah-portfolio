@@ -3,129 +3,6 @@ import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import MagneticButton from "../components/MagneticButton";
 import ProjectEstimator from "../components/ProjectEstimator";
-import { serviceLogos } from "../data/techLogos";
-
-/* Brand logo tile — service icon ki jagah. Mono tile GHL/AWS-type ke liye. */
-function ServiceLogo({ logo, mono }) {
-  if (mono) {
-    return (
-      <span
-        className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-sm font-bold"
-        style={{
-          background: `linear-gradient(135deg, ${mono.from}22, ${mono.to}22)`,
-          border: `1px solid ${mono.from}55`,
-          color: mono.from,
-        }}
-      >
-        {mono.label}
-      </span>
-    );
-  }
-  if (!logo) return null;
-  return (
-    <span
-      className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.08] group-hover:scale-105 transition-transform"
-      style={{ boxShadow: `0 0 18px #${logo.hex}22` }}
-    >
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-        <path d={logo.path} fill={`#${logo.hex}`} />
-      </svg>
-    </span>
-  );
-}
-
-const services = [
-  {
-    logo: serviceLogos.ai,
-    category: "AI Integration",
-    items: [
-      "Claude & LLM APIs",
-      "Custom AI Chatbots",
-      "AI Agents & Assistants",
-      "RAG Applications",
-    ],
-  },
-  {
-    logo: serviceLogos.automation,
-    category: "Workflow Automation",
-    items: [
-      "Make.com Scenarios",
-      "n8n Workflows",
-      "Webhooks & API Glue",
-      "Business Process Automation",
-    ],
-  },
-  {
-    mono: { label: "GHL", from: "#2dd4bf", to: "#22c55e" },
-    category: "GoHighLevel (GHL)",
-    items: [
-      "Funnel Building",
-      "CRM Setup & Migration",
-      "Automated Follow-ups",
-      "White-label SaaS (SaaS Mode)",
-    ],
-  },
-  {
-    logo: serviceLogos.web,
-    category: "Web App Development",
-    items: [
-      "Custom Web Applications",
-      "E-commerce Platforms",
-      "Progressive Web Apps",
-      "Admin Dashboards",
-    ],
-  },
-  {
-    logo: serviceLogos.mobile,
-    category: "Mobile App Development",
-    items: [
-      "React Native Apps",
-      "Cross-platform Solutions",
-      "Native iOS/Android",
-      "App Maintenance",
-    ],
-  },
-  {
-    logo: serviceLogos.backend,
-    category: "Backend Development",
-    items: [
-      "API Development",
-      "Database Design",
-      "Server Architecture",
-      "Cloud Integration",
-    ],
-  },
-  {
-    logo: serviceLogos.frontend,
-    category: "Frontend Development",
-    items: [
-      "React Applications",
-      "Responsive Design",
-      "Performance Optimization",
-      "UI/UX Implementation",
-    ],
-  },
-  {
-    logo: serviceLogos.design,
-    category: "UI/UX Design",
-    items: [
-      "User Interface Design",
-      "User Experience Design",
-      "Prototyping",
-      "Design Systems",
-    ],
-  },
-  {
-    logo: serviceLogos.payment,
-    category: "Payment Gateway",
-    items: [
-      "Stripe Integration",
-      "PayPal Setup",
-      "Payment Security",
-      "Transaction Management",
-    ],
-  },
-];
 
 const automationTools = [
   "GoHighLevel",
@@ -135,6 +12,25 @@ const automationTools = [
   "OpenAI",
   "Zapier",
 ];
+
+const heroServices = [
+  { title: "Web Development", desc: "Modern, responsive and high-performance web apps.", icon: "monitor" },
+  { title: "AI Integration", desc: "Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).", icon: "cpu" },
+  { title: "Cloud & DevOps", desc: "Deploy, scale and automate apps on AWS.", icon: "cloud" },
+  { title: "SaaS & Product Dev", desc: "End-to-end SaaS development from idea to launch.", icon: "rocket" },
+];
+
+function HeroServiceIcon({ name }) {
+  const cls = "w-6 h-6";
+  const common = { className: cls, fill: "none", stroke: "currentColor", strokeWidth: 1.7, viewBox: "0 0 24 24" };
+  if (name === "monitor")
+    return (<svg {...common}><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>);
+  if (name === "cpu")
+    return (<svg {...common}><rect x="7" y="7" width="10" height="10" rx="2" /><path strokeLinecap="round" d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3" /></svg>);
+  if (name === "cloud")
+    return (<svg {...common}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>);
+  return (<svg {...common}><path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-6.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>);
+}
 
 function Services() {
   useScrollReveal("#services .reveal");
@@ -149,28 +45,25 @@ function Services() {
           subtitle="AI agents, n8n/Make.com workflow automation, GoHighLevel CRM and full-stack web apps — from first wireframe to production deployment."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <div key={service.category} data-stagger className="reveal group">
-              <div className="bento-card rounded-2xl p-6 hover:-translate-y-1 h-full transition-all duration-300">
-                <div className="flex items-center gap-3 mb-5">
-                  <ServiceLogo logo={service.logo} mono={service.mono} />
-                  <h3 className="font-display text-lg font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
-                    {service.category}
-                  </h3>
-                </div>
-                <ul className="space-y-2.5">
-                  {service.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-center text-sm text-slate-400"
-                    >
-                      <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-violet-500 rounded-full mr-3 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          {heroServices.map((s) => (
+            <div
+              key={s.title}
+              data-stagger
+              className="reveal group relative rounded-3xl glass p-7 card-glow-hover hover:-translate-y-1 transition-transform duration-300"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/10 border border-violet-400/25 text-violet-300">
+                  <HeroServiceIcon name={s.icon} />
+                </span>
+                <svg className="w-5 h-5 text-slate-500 group-hover:text-violet-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
+                </svg>
               </div>
+              <h3 className="font-display text-lg font-semibold text-white light:text-slate-900 mb-2">
+                {s.title}
+              </h3>
+              <p className="text-sm text-slate-400 leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>

@@ -1,13 +1,8 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { IS_LOW_END } from "../lib/device";
 
-/* R3F lazy — SplashScreen App ka static import hai, is liye Canvas yahan
-   lazy kiya hai warna three/r3f chunks HAR page load pe initial JS mein
-   aa jate hain (mobile pe bhi, jahan splash kabhi chalta hi nahi). */
-const SplashCanvas = lazy(() =>
-  import("./three/SplashCanvas").then((m) => ({ default: m.SplashCanvas }))
-);
+/* Neon redesign: splash sirf naam + progress hai — koi 3D canvas nahi. */
 
 const NAME = "ABDULLAH ASIM";
 
@@ -111,12 +106,6 @@ function SplashScreen({ onFinish }) {
 
       {/* 3D stage */}
       <div ref={stageRef} className="relative flex flex-col items-center will-change-transform">
-        <div className="w-[min(64vw,340px)] aspect-square pointer-events-none" aria-hidden="true">
-          <Suspense fallback={null}>
-            <SplashCanvas progressRef={progressRef} />
-          </Suspense>
-        </div>
-
         <p data-splash-fade className="mt-2 text-[10px] font-semibold uppercase tracking-[0.4em] text-cyan-300/70">
           Welcome to my universe
         </p>
@@ -133,7 +122,7 @@ function SplashScreen({ onFinish }) {
           ))}
         </h1>
         <p data-splash-fade className="mt-2 text-xs sm:text-sm text-slate-400 tracking-wide">
-          Full Stack Developer · AI &amp; Automation
+          Full-Stack Developer &amp; AI Engineer
         </p>
       </div>
 
@@ -146,7 +135,7 @@ function SplashScreen({ onFinish }) {
         <div className="h-px w-full bg-white/[0.08] overflow-hidden rounded-full">
           <div
             ref={barRef}
-            className="h-full w-full origin-left bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+            className="h-full w-full origin-left bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(168,85,247,0.6)]"
             style={{ transform: "scaleX(0)" }}
           />
         </div>

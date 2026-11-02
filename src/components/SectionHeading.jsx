@@ -1,37 +1,25 @@
 import React from "react";
-import SceneTag from "./SceneTag";
 
-function SectionHeading({ label, title, subtitle, align = "center", scene }) {
+function SectionHeading({ label, title, subtitle, align = "left" }) {
   const alignment =
-    align === "left"
-      ? "items-start text-left"
+    align === "center"
+      ? "items-center text-center"
       : align === "right"
         ? "items-end text-right"
-        : "items-center text-center";
+        : "items-start text-left";
 
   return (
     <div className={`flex flex-col gap-4 ${alignment} mb-14`}>
-      {scene && (
-        <div style={{ perspective: "800px" }}>
-          <SceneTag scene={scene} />
-        </div>
-      )}
-      <span className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 light:bg-white light:border-slate-300/80 light:text-cyan-700">
-        <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
+      <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 border border-violet-400/25 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300">
+        <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
         {label}
       </span>
-      <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl light:text-slate-900">
+      <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight max-w-3xl">
         {title}
       </h2>
       {subtitle && (
-        <p className="text-slate-400 max-w-2xl leading-relaxed light:text-slate-600">
-          {subtitle}
-        </p>
+        <p className="text-slate-400 max-w-2xl leading-relaxed">{subtitle}</p>
       )}
-      <span
-        aria-hidden
-        className="h-px w-24 bg-gradient-to-r from-cyan-400 via-violet-500 to-transparent"
-      />
     </div>
   );
 }

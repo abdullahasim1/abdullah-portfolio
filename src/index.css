@@ -24,8 +24,15 @@
 @theme {
   --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
-  --color-void: #05060a;
-  --color-panel: #0b0d14;
+  --color-void: #070213;
+  --color-panel: #0e0721;
+  /* Neon mockup palette: cyan scale ko violet/purple se override kiya hai
+     taake purani cyan utilities site-wide purple render hon */
+  --color-cyan-200: #e9d5ff;
+  --color-cyan-300: #d8b4fe;
+  --color-cyan-400: #c084fc;
+  --color-cyan-500: #a855f7;
+  --color-cyan-600: #9333ea;
 }
 
 /* Class-based light variant — <html class="light"> par light: utilities activate.
@@ -64,7 +71,7 @@ html.light ::-webkit-scrollbar-track {
   background: #e9edf5;
 }
 html.light ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #67e8f9, #a78bfa);
+  background: linear-gradient(180deg, #c084fc, #a78bfa);
 }
 html.light ::selection {
   color: #0f172a;
@@ -75,7 +82,7 @@ h1, h2, h3, h4, .font-display {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.35);
+  background: rgba(192, 132, 252, 0.35);
   color: #fff;
 }
 
@@ -147,7 +154,7 @@ html.lenis body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   .bento-card:hover {
-    border-color: rgba(34, 211, 238, 0.28);
+    border-color: rgba(192, 132, 252, 0.28);
   }
 
   /* Light mode: card dark surface pakad le taake andar ka slate/white text
@@ -168,7 +175,7 @@ html.lenis body {
   }
 
   .text-gradient {
-    background: linear-gradient(90deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
+    background: linear-gradient(90deg, #a855f7 0%, #c084fc 50%, #e879f9 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -176,8 +183,8 @@ html.lenis body {
 
   .neon-ring {
     box-shadow:
-      0 0 0 1px rgba(34, 211, 238, 0.25),
-      0 0 24px rgba(34, 211, 238, 0.12),
+      0 0 0 1px rgba(192, 132, 252, 0.25),
+      0 0 24px rgba(192, 132, 252, 0.12),
       inset 0 0 18px rgba(139, 92, 246, 0.06);
   }
 
@@ -185,9 +192,9 @@ html.lenis body {
     transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
   }
   .card-glow-hover:hover {
-    border-color: rgba(34, 211, 238, 0.45);
+    border-color: rgba(192, 132, 252, 0.45);
     box-shadow:
-      0 0 32px rgba(34, 211, 238, 0.10),
+      0 0 32px rgba(192, 132, 252, 0.10),
       0 0 64px rgba(139, 92, 246, 0.08);
   }
 
@@ -199,10 +206,10 @@ html.lenis body {
     will-change: transform;
   }
   .tilt-tile:hover {
-    border-color: rgba(34, 211, 238, 0.45);
+    border-color: rgba(192, 132, 252, 0.45);
     box-shadow:
       0 12px 32px rgba(0, 0, 0, 0.5),
-      0 0 26px rgba(34, 211, 238, 0.18);
+      0 0 26px rgba(192, 132, 252, 0.18);
   }
   .pop-3d {
     transform: translateZ(26px);
@@ -228,8 +235,8 @@ html.lenis body {
   position: absolute;
   inset: -44px 0 0 0;
   background-image:
-    linear-gradient(rgba(34, 211, 238, 0.14) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.14) 1px, transparent 1px);
+    linear-gradient(rgba(192, 132, 252, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192, 132, 252, 0.14) 1px, transparent 1px);
   background-size: 44px 44px;
   animation: gridScroll 2.6s linear infinite;
 }
@@ -264,8 +271,8 @@ html.lenis body {
 }
 
 @keyframes glowPulse {
-  0% { box-shadow: 0 0 0 rgba(34, 211, 238, 0), 0 0 0 rgba(139, 92, 246, 0); }
-  100% { box-shadow: 0 12px 48px rgba(34, 211, 238, 0.14), 0 0 60px rgba(139, 92, 246, 0.12) inset; }
+  0% { box-shadow: 0 0 0 rgba(192, 132, 252, 0), 0 0 0 rgba(139, 92, 246, 0); }
+  100% { box-shadow: 0 12px 48px rgba(192, 132, 252, 0.14), 0 0 60px rgba(139, 92, 246, 0.12) inset; }
 }
 .animate-glowPulse {
   animation: glowPulse 3.6s ease-in-out infinite alternate;
@@ -347,7 +354,7 @@ html.lenis body {
 
 /* Keyboard focus visibility — sirf keyboard navigation pe dikhta hai */
 :focus-visible {
-  outline: 2px solid rgba(34, 211, 238, 0.8);
+  outline: 2px solid rgba(192, 132, 252, 0.8);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -409,7 +416,7 @@ html.lenis body {
 }
 .prose-content strong { color: #f8fafc; }
 .prose-content a {
-  color: #67e8f9;
+  color: #c084fc;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -447,7 +454,7 @@ html.lenis body {
   line-height: 1.6;
 }
 .prose-content blockquote {
-  border-left: 3px solid rgba(34, 211, 238, 0.55);
+  border-left: 3px solid rgba(192, 132, 252, 0.55);
   padding: 0.2em 0 0.2em 1em;
   color: #94a3b8;
   font-style: italic;

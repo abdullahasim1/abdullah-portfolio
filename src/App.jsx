@@ -1,19 +1,17 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import CursorFollower from "./components/CursorFollower";
 import ScrollProgress from "./components/ScrollProgress";
 import TechTicker from "./components/TechTicker";
+import CtaBand from "./components/CtaBand";
 import ScrollToTop from "./components/ScrollToTop";
 import CommandPalette from "./components/CommandPalette";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import { IS_LOW_END } from "./lib/device";
-import { useIdleDeferred } from "./hooks/useIdleDeferred";
 
 /* Three.js wale components lazy — warna three main bundle mein aa jata hai */
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
-const SiteBackground = lazy(() => import("./components/three/SiteBackground"));
 
 /* Below-the-fold sections lazy load */
 const About = lazy(() => import("./pages/About"));
@@ -39,9 +37,6 @@ function App() {
   });
 
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
-
-  // SiteBackground ko idle pe defer karo — initial paint/TBT pe load na ho
-  const deferBackground = useIdleDeferred(2600, 1200);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -79,19 +74,8 @@ function App() {
       {/* Top progress bar */}
       <ScrollProgress />
 
-      {/* Custom cursor */}
-      <CursorFollower />
-
-      {/* Film grain texture */}
-      <div className="noise-overlay" aria-hidden="true" />
-
-      {/* Fixed site-wide 3D background (starfield + drifting wireframes) —
-          low-end skip + idle-deferred (TBT fix: pehle content, phir decoration) */}
-      {!IS_LOW_END && deferBackground && (
-        <Suspense fallback={null}>
-          <SiteBackground />
-        </Suspense>
-      )}
+      {/* Neon redesign: koi 3D background / grain / custom cursor nahi —
+          sirf ambient violet glows (neeche) hi atmosphere dete hain */}
 
       {/* Ambient background glows */}
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0 light:opacity-60">
@@ -142,6 +126,7 @@ function App() {
           </ErrorBoundary>
           <ErrorBoundary>
             <Testimonials />
+            <CtaBand />
           </ErrorBoundary>
           <ErrorBoundary>
             <Blog />

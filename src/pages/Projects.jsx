@@ -1,10 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useMemo, useState } from "react";
 import { useScrollReveal } from "../hooks";
 import { useGithubRepos } from "../hooks/useGithubRepos";
-import SplitTextAnimation from "../components/SplitTextAnimation";
-import SceneTag from "../components/SceneTag";
 import ProjectModal from "../components/ProjectModal";
 import TiltCard from "../components/TiltCard";
 import { track } from "../lib/analytics";
@@ -16,26 +12,6 @@ import {
   githubOgImage,
   GITHUB_USERNAME,
 } from "../data/projects";
-
-gsap.registerPlugin(ScrollTrigger);
-
-/* Cursor-following spotlight handler (per-card CSS vars) — rAF coalesced */
-const spotFrames = new WeakMap();
-function spotMove(e) {
-  const el = e.currentTarget;
-  if (spotFrames.has(el)) return;
-  const clientX = e.clientX;
-  const clientY = e.clientY;
-  spotFrames.set(
-    el,
-    requestAnimationFrame(() => {
-      spotFrames.delete(el);
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", `${clientX - r.left}px`);
-      el.style.setProperty("--my", `${clientY - r.top}px`);
-    }),
-  );
-}
 
 /* ---------------- Featured project card (large = bento hero) ---------------- */
 
@@ -127,74 +103,36 @@ function Tags({ project, max = 4 }) {
   );
 }
 
-function FeaturedProjectCard({ project, large = false, onOpenCaseStudy }) {
+function FeaturedProjectCard({ project, onOpenCaseStudy }) {
   return (
-    <TiltCard className={`reveal ${large ? "md:col-span-2" : ""}`}>
-      <article
-        onMouseMove={spotMove}
-        className={`group relative overflow-hidden rounded-3xl border border-white/[0.09] bg-[#0b1222] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.75)] card-glow-hover hover:-translate-y-1.5 transition-transform duration-300 flex flex-col ${
-          large ? "md:flex-row" : ""
-        }`}
-      >
-      {/* Cursor spotlight */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background:
-            "radial-gradient(480px circle at var(--mx, 50%) var(--my, 50%), rgba(34,211,238,0.10), transparent 55%)",
-        }}
-      />
-
+    <article className="reveal group relative overflow-hidden rounded-3xl glass card-glow-hover hover:-translate-y-1 transition-transform duration-300 flex flex-col">
       {/* Image zone */}
-      <div className={`relative overflow-hidden shrink-0 ${large ? "md:w-[54%] min-h-[260px] md:min-h-[380px]" : "h-56"}`}>
+      <div className="relative h-44 overflow-hidden shrink-0">
         <ProjectImage project={project} />
-        <div aria-hidden className={`absolute inset-0 pointer-events-none ${large ? "bg-gradient-to-r from-black/50 via-black/10 to-transparent md:bg-gradient-to-r" : "bg-gradient-to-t from-black/70 via-black/10 to-transparent"}`} />
-
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold text-cyan-300 bg-black/50 border border-cyan-400/30 backdrop-blur">
-          <span className="h-1 w-1 rounded-full bg-cyan-400" />
-          Featured
-        </span>
-
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none" />
         {project.stars > 0 && (
-          <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-amber-300 bg-black/50 border border-white/10 backdrop-blur">
+          <span className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-amber-300 bg-black/50 border border-white/10 backdrop-blur">
             ★ {project.stars}
           </span>
-        )}
-
-        {/* Title overlay (small cards only — large card title lives in body) */}
-        {!large && (
-          <h3 className="absolute bottom-4 left-5 right-5 font-display text-xl font-bold text-white leading-snug drop-shadow">
-            {project.title}
-          </h3>
         )}
       </div>
 
       {/* Body */}
-      <div className={`relative z-10 flex flex-col flex-grow ${large ? "md:w-[46%] p-8 md:p-10 justify-center" : "p-6"}`}>
-        {large && (
-          <>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300 mb-3">
-              Spotlight Project
-            </p>
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-white leading-tight mb-4">
-              {project.title}
-            </h3>
-          </>
-        )}
-
-        <p className={`text-slate-400 leading-relaxed mb-5 ${large ? "text-[15px]" : "text-sm line-clamp-2"}`}>
+      <div className="flex flex-col flex-grow p-6">
+        <h3 className="font-display text-lg font-semibold text-white light:text-slate-900 leading-snug mb-2">
+          {project.title}
+        </h3>
+        <p className="text-sm text-slate-400 leading-relaxed mb-4 line-clamp-2">
           {project.description}
         </p>
-
-        <Tags project={project} max={large ? 8 : 4} />
-
-        <div className={`${large ? "mt-8" : "mt-auto pt-5"}`}>
-          <CardLinks project={project} large={large} onOpenCaseStudy={onOpenCaseStudy} />
+        <div className="mt-auto">
+          <Tags project={project} max={4} />
+          <div className="mt-5">
+            <CardLinks project={project} onOpenCaseStudy={onOpenCaseStudy} />
+          </div>
         </div>
       </div>
     </article>
-    </TiltCard>
   );
 }
 
@@ -275,7 +213,6 @@ function Projects() {
   const { repos, profile, loading, error, rateLimited, retry } = useGithubRepos();
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeProject, setActiveProject] = useState(null);
-  const stackRef = useRef(null);
 
   const featuredRepoNames = useMemo(
     () => new Set(featuredProjects.map((p) => p.repoName)),
@@ -293,40 +230,6 @@ function Projects() {
       };
     });
   }, [repos]);
-
-  /* Stacked-cards scroll effect:
-     agli card aane par pichli card clean fade-out + halka scale-down —
-     koi tilt/blur nahi, sirf smooth recede (smoothed scrub ke saath) */
-  useEffect(() => {
-    if (!stackRef.current) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Touch devices par scrub effect skip — main-thread load kam rakho (perf)
-    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-    if (reduced || coarsePointer) return;
-
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray("[data-stack-card]");
-      cards.forEach((card, i) => {
-        if (i === cards.length - 1) return;
-        gsap.to(card.querySelector("[data-stack-inner]"), {
-          scale: 0.94,
-          y: -26,
-          autoAlpha: 0,
-          transformOrigin: "50% 0%",
-          ease: "none",
-          scrollTrigger: {
-            trigger: cards[i + 1],
-            start: "top bottom",
-            end: "top 110px",
-            scrub: 0.75,
-          },
-        });
-      });
-    }, stackRef);
-
-    return () => ctx.revert();
-  }, [enrichedFeatured.length]);
-
 
   const otherRepos = useMemo(() => {
     return repos.filter((repo) => !featuredRepoNames.has(repo.name));
@@ -346,45 +249,44 @@ function Projects() {
     <section id="projects" className="py-28 scroll-mt-24">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
 
-        {/* ---------- Section header ---------- */}
-        <div className="mb-14">
-          <div style={{ perspective: "800px" }} className="mb-4">
-            <SceneTag scene="03" />
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 border border-violet-400/25 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300 mb-4">
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+              Featured Projects
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight">
+              My Recent Work
+            </h2>
+            <p className="text-slate-400 mt-4 max-w-2xl leading-relaxed">
+              Selected work I&apos;ve designed, built and shipped — real
+              products solving real problems.
+            </p>
           </div>
-          <span className="reveal inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 blink-dot" />
-            Portfolio
-          </span>
-          <SplitTextAnimation
-            
-            className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900"
+          <a
+            href="https://github.com/abdullahasim1?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-medium text-violet-300 hover:text-violet-200 transition-colors"
           >
-            Projects &amp; GitHub
-          </SplitTextAnimation>
-          <p className="reveal text-slate-400 mt-4 max-w-2xl leading-relaxed light:text-slate-600">
-            Selected work I've designed, built and shipped — keep scrolling, each project stacks onto the next.
-          </p>
+            View All Projects
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
         </div>
 
-        {/* ---------- Featured work — sticky stacking cards ---------- */}
-        <div ref={stackRef} className="mb-24">
+        {/* ---------- Featured work — mockup card grid ---------- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-24">
           {enrichedFeatured.map((project) => (
-            <div
+            <FeaturedProjectCard
               key={project.repoName}
-              data-stack-card
-              className="sticky top-24 md:top-28 mb-[9vh] px-6 md:px-0"
-            >
-              <div data-stack-inner className="will-change-transform">
-                <FeaturedProjectCard
-                  project={project}
-                  large
-                  onOpenCaseStudy={() => {
-                    track("project-open", { id: project.id });
-                    setActiveProject(project);
-                  }}
-                />
-              </div>
-            </div>
+              project={project}
+              onOpenCaseStudy={() => {
+                track("project-open", { id: project.id });
+                setActiveProject(project);
+              }}
+            />
           ))}
         </div>
 
