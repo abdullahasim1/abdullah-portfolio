@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { useScrollReveal } from "../hooks";
 import { useGithubRepos } from "../hooks/useGithubRepos";
 import ProjectModal from "../components/ProjectModal";
-import TiltCard from "../components/TiltCard";
 import { track } from "../lib/analytics";
 import {
   featuredProjects,
@@ -164,6 +163,132 @@ function LanguageDot({ language }) {
   );
 }
 
+/* Repo card icons — board style: har repo ko uske topic ke mutabiq icon tile */
+const REPO_ICONS = {
+  database: (
+    <>
+      <ellipse cx="12" cy="5" rx="8" ry="3" />
+      <path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
+      <path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
+    </>
+  ),
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </>
+  ),
+  file: (
+    <>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+      <path d="M14 3v5h5" />
+      <path d="M9 13h6M9 17h6" />
+    </>
+  ),
+  monitor: (
+    <>
+      <rect x="3" y="4" width="18" height="12" rx="2" />
+      <path d="M12 16v3M8.5 21h7" />
+    </>
+  ),
+  car: (
+    <>
+      <path d="M5 16 6.6 9.5A2 2 0 0 1 8.5 8h7a2 2 0 0 1 1.9 1.5L19 16" />
+      <path d="M4 16h16a1 1 0 0 1 1 1v3h-2.5" />
+      <path d="M3 17v3h2.5" />
+      <circle cx="7.5" cy="20" r="1.6" />
+      <circle cx="16.5" cy="20" r="1.6" />
+      <path d="M9.1 20h5.8" />
+    </>
+  ),
+  cart: (
+    <>
+      <path d="M3 4h2.2l2.3 11.2a1.8 1.8 0 0 0 1.8 1.5h7.9a1.8 1.8 0 0 0 1.8-1.4L20.5 8H6" />
+      <circle cx="10" cy="21" r="1.3" />
+      <circle cx="17.5" cy="21" r="1.3" />
+    </>
+  ),
+  home: (
+    <>
+      <path d="M3 10.5 12 3l9 7.5" />
+      <path d="M5 9.8V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.8" />
+    </>
+  ),
+  calculator: (
+    <>
+      <rect x="5" y="3" width="14" height="18" rx="2" />
+      <path d="M8.5 7h7" />
+      <path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" strokeWidth="2.4" />
+    </>
+  ),
+  utensils: (
+    <>
+      <path d="M7 3v7a2 2 0 0 0 2-2V3M7 3v18M9 3v5" />
+      <path d="M17 3c-1.7 1.2-2.5 3.4-2.5 6 0 2 .8 3 2.5 3v9" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3.5" y="5" width="17" height="16" rx="2" />
+      <path d="M3.5 10h17M8 3v4M16 3v4" />
+    </>
+  ),
+  atom: (
+    <>
+      <ellipse cx="12" cy="12" rx="9.5" ry="3.8" />
+      <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(60 12 12)" />
+      <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(120 12 12)" />
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+    </>
+  ),
+  code: (
+    <path d="m8 7-5.5 5L8 17M16 7l5.5 5L16 17" />
+  ),
+};
+
+function repoIconKind(repo) {
+  if (repo.name === GITHUB_USERNAME) return "github";
+  const hay = `${repo.name} ${repo.description || ""}`.toLowerCase();
+  if (/hadith|quran|dataset|\bdata\b/.test(hay)) return "database";
+  if (/auth|login|foam/.test(hay)) return "lock";
+  if (/blog/.test(hay)) return "file";
+  if (/portfolio/.test(hay)) return "monitor";
+  if (/car|auto|vehicle|driv/.test(hay)) return "car";
+  if (/commerce|shop|store|cart/.test(hay)) return "cart";
+  if (/home|service/.test(hay)) return "home";
+  if (/calculator|calc/.test(hay)) return "calculator";
+  if (/food|order|restaurant/.test(hay)) return "utensils";
+  if (/birthday|event|calendar/.test(hay)) return "calendar";
+  if (/react/.test(hay)) return "atom";
+  return "code";
+}
+
+function RepoIcon({ repo }) {
+  const kind = repoIconKind(repo);
+  if (kind === "github") {
+    return (
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" aria-hidden="true">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+      </svg>
+    );
+  }
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="21"
+      height="21"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {REPO_ICONS[kind]}
+    </svg>
+  );
+}
+
 function RepoCard({ repo }) {
   const displayName = formatRepoName(repo.name);
   const description =
@@ -171,52 +296,66 @@ function RepoCard({ repo }) {
     `Open source project built with ${repo.language || "modern web technologies"}.`;
 
   return (
-    <TiltCard className="h-full">
-      <div className="group relative overflow-hidden rounded-2xl glass card-glow-hover p-5 hover:-translate-y-1 transition-transform duration-300 h-full flex flex-col">
-        <div className="flex items-start justify-between gap-3 mb-2.5">
-          <a
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-display font-semibold text-[15px] text-slate-100 group-hover:text-cyan-300 transition-colors truncate"
-          >
-            {displayName}
-          </a>
-          {repo.stargazers_count > 0 && (
-            <span className="inline-flex items-center gap-1 text-xs text-amber-300/80 shrink-0">
-              ★ {repo.stargazers_count}
-            </span>
-          )}
-        </div>
-        <p className="text-[13px] text-slate-400 mb-4 line-clamp-2 leading-relaxed flex-grow">
-          {description}
-        </p>
-        <div className="flex items-center justify-between gap-2 pt-3 border-t border-white/[0.06]">
-          <LanguageDot language={repo.language} />
-          <span className="text-xs text-slate-400">{formatRelativeDate(repo.pushed_at)}</span>
-        </div>
-        <div className="flex gap-2 mt-3">
-          <a
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 text-center text-xs font-medium px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300 hover:border-cyan-400/30 transition-colors"
-          >
-            Source
-          </a>
-          {repo.homepage && (
-            <a
-              href={repo.homepage}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 text-center text-xs font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-opacity"
-            >
-              Live
-            </a>
-          )}
-        </div>
+    <article className="group flex h-full flex-col rounded-[22px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white p-5 shadow-[0_16px_38px_-24px_rgba(76,29,149,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
+      <div className="flex items-start gap-3 mb-3">
+        <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 light:bg-violet-50 border border-violet-400/15 light:border-violet-100 text-violet-400 light:text-violet-600">
+          <RepoIcon repo={repo} />
+        </span>
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="min-w-0 font-display font-bold text-[16px] leading-snug text-slate-100 light:text-slate-900 group-hover:text-violet-500 transition-colors"
+        >
+          {displayName}
+        </a>
+        {repo.stargazers_count > 0 && (
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1 text-xs text-amber-500">
+            ★ {repo.stargazers_count}
+          </span>
+        )}
       </div>
-    </TiltCard>
+      <p className="text-[13px] text-slate-400 light:text-slate-500 mb-4 line-clamp-2 leading-relaxed flex-grow">
+        {description}
+      </p>
+      <div className="flex items-center justify-between gap-2">
+        <LanguageDot language={repo.language} />
+        <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 light:text-slate-500">
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+            <rect x="3.5" y="5" width="17" height="16" rx="2" />
+            <path d="M3.5 10h17M8 3v4M16 3v4" strokeLinecap="round" />
+          </svg>
+          {formatRelativeDate(repo.pushed_at)}
+        </span>
+      </div>
+      <div className="flex gap-2.5 mt-4">
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-xs font-semibold border border-slate-300/40 light:border-slate-200 bg-white/[0.04] light:bg-white text-slate-200 light:text-slate-700 hover:border-violet-400/50 hover:text-violet-500 transition-colors"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+            <path d="m8 7-5.5 5L8 17M16 7l5.5 5L16 17" />
+          </svg>
+          Source
+        </a>
+        {repo.homepage && (
+          <a
+            href={repo.homepage}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-opacity"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <path d="M10 14a5 5 0 0 0 7.1 0l2.8-2.8a5 5 0 0 0-7-7.1L11.5 5.5" />
+              <path d="M14 10a5 5 0 0 0-7.1 0L4.1 12.8a5 5 0 0 0 7 7.1l1.4-1.4" />
+            </svg>
+            Live
+          </a>
+        )}
+      </div>
+    </article>
   );
 }
 
@@ -271,7 +410,7 @@ function Projects() {
 
   return (
     <section id="projects" className="py-28 scroll-mt-24">
-      <div className="max-w-6xl mx-auto px-6 md:px-0">
+      <div className="max-w-[1400px] mx-auto px-6">
 
         <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -333,28 +472,105 @@ function Projects() {
           ))}
         </div>
 
-        {/* ---------- Slim GitHub strip ---------- */}
-        <div className="reveal flex flex-wrap items-center gap-x-6 gap-y-4 rounded-2xl glass-strong neon-ring px-6 py-5 mb-14">
-          <img
-            src={profile?.avatar_url || `https://github.com/${GITHUB_USERNAME}.png`}
-            alt={`${GITHUB_USERNAME} GitHub profile`}
-            className="w-11 h-11 rounded-full border border-cyan-400/40 shadow-[0_0_18px_rgba(34,211,238,0.25)]"
-            loading="lazy"
-            width="44"
-            height="44"
-          />
-          <div className="min-w-0">
-            <div className="font-display font-bold text-slate-100">@{GITHUB_USERNAME}</div>
-            <div className="text-xs text-slate-400">
-              {loading ? "Loading…" : error ? "Live stats unavailable" : `${profile?.public_repos ?? repos.length} public repos · ${profile?.followers ?? "—"} followers`}
+        {/* ---------- GitHub repositories — board header ---------- */}
+        <div className="reveal flex flex-wrap items-start justify-between gap-6 mb-9">
+          <div className="flex flex-col items-start gap-4">
+            <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 border border-violet-400/25 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300 light:text-violet-600">
+              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor" aria-hidden="true">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
+              GitHub Repositories
+            </span>
+            <h2 className="font-display text-3xl md:text-[42px] font-bold tracking-tight text-white light:text-slate-900 leading-tight">
+              My GitHub Repositories
+            </h2>
+            <p className="text-slate-400 light:text-slate-500 max-w-xl leading-relaxed">
+              A collection of my open-source work, projects and experiments.
+            </p>
+            <span className="block h-1 w-14 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" aria-hidden="true" />
+          </div>
+
+          {/* GitHub glass cube + orbit (board) */}
+          <div className="relative hidden xl:block w-[230px] h-[150px] shrink-0" aria-hidden="true">
+            <div
+              className="absolute left-1/2 top-1/2 h-[128px] w-[228px] rounded-[50%] border border-violet-400/40 light:border-violet-300/70"
+              style={{ transform: "translate(-50%, -46%) rotateX(64deg) rotate(-10deg)" }}
+            />
+            <span className="absolute left-[16px] top-[86px] h-2 w-2 rounded-full bg-violet-400 shadow-[0_0_10px_2px_rgba(167,139,250,0.7)]" />
+            <span className="absolute right-[12px] top-[38px] h-2.5 w-2.5 rounded-full bg-indigo-400 shadow-[0_0_10px_2px_rgba(129,140,248,0.7)]" />
+            <div className="float-y absolute left-[67px] top-[27px] grid h-24 w-24 place-items-center rounded-[26px] border border-white/50 bg-gradient-to-br from-violet-400/85 via-indigo-400/75 to-fuchsia-300/75 shadow-[0_24px_45px_-15px_rgba(124,58,237,0.55)] backdrop-blur">
+              <svg viewBox="0 0 24 24" className="h-11 w-11 text-white" fill="currentColor" aria-hidden="true">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
             </div>
           </div>
+        </div>
+
+        {/* ---------- Profile bar (board) ---------- */}
+        <div className="reveal flex flex-wrap items-center gap-x-8 gap-y-4 rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white px-7 py-5 mb-12 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]">
+          <div className="flex items-center gap-4 min-w-0">
+            <img
+              src={profile?.avatar_url || `https://github.com/${GITHUB_USERNAME}.png`}
+              alt={`${GITHUB_USERNAME} GitHub profile`}
+              className="w-16 h-16 rounded-full border-2 border-violet-300/60 shadow-[0_10px_24px_-10px_rgba(124,58,237,0.5)]"
+              loading="lazy"
+              width="64"
+              height="64"
+            />
+            <div className="min-w-0">
+              <div className="font-display font-bold text-[19px] text-slate-100 light:text-slate-900">@{GITHUB_USERNAME}</div>
+              <div className="text-[13px] text-slate-400 light:text-slate-500">
+                {loading ? "Loading…" : error ? "Live stats unavailable" : `${profile?.public_repos ?? repos.length} public repos · ${profile?.followers ?? "—"} followers`}
+              </div>
+            </div>
+          </div>
+
+          <span className="hidden md:block h-11 w-px bg-slate-400/20 light:bg-slate-200" aria-hidden="true" />
+
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/10 light:bg-violet-50 border border-violet-400/15 light:border-violet-100 text-violet-400 light:text-violet-600">
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="m12 3 9.5 5L12 13 2.5 8 12 3Z" />
+                <path d="m2.5 13 9.5 5 9.5-5" />
+              </svg>
+            </span>
+            <span className="leading-tight">
+              <span className="block font-display text-[19px] font-bold text-slate-100 light:text-slate-900">
+                {loading || error ? "—" : profile?.public_repos ?? repos.length}
+              </span>
+              <span className="block text-[12px] text-slate-400 light:text-slate-500">Public Repos</span>
+            </span>
+          </div>
+
+          <span className="hidden md:block h-11 w-px bg-slate-400/20 light:bg-slate-200" aria-hidden="true" />
+
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/10 light:bg-violet-50 border border-violet-400/15 light:border-violet-100 text-violet-400 light:text-violet-600">
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="9" cy="8.5" r="3.2" />
+                <path d="M3.5 19.5c.9-3 3-4.4 5.5-4.4s4.6 1.4 5.5 4.4" />
+                <path d="M15.5 5.9a3.2 3.2 0 0 1 0 5.9M17.8 15.4c1.4.7 2.4 2 2.9 4.1" />
+              </svg>
+            </span>
+            <span className="leading-tight">
+              <span className="block font-display text-[19px] font-bold text-slate-100 light:text-slate-900">
+                {loading || error ? "—" : profile?.followers ?? "—"}
+              </span>
+              <span className="block text-[12px] text-slate-400 light:text-slate-500">Followers</span>
+            </span>
+          </div>
+
           <a
             href={`https://github.com/${GITHUB_USERNAME}?tab=repositories`}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.09] text-sm font-medium text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors"
+            className="ml-auto inline-flex items-center gap-2.5 rounded-full border border-slate-300/40 light:border-slate-200 bg-white/[0.04] light:bg-white px-5 py-2.5 text-sm font-semibold text-slate-200 light:text-slate-800 hover:border-violet-400/50 hover:text-violet-500 transition-colors"
           >
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-violet-500/15 light:bg-violet-100 text-violet-500">
+              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor" aria-hidden="true">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
+            </span>
             View GitHub Profile
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -363,11 +579,17 @@ function Projects() {
         </div>
 
         {/* ---------- All repositories ---------- */}
-        <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
-          <h3 className="font-display text-2xl font-bold text-white light:text-slate-900">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+          <h3 className="flex items-center gap-3 font-display text-[26px] font-bold text-white light:text-slate-900">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/10 light:bg-violet-100/80 border border-violet-400/20 light:border-violet-200/70 text-violet-400 light:text-violet-600">
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="m8 7-5.5 5L8 17M16 7l5.5 5L16 17" />
+              </svg>
+            </span>
             More Repositories
           </h3>
-          <span className="text-sm text-slate-400 pb-0.5 light:text-slate-600">
+          <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[13px] font-medium text-slate-300 light:text-slate-600">
+            <span className={`h-2 w-2 rounded-full ${error ? "bg-amber-400" : "bg-emerald-500"}`} />
             {loading ? "Fetching…" : error ? "Unavailable right now" : `${filteredRepos.length} repositories · live from GitHub`}
           </span>
         </div>
@@ -407,10 +629,10 @@ function Projects() {
                 type="button"
                 aria-pressed={activeFilter === lang}
                 onClick={() => setActiveFilter(lang)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+                className={`px-5 py-2 rounded-full text-[13px] font-semibold transition-all cursor-pointer ${
                   activeFilter === lang
-                    ? "bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-[0_0_16px_rgba(34,211,238,0.3)]"
-                    : "glass text-slate-400 hover:text-cyan-300 hover:border-cyan-400/30 light:bg-white light:border-slate-300 light:text-slate-600 light:hover:text-cyan-600"
+                    ? "bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-[0_10px_24px_-10px_rgba(124,58,237,0.6)]"
+                    : "glass text-slate-300 light:text-slate-600 hover:border-violet-400/40 hover:text-violet-500"
                 }`}
               >
                 {lang}
@@ -446,10 +668,13 @@ function Projects() {
               href={`https://github.com/${GITHUB_USERNAME}?tab=repositories`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl glass card-glow-hover text-slate-200 hover:text-cyan-300 transition-colors font-medium light:bg-white light:border-slate-300 light:text-slate-700 light:hover:text-cyan-600"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold text-[15px] shadow-[0_16px_35px_-12px_rgba(124,58,237,0.65)] hover:opacity-92 transition-opacity"
             >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
               Explore All on GitHub
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>

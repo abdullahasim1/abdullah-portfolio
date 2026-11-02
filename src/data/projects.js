@@ -247,8 +247,12 @@ export function formatRelativeDate(dateString) {
   if (diffDays < 1) return "Updated today";
   if (diffDays === 1) return "Updated yesterday";
   if (diffDays < 30) return `Updated ${diffDays} days ago`;
-  if (diffDays < 365) return `Updated ${Math.floor(diffDays / 30)} months ago`;
-  return `Updated ${Math.floor(diffDays / 365)} years ago`;
+  if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    return months === 1 ? "Updated 1 month ago" : `Updated ${months} months ago`;
+  }
+  const years = Math.floor(diffDays / 365);
+  return years === 1 ? "Updated 1 year ago" : `Updated ${years} years ago`;
 }
 
 /**
