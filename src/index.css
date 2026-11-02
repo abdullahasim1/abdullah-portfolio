@@ -607,3 +607,57 @@ html.light svg path[fill="#FFFFFF"] { fill: #0F172A; }
 html.light .text-violet-300\/90 { color: #7C3AED; }
 html.light .text-cyan-400\/80 { color: #7C3AED; }
 html.light .text-cyan-200\/90 { color: #6D28D9; }
+
+/* ---------- Signature splash (CSS 3D emblem, waves, globe) ---------- */
+@keyframes orbitTilt {
+  from { transform: rotateX(72deg) rotateZ(0deg); }
+  to { transform: rotateX(72deg) rotateZ(360deg); }
+}
+@keyframes orbitTiltRev {
+  from { transform: rotateX(64deg) rotateZ(360deg); }
+  to { transform: rotateX(64deg) rotateZ(0deg); }
+}
+@keyframes orbitFlat {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes globeSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.55; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.07); }
+}
+@keyframes waveDrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-3.5%); }
+}
+@keyframes gradientShift {
+  from { background-position: 0% center; }
+  to { background-position: 220% center; }
+}
+.splash-orbit { animation: orbitTilt 16s linear infinite; }
+.splash-orbit-rev { animation: orbitTiltRev 24s linear infinite; }
+.splash-orbit-tilt {
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  border-radius: 9999px;
+  animation: orbitFlat 12s linear infinite;
+}
+.splash-globe { animation: globeSpin 70s linear infinite; }
+.splash-platform { animation: glowPulse 3.2s ease-in-out infinite; }
+.splash-wave-back { animation: waveDrift 11s ease-in-out infinite alternate; }
+.splash-wave-front { animation: waveDrift 8s ease-in-out infinite alternate-reverse; }
+.splash-gradient-text {
+  background-image: linear-gradient(90deg, #7C3AED, #A855F7, #6366F1, #7C3AED);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-orbit, .splash-orbit-rev, .splash-orbit-tilt, .splash-globe,
+  .splash-platform, .splash-wave-back, .splash-wave-front,
+  .splash-gradient-text { animation: none; }
+}
