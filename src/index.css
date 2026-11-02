@@ -604,3 +604,6 @@ html.light .text-cyan-500 { color: #7C3AED; }
 /* Monochrome brand icons (Next.js/OpenAI waghera) dark theme mein white render
    hote hain — light surfaces par unhe slate-900 kar do warna invisible honge. */
 html.light svg path[fill="#FFFFFF"] { fill: #0F172A; }
+html.light .text-violet-300\/90 { color: #7C3AED; }
+html.light .text-cyan-400\/80 { color: #7C3AED; }
+html.light .text-cyan-200\/90 { color: #6D28D9; }
