@@ -20,9 +20,9 @@ function getStoredTheme() {
 export function getTheme() {
   const stored = getStoredTheme();
   if (stored) return stored;
-  /* Neon redesign dark-first hai (mockup) — pehli visit par hamesha dark,
-     system preference se light nahi hota. Toggle/stored choice phir bhi kaam karti hai. */
-  return "dark";
+  /* Clean Light redesign: pehli visit par light default hai.
+     Toggle/stored choice hamesha respect hoti hai. */
+  return "light";
 }
 
 /**

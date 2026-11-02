@@ -18,6 +18,7 @@ const About = lazy(() => import("./pages/About"));
 const Services = lazy(() => import("./pages/Services"));
 const Stats = lazy(() => import("./pages/Stats"));
 const Projects = lazy(() => import("./pages/Projects"));
+const Experience = lazy(() => import("./pages/Experience"));
 const Skills = lazy(() => import("./pages/Skills"));
 const Certifications = lazy(() => import("./pages/Certifications"));
 const Process = lazy(() => import("./pages/Process"));
@@ -62,7 +63,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-slate-50 light:text-slate-900">
+    <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">
       {/* Skip to content (keyboard users) */}
       <a
         href="#main-content"
@@ -107,19 +108,22 @@ function App() {
             <About />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Services />
+            <Skills />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Stats />
+            <Services />
           </ErrorBoundary>
           <ErrorBoundary>
             <Projects />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Skills />
+            <Experience />
           </ErrorBoundary>
           <ErrorBoundary>
             <Certifications />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Stats />
           </ErrorBoundary>
           <ErrorBoundary>
             <Process />

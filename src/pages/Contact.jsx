@@ -181,8 +181,8 @@ function Contact() {
         <SectionHeading
           scene="Finale"
           label="Contact"
-          title="Work with Abdullah — Freelance Projects & Full-Time Roles"
-          subtitle="Have a project in mind, or a role to discuss? Tell me about it — I usually reply within a few hours."
+          title="Have a Project in Mind?"
+          subtitle="Let's build something intelligent, scalable, and meaningful. Tell me about your project or a role — I usually reply within a few hours."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">

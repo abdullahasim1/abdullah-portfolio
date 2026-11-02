@@ -2,7 +2,6 @@ import React from "react";
 import { useScrollReveal } from "../hooks";
 import SectionHeading from "../components/SectionHeading";
 import MagneticButton from "../components/MagneticButton";
-import { timeline } from "../data/experience";
 import { techStack } from "../data/techLogos";
 
 function StackTile({ item }) {
@@ -39,7 +38,7 @@ function About() {
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading
           label="About Me"
-          title="Turning Ideas Into Digital Reality"
+          title="Turning Ideas into AI-Powered Solutions"
         />
 
         <div className="grid lg:grid-cols-12 gap-10 items-start">
@@ -58,6 +57,12 @@ function About() {
                 aria-hidden
                 className="absolute inset-0 bg-gradient-to-t from-[#070213]/70 via-transparent to-violet-500/10"
               />
+              <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/35 backdrop-blur px-3 py-1.5 text-[11px] font-semibold text-white border border-white/25 float-y">
+                ☁️ AWS Certified
+              </span>
+              <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/35 backdrop-blur px-3 py-1.5 text-[11px] font-semibold text-white border border-white/25 float-y" style={{ animationDelay: "0.8s" }}>
+                ✨ Generative AI
+              </span>
             </div>
           </div>
 
@@ -103,6 +108,21 @@ function About() {
                 </div>
               ))}
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {[
+                "Full-Stack Development",
+                "Generative AI Integration",
+                "AWS & Cloud Solutions",
+                "Product Development",
+              ].map((item) => (
+                <span key={item} className="inline-flex items-center gap-2 text-sm text-slate-300 light:text-slate-600">
+                  <svg className="w-[18px] h-[18px] text-violet-400 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {item}
+                </span>
+              ))}
+            </div>
             <div className="pt-2">
               <MagneticButton href="#experience">More About Me</MagneticButton>
             </div>
@@ -123,61 +143,6 @@ function About() {
           </div>
         </div>
 
-        {/* Experience & milestones — mockup timeline style */}
-        <div id="experience" className="mt-24 scroll-mt-28">
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
-            <h3 className="reveal font-display text-2xl md:text-3xl font-bold text-white light:text-slate-900">
-              Work Experience
-            </h3>
-            <a
-              href="/resume.pdf"
-              download="Abdullah-Bin-Asim-Resume.pdf"
-              className="reveal inline-flex items-center gap-2 text-sm font-medium text-violet-300 hover:text-violet-200 transition-colors"
-            >
-              View Full Resume
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-
-          <div className="relative border-l border-white/[0.09] ml-3 space-y-12">
-            {timeline.map((item) => (
-              <div key={item.title + item.period} className="reveal relative pl-8">
-                <span
-                  aria-hidden
-                  className="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full bg-gradient-to-br from-violet-400 to-fuchsia-500 border-2 border-void shadow-[0_0_14px_rgba(168,85,247,0.6)]"
-                />
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <h4 className="font-display font-bold text-slate-100 light:text-slate-900">
-                      {item.title}
-                    </h4>
-                    <div className="text-sm font-medium text-violet-300/90 mt-0.5">
-                      {item.org}
-                    </div>
-                  </div>
-                  <span className="inline-flex px-3 py-1 rounded-full bg-violet-500/10 border border-violet-400/25 text-[11px] font-semibold text-violet-200">
-                    {item.period}
-                  </span>
-                </div>
-                <p className="text-sm text-slate-400 leading-relaxed mt-2 max-w-2xl">
-                  {item.desc}
-                </p>
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-0.5 rounded-full text-xs bg-white/[0.05] border border-white/[0.07] text-slate-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

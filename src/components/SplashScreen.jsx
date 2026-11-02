@@ -96,20 +96,20 @@ function SplashScreen({ onFinish }) {
   return (
     <div
       ref={rootRef}
-      className="fixed inset-0 z-[9999] bg-void overflow-hidden flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[9999] bg-[#F8FAFF] overflow-hidden flex flex-col items-center justify-center"
       style={{ clipPath: "circle(150% at 50% 50%)" }}
       aria-label="Loading portfolio"
     >
       {/* Ambient glows */}
-      <div aria-hidden className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-cyan-500/[0.07] blur-[110px]" />
+      <div aria-hidden className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-violet-500/[0.10] blur-[110px]" />
       <div aria-hidden className="absolute bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-violet-600/[0.08] blur-[110px]" />
 
       {/* 3D stage */}
       <div ref={stageRef} className="relative flex flex-col items-center will-change-transform">
-        <p data-splash-fade className="mt-2 text-[10px] font-semibold uppercase tracking-[0.4em] text-cyan-300/70">
+        <p data-splash-fade className="mt-2 text-[10px] font-semibold uppercase tracking-[0.4em] text-violet-600">
           Welcome to my universe
         </p>
-        <h1 className="mt-3 font-display font-bold text-white text-2xl sm:text-4xl tracking-tight flex flex-wrap justify-center">
+        <h1 className="mt-3 font-display font-bold text-slate-900 text-2xl sm:text-4xl tracking-tight flex flex-wrap justify-center">
           {NAME.split("").map((ch, i) => (
             <span
               key={`${ch}-${i}`}
@@ -130,9 +130,9 @@ function SplashScreen({ onFinish }) {
       <div data-splash-fade className="absolute bottom-10 inset-x-0 px-8 sm:px-14 max-w-3xl mx-auto w-full">
         <div className="flex items-end justify-between mb-3">
           <span className="text-[10px] uppercase tracking-[0.3em] text-slate-400">Initializing</span>
-          <span ref={percentRef} className="font-mono text-sm text-cyan-300">000%</span>
+          <span ref={percentRef} className="font-mono text-sm text-violet-600">000%</span>
         </div>
-        <div className="h-px w-full bg-white/[0.08] overflow-hidden rounded-full">
+        <div className="h-px w-full bg-slate-900/[0.10] overflow-hidden rounded-full">
           <div
             ref={barRef}
             className="h-full w-full origin-left bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(168,85,247,0.6)]"
@@ -145,7 +145,7 @@ function SplashScreen({ onFinish }) {
       {showSkip && (
         <button
           onClick={finish}
-          className="absolute bottom-4 right-6 text-[11px] text-slate-600 hover:text-cyan-300 transition-colors"
+          className="absolute bottom-4 right-6 text-[11px] text-slate-600 hover:text-violet-600 transition-colors"
         >
           Skip intro →
         </button>

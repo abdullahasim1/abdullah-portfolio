@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "../components/MagneticButton";
 import { scrollToSection } from "../lib/smoothScroll";
+import { techStack } from "../data/techLogos";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,7 +11,7 @@ const stats = [
   { icon: "code", num: "25+", label: "Projects Completed" },
   { icon: "users", num: "10+", label: "Happy Clients" },
   { icon: "bolt", num: "3+", label: "Years Experience" },
-  { icon: "cloud", num: "AWS", label: "Cloud & AI" },
+  { icon: "award", num: "11+", label: "Certifications" },
 ];
 
 function StatIcon({ name }) {
@@ -33,6 +34,12 @@ function StatIcon({ name }) {
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
       </svg>
     );
+  if (name === "award")
+    return (
+      <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+      </svg>
+    );
   return (
     <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
@@ -52,6 +59,33 @@ const socials = [
     path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 11-.001-4.124 2.062 2.062 0 01.001 4.124zM7.119 20.452H3.554V9h3.565v11.452z",
   },
 ];
+
+function HeroChip({ item, className = "", delay = "0s" }) {
+  return (
+    <span
+      className={`absolute inline-flex items-center gap-2 rounded-2xl glass-strong px-3.5 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y ${className}`}
+      style={{ animationDelay: delay }}
+    >
+      {item.mono ? (
+        <span
+          className="inline-flex h-[22px] items-center justify-center rounded-md px-1.5 text-[9px] font-bold"
+          style={{
+            background: `linear-gradient(135deg, ${item.mono.from}22, ${item.mono.to}22)`,
+            border: `1px solid ${item.mono.from}55`,
+            color: item.mono.from,
+          }}
+        >
+          {item.mono.label}
+        </span>
+      ) : (
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d={item.icon.path} fill={`#${item.icon.hex}`} />
+        </svg>
+      )}
+      {item.name}
+    </span>
+  );
+}
 
 function Home({ introDone = true }) {
   const sectionRef = useRef(null);
@@ -106,7 +140,7 @@ function Home({ introDone = true }) {
               data-hero-stagger
               className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-slate-300"
             >
-              👋 Hi, I&apos;m
+              👋 Hello, I&apos;m
             </span>
 
             <h1
@@ -118,7 +152,7 @@ function Home({ introDone = true }) {
             </h1>
 
             <p data-hero-stagger className="font-display text-xl md:text-2xl font-semibold text-slate-200 light:text-slate-700">
-              Full-Stack Developer &amp; AI Engineer
+              Generative AI Engineer
             </p>
 
             <p data-hero-stagger className="text-slate-400 leading-relaxed max-w-xl">
@@ -179,23 +213,21 @@ function Home({ introDone = true }) {
                 className="absolute -inset-6 rounded-[36px] bg-violet-600/[0.13] blur-3xl"
               />
               <img
-                src="/hero-laptop.webp"
-                alt="Laptop with Abdullah's portfolio code under a neon purple ring"
-                className="relative w-full rounded-[28px] border border-violet-400/25 object-cover shadow-[0_30px_80px_-30px_rgba(168,85,247,0.45)]"
+                src="/hero-light.webp"
+                alt="Floating laptop with a code editor on a soft lavender background"
+                className="relative w-full rounded-[28px] border border-violet-200/70 light:border-violet-100 object-cover shadow-[0_30px_80px_-30px_rgba(124,58,237,0.35)]"
                 width="960"
                 height="640"
                 fetchPriority="high"
               />
-              <span className="absolute -top-4 right-6 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y">
-                <span className="text-violet-400">⚡</span> 3+ Years
-                <span className="block text-[10px] font-medium text-slate-400">Experience</span>
-              </span>
-              <span className="absolute top-1/3 -left-3 sm:-left-6 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y">
-                <span aria-hidden>💻</span> Full-Stack Developer
-              </span>
-              <span className="absolute -bottom-4 right-8 inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y">
-                <span aria-hidden>☁️</span> AWS · Cloud &amp; AI
-              </span>
+              <HeroChip item={techStack[5]} className="-top-4 right-6" />
+              <HeroChip item={techStack[0]} className="top-1/3 -left-3 sm:-left-6" delay="0.7s" />
+              <HeroChip item={techStack[1]} className="-bottom-4 left-8" delay="1.2s" />
+              <HeroChip
+                item={{ name: "Generative AI", mono: { label: "AI", from: "#8b5cf6", to: "#6366f1" } }}
+                className="-bottom-4 right-8"
+                delay="0.4s"
+              />
             </div>
           </div>
         </div>
