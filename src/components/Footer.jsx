@@ -9,18 +9,20 @@ import {
   siN8n,
   siClaude,
 } from "simple-icons";
-import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
+import { scrollToTop } from "../lib/smoothScroll";
 import { playClickSound } from "../lib/sound";
+import { Link } from "../lib/router";
 
 const exploreLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
-  { name: "Experience", href: "#experience" },
-  { name: "Certifications", href: "#certifications" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Skills", href: "/skills" },
+  { name: "Services", href: "/services" },
+  { name: "Projects", href: "/projects" },
+  { name: "Experience", href: "/experience" },
+  { name: "Certifications", href: "/certifications" },
+  { name: "Blog", href: "/blog" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const ICONS = {
@@ -54,12 +56,12 @@ function LineIcon({ d, className = "h-5 w-5", filled = false }) {
 }
 
 const whatIDo = [
-  { icon: "sparkles", label: "Generative AI Integration", filled: true },
-  { icon: "share", label: "Workflow Automation", filled: true },
-  { icon: "code", label: "Web Development" },
-  { icon: "cloud", label: "AWS & Cloud Solutions" },
-  { icon: "cube", label: "SaaS Product Development" },
-  { icon: "layers", label: "API Integration" },
+  { icon: "sparkles", label: "Generative AI Integration", filled: true, path: "/services/generative-ai-integration" },
+  { icon: "share", label: "Workflow Automation", filled: true, path: "/services/ai-automation-workflows" },
+  { icon: "code", label: "Web Development", path: "/services/full-stack-web-development" },
+  { icon: "cloud", label: "AWS & Cloud Solutions", path: "/services/aws-cloud-serverless" },
+  { icon: "cube", label: "SaaS Product Development", path: "/services/ai-product-development" },
+  { icon: "layers", label: "API Integration", path: "/services" },
 ];
 
 const highlights = [
@@ -84,14 +86,6 @@ const techTiles = [
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
-    playClickSound();
-    const id = href.replace(/^#/, "");
-    if (id === "home") scrollToTop();
-    else scrollToSection(id);
-  };
 
   const socialBtn =
     "flex h-11 w-11 items-center justify-center rounded-full border border-violet-200 bg-white text-violet-600 shadow-sm transition-all hover:-translate-y-0.5 hover:border-violet-400 hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:text-violet-300";
@@ -152,16 +146,16 @@ function Footer() {
             <ul className="mt-4">
               {exploreLinks.map((link) => (
                 <li key={link.name}>
-                  <a
+                  <Link
                     href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
+                    onClick={() => playClickSound()}
                     className="group flex items-center justify-between py-[5px] text-[15px] text-slate-600 transition-colors hover:text-violet-600 dark:text-slate-300 dark:hover:text-violet-300"
                   >
                     {link.name}
                     <svg className="h-4 w-4 text-violet-300 transition-transform group-hover:translate-x-0.5 dark:text-violet-400/60" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 6l6 6-6 6" />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -176,14 +170,14 @@ function Footer() {
             <ul className="mt-4">
               {whatIDo.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href="#services"
-                    onClick={(e) => handleNavClick(e, "#services")}
+                  <Link
+                    href={item.path}
+                    onClick={() => playClickSound()}
                     className="flex items-center gap-3 py-[7px] text-[15px] text-slate-600 transition-colors hover:text-violet-600 dark:text-slate-300 dark:hover:text-violet-300"
                   >
                     <LineIcon d={ICONS[item.icon]} filled={item.filled} className="h-[18px] w-[18px] shrink-0 text-violet-500 dark:text-violet-300" />
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

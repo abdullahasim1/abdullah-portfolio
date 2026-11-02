@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { getSoundMuted, toggleSound, playClickSound } from "../lib/sound";
 import { getTheme, applyTheme } from "../lib/theme";
+import { Link, useRoute } from "../lib/router";
 
 /* Board design: har nav link ke sath chhota violet line icon */
 const ICONS = {
@@ -56,14 +56,14 @@ const ICONS = {
 };
 
 const links = [
-  { label: "Home", id: "home" },
-  { label: "About", id: "about" },
-  { label: "Skills", id: "skills" },
-  { label: "Services", id: "services" },
-  { label: "Projects", id: "projects" },
-  { label: "Experience", id: "experience" },
-  { label: "Certifications", id: "certifications" },
-  { label: "Contact", id: "contact" },
+  { label: "Home", id: "home", path: "/" },
+  { label: "About", id: "about", path: "/about" },
+  { label: "Skills", id: "skills", path: "/skills" },
+  { label: "Services", id: "services", path: "/services" },
+  { label: "Projects", id: "projects", path: "/projects" },
+  { label: "Experience", id: "experience", path: "/experience" },
+  { label: "Certifications", id: "certifications", path: "/certifications" },
+  { label: "Contact", id: "contact", path: "/contact" },
 ];
 
 function NavIcon({ id, className = "w-4 h-4" }) {
@@ -87,47 +87,20 @@ function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [muted, setMuted] = useState(() => getSoundMuted());
-  const [active, setActive] = useState("home");
   const [theme, setTheme] = useState(() => getTheme());
+
+  /* Active link route se — multi-page site mein scroll-spy ki jagah
+     current page hi highlight hota hai (detail pages par parent active). */
+  const { path } = useRoute();
+  const active =
+    path === "/"
+      ? "home"
+      : (links.find((l) => l.path !== "/" && path.startsWith(l.path))?.id ?? "");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-
-    /* Scroll-spy: jis section par ho uski nav link highlight.
-       Sections lazy-load hoti hain — mount ke waqt DOM mein nahi hotin,
-       is liye jo section jab appear ho use tab observe karo
-       (pehle sirf "home" observe hota tha, highlight wahin atka rehta tha). */
-    const ids = links.map((l) => l.id);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        }
-      },
-      { rootMargin: "-35% 0px -60% 0px", threshold: 0 },
-    );
-    const observed = new Set();
-    const collect = () => {
-      ids.forEach((id) => {
-        if (observed.has(id)) return;
-        const el = document.getElementById(id);
-        if (el) {
-          observed.add(id);
-          observer.observe(el);
-        }
-      });
-    };
-    collect();
-    let mo = null;
-    if (observed.size < ids.length) {
-      mo = new MutationObserver(() => {
-        collect();
-        if (observed.size >= ids.length && mo) mo.disconnect();
-      });
-      mo.observe(document.body, { childList: true, subtree: true });
-    }
 
     const onSoundToggle = (e) => setMuted(e.detail.isMuted);
     window.addEventListener("aa-sound-toggle", onSoundToggle);
@@ -135,8 +108,6 @@ function Navbar() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("aa-sound-toggle", onSoundToggle);
-      observer.disconnect();
-      if (mo) mo.disconnect();
     };
   }, []);
 
@@ -158,15 +129,7 @@ function Navbar() {
     setTheme(next);
   };
 
-  const handleNavClick = (event, targetId) => {
-    event.preventDefault();
-    setMobileOpen(false);
-    if (targetId === "home") {
-      scrollToTop();
-    } else {
-      scrollToSection(targetId);
-    }
-  };
+  const closeMobile = () => setMobileOpen(false);
 
   const circleBtn =
     "inline-flex items-center justify-center w-10 h-10 rounded-full glass text-slate-300 light:text-violet-600 hover:text-violet-500 hover:border-violet-400/40 transition-colors cursor-pointer shrink-0";
@@ -187,9 +150,8 @@ function Navbar() {
         }`}
       >
         {/* Brand — board style line-A mark + sparkle */}
-        <a
-          href="#home"
-          onClick={(e) => handleNavClick(e, "home")}
+        <Link
+          href="/"
           className="flex items-center gap-3 group shrink-0"
           aria-label="Abdullah Asim - Home"
         >
@@ -217,7 +179,7 @@ function Navbar() {
               Full-Stack Developer
             </span>
           </span>
-        </a>
+        </Link>
 
         <span className="hidden lg:block h-9 w-px bg-slate-400/25 light:bg-slate-300/70 shrink-0" aria-hidden="true" />
 
@@ -230,11 +192,10 @@ function Navbar() {
           {links.map((link) => {
             const isActive = active === link.id;
             return (
-              <a
+              <Link
                 key={link.id}
-                href={`#${link.id}`}
-                onClick={(e) => handleNavClick(e, link.id)}
-                aria-current={isActive ? "true" : undefined}
+                href={link.path}
+                aria-current={isActive ? "page" : undefined}
                 className={`relative inline-flex items-center gap-1 px-2.5 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
                   isActive
                     ? "text-white bg-gradient-to-r from-cyan-500 to-violet-600 shadow-[0_8px_20px_-8px_rgba(124,58,237,0.55)]"
@@ -251,7 +212,7 @@ function Navbar() {
                     className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] h-[5px] w-10 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_10px_rgba(168,85,247,0.5)]"
                   />
                 )}
-              </a>
+              </Link>
             );
           })}
         </div>
@@ -330,16 +291,15 @@ function Navbar() {
             Resume
           </a>
 
-          <a
-            href="#contact"
-            onClick={(e) => handleNavClick(e, "contact")}
+          <Link
+            href="/contact"
             className="hidden sm:inline-flex sheen-btn items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 transition-all shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.35)]"
           >
             Let&apos;s Talk
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.4} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7m0 0H8m9 0v9" />
             </svg>
-          </a>
+          </Link>
 
           <button
             className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full glass text-slate-300 light:text-slate-700"
@@ -365,25 +325,25 @@ function Navbar() {
           aria-label="Mobile navigation"
         >
           {links.map((link) => (
-            <a
+            <Link
               key={link.id}
-              href={`#${link.id}`}
-              onClick={(e) => handleNavClick(e, link.id)}
+              href={link.path}
+              onClick={closeMobile}
               className="inline-flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50 transition-colors"
             >
               <span className="text-violet-400 light:text-violet-500">
                 <NavIcon id={link.id} />
               </span>
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
-            onClick={(e) => handleNavClick(e, "contact")}
+          <Link
+            href="/contact"
+            onClick={closeMobile}
             className="mt-2 inline-flex items-center justify-center rounded-full px-4 py-2.5 font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600"
           >
             Let&apos;s Talk
-          </a>
+          </Link>
         </div>
       </div>
     </header>

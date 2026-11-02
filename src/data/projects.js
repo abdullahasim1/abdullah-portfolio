@@ -213,6 +213,28 @@ export const featuredProjects = [
   },
 ];
 
+/* Case-study page slugs — /projects/<slug> */
+export const PROJECT_SLUGS = {
+  "four-ai-ai-powered-voice-image-generation-platform": "four-ai",
+  GENAI: "hiregen-ai",
+  "Job-Recuitment": "upmatch",
+  "Business-Help": "business-help",
+  "events-agent-frontend": "events-agent",
+  "abdullah-portfolio": "portfolio-website",
+};
+
+/** @param {{ repoName: string }} project */
+export function projectSlug(project) {
+  return PROJECT_SLUGS[project.repoName] ?? project.repoName;
+}
+
+/** @param {string} slug */
+export function getFeaturedBySlug(slug) {
+  return (
+    featuredProjects.find((p) => projectSlug(p) === slug) ?? null
+  );
+}
+
 export const GITHUB_USERNAME = "abdullahasim1";
 
 export const languageColors = {

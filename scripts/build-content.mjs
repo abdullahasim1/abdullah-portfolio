@@ -14,6 +14,8 @@ import { marked } from "marked";
 import sharp from "sharp";
 
 import { faqs } from "../src/data/faqs.js";
+import { featuredProjects, PROJECT_SLUGS } from "../src/data/projects.js";
+import { services } from "../src/data/services.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const POSTS_DIR = path.join(ROOT, "content", "posts");
@@ -123,8 +125,34 @@ ${items}
 
 function writeSitemap(posts) {
   const today = new Date().toISOString().slice(0, 10);
+  /* Multi-page site: har route sitemap mein */
+  const staticRoutes = [
+    { loc: `${SITE_URL}/about`, priority: "0.8" },
+    { loc: `${SITE_URL}/skills`, priority: "0.7" },
+    { loc: `${SITE_URL}/services`, priority: "0.9" },
+    { loc: `${SITE_URL}/projects`, priority: "0.9" },
+    { loc: `${SITE_URL}/experience`, priority: "0.7" },
+    { loc: `${SITE_URL}/certifications`, priority: "0.8" },
+    { loc: `${SITE_URL}/process`, priority: "0.6" },
+    { loc: `${SITE_URL}/blog`, priority: "0.8" },
+    { loc: `${SITE_URL}/faq`, priority: "0.6" },
+    { loc: `${SITE_URL}/contact`, priority: "0.8" },
+  ];
   const urls = [
     { loc: `${SITE_URL}/`, lastmod: today, changefreq: "weekly", priority: "1.0" },
+    ...staticRoutes.map((r) => ({ ...r, lastmod: today, changefreq: "monthly" })),
+    ...services.map((s) => ({
+      loc: `${SITE_URL}/services/${s.slug}`,
+      lastmod: today,
+      changefreq: "monthly",
+      priority: "0.7",
+    })),
+    ...featuredProjects.map((p) => ({
+      loc: `${SITE_URL}/projects/${PROJECT_SLUGS[p.repoName] ?? p.repoName}`,
+      lastmod: today,
+      changefreq: "monthly",
+      priority: "0.7",
+    })),
     ...posts.map((p) => ({
       loc: `${SITE_URL}/blog/${p.slug}`,
       lastmod: p.date,
@@ -257,24 +285,47 @@ function writeStaticBlogPages(posts) {
   if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true });
 
   const proseCss = `
-    body{margin:0;background:#05060a;color:#e2e8f0;font-family:"Inter",system-ui,sans-serif}
-    a{color:#67e8f9;text-decoration:underline;text-underline-offset:3px}
-    h1,h2,h3{font-family:var(--font-display);color:#f1f5f9}
-    h1{font-size:clamp(32px,5vw,44px);margin:1.5em 0 0.5em}
-    h2{font-size:clamp(24px,4vw,32px);margin:1.5em 0 0.8em}
-    h3{font-size:clamp(20px,3vw,24px);margin:1.2em 0 0.6em}
-    p{line-height:1.75;margin:0.8em 0}
-    strong{color:#f8fafc}
-    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em}
+    *{box-sizing:border-box}
+    body{margin:0;background:#F8FAFF;color:#334155;font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:#7C3AED;text-decoration:underline;text-underline-offset:3px}
+    .topbar{position:sticky;top:0;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #EDE9FE;z-index:10}
+    .topbar-in{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#0F172A;font-weight:800;font-family:"Space Grotesk","Inter",sans-serif}
+    .brand-mark{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7C3AED,#6366F1);color:#fff;font-size:18px}
+    .brand small{display:block;font-weight:500;color:#64748B;font-size:11px;font-family:"Inter",sans-serif}
+    .topnav{display:flex;gap:18px;flex-wrap:wrap}
+    .topnav a{color:#475569;text-decoration:none;font-size:14px;font-weight:600}
+    .topnav a:hover{color:#7C3AED}
+    .wrap{max-width:800px;margin:0 auto;padding:36px 20px 64px}
+    .backlink{display:inline-block;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:18px}
+    .card{background:#fff;border:1px solid #EDE9FE;border-radius:28px;padding:clamp(24px,5vw,44px);box-shadow:0 24px 55px -30px rgba(124,58,237,0.35)}
+    h1,h2,h3{font-family:"Space Grotesk","Inter",sans-serif;color:#0F172A;line-height:1.2}
+    h1{font-size:clamp(30px,5vw,40px);margin:0.2em 0 0.4em;letter-spacing:-0.01em}
+    h2{font-size:clamp(23px,4vw,29px);margin:1.4em 0 0.6em}
+    h3{font-size:clamp(19px,3vw,22px);margin:1.2em 0 0.5em}
+    .meta{color:#94A3B8;font-size:13px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+    .tag{display:inline-block;background:#F5F3FF;color:#6D28D9;border:1px solid #EDE9FE;border-radius:999px;padding:3px 11px;font-size:12px;font-weight:600;margin:2px 2px 2px 0}
+    p{line-height:1.8;margin:0.85em 0}
+    strong{color:#0F172A}
+    ul,ol{padding-left:1.4em;margin:0.8em 0;display:grid;gap:0.5em;line-height:1.7}
     ul{list-style:disc}
     ol{list-style:decimal}
-    li::marker{color:#22d3ee}
-    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.12em 0.4em;color:#a5f3fc}
-    pre{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
-    blockquote{border-left:3px solid rgba(34,211,238,0.55);padding:0.2em 0 0.2em 1em;color:#94a3b8;font-style:italic}
-    table{width:100%;border-collapse:collapse;font-size:0.88rem;overflow-x:auto}
-    th,td{border:1px solid rgba(255,255,255,0.09);padding:0.55em 0.8em}
+    li::marker{color:#7C3AED}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.86em;background:#F5F3FF;border:1px solid #EDE9FE;border-radius:6px;padding:0.12em 0.4em;color:#6D28D9}
+    pre{background:#0F172A;border-radius:14px;padding:1rem 1.15rem;overflow-x:auto}
+    pre code{background:transparent;border:none;color:#E2E8F0;padding:0}
+    blockquote{border-left:3px solid #A78BFA;padding:0.2em 0 0.2em 1em;color:#64748B;font-style:italic;margin:1em 0}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem}
+    th,td{border:1px solid #E5E7EB;padding:0.55em 0.8em;text-align:left}
+    th{background:#F8FAFF}
+    img{max-width:100%;border-radius:14px}
     .prose-content > * + *{margin-top:1.1em}
+    .cta{margin-top:28px;border-radius:24px;padding:28px;text-align:center;background:linear-gradient(120deg,#F3EFFF,#FAF8FF,#F3EFFF);border:1px solid #DDD6FE}
+    .cta h2{margin:0 0 8px;font-size:24px}
+    .cta p{color:#64748B;margin:0 0 18px}
+    .cta a{display:inline-block;background:linear-gradient(120deg,#7C3AED,#6366F1);color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 26px;border-radius:999px;box-shadow:0 12px 24px -10px rgba(124,58,237,0.55)}
+    .foot{max-width:800px;margin:0 auto;padding:0 20px 44px;text-align:center;color:#94A3B8;font-size:13px}
+    .foot a{color:#64748B}
   `;
 
   posts.forEach((post) => {
@@ -291,11 +342,11 @@ function writeStaticBlogPages(posts) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#05060a" />
+    <meta name="theme-color" content="#F8FAFF" />
     <title>${escapeXml(post.title)} — Abdullah Bin Asim</title>
     <meta name="description" content="${escapeXml(post.description)}" />
     <link rel="canonical" href="${canonical}" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="article" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${escapeXml(post.title)}" />
     <meta property="og:description" content="${escapeXml(post.description)}" />
@@ -308,21 +359,36 @@ function writeStaticBlogPages(posts) {
     <meta name="twitter:description" content="${escapeXml(post.description)}" />
     <meta name="twitter:image" content="${ogImage}" />
     <link rel="stylesheet" href="/fonts.css" />
+    <style>${proseCss}</style>
   </head>
   <body>
-    <header style="${proseCss}">
-      <nav><a href="/" style="color:#e2e8f0;text-decoration:none;font-weight:bold;">← Back to Portfolio</a></nav>
+    <header class="topbar">
+      <div class="topbar-in">
+        <a class="brand" href="/"><span class="brand-mark">A</span><span>Abdullah Asim<small>AI Cloud Engineer &amp; Full-Stack Developer</small></span></a>
+        <nav class="topnav">
+          <a href="/">Home</a>
+          <a href="/projects">Projects</a>
+          <a href="/services">Services</a>
+          <a href="/blog">Blog</a>
+          <a href="/contact">Contact</a>
+        </nav>
+      </div>
     </header>
-    <main style="${proseCss}">
-      <article>
+    <main class="wrap">
+      <a class="backlink" href="/blog">&larr; All Articles</a>
+      <article class="card">
+        <p class="meta"><time datetime="${post.date}">${new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</time> &middot; ${post.readingMinutes} min read</p>
         <h1>${escapeXml(post.title)}</h1>
-        <p><time datetime="${post.date}">${new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</time> · ${post.readingMinutes} min read</p>
-        ${post.tags.map((tag) => `<span class="tag">${escapeXml(tag)}</span>`).join(" ")}
+        <p>${post.tags.map((tag) => `<span class="tag">${escapeXml(tag)}</span>`).join(" ")}</p>
         <div class="prose-content">${post.html}</div>
-        <p style="margin:2em 0 0;font-size:0.9rem;color:#67e8f9;"><a href="/rss.xml" style="color:#67e8f9;">Subscribe via RSS</a></p>
       </article>
+      <div class="cta">
+        <h2>Have a project in mind?</h2>
+        <p>I build AI agents, automation systems and full-stack products for clients worldwide.</p>
+        <a href="/contact">Start a Project</a>
+      </div>
     </main>
-    <footer style="${proseCss}"><nav><a href="/" style="color:#e2e8f0;">Home</a> | <a href="/rss.xml" style="color:#67e8f9;">RSS</a></nav></footer>
+    <footer class="foot"><a href="/">Home</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/rss.xml">Subscribe via RSS</a></footer>
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"BlogPosting","headline":"${escapeXml(post.title)}","description":"${escapeXml(post.description)}","datePublished":"${post.date}","url":"${canonical}","author":{"@id":"${SITE_URL}/#person"},"publisher":{"@id":"${SITE_URL}/#person"},"mainEntityOfPage":"${canonical}","image":"${ogImage}"}
     </script>

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { scrollToSection } from "../lib/smoothScroll";
+import { navigateTo } from "../lib/router";
 import { playClickSound, playSuccessSound } from "../lib/sound";
 
 const projectTypes = [
@@ -188,17 +188,18 @@ export default function ProjectEstimator() {
     playSuccessSound();
     const message = `Hi Abdullah,\n\nI used your interactive Project Estimator:\n- Project Type: ${calculation.typeTitle}\n- Selected Features: ${calculation.featureNames.join(", ")}\n- Estimated Timeline: ${calculation.estimatedWeeks} (${calculation.estimatedDays})\n\nLet's discuss details and next steps!`;
 
-    // Fill contact textarea if present
-    const textarea = document.querySelector('textarea[name="message"]');
-    if (textarea) {
-      textarea.value = message;
-    }
-    const subject = document.querySelector('input[name="subject"]');
-    if (subject) {
-      subject.value = `[Estimator] ${calculation.typeTitle} Project Inquiry`;
-    }
-
-    scrollToSection("contact");
+    // Contact ab apni page par hai — inquiry stash karke wahan bhejo,
+    // Contact page mount par prefill kar legi.
+    try {
+      sessionStorage.setItem(
+        "aa-prefill",
+        JSON.stringify({
+          subject: `[Estimator] ${calculation.typeTitle} Project Inquiry`,
+          message,
+        }),
+      );
+    } catch {}
+    navigateTo("/contact");
   };
 
   const paceLabel =

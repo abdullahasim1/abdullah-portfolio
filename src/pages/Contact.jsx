@@ -101,6 +101,20 @@ function Contact() {
     mountTimeRef.current = Date.now();
   }, []);
 
+  /* Estimator se bheji gayi inquiry prefill (sessionStorage handoff) */
+  useEffect(() => {
+    let data = null;
+    try {
+      data = JSON.parse(sessionStorage.getItem("aa-prefill") || "null");
+      if (data) sessionStorage.removeItem("aa-prefill");
+    } catch {}
+    if (!data) return;
+    const subject = document.querySelector('input[name="subject"]');
+    if (subject && data.subject) subject.value = data.subject;
+    const message = document.querySelector('textarea[name="message"]');
+    if (message && data.message) message.value = data.message;
+  }, []);
+
   function validateField(name, value) {
     const newErrors = { ...errors };
     if (name === "name" && !value.trim()) {

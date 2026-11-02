@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useScrollReveal } from "../hooks";
-import { scrollToSection } from "../lib/smoothScroll";
+import { navigateTo } from "../lib/router";
 import { playClickSound } from "../lib/sound";
 /* Single source of truth — isi se index.html ka FAQPage JSON-LD bhi banta hai */
 import { faqs } from "../data/faqs";
@@ -114,7 +114,7 @@ function Faq() {
 
   const goContact = () => {
     playClickSound();
-    scrollToSection("contact");
+    navigateTo("/contact");
   };
 
   return (

@@ -1,17 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { posts, getPost } from "../data/posts.gen";
+import React, { useState } from "react";
+import { posts } from "../data/posts.gen";
 import { useScrollReveal } from "../hooks";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { scrollToSection } from "../lib/smoothScroll";
-import { track } from "../lib/analytics";
 import { playClickSound } from "../lib/sound";
 
-const SITE_URL = "https://abdullah-asim-dev.vercel.app";
-const BLOG_PATH_RE = /^\/blog\/([^/]+)\/?$/;
-
-const DEFAULT_TITLE = "Abdullah Bin Asim — Full Stack Developer & AI Builder";
-const DEFAULT_DESCRIPTION = "Full Stack Developer with AWS Generative AI credentials. React, Next.js, Node.js, AI agents & automation. 25+ projects shipped. Available for new opportunities.";
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+/* Har post ki apni asal page hai: /blog/<slug> (build time par static
+   prerender hoti hai — scripts/build-content.mjs). Cards wahan link
+   karte hain; koi overlay reader nahi. */
 
 function formatDate(iso) {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
@@ -20,131 +14,6 @@ function formatDate(iso) {
     day: "numeric",
     timeZone: "UTC",
   });
-}
-
-function setMeta(attr, selector, content) {
-  const el = document.querySelector(selector);
-  if (el) el.setAttribute(attr, content);
-}
-
-function applyPostMeta(post) {
-  const url = `${SITE_URL}/blog/${post.slug}`;
-  document.title = `${post.title} — Abdullah Bin Asim`;
-  setMeta("content", 'meta[name="description"]', post.description);
-  setMeta("href", 'link[rel="canonical"]', url);
-  setMeta("content", 'meta[property="og:url"]', url);
-  setMeta("content", 'meta[property="og:type"]', "article");
-  setMeta("content", 'meta[property="og:title"]', post.title);
-  setMeta("content", 'meta[property="og:description"]', post.description);
-  setMeta("content", 'meta[name="twitter:title"]', post.title);
-  setMeta("content", 'meta[name="twitter:description"]', post.description);
-  setMeta("content", 'meta[property="og:image"]', `${SITE_URL}/blog/${post.slug}.jpg`);
-
-  // Inject BlogPosting JSON-LD
-  const ld = document.createElement("script");
-  ld.type = "application/ld+json";
-  ld.textContent = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.description,
-    datePublished: post.date,
-    url,
-    author: { "@id": `${SITE_URL}/#person` },
-    publisher: { "@id": `${SITE_URL}/#person` },
-    mainEntityOfPage: url,
-    image: `${SITE_URL}/blog/${post.slug}.jpg`,
-  });
-  document.head.appendChild(ld);
-}
-
-function restoreDefaultMeta() {
-  document.title = DEFAULT_TITLE;
-  setMeta("content", 'meta[name="description"]', DEFAULT_DESCRIPTION);
-  setMeta("href", 'link[rel="canonical"]', SITE_URL);
-  setMeta("content", 'meta[property="og:url"]', SITE_URL);
-  setMeta("content", 'meta[property="og:type"]', "website");
-  setMeta("content", 'meta[property="og:title"]', DEFAULT_TITLE);
-  setMeta("content", 'meta[property="og:description"]', DEFAULT_DESCRIPTION);
-  setMeta("content", 'meta[name="twitter:title"]', DEFAULT_TITLE);
-  setMeta("content", 'meta[name="twitter:description"]', DEFAULT_DESCRIPTION);
-  setMeta("content", 'meta[property="og:image"]', DEFAULT_OG_IMAGE);
-}
-
-/* ---------------- Reader overlay ---------------- */
-
-function PostReader({ post, onClose }) {
-  const panelRef = useRef(null);
-  const closeRef = useRef(null);
-  useFocusTrap(panelRef);
-
-  useEffect(() => {
-    closeRef.current?.focus();
-    const lenisStop = () => {
-      document.body.style.overflow = "hidden";
-    };
-    lenisStop();
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [onClose]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:p-6 animate-in fade-in duration-200"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${post.title} — article`}
-    >
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-      <article
-        ref={panelRef}
-        onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl glass-strong neon-ring shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9)]"
-      >
-        <button
-          ref={closeRef}
-          type="button"
-          onClick={onClose}
-          aria-label="Close article"
-          className="absolute top-4 right-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/60 border border-white/15 text-slate-300 hover:text-white hover:border-cyan-400/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        <header className="px-6 sm:px-10 pt-10 pb-6 border-b border-white/[0.07]">
-          <p className="text-xs font-semibold text-cyan-300 uppercase tracking-[0.18em] mb-3">
-            {formatDate(post.date)} · {post.readingMinutes} min read
-          </p>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-white leading-tight pr-12">
-            {post.title}
-          </h2>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2.5 py-0.5 rounded-full text-xs bg-white/[0.05] border border-white/[0.08] text-slate-300"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </header>
-
-        <div className="prose-content px-6 sm:px-10 py-8">
-          <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        </div>
-      </article>
-    </div>
-  );
 }
 
 /* ---------------- Board cards ---------------- */
@@ -214,9 +83,9 @@ function TagPills({ tags, limit = 3 }) {
 const cardShell =
   "group w-full text-left rounded-3xl border border-violet-100 bg-white shadow-[0_12px_36px_-16px_rgba(124,58,237,0.18)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-16px_rgba(124,58,237,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:border-white/10 dark:bg-slate-900/70";
 
-function FeaturedCard({ post, onOpen }) {
+function FeaturedCard({ post }) {
   return (
-    <button type="button" onClick={() => onOpen(post)} data-cursor="hover" className={`${cardShell} flex flex-col overflow-hidden sm:flex-row`}>
+    <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex flex-col overflow-hidden sm:flex-row`}>
       <span className="relative block shrink-0 sm:w-[46%]">
         <PostCover post={post} className="h-52 w-full sm:h-full" iconClass="h-16 w-16" />
         <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-lg">
@@ -246,13 +115,13 @@ function FeaturedCard({ post, onOpen }) {
           </svg>
         </span>
       </span>
-    </button>
+    </a>
   );
 }
 
-function SideCard({ post, onOpen }) {
+function SideCard({ post }) {
   return (
-    <button type="button" onClick={() => onOpen(post)} data-cursor="hover" className={`${cardShell} flex gap-5 p-5`}>
+    <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex gap-5 p-5`}>
       <PostCover post={post} className="hidden h-[118px] w-[132px] shrink-0 rounded-2xl min-[420px]:block" />
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="text-xs font-medium text-slate-400">
@@ -270,13 +139,13 @@ function SideCard({ post, onOpen }) {
           </span>
         </span>
       </span>
-    </button>
+    </a>
   );
 }
 
-function RowCard({ post, onOpen }) {
+function RowCard({ post }) {
   return (
-    <button type="button" onClick={() => onOpen(post)} data-cursor="hover" className={`${cardShell} flex flex-col p-5`}>
+    <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex flex-col p-5`}>
       <span className="flex gap-4">
         <PostCover post={post} className="h-[104px] w-[104px] shrink-0 rounded-2xl" />
         <span className="min-w-0">
@@ -300,49 +169,15 @@ function RowCard({ post, onOpen }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
       </span>
-    </button>
+    </a>
   );
 }
 
 /* ---------------- Section ---------------- */
 
 function Blog() {
-  const [active, setActive] = useState(null);
   const [query, setQuery] = useState("");
   useScrollReveal("#blog .reveal");
-
-  const openPost = (post, { push = true } = {}) => {
-    playClickSound();
-    setActive(post);
-    track("blog-open", { slug: post.slug });
-    applyPostMeta(post);
-    if (push) history.pushState({ slug: post.slug }, "", `/blog/${post.slug}`);
-  };
-
-  const closePost = () => {
-    setActive(null);
-    restoreDefaultMeta();
-    if (BLOG_PATH_RE.test(location.pathname)) {
-      if (history.state?.slug) history.back();
-      else history.replaceState({}, "", "/");
-    }
-  };
-
-  /* Deep links: /blog/<slug> directly load par bhi post khule */
-  useEffect(() => {
-    const syncFromPath = () => {
-      const match = location.pathname.match(BLOG_PATH_RE);
-      const post = match ? getPost(match[1]) : null;
-      setActive(post);
-      if (post) {
-        requestAnimationFrame(() => scrollToSection("blog"));
-        track("blog-open", { slug: post.slug });
-      }
-    };
-    syncFromPath();
-    window.addEventListener("popstate", syncFromPath);
-    return () => window.removeEventListener("popstate", syncFromPath);
-  }, []);
 
   if (posts.length === 0) return null;
 
@@ -401,7 +236,7 @@ function Blog() {
           filtered.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filtered.map((post) => (
-                <RowCard key={post.slug} post={post} onOpen={openPost} />
+                <RowCard key={post.slug} post={post} />
               ))}
             </div>
           ) : (
@@ -412,19 +247,19 @@ function Blog() {
         ) : (
           <>
             <div className="grid items-stretch gap-6 lg:grid-cols-[1.5fr_1fr]">
-              <FeaturedCard post={featured} onOpen={openPost} />
+              <FeaturedCard post={featured} />
               <div className="flex flex-col gap-6">
                 {side.map((post) => (
-                  <SideCard key={post.slug} post={post} onOpen={openPost} />
+                  <SideCard key={post.slug} post={post} />
                 ))}
               </div>
             </div>
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {row.map((post) => (
-                <RowCard key={post.slug} post={post} onOpen={openPost} />
+                <RowCard key={post.slug} post={post} />
               ))}
               {extra.map((post) => (
-                <RowCard key={post.slug} post={post} onOpen={openPost} />
+                <RowCard key={post.slug} post={post} />
               ))}
             </div>
           </>
@@ -437,7 +272,6 @@ function Blog() {
             onClick={() => {
               playClickSound();
               setQuery("");
-              scrollToSection("blog");
             }}
             className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-opacity hover:opacity-90"
           >
@@ -460,8 +294,6 @@ function Blog() {
           </a>
         </div>
       </div>
-
-      {active && <PostReader post={active} onClose={closePost} />}
     </section>
   );
 }

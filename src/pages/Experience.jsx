@@ -18,7 +18,7 @@ function CountValue({ value }) {
     </>
   );
 }
-import { scrollToSection } from "../lib/smoothScroll";
+import { navigateTo } from "../lib/router";
 import { playClickSound } from "../lib/sound";
 
 /* Board sirf pehli 4 entries dikhata hai (3 roles + AWS GenAI credential) —
@@ -160,7 +160,7 @@ function Experience() {
               type="button"
               onClick={() => {
                 playClickSound();
-                scrollToSection("certifications");
+                navigateTo("/certifications");
               }}
               className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:text-violet-600 dark:text-slate-300 dark:hover:text-violet-300"
             >

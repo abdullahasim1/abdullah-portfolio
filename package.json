@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "predev": "node scripts/build-content.mjs",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender-shells.mjs",
     "prebuild": "node scripts/build-content.mjs",
     "lint": "eslint .",
     "test": "vitest run",

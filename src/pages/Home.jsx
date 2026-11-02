@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "../components/MagneticButton";
-import { scrollToSection } from "../lib/smoothScroll";
+import { navigateTo } from "../lib/router";
 import { techStack } from "../data/techLogos";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -127,7 +127,7 @@ function Home({ introDone = true }) {
 
   const scrollTo = (e, id) => {
     e.preventDefault();
-    scrollToSection(id);
+    navigateTo(id === "home" ? "/" : `/${id}`);
   };
 
   return (
@@ -164,7 +164,7 @@ function Home({ introDone = true }) {
             </p>
 
             <div data-hero-stagger className="flex flex-wrap items-center gap-4 pt-1">
-              <MagneticButton href="#projects">View Projects</MagneticButton>
+              <MagneticButton href="/projects">View Projects</MagneticButton>
               <a
                 href="/resume.pdf"
                 download="Abdullah-Bin-Asim-Resume.pdf"

@@ -2,15 +2,16 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { siGsap, siMysql, siNodedotjs, siReact } from "simple-icons";
 import { useScrollReveal } from "../hooks";
 import { useGithubRepos } from "../hooks/useGithubRepos";
-import ProjectModal from "../components/ProjectModal";
 import TiltCard from "../components/TiltCard";
 import { track } from "../lib/analytics";
+import { Link, navigateTo } from "../lib/router";
 import {
   featuredProjects,
   languageColors,
   formatRelativeDate,
   formatRepoName,
   githubOgImage,
+  projectSlug,
   GITHUB_USERNAME,
 } from "../data/projects";
 
@@ -490,19 +491,12 @@ function RepoCard({ repo }) {
 
 const skeletonCards = [...Array(6)];
 
-/* ---------------- Page ---------------- */
+/* ---------------- Featured work section (Home preview + Projects page) ---------------- */
 
-function Projects() {
+export function FeaturedWork({ preview = false }) {
   useScrollReveal("#projects .reveal");
-  const { repos, profile, loading, error, rateLimited, retry } = useGithubRepos();
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [activeProject, setActiveProject] = useState(null);
+  const { repos } = useGithubRepos();
   const [featuredFilter, setFeaturedFilter] = useState("all");
-
-  const featuredRepoNames = useMemo(
-    () => new Set(featuredProjects.map((p) => p.repoName)),
-    []
-  );
 
   const enrichedFeatured = useMemo(() => {
     return featuredProjects.map((project) => {
@@ -523,20 +517,6 @@ function Projects() {
     );
   }, [enrichedFeatured, featuredFilter]);
 
-  const otherRepos = useMemo(() => {
-    return repos.filter((repo) => !featuredRepoNames.has(repo.name));
-  }, [repos, featuredRepoNames]);
-
-  const languages = useMemo(() => {
-    const langs = new Set(repos.map((r) => r.language).filter(Boolean));
-    return ["All", ...Array.from(langs).sort()];
-  }, [repos]);
-
-  const filteredRepos = useMemo(() => {
-    if (activeFilter === "All") return otherRepos;
-    return otherRepos.filter((repo) => repo.language === activeFilter);
-  }, [otherRepos, activeFilter]);
-
   /* Featured filters — sliding gradient indicator (skills pattern) */
   const fBtnRefs = useRef({});
   const [fInd, setFInd] = useState({ x: 0, y: 0, w: 0, ready: false });
@@ -550,13 +530,14 @@ function Projects() {
     return () => window.removeEventListener("resize", measure);
   }, [featuredFilter]);
 
+  /* Case Study ab modal nahi — apni page /projects/<slug> khulti hai */
   const openCase = (project) => () => {
-    track("project-open", { id: project.id });
-    setActiveProject(project);
+    track("project-open", { id: project.repoName });
+    navigateTo(`/projects/${projectSlug(project)}`);
   };
 
   return (
-    <section id="projects" className="relative overflow-hidden py-28 scroll-mt-24">
+    <section id="projects" className={`relative overflow-hidden scroll-mt-24 ${preview ? "py-28" : "pt-28 pb-0"}`}>
       {/* Soft background blobs — screenshots se compete nahi karte */}
       <div aria-hidden className="animate-[floatY_11s_ease-in-out_infinite] absolute -left-32 top-24 h-80 w-80 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/[0.07]" />
       <div aria-hidden className="animate-[floatY_13s_ease-in-out_infinite] absolute -right-32 top-[560px] h-96 w-96 rounded-full bg-fuchsia-300/10 blur-3xl dark:bg-fuchsia-600/[0.05]" />
@@ -576,17 +557,29 @@ function Projects() {
               products solving real problems.
             </p>
           </div>
-          <a
-            href="https://github.com/abdullahasim1?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-violet-300 bg-white/60 px-5 py-2.5 text-sm font-semibold text-violet-600 shadow-sm transition-all duration-200 hover:bg-violet-600 hover:text-white dark:border-violet-400/30 dark:bg-white/5 dark:text-violet-300 dark:hover:bg-violet-600 dark:hover:text-white"
-          >
-            View All Projects
-            <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+          {preview ? (
+            <Link
+              href="/projects"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-violet-300 bg-white/60 px-5 py-2.5 text-sm font-semibold text-violet-600 shadow-sm transition-all duration-200 hover:bg-violet-600 hover:text-white dark:border-violet-400/30 dark:bg-white/5 dark:text-violet-300 dark:hover:bg-violet-600 dark:hover:text-white"
+            >
+              View All Projects
+              <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          ) : (
+            <a
+              href="https://github.com/abdullahasim1?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-violet-300 bg-white/60 px-5 py-2.5 text-sm font-semibold text-violet-600 shadow-sm transition-all duration-200 hover:bg-violet-600 hover:text-white dark:border-violet-400/30 dark:bg-white/5 dark:text-violet-300 dark:hover:bg-violet-600 dark:hover:text-white"
+            >
+              View All Projects
+              <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          )}
         </div>
 
         {/* ---------- Featured filters — sliding indicator ---------- */}
@@ -622,7 +615,7 @@ function Projects() {
 
         {/* ---------- Featured work — board layout (All) / uniform grid (filtered) ---------- */}
         {featuredFilter === "all" ? (
-          <div className="mb-24">
+          <div className={preview ? "" : "mb-24"}>
             <FeaturedHeroCard
               project={enrichedFeatured[0]}
               onOpenCaseStudy={openCase(enrichedFeatured[0])}
@@ -653,7 +646,7 @@ function Projects() {
             </div>
           </div>
         ) : (
-          <div key={featuredFilter} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-24">
+          <div key={featuredFilter} className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 ${preview ? "" : "mb-24"}`}>
             {visibleFeatured.map((project, i) => (
               <div
                 key={project.repoName}
@@ -668,6 +661,42 @@ function Projects() {
           </div>
         )}
 
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Projects page — featured work + GitHub repositories ---------------- */
+
+export function ProjectsPage() {
+  useScrollReveal("#projects-repos .reveal");
+  const { repos, profile, loading, error, rateLimited, retry } = useGithubRepos();
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const featuredRepoNames = useMemo(
+    () => new Set(featuredProjects.map((p) => p.repoName)),
+    []
+  );
+
+  const otherRepos = useMemo(() => {
+    return repos.filter((repo) => !featuredRepoNames.has(repo.name));
+  }, [repos, featuredRepoNames]);
+
+  const languages = useMemo(() => {
+    const langs = new Set(repos.map((r) => r.language).filter(Boolean));
+    return ["All", ...Array.from(langs).sort()];
+  }, [repos]);
+
+  const filteredRepos = useMemo(() => {
+    if (activeFilter === "All") return otherRepos;
+    return otherRepos.filter((repo) => repo.language === activeFilter);
+  }, [otherRepos, activeFilter]);
+
+  return (
+    <>
+      <FeaturedWork />
+      <section id="projects-repos" className="relative overflow-hidden pb-28">
+        <div className="relative max-w-[1400px] mx-auto px-6">
         {/* ---------- GitHub repositories — board header ---------- */}
         <div className="reveal flex flex-wrap items-start justify-between gap-6 mb-9">
           <div className="flex flex-col items-start gap-4">
@@ -876,13 +905,10 @@ function Projects() {
             </a>
           </div>
         )}
-        {/* ---------- Case study modal ---------- */}
-        {activeProject && (
-          <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
-        )}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }
 
-export default Projects;
+export default ProjectsPage;

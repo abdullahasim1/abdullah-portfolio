@@ -2,19 +2,16 @@ import React from "react";
 import { siClaude, siMake, siN8n, siZapier } from "simple-icons";
 import TiltCard from "../components/TiltCard";
 import ProjectEstimator from "../components/ProjectEstimator";
-import { scrollToSection } from "../lib/smoothScroll";
 import { playClickSound } from "../lib/sound";
+import { Link, navigateTo } from "../lib/router";
+import { services as serviceData } from "../data/services";
 
-const heroServices = [
-  { title: "Full-Stack Web Development", desc: "Modern, responsive and high-performance web apps — React, Next.js and Node.js.", icon: "laptop" },
-  { title: "Generative AI Integration", desc: "Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).", icon: "ai" },
-  { title: "AWS Cloud & Serverless", desc: "Deploy, scale and automate apps on AWS — Lambda, S3 and API Gateway.", icon: "aws" },
-  { title: "AI-Powered Product Development", desc: "End-to-end SaaS development from idea to launch.", icon: "rocket" },
-];
+/* Cards ka data data/services.js se — detail pages ke sath shared */
+const heroServices = serviceData.filter((s) => s.icon !== "automation");
 
 /* Board ki 3D illustrations ki jagah CSS/SVG art — white glass tile +
    lavender blob, halki floating animation ke sath. */
-function ServiceArt({ name, delay = "0s" }) {
+export function ServiceArt({ name, delay = "0s" }) {
   return (
     <div aria-hidden className="relative flex h-[92px] items-center justify-start">
       <div className="absolute left-0 h-20 w-36 rounded-[45%_55%_60%_40%/55%_45%_60%_50%] bg-gradient-to-br from-violet-200/80 via-purple-100 to-indigo-100 dark:from-violet-500/20 dark:via-purple-500/10 dark:to-indigo-500/10" />
@@ -49,6 +46,14 @@ function ServiceArt({ name, delay = "0s" }) {
               <path d="M23.5 1.2l2.8 1.6-3.4 1.4" fill="currentColor" stroke="none" />
             </svg>
           </span>
+        )}
+        {name === "automation" && (
+          <svg className="h-8 w-8 text-violet-600 dark:text-violet-300" fill="none" stroke="currentColor" strokeWidth={1.7} viewBox="0 0 24 24">
+            <circle cx="5.5" cy="12" r="2.4" />
+            <circle cx="18.5" cy="5.5" r="2.4" />
+            <circle cx="18.5" cy="18.5" r="2.4" />
+            <path strokeLinecap="round" d="M7.7 10.8 16.3 6.7M7.7 13.2l8.6 4.1" />
+          </svg>
         )}
         {name === "rocket" && (
           <svg className="h-8 w-8 text-violet-600 dark:text-violet-300" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24">
@@ -137,17 +142,23 @@ function Services() {
           {heroServices.map((s, i) => (
             <TiltCard key={s.title} className="h-full">
               <article className="group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
-                <span className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-violet-200 text-violet-500 transition-all duration-300 group-hover:bg-violet-600 group-hover:text-white dark:border-white/15 dark:text-violet-300">
+                <Link
+                  href={`/services/${s.slug}`}
+                  aria-label={`${s.title} — details`}
+                  className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-violet-200 text-violet-500 transition-all duration-300 group-hover:bg-violet-600 group-hover:text-white dark:border-white/15 dark:text-violet-300"
+                >
                   <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
                   </svg>
-                </span>
+                </Link>
                 <ServiceArt name={s.icon} delay={`${i * 0.7}s`} />
                 <h3 className="mt-4 font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white">
-                  {s.title}
+                  <Link href={`/services/${s.slug}`} className="transition-colors hover:text-violet-600 dark:hover:text-violet-300">
+                    {s.title}
+                  </Link>
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {s.desc}
+                  {s.short}
                 </p>
               </article>
             </TiltCard>
@@ -176,6 +187,15 @@ function Services() {
                 scenarios, n8n workflows, and Claude-powered AI agents — I
                 connect your tools so work happens on autopilot.
               </p>
+              <Link
+                href="/services/ai-automation-workflows"
+                className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-500 dark:text-violet-300"
+              >
+                Explore automation services
+                <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             </div>
             <div className="grid shrink-0 grid-cols-2 gap-3 min-[480px]:grid-cols-3">
               {automationTools.map((tool, i) => (
@@ -220,7 +240,7 @@ function Services() {
               type="button"
               onClick={() => {
                 playClickSound();
-                scrollToSection("contact");
+                navigateTo("/contact");
               }}
               className="animate-glowPulse group inline-flex shrink-0 items-center gap-2.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-opacity hover:opacity-90"
             >
