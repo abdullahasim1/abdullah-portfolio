@@ -1,558 +1,274 @@
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { IS_LOW_END } from "../lib/device";
-import { siReact } from "simple-icons";
+import { useEffect, useMemo, useRef, useState } from "react";
+import "./SplashScreen.css";
 
-/* Premium signature splash — Clean Light identity.
-   - CSS 3D emblem: glass "A" tile + orbital rings + dotted globe (koi WebGL
-     nahi — splash instant aur lightweight rehna chahiye, fallback built-in hai)
-   - Progress FAKE nahi hai: real readiness stages (DOM ready → window load →
-     fonts ready) drive karte hain; site ready ho to foran exit, hard cap 4.5s. */
+const PARTICLES = Array.from({ length: 26 }, (_, index) => ({
+  left: `${(index * 37 + 11) % 100}%`,
+  top: `${(index * 53 + 7) % 100}%`,
+  delay: `${(index % 9) * -0.7}s`,
+  duration: `${5 + (index % 6)}s`,
+  size: `${3 + (index % 3)}px`,
+}));
 
-const NAME = "ABDULLAH ASIM";
-const TITLE = "AI CLOUD ENGINEER & FULL-STACK DEVELOPER";
+function ReactMark() {
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden="true" className="aa-react-mark">
+      <g fill="none" stroke="currentColor" strokeWidth="3.1">
+        <ellipse cx="32" cy="32" rx="27" ry="10.8" />
+        <ellipse cx="32" cy="32" rx="27" ry="10.8" transform="rotate(60 32 32)" />
+        <ellipse cx="32" cy="32" rx="27" ry="10.8" transform="rotate(120 32 32)" />
+      </g>
+      <circle cx="32" cy="32" r="4.2" fill="currentColor" />
+    </svg>
+  );
+}
 
-const CARDS = [
-  {
-    label: "Generative AI",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"
-      />
-    ),
-  },
-  {
-    label: "AWS Cloud",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"
-      />
-    ),
-  },
-  {
-    label: "Full-Stack",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6.429 5.556L2.999 8.25l3.43 2.694M18.582 13.306l3.43 2.694-3.43 2.694M12 18.75l3.43-2.694M12 5.25L8.57 7.944M12 12L8.57 9.306"
-      />
-    ),
-  },
-  {
-    label: "Product Development",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-6.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
-      />
-    ),
-  },
-];
+function CodeMark() {
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden="true" className="aa-code-mark">
+      <path d="M23 17 7 32l16 15M41 17l16 15-16 15M36 11 27 53" />
+    </svg>
+  );
+}
 
-const PARTICLES = [
-  { left: "12%", top: "22%", size: 5, dur: "5s", delay: "0s" },
-  { left: "20%", top: "64%", size: 4, dur: "6s", delay: "0.6s" },
-  { left: "82%", top: "26%", size: 6, dur: "5.5s", delay: "0.3s" },
-  { left: "76%", top: "68%", size: 4, dur: "7s", delay: "1s" },
-  { left: "34%", top: "14%", size: 4, dur: "6.5s", delay: "0.9s" },
-  { left: "64%", top: "12%", size: 5, dur: "5.2s", delay: "0.2s" },
-  { left: "8%", top: "44%", size: 4, dur: "7.5s", delay: "1.4s" },
-  { left: "90%", top: "48%", size: 5, dur: "6.2s", delay: "0.5s" },
-];
+function CloudMark() {
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden="true" className="aa-cloud-mark">
+      <path d="M17 47h31a11 11 0 0 0 1-22 17 17 0 0 0-32-3A13 13 0 0 0 17 47Z" />
+    </svg>
+  );
+}
 
-function SplashScreen({ onFinish }) {
-  const rootRef = useRef(null);
-  const stageRef = useRef(null);
-  const percentRef = useRef(null);
-  const barRef = useRef(null);
-  const finishedRef = useRef(false);
+function StackMark() {
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden="true" className="aa-stack-mark">
+      <path d="m32 8 25 13-25 13L7 21 32 8Z" />
+      <path d="m7 32 25 13 25-13M7 43l25 13 25-13" />
+    </svg>
+  );
+}
 
-  const [showSkip, setShowSkip] = useState(false);
+function RocketMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="aa-rocket-mark">
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a18.18 18.18 0 0 0-3.32-3.09z" />
+      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+    </svg>
+  );
+}
 
-  const finish = () => {
-    if (finishedRef.current) return;
-    finishedRef.current = true;
+function AwsMark() {
+  return (
+    <div className="aa-aws-mark" aria-label="AWS">
+      <span>aws</span>
+      <i />
+    </div>
+  );
+}
 
-    // Exit (spec): emblem halka sa scale-down, poori screen smooth fade
-    const tl = gsap.timeline({
-      onComplete: () => onFinish(),
-    });
-    tl.to(
-      stageRef.current,
-      { scale: 0.94, y: -12, opacity: 0, duration: 0.5, ease: "power2.inOut" },
-      0,
-    ).to(
-      rootRef.current,
-      { opacity: 0, duration: 0.55, ease: "power1.inOut" },
-      0,
-    );
-  };
+function NextMark() {
+  return <div className="aa-next-mark" aria-label="Next.js">N</div>;
+}
+
+/**
+ * Premium Clean Light splash screen (aa-splash design, Abdullah ke diye hue code par).
+ *
+ * Props:
+ * - onComplete()/onFinish(): called after the exit transition.
+ * - progress?: number (0-100). Pass real app-loading progress for a real loading bar.
+ * - duration?: number. Intro duration in ms when progress is not controlled (default 2400).
+ * - autoComplete?: boolean. When false, the splash waits for progress=100 or Skip.
+ * - showSkip?: boolean. Shows a small Skip Intro button.
+ */
+export default function SplashScreen({
+  onComplete,
+  onFinish,
+  progress: externalProgress,
+  duration = 2400,
+  autoComplete = true,
+  showSkip = true,
+  name = "Abdullah Asim",
+  role = "AI CLOUD ENGINEER & FULL-STACK DEVELOPER",
+}) {
+  const [internalProgress, setInternalProgress] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const completedRef = useRef(false);
+  const callbackRef = useRef(onComplete || onFinish);
+  const isControlled = typeof externalProgress === "number";
+  const progress = Math.max(0, Math.min(100, isControlled ? externalProgress : internalProgress));
 
   useEffect(() => {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduced || IS_LOW_END) {
-      onFinish();
-      return;
-    }
+    callbackRef.current = onComplete || onFinish;
+  }, [onComplete, onFinish]);
 
-    const startedAt = performance.now();
-    const counter = { v: 0 };
-    let loadDone = document.readyState === "complete";
-    let fontsDone = false;
+  useEffect(() => {
+    if (isControlled || !autoComplete) return undefined;
 
-    const renderProgress = () => {
-      if (percentRef.current) {
-        percentRef.current.textContent = `${String(Math.round(counter.v)).padStart(3, "0")}%`;
-      }
-      if (barRef.current) {
-        barRef.current.style.transform = `scaleX(${counter.v / 100})`;
-      }
+    let frameId;
+    let startTime;
+    const tick = (time) => {
+      if (startTime === undefined) startTime = time;
+      const elapsed = time - startTime;
+      // Ease-out visual intro progress; this is an intro animation, not a network metric.
+      const t = Math.min(elapsed / Math.max(600, duration), 1);
+      const eased = 1 - Math.pow(1 - t, 2.4);
+      setInternalProgress(Math.round(eased * 100));
+      if (t < 1) frameId = window.requestAnimationFrame(tick);
     };
-    const goTo = (target, duration = 0.6) => {
-      gsap.to(counter, {
-        v: target,
-        duration,
-        ease: "power2.out",
-        overwrite: "auto",
-        onUpdate: renderProgress,
-      });
-    };
-    const maybeFinish = () => {
-      if (!loadDone || !fontsDone) return;
-      const elapsed = performance.now() - startedAt;
-      const wait = Math.max(0, 1650 - elapsed); // entrance sequence ka min waqt
-      gsap.delayedCall(wait / 1000, () => {
-        goTo(100, 0.35);
-        gsap.delayedCall(0.45, finish);
-      });
-    };
-    const onLoad = () => {
-      loadDone = true;
-      goTo(78);
-      maybeFinish();
-    };
+    frameId = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [autoComplete, duration, isControlled]);
 
-    goTo(30, 0.8); // DOM parsed (React mount ho chuka hai)
-    if (loadDone) goTo(78, 0.8);
-    else window.addEventListener("load", onLoad);
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(() => {
-        fontsDone = true;
-        goTo(90);
-        maybeFinish();
-      });
-    } else {
-      fontsDone = true;
-    }
-    const hardCap = setTimeout(finish, 4500);
+  useEffect(() => {
+    if (progress < 100 || completedRef.current) return undefined;
+    setLeaving(true);
+    const timeout = window.setTimeout(() => {
+      if (completedRef.current) return;
+      completedRef.current = true;
+      callbackRef.current?.();
+    }, 560);
+    return () => window.clearTimeout(timeout);
+  }, [progress]);
 
-    const ctx = gsap.context(() => {
-      gsap.from("[data-splash-emblem]", {
-        scale: 0.7,
-        opacity: 0,
-        rotateY: -24,
-        duration: 0.9,
-        ease: "back.out(1.4)",
-        delay: 0.15,
-      });
-      gsap.from("[data-splash-ring]", {
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        delay: 0.55,
-      });
-      gsap.from("[data-splash-chip]", {
-        scale: 0.5,
-        opacity: 0,
-        duration: 0.55,
-        stagger: 0.09,
-        ease: "back.out(2)",
-        delay: 0.85,
-      });
-      gsap.from("[data-splash-letter]", {
-        y: 40,
-        opacity: 0,
-        rotateX: -70,
-        duration: 0.75,
-        stagger: 0.04,
-        ease: "back.out(1.8)",
-        delay: 0.9,
-      });
-      gsap.from("[data-splash-fade]", {
-        opacity: 0,
-        y: 14,
-        duration: 0.7,
-        stagger: 0.12,
-        delay: 1.2,
-      });
-      gsap.from("[data-splash-card]", {
-        opacity: 0,
-        y: 18,
-        duration: 0.55,
-        stagger: 0.08,
-        ease: "power3.out",
-        delay: 1.25,
-      });
-    }, rootRef);
+  const handleSkip = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setLeaving(true);
+    window.setTimeout(() => callbackRef.current?.(), 360);
+  };
 
-    const skipTimer = setTimeout(() => setShowSkip(true), 1100);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(skipTimer);
-      clearTimeout(hardCap);
-      window.removeEventListener("load", onLoad);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const particleNodes = useMemo(
+    () => PARTICLES.map((particle, index) => (
+      <span
+        className={`aa-particle aa-particle-${index % 4}`}
+        key={index}
+        style={{
+          "--particle-left": particle.left,
+          "--particle-top": particle.top,
+          "--particle-delay": particle.delay,
+          "--particle-duration": particle.duration,
+          "--particle-size": particle.size,
+        }}
+      />
+    )),
+    []
+  );
 
   return (
-    <div
-      ref={rootRef}
-      className="fixed inset-0 z-[9999] bg-[#F8FAFF] overflow-hidden flex flex-col items-center justify-center px-6"
-      aria-label="Loading portfolio"
-    >
-      {/* Ambient glows */}
-      <div
-        aria-hidden
-        className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-violet-500/[0.12] blur-[120px]"
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-indigo-500/[0.12] blur-[120px]"
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-48 -left-40 h-[430px] w-[430px] rounded-full bg-violet-500/[0.16] blur-[90px]"
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-56 -right-40 h-[460px] w-[460px] rounded-full bg-gradient-to-br from-fuchsia-500/25 to-indigo-600/25 blur-[80px]"
-      />
-      <div
-        aria-hidden
-        className="absolute -top-24 right-[10%] h-72 w-72 rounded-full border border-violet-300/25"
-      />
-      <div
-        aria-hidden
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 h-72 w-72 rounded-full bg-fuchsia-400/[0.07] blur-[100px]"
-      />
-
-      {/* Floating particles */}
-      {PARTICLES.map((p, i) => (
-        <span
-          key={i}
-          aria-hidden
-          className="absolute rounded-full bg-violet-400/40 float-y"
-          style={{
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            animationDuration: p.dur,
-            animationDelay: p.delay,
-          }}
-        />
-      ))}
-
-      {/* Layered liquid waves */}
-      <div aria-hidden className="absolute bottom-0 inset-x-0 pointer-events-none">
-        <svg
-          className="block w-[200%] h-40 sm:h-52 splash-wave-back"
-          viewBox="0 0 2880 220"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,120 C240,60 480,180 720,130 C960,80 1200,170 1440,120 C1680,70 1920,180 2160,130 C2400,80 2640,170 2880,120 L2880,220 L0,220 Z"
-            fill="#E9E4FF"
-            opacity="0.75"
-          />
-        </svg>
-        <svg
-          className="block w-[200%] h-32 sm:h-44 -mt-24 sm:-mt-32 splash-wave-front"
-          viewBox="0 0 2880 220"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,150 C260,100 520,200 780,150 C1040,100 1300,190 1560,150 C1820,110 2080,200 2340,150 C2600,105 2760,170 2880,150 L2880,220 L0,220 Z"
-            fill="#FEFEFF"
-            opacity="0.6"
-          />
-        </svg>
+    <div className={`aa-splash${leaving ? " aa-splash--leaving" : ""}`} role="status" aria-live="polite">
+      <div className="aa-splash-bg" />
+      <div className="aa-bg-arc aa-bg-arc-one" />
+      <div className="aa-bg-arc aa-bg-arc-two" />
+      <div className="aa-globe" aria-hidden="true">
+        <div className="aa-globe-dots" />
+        <div className="aa-globe-shine" />
       </div>
+      <div className="aa-particle-field" aria-hidden="true">{particleNodes}</div>
 
-      {/* Dotted mountains — reference image jaisi sajawat */}
-      <svg aria-hidden className="absolute left-[3%] top-[55%] w-40 sm:w-52 opacity-60 hidden sm:block" viewBox="0 0 200 80">
+      <svg className="aa-landscape aa-landscape-left" viewBox="0 0 720 250" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <pattern id="mdots-l" width="7" height="7" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.3" fill="#A78BFA" />
+          <linearGradient id="aaWaveLeft" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0" stopColor="#c9c4ff" stopOpacity=".12" />
+            <stop offset="1" stopColor="#9065ff" stopOpacity=".68" />
+          </linearGradient>
+          <pattern id="aaDotsLeft" width="9" height="9" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".65" />
           </pattern>
         </defs>
-        <path d="M0,80 L30,38 L52,58 L84,18 L112,50 L138,28 L168,56 L200,34 L200,80 Z" fill="url(#mdots-l)" stroke="#C4B5FD" strokeWidth="1" />
+        <path d="M0 95 Q80 16 158 76 T315 66 T500 100 T720 42 V250 H0Z" fill="url(#aaWaveLeft)" />
+        <path d="M0 95 Q80 16 158 76 T315 66 T500 100 T720 42" fill="none" stroke="#fff" strokeWidth="2" opacity=".8" />
+        <path d="M0 116 Q90 32 170 91 T330 80 T510 114 T720 58 V250 H0Z" fill="url(#aaDotsLeft)" opacity=".55" />
       </svg>
-      <svg aria-hidden className="absolute right-[3%] top-[51%] w-44 sm:w-60 opacity-60 hidden sm:block" viewBox="0 0 200 80">
+      <svg className="aa-landscape aa-landscape-right" viewBox="0 0 760 250" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <pattern id="mdots-r" width="7" height="7" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.3" fill="#A78BFA" />
+          <linearGradient id="aaWaveRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#d9d6ff" stopOpacity=".2" />
+            <stop offset="1" stopColor="#9270ff" stopOpacity=".56" />
+          </linearGradient>
+          <pattern id="aaDotsRight" width="9" height="9" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".7" />
           </pattern>
         </defs>
-        <path d="M0,80 L26,44 L48,62 L78,24 L106,54 L134,30 L162,58 L200,40 L200,80 Z" fill="url(#mdots-r)" stroke="#C4B5FD" strokeWidth="1" />
+        <path d="M0 125 Q120 40 220 95 T410 65 T590 100 T760 32 V250 H0Z" fill="url(#aaWaveRight)" />
+        <path d="M0 125 Q120 40 220 95 T410 65 T590 100 T760 32" fill="none" stroke="#fff" strokeWidth="2" opacity=".8" />
+        <path d="M0 145 Q130 58 235 115 T425 85 T610 120 T760 52 V250 H0Z" fill="url(#aaDotsRight)" opacity=".6" />
       </svg>
 
-      {/* Stage */}
-      <div
-        ref={stageRef}
-        className="relative flex flex-col items-center will-change-transform"
-      >
-        {/* ---------- 3D emblem ---------- */}
-        <div
-          className="relative flex items-center justify-center"
-          style={{ perspective: "900px" }}
-        >
-          {/* Dotted digital globe */}
-          <div
-            aria-hidden
-            className="absolute h-80 w-80 sm:h-[430px] sm:w-[430px] -translate-y-8 rounded-full splash-globe"
-            style={{
-              backgroundImage:
-                "radial-gradient(rgba(124,58,237,0.22) 1.2px, transparent 1.4px)",
-              backgroundSize: "15px 15px",
-              maskImage:
-                "radial-gradient(circle, black 30%, transparent 68%)",
-              WebkitMaskImage:
-                "radial-gradient(circle, black 30%, transparent 68%)",
-            }}
-          />
+      <main className="aa-splash-content">
+        <section className="aa-visual" aria-label="Abdullah Asim brand emblem">
+          <div className="aa-orbit aa-orbit-back" />
+          <div className="aa-orbit aa-orbit-front" />
+          <div className="aa-orbit aa-orbit-thin" />
 
-          {/* Orbital rings (CSS 3D) */}
-          <div
-            aria-hidden
-            data-splash-ring
-            className="absolute h-72 w-72 sm:h-[340px] sm:w-[340px] rounded-full border border-violet-400/35 splash-orbit"
-          />
-          <div
-            aria-hidden
-            data-splash-ring
-            className="absolute h-72 w-72 sm:h-[340px] sm:w-[340px] splash-orbit-tilt"
-          >
-            <span className="absolute left-1/2 -top-[5px] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-violet-500 shadow-[0_0_14px_rgba(139,92,246,0.9)]" />
+          <div className="aa-tech-tile aa-tech-aws"><AwsMark /></div>
+          <div className="aa-tech-tile aa-tech-react"><ReactMark /></div>
+          <div className="aa-tech-tile aa-tech-code"><CodeMark /></div>
+          <div className="aa-tech-tile aa-tech-next"><NextMark /></div>
+
+          <div className="aa-logo-platform">
+            <div className="aa-platform-top" />
+            <div className="aa-platform-edge" />
+            <div className="aa-platform-glow" />
           </div>
-          <div
-            aria-hidden
-            data-splash-ring
-            className="absolute h-56 w-56 sm:h-[270px] sm:w-[270px] rounded-full border border-indigo-400/25 splash-orbit-rev"
-          />
-
-          {/* Illuminated platform */}
-          <div
-            aria-hidden
-            className="absolute -bottom-7 h-12 w-52 sm:w-64 rounded-[100%] bg-gradient-to-r from-violet-500/25 via-fuchsia-400/25 to-indigo-500/25 blur-md splash-platform"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-5 h-8 w-44 sm:w-56 rounded-[100%] border border-violet-300/50 bg-white/30"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-8 h-10 w-60 sm:w-80 rounded-[100%] border border-violet-200/60"
-          />
-
-          {/* Glass A tile */}
-          <div
-            data-splash-emblem
-            className="relative h-40 w-40 sm:h-52 sm:w-52 rounded-[30%] bg-white/45 backdrop-blur-xl border border-white/70 shadow-[0_30px_60px_-18px_rgba(124,58,237,0.45),inset_0_1px_0_rgba(255,255,255,0.9)] flex items-center justify-center float-y"
-            style={{ animationDuration: "6s" }}
-          >
-            <span
-              aria-hidden
-              className="absolute inset-x-6 top-2 h-8 rounded-full bg-white/50 blur-lg"
-            />
-            <span
-              className="splash-jakarta font-extrabold leading-none text-[104px] sm:text-[128px] select-none"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #7C3AED 10%, #6366F1 60%, #A855F7 100%)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              A
-            </span>
-            <svg
-              className="absolute top-4 right-4 w-5 h-5 text-[#A855F7]"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden
-            >
-              <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9L12 2z" />
-            </svg>
+          <div className="aa-logo-glass">
+            <div className="aa-logo-reflection" />
+            <div className="aa-monogram">A</div>
+            <span className="aa-logo-spark">✦</span>
           </div>
+          <span className="aa-orbit-dot aa-orbit-dot-one" />
+          <span className="aa-orbit-dot aa-orbit-dot-two" />
+        </section>
 
-          {/* Floating glass chips */}
-          <span
-            data-splash-chip
-            className="absolute -left-16 sm:-left-28 -top-2 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "5s", rotate: "-8deg" }}
-          >
-            <span className="text-[13px] font-black lowercase tracking-tight text-[#FF9900]">
-              aws
-            </span>
-          </span>
-          <span
-            data-splash-chip
-            className="absolute -left-24 bottom-6 hidden md:inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "6.5s", animationDelay: "0.5s", rotate: "6deg" }}
-          >
-            <svg
-              className="w-5 h-5 text-violet-600"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.25 6.75L3.75 12l4.5 5.25m7.5-10.5l4.5 5.25-4.5 5.25"
-              />
-            </svg>
-          </span>
-          <span
-            data-splash-chip
-            className="absolute -right-16 sm:-right-28 top-0 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "5.6s", animationDelay: "0.3s", rotate: "7deg" }}
-          >
-            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-              <path d={siReact.path} fill="#61DAFB" />
-            </svg>
-          </span>
-          <span
-            data-splash-chip
-            className="absolute -right-24 bottom-8 hidden md:inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "7s", animationDelay: "0.8s", rotate: "-6deg" }}
-          >
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 font-display text-[12px] font-bold text-white">
-              N
-            </span>
-          </span>
-        </div>
+        <section className="aa-intro" aria-label="Portfolio introduction">
+          <h1 className="aa-name"><span>{name.split(" ")[0]}</span> <em>{name.split(" ").slice(1).join(" ")}</em></h1>
+          <div className="aa-role"><span />{role}<span /></div>
+        </section>
 
-        {/* ---------- Name + title ---------- */}
-        <h1 className="mt-14 splash-jakarta font-extrabold text-slate-900 text-4xl sm:text-6xl tracking-tight flex flex-wrap justify-center">
-          {NAME.split("").map((ch, i) => (
-            <span
-              key={`${ch}-${i}`}
-              data-splash-letter
-              className={`inline-block ${ch === " " ? "w-4 sm:w-6" : ""} ${
-                i >= 9 ? "splash-gradient-text" : ""
-              }`}
-              style={{ transformOrigin: "50% 100%" }}
-            >
-              {ch === " " ? "\u00A0" : ch}
-            </span>
-          ))}
-        </h1>
-        <div data-splash-fade className="mt-4 flex items-center gap-4">
-          <span aria-hidden className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-violet-400/70" />
-          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-slate-600 text-center">
-            {TITLE}
-          </p>
-          <span aria-hidden className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-violet-400/70" />
-        </div>
+        <section className="aa-capabilities" aria-label="Professional capabilities">
+          <div className="aa-capability aa-capability-one">
+            <span className="aa-cap-icon">✺</span>
+            <span>Generative AI</span>
+          </div>
+          <div className="aa-capability aa-capability-two">
+            <CloudMark />
+            <span>AWS Cloud</span>
+          </div>
+          <div className="aa-capability aa-capability-three">
+            <StackMark />
+            <span>Full-Stack</span>
+          </div>
+          <div className="aa-capability aa-capability-four">
+            <RocketMark />
+            <span>Product Development</span>
+          </div>
+        </section>
 
-        {/* ---------- Capability cards ---------- */}
-        <div className="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {CARDS.map((card, i) => (
-            <div key={card.label} data-splash-card>
-              <div
-                className="flex flex-col items-center gap-2 rounded-2xl bg-white/70 backdrop-blur border border-white/70 shadow-[0_16px_36px_-16px_rgba(124,58,237,0.35)] px-5 py-4 min-w-[132px] float-y"
-                style={{
-                  animationDuration: `${4.6 + i * 0.7}s`,
-                  animationDelay: `${i * 0.4}s`,
-                }}
-              >
-                <svg
-                  className="w-7 h-7 text-violet-600"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.6}
-                  viewBox="0 0 24 24"
-                  aria-hidden
-                >
-                  {card.icon}
-                </svg>
-                <span className="text-xs font-semibold text-slate-700 whitespace-nowrap">
-                  {card.label}
-                </span>
-              </div>
+        <section className="aa-progress-section" aria-label="Loading progress">
+          <div className="aa-progress-labels">
+            <span>{progress >= 100 ? "Welcome to my portfolio" : "Loading Portfolio Experience..."}</span>
+            <strong>{progress}%</strong>
+          </div>
+          <div className="aa-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={progress}>
+            <div className="aa-progress-fill" style={{ width: `${progress}%` }}>
+              <span className="aa-progress-light" />
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ---------- Progress rail ---------- */}
-      <div className="absolute bottom-10 inset-x-0 px-8 sm:px-14 max-w-3xl mx-auto w-full">
-        <div className="flex items-end justify-between mb-3">
-          <span className="text-[11px] font-medium tracking-wide text-slate-500">
-            Loading Portfolio Experience...
-          </span>
-          <span ref={percentRef} className="font-mono text-sm text-violet-600">
-            000%
-          </span>
-        </div>
-        <div className="h-[10px] w-full bg-slate-900/[0.08] overflow-hidden rounded-full">
-          <div
-            ref={barRef}
-            className="relative h-full w-full origin-left rounded-full bg-gradient-to-r from-[#7C3AED] via-[#A855F7] to-[#6366F1] shadow-[0_0_16px_rgba(168,85,247,0.55)]"
-            style={{ transform: "scaleX(0)" }}
-          >
-            <span className="absolute right-0 top-0 h-full w-8 bg-white/50 blur-md" />
           </div>
-        </div>
-        <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-1 text-[10px] text-slate-400">
-          {["Responsive", "Animated UI", "Modern Design", "High Performance"].map(
-            (t) => (
-              <span key={t} className="inline-flex items-center gap-1.5">
-                <svg
-                  className="w-3.5 h-3.5 text-violet-500"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2.4}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                {t}
-              </span>
-            ),
-          )}
-        </div>
-      </div>
+        </section>
 
-      {/* Skip */}
-      {showSkip && (
-        <button
-          onClick={finish}
-          className="absolute bottom-4 right-6 text-[11px] text-slate-500 hover:text-violet-600 transition-colors cursor-pointer"
-        >
-          Skip intro →
+        <section className="aa-quality" aria-label="Portfolio qualities">
+          <div><span>✓</span> Responsive</div>
+          <div><span>✓</span> Animated UI</div>
+          <div><span>✓</span> Modern Design</div>
+          <div><span>✓</span> High Performance</div>
+        </section>
+      </main>
+
+      {showSkip && !leaving && (
+        <button type="button" className="aa-skip" onClick={handleSkip} aria-label="Skip intro">
+          Skip intro <span>↗</span>
         </button>
       )}
     </div>
   );
 }
-
-export default SplashScreen;
