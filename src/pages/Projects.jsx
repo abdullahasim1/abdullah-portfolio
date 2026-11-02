@@ -13,6 +13,22 @@ import {
   GITHUB_USERNAME,
 } from "../data/projects";
 
+/* Featured project categories — filter tabs ke liye (repoName keyed) */
+const FEATURED_CATEGORIES = {
+  "four-ai-ai-powered-voice-image-generation-platform": "ai",
+  GENAI: "ai",
+  "Job-Recuitment": "web",
+  "Business-Help": "ai",
+  "events-agent-frontend": "cloud",
+  "abdullah-portfolio": "web",
+};
+const FEATURED_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "ai", label: "AI / ML" },
+  { id: "web", label: "Web Apps" },
+  { id: "cloud", label: "Cloud" },
+];
+
 /* ---------------- Featured project card (large = bento hero) ---------------- */
 
 function ProjectImage({ project }) {
@@ -213,6 +229,7 @@ function Projects() {
   const { repos, profile, loading, error, rateLimited, retry } = useGithubRepos();
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeProject, setActiveProject] = useState(null);
+  const [featuredFilter, setFeaturedFilter] = useState("all");
 
   const featuredRepoNames = useMemo(
     () => new Set(featuredProjects.map((p) => p.repoName)),
@@ -230,6 +247,13 @@ function Projects() {
       };
     });
   }, [repos]);
+
+  const visibleFeatured = useMemo(() => {
+    if (featuredFilter === "all") return enrichedFeatured;
+    return enrichedFeatured.filter(
+      (p) => FEATURED_CATEGORIES[p.repoName] === featuredFilter
+    );
+  }, [enrichedFeatured, featuredFilter]);
 
   const otherRepos = useMemo(() => {
     return repos.filter((repo) => !featuredRepoNames.has(repo.name));
@@ -276,9 +300,28 @@ function Projects() {
           </a>
         </div>
 
-        {/* ---------- Featured work — mockup card grid ---------- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-24">
-          {enrichedFeatured.map((project) => (
+        {/* ---------- Featured filters ---------- */}
+        <div className="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Filter featured projects">
+          {FEATURED_FILTERS.map((f) => (
+            <button
+              key={f.id}
+              role="tab"
+              aria-selected={featuredFilter === f.id}
+              onClick={() => setFeaturedFilter(f.id)}
+              className={`px-5 py-2 rounded-full text-[13px] font-semibold transition-all cursor-pointer ${
+                featuredFilter === f.id
+                  ? "text-white bg-gradient-to-r from-cyan-500 to-violet-600 shadow-[0_10px_24px_-10px_rgba(124,58,237,0.6)]"
+                  : "glass text-slate-300 hover:border-violet-400/40 hover:text-violet-300"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {/* ---------- Featured work — card grid ---------- */}
+        <div key={featuredFilter} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-24">
+          {visibleFeatured.map((project) => (
             <FeaturedProjectCard
               key={project.repoName}
               project={project}

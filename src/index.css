@@ -24,15 +24,15 @@
 @theme {
   --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
-  --color-void: #070213;
-  --color-panel: #0e0721;
+  --color-void: #0B1020;
+  --color-panel: #121A2E;
   /* Neon mockup palette: cyan scale ko violet/purple se override kiya hai
      taake purani cyan utilities site-wide purple render hon */
-  --color-cyan-200: #e9d5ff;
-  --color-cyan-300: #d8b4fe;
-  --color-cyan-400: #c084fc;
+  --color-cyan-200: #DDD6FE;
+  --color-cyan-300: #C4B5FD;
+  --color-cyan-400: #A78BFA;
   --color-cyan-500: #a855f7;
-  --color-cyan-600: #9333ea;
+  --color-cyan-600: #7C3AED;
 }
 
 /* Class-based light variant — <html class="light"> par light: utilities activate.
@@ -52,7 +52,7 @@ body {
 
 /* Light canvas surface */
 html.light body {
-  background: #f4f6fb;
+  background: #F8FAFF;
   color: #0f172a;
 }
 
@@ -130,8 +130,15 @@ html.lenis body {
      white chahiye wo `light:bg-white` se override karte hain (utilities
      layer components ko beat karta hai). */
   html.light .glass {
-    background: rgba(13, 16, 26, 0.72);
-    border-color: rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.85);
+    border-color: #E5E7EB;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+  }
+
+  html.light .glass-strong {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: #E5E7EB;
+    box-shadow: 0 18px 44px -18px rgba(76, 29, 149, 0.16);
   }
 
   .glass-strong {
@@ -160,18 +167,12 @@ html.lenis body {
   /* Light mode: card dark surface pakad le taake andar ka slate/white text
      readable rahe (canvas #f4f6fb par white text = contrast 1.08 → fail). */
   html.light .bento-card {
-    background: linear-gradient(
-      160deg,
-      rgba(13, 16, 26, 0.96) 0%,
-      rgba(10, 12, 20, 0.92) 100%
-    );
-    border-color: rgba(15, 23, 42, 0.25);
-    box-shadow:
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-      0 18px 40px -18px rgba(15, 23, 42, 0.45);
+    background: linear-gradient(160deg, #ffffff 0%, #fbfaff 100%);
+    border-color: #E7E9F5;
+    box-shadow: 0 12px 34px -14px rgba(76, 29, 149, 0.12);
   }
   html.light .bento-card:hover {
-    border-color: rgba(8, 145, 178, 0.45);
+    border-color: rgba(124, 58, 237, 0.35);
   }
 
   .text-gradient {
@@ -572,4 +573,94 @@ html.lenis body {
   .cine-letterbox-bottom {
     display: none;
   }
+}
+
+/* ---------- Clean Light safety net (unlayered = utilities ko beat karta hai) ----------
+   Light mode mein purani slate/cyan text utilities ko readable dark shades par
+   remap karte hain — yeh site ke apne light: pairings (300->600, 400->500) jaisi hain. */
+html.light .text-gradient {
+  background: linear-gradient(90deg, #7C3AED 0%, #6366F1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+html.light .text-slate-100 { color: #1E293B; }
+html.light .text-slate-200 { color: #334155; }
+html.light .text-slate-300 { color: #475569; }
+html.light .text-slate-400 { color: #64748B; }
+html.light .text-violet-200 { color: #6D28D9; }
+html.light .text-violet-300 { color: #7C3AED; }
+html.light .text-cyan-200 { color: #6D28D9; }
+html.light .text-cyan-300 { color: #7C3AED; }
+html.light .text-cyan-400 { color: #7C3AED; }
+html.light .text-cyan-500 { color: #7C3AED; }
+
+@keyframes fadeUpSm {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.skill-tile {
+  animation: fadeUpSm 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* Monochrome brand icons (Next.js/OpenAI waghera) dark theme mein white render
+   hote hain — light surfaces par unhe slate-900 kar do warna invisible honge. */
+html.light svg path[fill="#FFFFFF"] { fill: #0F172A; }
+html.light .text-violet-300\/90 { color: #7C3AED; }
+html.light .text-cyan-400\/80 { color: #7C3AED; }
+html.light .text-cyan-200\/90 { color: #6D28D9; }
+
+/* ---------- Signature splash (CSS 3D emblem, waves, globe) ---------- */
+@keyframes orbitTilt {
+  from { transform: rotateX(72deg) rotateZ(0deg); }
+  to { transform: rotateX(72deg) rotateZ(360deg); }
+}
+@keyframes orbitTiltRev {
+  from { transform: rotateX(64deg) rotateZ(360deg); }
+  to { transform: rotateX(64deg) rotateZ(0deg); }
+}
+@keyframes orbitFlat {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes globeSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.55; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.07); }
+}
+@keyframes waveDrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-3.5%); }
+}
+@keyframes gradientShift {
+  from { background-position: 0% center; }
+  to { background-position: 220% center; }
+}
+.splash-orbit { animation: orbitTilt 16s linear infinite; }
+.splash-orbit-rev { animation: orbitTiltRev 24s linear infinite; }
+.splash-orbit-tilt {
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  border-radius: 9999px;
+  animation: orbitFlat 12s linear infinite;
+}
+.splash-globe { animation: globeSpin 70s linear infinite; }
+.splash-platform { animation: glowPulse 3.2s ease-in-out infinite; }
+.splash-wave-back { animation: waveDrift 11s ease-in-out infinite alternate; }
+.splash-wave-front { animation: waveDrift 8s ease-in-out infinite alternate-reverse; }
+.splash-gradient-text {
+  background-image: linear-gradient(90deg, #7C3AED, #A855F7, #6366F1, #7C3AED);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-orbit, .splash-orbit-rev, .splash-orbit-tilt, .splash-globe,
+  .splash-platform, .splash-wave-back, .splash-wave-front,
+  .splash-gradient-text { animation: none; }
+}
+.splash-jakarta {
+  font-family: "Plus Jakarta Sans", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }

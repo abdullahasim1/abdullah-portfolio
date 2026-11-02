@@ -14,10 +14,10 @@ const automationTools = [
 ];
 
 const heroServices = [
-  { title: "Web Development", desc: "Modern, responsive and high-performance web apps.", icon: "monitor" },
-  { title: "AI Integration", desc: "Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).", icon: "cpu" },
-  { title: "Cloud & DevOps", desc: "Deploy, scale and automate apps on AWS.", icon: "cloud" },
-  { title: "SaaS & Product Dev", desc: "End-to-end SaaS development from idea to launch.", icon: "rocket" },
+  { title: "Full-Stack Web Development", desc: "Modern, responsive and high-performance web apps — React, Next.js and Node.js.", icon: "monitor" },
+  { title: "Generative AI Integration", desc: "Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).", icon: "cpu" },
+  { title: "AWS Cloud & Serverless", desc: "Deploy, scale and automate apps on AWS — Lambda, S3 and API Gateway.", icon: "cloud" },
+  { title: "AI-Powered Product Development", desc: "End-to-end SaaS development from idea to launch.", icon: "rocket" },
 ];
 
 function HeroServiceIcon({ name }) {

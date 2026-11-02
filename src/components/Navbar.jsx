@@ -6,11 +6,11 @@ import { getTheme, toggleTheme } from "../lib/theme";
 const links = [
   { label: "Home", id: "home" },
   { label: "About", id: "about" },
+  { label: "Skills", id: "skills" },
   { label: "Services", id: "services" },
   { label: "Projects", id: "projects" },
-  { label: "Certs", id: "certifications" },
-  { label: "Skills", id: "skills" },
-  { label: "Blog", id: "blog" },
+  { label: "Experience", id: "experience" },
+  { label: "Certifications", id: "certifications" },
   { label: "Contact", id: "contact" },
 ];
 
@@ -98,7 +98,7 @@ function Navbar() {
             A
           </span>
           <span className="hidden sm:block leading-tight">
-            <span className="block font-display font-bold tracking-tight text-[15px] text-white">
+            <span className="block font-display font-bold tracking-tight text-[15px] text-white light:text-slate-900">
               Abdullah Asim
             </span>
             <span className="block text-[11px] text-slate-400">
@@ -121,10 +121,10 @@ function Navbar() {
                 href={`#${link.id}`}
                 onClick={(e) => handleNavClick(e, link.id)}
                 aria-current={isActive ? "true" : undefined}
-                className={`px-3 py-2 rounded-lg transition-colors ${
+                className={`px-3.5 py-2 rounded-full transition-all ${
                   isActive
-                    ? "text-cyan-300 bg-white/[0.06] shadow-[inset_0_0_0_1px_rgba(34,211,238,0.15)]"
-                    : "text-slate-400 hover:text-cyan-300 hover:bg-white/[0.05]"
+                    ? "text-white bg-gradient-to-r from-cyan-500 to-violet-600 shadow-[0_8px_20px_-8px_rgba(124,58,237,0.55)]"
+                    : "text-slate-400 hover:text-violet-300 light:hover:text-violet-700 hover:bg-white/[0.05] light:hover:bg-violet-50"
                 }`}
               >
                 {link.label}

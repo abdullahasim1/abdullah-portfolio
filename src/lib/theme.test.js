@@ -7,8 +7,8 @@ describe("theme", () => {
     localStorage.clear();
   });
 
-  it("defaults to dark when no stored preference", () => {
-    expect(getTheme()).toBe("dark");
+  it("defaults to light when no stored preference", () => {
+    expect(getTheme()).toBe("light");
   });
 
   it("applyTheme adds `light` class on <html> and persists", () => {
