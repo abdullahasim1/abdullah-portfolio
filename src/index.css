@@ -39,6 +39,12 @@
    Default (no class) = dark. Cards/overlays dark rehte hain, sirf canvas flip hota hai. */
 @custom-variant light (&:where(.light, .light *));
 
+/* Class-based dark variant — <html> par light class na ho to dark: utilities
+   activate. OS ke prefers-color-scheme se bilkul independent hai: theme sirf
+   site ke toggle se banta hai, warna mismatch par headings/cards ghayab ho
+   jate thay (white text light bg par, dark text dark bg par). */
+@custom-variant dark (&:where(html:not(.light) *));
+
 html {
   scroll-behavior: smooth;
 }

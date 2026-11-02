@@ -98,7 +98,7 @@ function Footer() {
 
   return (
     <footer className="relative px-4 pb-10 pt-6 sm:px-6">
-      <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[2rem] border border-violet-100 bg-white px-7 pb-7 pt-12 shadow-[0_24px_60px_-24px_rgba(124,58,237,0.18)] dark:border-white/10 dark:bg-slate-900/80 sm:px-10">
+      <div className="relative w-full overflow-hidden rounded-[2rem] border border-violet-100 bg-white px-7 pb-7 pt-12 shadow-[0_24px_60px_-24px_rgba(124,58,237,0.18)] dark:border-white/10 dark:bg-slate-900/80 sm:px-10">
         <div aria-hidden className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-200/40 blur-3xl dark:bg-violet-600/10" />
         <div aria-hidden className="absolute -bottom-28 -left-24 h-64 w-64 rounded-full bg-fuchsia-200/30 blur-3xl dark:bg-fuchsia-600/10" />
 
