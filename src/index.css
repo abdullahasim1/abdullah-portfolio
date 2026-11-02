@@ -661,3 +661,6 @@ html.light .text-cyan-200\/90 { color: #6D28D9; }
   .splash-platform, .splash-wave-back, .splash-wave-front,
   .splash-gradient-text { animation: none; }
 }
+.splash-jakarta {
+  font-family: "Plus Jakarta Sans", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}

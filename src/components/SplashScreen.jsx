@@ -128,7 +128,7 @@ function SplashScreen({ onFinish }) {
     const maybeFinish = () => {
       if (!loadDone || !fontsDone) return;
       const elapsed = performance.now() - startedAt;
-      const wait = Math.max(0, 1500 - elapsed); // entrance sequence ka min waqt
+      const wait = Math.max(0, 1650 - elapsed); // entrance sequence ka min waqt
       gsap.delayedCall(wait / 1000, () => {
         goTo(100, 0.35);
         gsap.delayedCall(0.45, finish);
@@ -193,18 +193,13 @@ function SplashScreen({ onFinish }) {
         stagger: 0.12,
         delay: 1.2,
       });
-      gsap.fromTo(
-        "[data-splash-line]",
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.7, ease: "power3.out", delay: 1.35 },
-      );
       gsap.from("[data-splash-card]", {
         opacity: 0,
         y: 18,
-        duration: 0.6,
-        stagger: 0.1,
+        duration: 0.55,
+        stagger: 0.08,
         ease: "power3.out",
-        delay: 1.5,
+        delay: 1.25,
       });
     }, rootRef);
 
@@ -233,6 +228,18 @@ function SplashScreen({ onFinish }) {
       <div
         aria-hidden
         className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-indigo-500/[0.12] blur-[120px]"
+      />
+      <div
+        aria-hidden
+        className="absolute -bottom-48 -left-40 h-[430px] w-[430px] rounded-full bg-violet-500/[0.16] blur-[90px]"
+      />
+      <div
+        aria-hidden
+        className="absolute -bottom-56 -right-40 h-[460px] w-[460px] rounded-full bg-gradient-to-br from-fuchsia-500/25 to-indigo-600/25 blur-[80px]"
+      />
+      <div
+        aria-hidden
+        className="absolute -top-24 right-[10%] h-72 w-72 rounded-full border border-violet-300/25"
       />
       <div
         aria-hidden
@@ -282,6 +289,24 @@ function SplashScreen({ onFinish }) {
         </svg>
       </div>
 
+      {/* Dotted mountains — reference image jaisi sajawat */}
+      <svg aria-hidden className="absolute left-[3%] top-[55%] w-40 sm:w-52 opacity-60 hidden sm:block" viewBox="0 0 200 80">
+        <defs>
+          <pattern id="mdots-l" width="7" height="7" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r="1.3" fill="#A78BFA" />
+          </pattern>
+        </defs>
+        <path d="M0,80 L30,38 L52,58 L84,18 L112,50 L138,28 L168,56 L200,34 L200,80 Z" fill="url(#mdots-l)" stroke="#C4B5FD" strokeWidth="1" />
+      </svg>
+      <svg aria-hidden className="absolute right-[3%] top-[51%] w-44 sm:w-60 opacity-60 hidden sm:block" viewBox="0 0 200 80">
+        <defs>
+          <pattern id="mdots-r" width="7" height="7" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r="1.3" fill="#A78BFA" />
+          </pattern>
+        </defs>
+        <path d="M0,80 L26,44 L48,62 L78,24 L106,54 L134,30 L162,58 L200,40 L200,80 Z" fill="url(#mdots-r)" stroke="#C4B5FD" strokeWidth="1" />
+      </svg>
+
       {/* Stage */}
       <div
         ref={stageRef}
@@ -295,7 +320,7 @@ function SplashScreen({ onFinish }) {
           {/* Dotted digital globe */}
           <div
             aria-hidden
-            className="absolute h-64 w-64 sm:h-80 sm:w-80 rounded-full splash-globe"
+            className="absolute h-80 w-80 sm:h-[430px] sm:w-[430px] -translate-y-8 rounded-full splash-globe"
             style={{
               backgroundImage:
                 "radial-gradient(rgba(124,58,237,0.22) 1.2px, transparent 1.4px)",
@@ -311,19 +336,19 @@ function SplashScreen({ onFinish }) {
           <div
             aria-hidden
             data-splash-ring
-            className="absolute h-60 w-60 sm:h-72 sm:w-72 rounded-full border border-violet-400/35 splash-orbit"
+            className="absolute h-72 w-72 sm:h-[340px] sm:w-[340px] rounded-full border border-violet-400/35 splash-orbit"
           />
           <div
             aria-hidden
             data-splash-ring
-            className="absolute h-60 w-60 sm:h-72 sm:w-72 splash-orbit-tilt"
+            className="absolute h-72 w-72 sm:h-[340px] sm:w-[340px] splash-orbit-tilt"
           >
             <span className="absolute left-1/2 -top-[5px] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-violet-500 shadow-[0_0_14px_rgba(139,92,246,0.9)]" />
           </div>
           <div
             aria-hidden
             data-splash-ring
-            className="absolute h-48 w-48 sm:h-60 sm:w-60 rounded-full border border-indigo-400/25 splash-orbit-rev"
+            className="absolute h-56 w-56 sm:h-[270px] sm:w-[270px] rounded-full border border-indigo-400/25 splash-orbit-rev"
           />
 
           {/* Illuminated platform */}
@@ -335,11 +360,15 @@ function SplashScreen({ onFinish }) {
             aria-hidden
             className="absolute -bottom-5 h-8 w-44 sm:w-56 rounded-[100%] border border-violet-300/50 bg-white/30"
           />
+          <div
+            aria-hidden
+            className="absolute -bottom-8 h-10 w-60 sm:w-80 rounded-[100%] border border-violet-200/60"
+          />
 
           {/* Glass A tile */}
           <div
             data-splash-emblem
-            className="relative h-32 w-32 sm:h-40 sm:w-40 rounded-[30%] bg-white/45 backdrop-blur-xl border border-white/70 shadow-[0_30px_60px_-18px_rgba(124,58,237,0.45),inset_0_1px_0_rgba(255,255,255,0.9)] flex items-center justify-center float-y"
+            className="relative h-40 w-40 sm:h-52 sm:w-52 rounded-[30%] bg-white/45 backdrop-blur-xl border border-white/70 shadow-[0_30px_60px_-18px_rgba(124,58,237,0.45),inset_0_1px_0_rgba(255,255,255,0.9)] flex items-center justify-center float-y"
             style={{ animationDuration: "6s" }}
           >
             <span
@@ -347,7 +376,7 @@ function SplashScreen({ onFinish }) {
               className="absolute inset-x-6 top-2 h-8 rounded-full bg-white/50 blur-lg"
             />
             <span
-              className="font-display font-bold leading-none text-[84px] sm:text-[104px] select-none"
+              className="splash-jakarta font-extrabold leading-none text-[104px] sm:text-[128px] select-none"
               style={{
                 backgroundImage:
                   "linear-gradient(135deg, #7C3AED 10%, #6366F1 60%, #A855F7 100%)",
@@ -371,17 +400,17 @@ function SplashScreen({ onFinish }) {
           {/* Floating glass chips */}
           <span
             data-splash-chip
-            className="absolute -left-14 sm:-left-24 top-2 inline-flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "5s" }}
+            className="absolute -left-16 sm:-left-28 -top-2 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
+            style={{ animationDuration: "5s", rotate: "-8deg" }}
           >
-            <span className="text-[11px] font-black lowercase tracking-tight text-[#FF9900]">
+            <span className="text-[13px] font-black lowercase tracking-tight text-[#FF9900]">
               aws
             </span>
           </span>
           <span
             data-splash-chip
-            className="absolute -left-20 bottom-10 hidden md:inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "6.5s", animationDelay: "0.5s" }}
+            className="absolute -left-24 bottom-6 hidden md:inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
+            style={{ animationDuration: "6.5s", animationDelay: "0.5s", rotate: "6deg" }}
           >
             <svg
               className="w-5 h-5 text-violet-600"
@@ -399,32 +428,26 @@ function SplashScreen({ onFinish }) {
           </span>
           <span
             data-splash-chip
-            className="absolute -right-14 sm:-right-24 top-4 inline-flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "5.6s", animationDelay: "0.3s" }}
+            className="absolute -right-16 sm:-right-28 top-0 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
+            style={{ animationDuration: "5.6s", animationDelay: "0.3s", rotate: "7deg" }}
           >
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
               <path d={siReact.path} fill="#61DAFB" />
             </svg>
           </span>
           <span
             data-splash-chip
-            className="absolute -right-20 bottom-14 hidden md:inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
-            style={{ animationDuration: "7s", animationDelay: "0.8s" }}
+            className="absolute -right-24 bottom-8 hidden md:inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/55 backdrop-blur border border-white/70 shadow-[0_14px_30px_-12px_rgba(124,58,237,0.4)] float-y"
+            style={{ animationDuration: "7s", animationDelay: "0.8s", rotate: "-6deg" }}
           >
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 font-display text-[11px] font-bold text-white">
+            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 font-display text-[12px] font-bold text-white">
               N
             </span>
           </span>
         </div>
 
         {/* ---------- Name + title ---------- */}
-        <p
-          data-splash-fade
-          className="mt-12 text-[10px] font-semibold uppercase tracking-[0.4em] text-violet-600"
-        >
-          Welcome to my portfolio
-        </p>
-        <h1 className="mt-3 font-display font-bold text-slate-900 text-3xl sm:text-5xl tracking-tight flex flex-wrap justify-center">
+        <h1 className="mt-14 splash-jakarta font-extrabold text-slate-900 text-4xl sm:text-6xl tracking-tight flex flex-wrap justify-center">
           {NAME.split("").map((ch, i) => (
             <span
               key={`${ch}-${i}`}
@@ -438,31 +461,27 @@ function SplashScreen({ onFinish }) {
             </span>
           ))}
         </h1>
-        <p
-          data-splash-fade
-          className="mt-3 text-[10px] sm:text-xs font-medium uppercase tracking-[0.32em] text-slate-500 text-center"
-        >
-          {TITLE}
-        </p>
-        <div
-          data-splash-line
-          aria-hidden
-          className="mt-4 h-px w-44 origin-center bg-gradient-to-r from-transparent via-violet-500 to-transparent"
-        />
+        <div data-splash-fade className="mt-4 flex items-center gap-4">
+          <span aria-hidden className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-violet-400/70" />
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-slate-600 text-center">
+            {TITLE}
+          </p>
+          <span aria-hidden className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-violet-400/70" />
+        </div>
 
         {/* ---------- Capability cards ---------- */}
         <div className="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {CARDS.map((card, i) => (
             <div key={card.label} data-splash-card>
               <div
-                className="flex flex-col items-center gap-2 rounded-2xl bg-white/60 backdrop-blur border border-white/70 shadow-[0_16px_36px_-16px_rgba(124,58,237,0.35)] px-4 py-3.5 min-w-[124px] float-y"
+                className="flex flex-col items-center gap-2 rounded-2xl bg-white/70 backdrop-blur border border-white/70 shadow-[0_16px_36px_-16px_rgba(124,58,237,0.35)] px-5 py-4 min-w-[132px] float-y"
                 style={{
                   animationDuration: `${4.6 + i * 0.7}s`,
                   animationDelay: `${i * 0.4}s`,
                 }}
               >
                 <svg
-                  className="w-6 h-6 text-violet-600"
+                  className="w-7 h-7 text-violet-600"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={1.6}
@@ -471,7 +490,7 @@ function SplashScreen({ onFinish }) {
                 >
                   {card.icon}
                 </svg>
-                <span className="text-[11px] font-semibold text-slate-700 whitespace-nowrap">
+                <span className="text-xs font-semibold text-slate-700 whitespace-nowrap">
                   {card.label}
                 </span>
               </div>
@@ -484,13 +503,13 @@ function SplashScreen({ onFinish }) {
       <div className="absolute bottom-10 inset-x-0 px-8 sm:px-14 max-w-3xl mx-auto w-full">
         <div className="flex items-end justify-between mb-3">
           <span className="text-[11px] font-medium tracking-wide text-slate-500">
-            Preparing Your Experience...
+            Loading Portfolio Experience...
           </span>
           <span ref={percentRef} className="font-mono text-sm text-violet-600">
             000%
           </span>
         </div>
-        <div className="h-[6px] w-full bg-slate-900/[0.08] overflow-hidden rounded-full">
+        <div className="h-[10px] w-full bg-slate-900/[0.08] overflow-hidden rounded-full">
           <div
             ref={barRef}
             className="relative h-full w-full origin-left rounded-full bg-gradient-to-r from-[#7C3AED] via-[#A855F7] to-[#6366F1] shadow-[0_0_16px_rgba(168,85,247,0.55)]"
