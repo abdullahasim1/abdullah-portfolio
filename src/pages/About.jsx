@@ -62,7 +62,7 @@ function About() {
   useScrollReveal("#about .reveal");
 
   return (
-    <section id="about" className="relative py-28 overflow-hidden">
+    <section id="about" className="relative pt-28 pb-20 overflow-hidden">
       {/* Soft lavender corner waves (board ambience) */}
       <div aria-hidden className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-violet-400/10 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute -bottom-48 -right-32 h-[420px] w-[420px] rounded-full bg-fuchsia-300/10 blur-3xl" />
@@ -80,15 +80,15 @@ function About() {
           <span className="block h-1 w-14 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" aria-hidden="true" />
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-10 items-start">
+        <div className="grid lg:grid-cols-12 gap-10 items-stretch">
           {/* Photo — board badges: white AWS pill + dark Generative AI pill */}
-          <div className="reveal lg:col-span-3 max-w-xs mx-auto w-full lg:max-w-none">
-            <TiltCard>
-            <div className="sweep-host relative rounded-[28px] overflow-hidden border border-violet-300/50 light:border-violet-200 shadow-[0_30px_60px_-25px_rgba(124,58,237,0.45)]">
+          <div className="reveal lg:col-span-3 max-w-xs mx-auto w-full lg:max-w-none h-full">
+            <TiltCard className="h-full">
+            <div className="sweep-host relative h-full rounded-[28px] overflow-hidden border border-violet-300/50 light:border-violet-200 shadow-[0_30px_60px_-25px_rgba(124,58,237,0.45)]">
               <img
                 src="/IMG-20240224-WA0006.jpg"
                 alt="Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer"
-                className="w-full aspect-[3/4] object-cover"
+                className="w-full aspect-[3/4] object-cover lg:aspect-auto lg:h-full"
                 loading="lazy"
                 width="720"
                 height="960"
@@ -112,7 +112,7 @@ function About() {
           </div>
 
           {/* Text */}
-          <div className="reveal lg:col-span-4 space-y-5 text-slate-400 light:text-slate-600 leading-relaxed">
+          <div className="reveal lg:col-span-5 space-y-5 text-slate-400 light:text-slate-600 leading-relaxed">
             <div>
               <h3 className="font-display text-[26px] font-bold text-white light:text-slate-900 leading-snug">
                 Building Web Experiences That Make an Impact
@@ -200,8 +200,8 @@ function About() {
           </div>
 
           {/* Tech stack panel — board header + tiles */}
-          <div className="reveal lg:col-span-5">
-            <div className="rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white p-6 md:p-7 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]">
+          <div className="reveal lg:col-span-4 h-full">
+            <div className="flex h-full flex-col rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white p-6 md:p-7 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]">
               <h3 className="flex items-center gap-3 mb-6">
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/12 light:bg-violet-100/80 text-violet-300 light:text-violet-600 border border-violet-400/20 light:border-violet-200/70">
                   <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -214,7 +214,7 @@ function About() {
                 </span>
                 <span className="h-px flex-1 bg-white/10 light:bg-slate-200" aria-hidden="true" />
               </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+              <div className="grid flex-1 auto-rows-fr grid-cols-3 sm:grid-cols-5 lg:grid-cols-2 gap-3">
                 {techStack.map((item) => (
                   <StackTile key={item.name} item={item} />
                 ))}

@@ -118,7 +118,7 @@ function Faq() {
   };
 
   return (
-    <section id="faq" className="relative scroll-mt-24 overflow-hidden py-28">
+    <section id="faq" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
       <div aria-hidden className="absolute -left-32 top-32 h-80 w-80 rounded-full bg-violet-300/20 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">

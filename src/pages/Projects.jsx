@@ -537,7 +537,7 @@ export function FeaturedWork({ preview = false }) {
   };
 
   return (
-    <section id="projects" className={`relative overflow-hidden scroll-mt-24 ${preview ? "py-28" : "pt-28 pb-0"}`}>
+    <section id="projects" className={`relative overflow-hidden scroll-mt-24 ${preview ? "py-16" : "pt-28 pb-0"}`}>
       {/* Soft background blobs — screenshots se compete nahi karte */}
       <div aria-hidden className="animate-[floatY_11s_ease-in-out_infinite] absolute -left-32 top-24 h-80 w-80 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/[0.07]" />
       <div aria-hidden className="animate-[floatY_13s_ease-in-out_infinite] absolute -right-32 top-[560px] h-96 w-96 rounded-full bg-fuchsia-300/10 blur-3xl dark:bg-fuchsia-600/[0.05]" />
@@ -695,7 +695,7 @@ export function ProjectsPage() {
   return (
     <>
       <FeaturedWork />
-      <section id="projects-repos" className="relative overflow-hidden pb-28">
+      <section id="projects-repos" className="relative overflow-hidden pb-20">
         <div className="relative max-w-[1400px] mx-auto px-6">
         {/* ---------- GitHub repositories — board header ---------- */}
         <div className="reveal flex flex-wrap items-start justify-between gap-6 mb-9">

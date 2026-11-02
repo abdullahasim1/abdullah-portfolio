@@ -284,7 +284,7 @@ function Certifications() {
   const shown = certifications.filter((c) => filter === "all" || kindOf(c) === filter);
 
   return (
-    <section id="certifications" className="relative scroll-mt-24 overflow-hidden py-28">
+    <section id="certifications" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
       <div aria-hidden className="absolute -left-32 top-24 h-80 w-80 rounded-full bg-violet-300/20 blur-3xl dark:bg-violet-600/10" />
       <div aria-hidden className="absolute -right-32 bottom-24 h-80 w-80 rounded-full bg-fuchsia-300/20 blur-3xl dark:bg-fuchsia-600/10" />
 

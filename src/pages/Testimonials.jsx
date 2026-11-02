@@ -60,7 +60,7 @@ function Testimonials() {
   useScrollReveal("#testimonials .reveal");
 
   return (
-    <section id="testimonials" className="relative scroll-mt-24 overflow-hidden py-28">
+    <section id="testimonials" className="relative scroll-mt-24 overflow-hidden py-20">
       <div aria-hidden className="absolute -right-40 top-0 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}

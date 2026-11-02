@@ -231,7 +231,7 @@ function Contact() {
   }
 
   return (
-    <section id="contact" className="relative scroll-mt-24 overflow-hidden py-28">
+    <section id="contact" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
       <div aria-hidden className="absolute -right-32 top-24 h-80 w-80 rounded-full bg-violet-300/20 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}
@@ -252,10 +252,10 @@ function Contact() {
           <EnvelopeArt />
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_1.35fr]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.35fr]">
           {/* Contact information card */}
-          <div className="rounded-[1.8rem] border border-violet-100 bg-white p-4 shadow-[0_20px_50px_-24px_rgba(124,58,237,0.25)] dark:border-white/10 dark:bg-slate-900/70 sm:p-5">
-            <div className="space-y-3">
+          <div className="flex h-full flex-col rounded-[1.8rem] border border-violet-100 bg-white p-4 shadow-[0_20px_50px_-24px_rgba(124,58,237,0.25)] dark:border-white/10 dark:bg-slate-900/70 sm:p-5">
+            <div className="flex flex-1 flex-col justify-between gap-3">
               {contactInfo.map((info) => (
                 <a
                   key={info.title}

@@ -116,7 +116,7 @@ function Experience() {
     };
   }, []);
   return (
-    <section id="experience" className="relative scroll-mt-24 overflow-hidden py-28">
+    <section id="experience" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
       <div aria-hidden className="absolute -right-40 top-20 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}

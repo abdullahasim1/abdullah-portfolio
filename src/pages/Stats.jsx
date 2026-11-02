@@ -23,7 +23,7 @@ function Stats() {
   const staggerRef = useStaggerAnimation(0.12, 0.3);
 
   return (
-    <section className="py-28">
+    <section className="py-16">
       <div className="max-w-6xl mx-auto px-6 md:px-0">
         <SectionHeading label="Achievements" title="Numbers That Speak" />
 
