@@ -1,49 +1,11 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React from "react";
 import { techLogos } from "../data/techLogos";
 import TiltIcon from "./TiltIcon";
 import { scrollToSection, scrollToTop } from "../lib/smoothScroll";
 import { playClickSound } from "../lib/sound";
-import { IS_LOW_END } from "../lib/device";
-
-const FooterPlanet = lazy(() => import("./three/FooterPlanet"));
-const FooterMiniCore = lazy(() => import("./three/FooterMiniCore"));
-
-const quickLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
-  { name: "Certifications", href: "#certifications" },
-  { name: "Skills", href: "#skills" },
-  { name: "Contact", href: "#contact" },
-  { name: "Privacy", href: "/privacy.html" }
-];
-
-const services = [
-  "AI Integration",
-  "Workflow Automation",
-  "Web Development",
-  "Mobile Apps",
-  "UI/UX Design",
-  "Backend Development",
-  "API Integration",
-  "Consulting"
-];
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-
-  /* lg breakpoint par switch — desktop: FooterPlanet, small: light FooterMiniCore */
-  const [isDesktop, setIsDesktop] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const onChange = (e) => setIsDesktop(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -59,16 +21,6 @@ function Footer() {
   return (
     <footer className="relative mt-10 overflow-hidden border-t border-white/[0.06] bg-black/40">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-
-      {!IS_LOW_END && (
-        <Suspense fallback={null}>
-          {isDesktop ? (
-            <FooterPlanet className="absolute -top-10 -right-16 w-[440px] h-[440px] opacity-70" />
-          ) : (
-            <FooterMiniCore className="absolute -top-4 -right-6 w-[220px] h-[220px] opacity-60" />
-          )}
-        </Suspense>
-      )}
 
       <div className="max-w-6xl mx-auto px-6 md:px-0 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -190,12 +142,15 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06] mt-14 pt-8 text-center">
-          {/* End credits */}
-          <p className="credits-roll text-slate-500 mb-3" aria-hidden="true">
-            — End of Reel —
+        <div className="border-t border-white/[0.06] mt-14 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-slate-500">© {currentYear} Abdullah Asim. All rights reserved.</p>
+          <p className="inline-flex items-center gap-2 text-xs text-slate-400">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            Available for new opportunities
           </p>
-          <p className="text-xs text-slate-600">© {currentYear} Abdullah Asim. All rights reserved.</p>
         </div>
       </div>
     </footer>

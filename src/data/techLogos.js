@@ -14,6 +14,8 @@ import {
   siStripe,
   siPaypal,
   siMongodb,
+  siMysql,
+  siGit,
   siPostgresql,
   siDocker,
   siFlutter,
@@ -50,6 +52,20 @@ export const techLogos = [
   { name: "AWS", mono: { label: "AWS", from: "#ff9900", to: "#f97316" } },
   { name: "Tailwind CSS", icon: pick(siTailwindcss) },
   { name: "GSAP", icon: pick(siGsap) },
+];
+
+/* About section — mockup wali "My Tech Stack" grid ke 10 tiles */
+export const techStack = [
+  { name: "React", icon: pick(siReact) },
+  { name: "Next.js", icon: pick(siNextdotjs) },
+  { name: "Node.js", icon: pick(siNodedotjs) },
+  { name: "TypeScript", icon: pick(siTypescript) },
+  { name: "Tailwind CSS", icon: pick(siTailwindcss) },
+  { name: "AWS", mono: { label: "AWS", from: "#ff9900", to: "#f97316" } },
+  { name: "PostgreSQL", icon: pick(siPostgresql) },
+  { name: "MySQL", icon: pick(siMysql) },
+  { name: "Docker", icon: pick(siDocker) },
+  { name: "Git", icon: pick(siGit) },
 ];
 
 /* Services section ke liye brand logos — emoji replace karne ke liye */

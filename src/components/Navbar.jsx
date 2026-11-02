@@ -94,19 +94,16 @@ function Navbar() {
           className="flex items-center gap-3 group shrink-0"
           aria-label="Abdullah Asim - Home"
         >
-          <span className="relative">
-            <img
-              src="/IMG-20240224-WA0006.jpg"
-              alt="Abdullah Bin Asim - Full Stack Developer"
-              className="w-10 h-10 rounded-xl object-cover border border-cyan-400/40 group-hover:border-cyan-300 transition-colors"
-              width="40"
-              height="40"
-            />
-            <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 border-2 border-void blink-dot" />
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 font-display text-lg font-bold text-white shadow-[0_0_18px_rgba(168,85,247,0.45)] shrink-0">
+            A
           </span>
-          <span className="font-display font-bold tracking-tight text-lg hidden sm:block">
-            <span className="text-white">abdullah</span>
-            <span className="text-gradient">.dev</span>
+          <span className="hidden sm:block leading-tight">
+            <span className="block font-display font-bold tracking-tight text-[15px] text-white">
+              Abdullah Asim
+            </span>
+            <span className="block text-[11px] text-slate-400">
+              Full-Stack Developer
+            </span>
           </span>
         </a>
 
@@ -283,7 +280,7 @@ function Navbar() {
             onClick={(e) => handleNavClick(e, "contact")}
             className="hidden sm:inline-flex sheen-btn items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 transition-all shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.35)]"
           >
-            Hire Me
+            Let's Talk
           </a>
 
           <button
@@ -324,7 +321,7 @@ function Navbar() {
             onClick={(e) => handleNavClick(e, "contact")}
             className="mt-2 inline-flex items-center justify-center rounded-xl px-4 py-2.5 font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600"
           >
-            Hire Me
+            Let's Talk
           </a>
         </div>
       </div>
