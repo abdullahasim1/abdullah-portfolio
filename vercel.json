@@ -90,52 +90,64 @@
   ],
   "rewrites": [
     {
-      "source": "/about",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/skills",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/services",
-      "destination": "/index.html"
-    },
-    {
       "source": "/services/:slug",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/projects",
       "destination": "/index.html"
     },
     {
       "source": "/projects/:slug",
       "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/about",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/skills",
+      "destination": "/#skills",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/projects",
+      "destination": "/#projects",
+      "permanent": true
     },
     {
       "source": "/experience",
-      "destination": "/index.html"
+      "destination": "/#experience",
+      "permanent": true
     },
     {
       "source": "/certifications",
-      "destination": "/index.html"
+      "destination": "/#certifications",
+      "permanent": true
     },
     {
       "source": "/process",
-      "destination": "/index.html"
+      "destination": "/#process",
+      "permanent": true
     },
     {
       "source": "/blog",
-      "destination": "/index.html"
+      "destination": "/#blog",
+      "permanent": true
     },
     {
       "source": "/faq",
-      "destination": "/index.html"
+      "destination": "/#faq",
+      "permanent": true
     },
     {
       "source": "/contact",
-      "destination": "/index.html"
+      "destination": "/#contact",
+      "permanent": true
     }
   ]
 }

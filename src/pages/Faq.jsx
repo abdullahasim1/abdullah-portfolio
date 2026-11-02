@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useScrollReveal } from "../hooks";
-import { navigateTo } from "../lib/router";
+import { goSection } from "../lib/router";
 import { playClickSound } from "../lib/sound";
 /* Single source of truth — isi se index.html ka FAQPage JSON-LD bhi banta hai */
 import { faqs } from "../data/faqs";
@@ -114,11 +114,11 @@ function Faq() {
 
   const goContact = () => {
     playClickSound();
-    navigateTo("/contact");
+    goSection("contact");
   };
 
   return (
-    <section id="faq" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
+    <section id="faq" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -left-32 top-32 h-80 w-80 rounded-full bg-violet-300/20 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">

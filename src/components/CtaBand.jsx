@@ -1,5 +1,5 @@
 import React from "react";
-import { navigateTo } from "../lib/router";
+import { goSection } from "../lib/router";
 import { playClickSound } from "../lib/sound";
 
 function CtaBand() {
@@ -33,7 +33,7 @@ function CtaBand() {
               type="button"
               onClick={() => {
                 playClickSound();
-                navigateTo("/contact");
+                goSection("contact");
               }}
               className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-opacity hover:opacity-90"
             >

@@ -57,13 +57,13 @@ const ICONS = {
 
 const links = [
   { label: "Home", id: "home", path: "/" },
-  { label: "About", id: "about", path: "/about" },
-  { label: "Skills", id: "skills", path: "/skills" },
-  { label: "Services", id: "services", path: "/services" },
-  { label: "Projects", id: "projects", path: "/projects" },
-  { label: "Experience", id: "experience", path: "/experience" },
-  { label: "Certifications", id: "certifications", path: "/certifications" },
-  { label: "Contact", id: "contact", path: "/contact" },
+  { label: "About", id: "about", path: "/#about" },
+  { label: "Skills", id: "skills", path: "/#skills" },
+  { label: "Services", id: "services", path: "/#services" },
+  { label: "Projects", id: "projects", path: "/#projects" },
+  { label: "Experience", id: "experience", path: "/#experience" },
+  { label: "Certifications", id: "certifications", path: "/#certifications" },
+  { label: "Contact", id: "contact", path: "/#contact" },
 ];
 
 function NavIcon({ id, className = "w-4 h-4" }) {
@@ -89,13 +89,49 @@ function Navbar() {
   const [muted, setMuted] = useState(() => getSoundMuted());
   const [theme, setTheme] = useState(() => getTheme());
 
-  /* Active link route se — multi-page site mein scroll-spy ki jagah
-     current page hi highlight hota hai (detail pages par parent active). */
+  /* Active link: home (one-page) par scroll-spy, detail pages par
+     parent section (case study → Projects, service → Services). */
   const { path } = useRoute();
+  const [spy, setSpy] = useState("home");
+
+  useEffect(() => {
+    if (path !== "/") return;
+    let raf = 0;
+    const compute = () => {
+      const y = window.scrollY + 220;
+      let current = "home";
+      for (const link of links) {
+        if (link.id === "home") continue;
+        const el = document.getElementById(link.id);
+        if (el && el.getBoundingClientRect().top + window.scrollY <= y) {
+          current = link.id;
+        }
+      }
+      setSpy(current);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(compute);
+    };
+    compute();
+    // Lazy sections der se mount hote hain — offsets settle hone do
+    const timers = [600, 1600, 3000].map((ms) => setTimeout(compute, ms));
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+      timers.forEach(clearTimeout);
+    };
+  }, [path]);
+
   const active =
     path === "/"
-      ? "home"
-      : (links.find((l) => l.path !== "/" && path.startsWith(l.path))?.id ?? "");
+      ? spy
+      : path.startsWith("/projects")
+        ? "projects"
+        : path.startsWith("/services")
+          ? "services"
+          : "";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -292,7 +328,7 @@ function Navbar() {
           </a>
 
           <Link
-            href="/contact"
+            href="/#contact"
             className="hidden sm:inline-flex sheen-btn items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 transition-all shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.35)]"
           >
             Let&apos;s Talk
@@ -338,7 +374,7 @@ function Navbar() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/#contact"
             onClick={closeMobile}
             className="mt-2 inline-flex items-center justify-center rounded-full px-4 py-2.5 font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600"
           >

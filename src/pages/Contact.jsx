@@ -101,18 +101,25 @@ function Contact() {
     mountTimeRef.current = Date.now();
   }, []);
 
-  /* Estimator se bheji gayi inquiry prefill (sessionStorage handoff) */
+  /* Estimator se bheji gayi inquiry prefill (sessionStorage handoff) —
+     mount par bhi, aur estimator ke event par bhi (contact section
+     home par pehle se mounted hota hai). */
   useEffect(() => {
-    let data = null;
-    try {
-      data = JSON.parse(sessionStorage.getItem("aa-prefill") || "null");
-      if (data) sessionStorage.removeItem("aa-prefill");
-    } catch {}
-    if (!data) return;
-    const subject = document.querySelector('input[name="subject"]');
-    if (subject && data.subject) subject.value = data.subject;
-    const message = document.querySelector('textarea[name="message"]');
-    if (message && data.message) message.value = data.message;
+    const applyPrefill = () => {
+      let data = null;
+      try {
+        data = JSON.parse(sessionStorage.getItem("aa-prefill") || "null");
+        if (data) sessionStorage.removeItem("aa-prefill");
+      } catch {}
+      if (!data) return;
+      const subject = document.querySelector('input[name="subject"]');
+      if (subject && data.subject) subject.value = data.subject;
+      const message = document.querySelector('textarea[name="message"]');
+      if (message && data.message) message.value = data.message;
+    };
+    applyPrefill();
+    window.addEventListener("aa:prefill-apply", applyPrefill);
+    return () => window.removeEventListener("aa:prefill-apply", applyPrefill);
   }, []);
 
   function validateField(name, value) {
@@ -231,7 +238,7 @@ function Contact() {
   }
 
   return (
-    <section id="contact" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
+    <section id="contact" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -right-32 top-24 h-80 w-80 rounded-full bg-violet-300/20 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}

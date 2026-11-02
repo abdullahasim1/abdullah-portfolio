@@ -224,7 +224,7 @@ function Skills() {
   };
 
   return (
-    <section id="skills" className="pt-28 pb-20 scroll-mt-24">
+    <section id="skills" className="py-16 scroll-mt-24">
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Header — board layout: left title block, right cube + availability */}
         <div className="flex flex-wrap items-start justify-between gap-8 mb-10">

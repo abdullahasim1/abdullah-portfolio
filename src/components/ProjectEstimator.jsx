@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { navigateTo } from "../lib/router";
+import { goSection } from "../lib/router";
 import { playClickSound, playSuccessSound } from "../lib/sound";
 
 const projectTypes = [
@@ -188,8 +188,8 @@ export default function ProjectEstimator() {
     playSuccessSound();
     const message = `Hi Abdullah,\n\nI used your interactive Project Estimator:\n- Project Type: ${calculation.typeTitle}\n- Selected Features: ${calculation.featureNames.join(", ")}\n- Estimated Timeline: ${calculation.estimatedWeeks} (${calculation.estimatedDays})\n\nLet's discuss details and next steps!`;
 
-    // Contact ab apni page par hai — inquiry stash karke wahan bhejo,
-    // Contact page mount par prefill kar legi.
+    // Contact home par hi section hai — inquiry stash karke wahan
+    // scroll karo, Contact section event par prefill kar legi.
     try {
       sessionStorage.setItem(
         "aa-prefill",
@@ -199,7 +199,8 @@ export default function ProjectEstimator() {
         }),
       );
     } catch {}
-    navigateTo("/contact");
+    goSection("contact");
+    window.dispatchEvent(new CustomEvent("aa:prefill-apply"));
   };
 
   const paceLabel =

@@ -15,14 +15,14 @@ import { Link } from "../lib/router";
 
 const exploreLinks = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Skills", href: "/skills" },
-  { name: "Services", href: "/services" },
-  { name: "Projects", href: "/projects" },
-  { name: "Experience", href: "/experience" },
-  { name: "Certifications", href: "/certifications" },
-  { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
+  { name: "About", href: "/#about" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Services", href: "/#services" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Experience", href: "/#experience" },
+  { name: "Certifications", href: "/#certifications" },
+  { name: "Blog", href: "/#blog" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 const ICONS = {
@@ -61,7 +61,7 @@ const whatIDo = [
   { icon: "code", label: "Web Development", path: "/services/full-stack-web-development" },
   { icon: "cloud", label: "AWS & Cloud Solutions", path: "/services/aws-cloud-serverless" },
   { icon: "cube", label: "SaaS Product Development", path: "/services/ai-product-development" },
-  { icon: "layers", label: "API Integration", path: "/services" },
+  { icon: "layers", label: "API Integration", path: "/#services" },
 ];
 
 const highlights = [

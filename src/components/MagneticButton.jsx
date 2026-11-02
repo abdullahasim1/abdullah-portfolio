@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { navigateTo } from "../lib/router";
+import { navigateTo, goSection } from "../lib/router";
 import { useRafThrottle } from "../hooks/useRafThrottle";
 
 function MagneticButton({ href = "#", className = "", children }) {
@@ -23,7 +23,10 @@ function MagneticButton({ href = "#", className = "", children }) {
   };
 
   const onClick = (e) => {
-    if (href && href.startsWith("/")) {
+    if (href && href.startsWith("/#")) {
+      e.preventDefault();
+      goSection(href.slice(2));
+    } else if (href && href.startsWith("/")) {
       e.preventDefault();
       navigateTo(href);
     }

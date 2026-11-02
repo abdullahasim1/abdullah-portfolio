@@ -125,19 +125,8 @@ ${items}
 
 function writeSitemap(posts) {
   const today = new Date().toISOString().slice(0, 10);
-  /* Multi-page site: har route sitemap mein */
-  const staticRoutes = [
-    { loc: `${SITE_URL}/about`, priority: "0.8" },
-    { loc: `${SITE_URL}/skills`, priority: "0.7" },
-    { loc: `${SITE_URL}/services`, priority: "0.9" },
-    { loc: `${SITE_URL}/projects`, priority: "0.9" },
-    { loc: `${SITE_URL}/experience`, priority: "0.7" },
-    { loc: `${SITE_URL}/certifications`, priority: "0.8" },
-    { loc: `${SITE_URL}/process`, priority: "0.6" },
-    { loc: `${SITE_URL}/blog`, priority: "0.8" },
-    { loc: `${SITE_URL}/faq`, priority: "0.6" },
-    { loc: `${SITE_URL}/contact`, priority: "0.8" },
-  ];
+  /* Hybrid site: home + detail pages (services/projects/posts) sitemap mein */
+  const staticRoutes = [];
   const urls = [
     { loc: `${SITE_URL}/`, lastmod: today, changefreq: "weekly", priority: "1.0" },
     ...staticRoutes.map((r) => ({ ...r, lastmod: today, changefreq: "monthly" })),

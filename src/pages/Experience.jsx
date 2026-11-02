@@ -18,7 +18,7 @@ function CountValue({ value }) {
     </>
   );
 }
-import { navigateTo } from "../lib/router";
+import { goSection } from "../lib/router";
 import { playClickSound } from "../lib/sound";
 
 /* Board sirf pehli 4 entries dikhata hai (3 roles + AWS GenAI credential) —
@@ -116,7 +116,7 @@ function Experience() {
     };
   }, []);
   return (
-    <section id="experience" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
+    <section id="experience" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -right-40 top-20 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}
@@ -160,7 +160,7 @@ function Experience() {
               type="button"
               onClick={() => {
                 playClickSound();
-                navigateTo("/certifications");
+                goSection("certifications");
               }}
               className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:text-violet-600 dark:text-slate-300 dark:hover:text-violet-300"
             >

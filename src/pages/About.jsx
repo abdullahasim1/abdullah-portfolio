@@ -62,7 +62,7 @@ function About() {
   useScrollReveal("#about .reveal");
 
   return (
-    <section id="about" className="relative pt-28 pb-20 overflow-hidden">
+    <section id="about" className="relative scroll-mt-24 py-16 overflow-hidden">
       {/* Soft lavender corner waves (board ambience) */}
       <div aria-hidden className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-violet-400/10 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute -bottom-48 -right-32 h-[420px] w-[420px] rounded-full bg-fuchsia-300/10 blur-3xl" />
@@ -190,7 +190,7 @@ function About() {
               ))}
             </div>
             <div className="pt-2">
-              <MagneticButton href="/experience">
+              <MagneticButton href="/#experience">
                 More About Me
                 <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />

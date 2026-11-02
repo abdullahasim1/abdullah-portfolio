@@ -3,7 +3,7 @@ import { siClaude, siMake, siN8n, siZapier } from "simple-icons";
 import TiltCard from "../components/TiltCard";
 import ProjectEstimator from "../components/ProjectEstimator";
 import { playClickSound } from "../lib/sound";
-import { Link, navigateTo } from "../lib/router";
+import { Link, goSection } from "../lib/router";
 import { services as serviceData } from "../data/services";
 
 /* Cards ka data data/services.js se — detail pages ke sath shared */
@@ -117,7 +117,7 @@ const automationTools = ["GoHighLevel", "Make.com", "n8n", "Claude", "OpenAI", "
 
 function Services() {
   return (
-    <section id="services" className="relative scroll-mt-24 overflow-hidden pt-28 pb-20">
+    <section id="services" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -left-40 top-40 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}
@@ -240,7 +240,7 @@ function Services() {
               type="button"
               onClick={() => {
                 playClickSound();
-                navigateTo("/contact");
+                goSection("contact");
               }}
               className="animate-glowPulse group inline-flex shrink-0 items-center gap-2.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-opacity hover:opacity-90"
             >

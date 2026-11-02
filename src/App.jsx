@@ -10,7 +10,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import SplashScreen from "./components/SplashScreen";
 import { IS_LOW_END } from "./lib/device";
-import { RouterProvider, useRoute, scrollTopNow, Link } from "./lib/router";
+import { RouterProvider, useRoute, scrollTopNow, scrollToSectionNow, consumePendingSection, Link } from "./lib/router";
 import { applyPageMeta, metaForPath } from "./lib/pageMeta";
 import { getFeaturedBySlug } from "./data/projects";
 import { getService } from "./data/services";
@@ -26,9 +26,6 @@ const Services = lazy(() => import("./pages/Services"));
 const Stats = lazy(() => import("./pages/Stats"));
 const ProjectsPage = lazy(() =>
   import("./pages/Projects").then((m) => ({ default: m.ProjectsPage })),
-);
-const FeaturedWork = lazy(() =>
-  import("./pages/Projects").then((m) => ({ default: m.FeaturedWork })),
 );
 const Experience = lazy(() => import("./pages/Experience"));
 const Skills = lazy(() => import("./pages/Skills"));
@@ -75,7 +72,7 @@ function NotFound() {
             Back to Home
           </Link>
           <Link
-            href="/projects"
+            href="/#projects"
             className="rounded-full border border-violet-300 bg-white px-6 py-3 text-sm font-semibold text-violet-600 transition-colors hover:bg-violet-50 dark:border-white/15 dark:bg-white/5 dark:text-violet-300 dark:hover:bg-white/10"
           >
             View Projects
@@ -86,39 +83,101 @@ function NotFound() {
   );
 }
 
+/* Hybrid structure (Abdullah ka faisla, 2026-11-03): Home full one-page
+   hai — saari sections ek scroll mein. Sirf DETAIL pages alag hain:
+   /projects/<slug> case studies, /services/<slug>, /blog/<slug> posts.
+   Purane section URLs (/about waghera) home ke usi section par le jate
+   hain — vercel.json redirects + yahan SPA alias, dono taraf se. */
+const SECTION_ALIASES = {
+  about: "about",
+  skills: "skills",
+  services: "services",
+  projects: "projects",
+  experience: "experience",
+  certifications: "certifications",
+  process: "process",
+  blog: "blog",
+  faq: "faq",
+  contact: "contact",
+};
+
+function Section({ children }) {
+  return (
+    <Suspense fallback={<div className="py-20" />}>
+      <ErrorBoundary>{children}</ErrorBoundary>
+    </Suspense>
+  );
+}
+
+function HomeSections({ introDone }) {
+  return (
+    <>
+      <Home introDone={introDone} />
+      <TechTicker />
+      <Section>
+        <About />
+      </Section>
+      <Section>
+        <Skills />
+      </Section>
+      <Section>
+        <Services />
+      </Section>
+      <Section>
+        <Process />
+      </Section>
+      <Section>
+        <Stats />
+      </Section>
+      <Section>
+        <ProjectsPage embedded />
+      </Section>
+      <Section>
+        <Experience />
+      </Section>
+      <Section>
+        <Certifications />
+      </Section>
+      <Section>
+        <Blog />
+      </Section>
+      <Section>
+        <Testimonials />
+      </Section>
+      <CtaBand />
+      <Section>
+        <Faq />
+      </Section>
+      <Section>
+        <Contact />
+      </Section>
+    </>
+  );
+}
+
 function RouteView({ introDone }) {
   const { path } = useRoute();
   const seg = path.split("/").filter(Boolean);
+  const alias = seg.length === 1 ? SECTION_ALIASES[seg[0]] : undefined;
+  const isHome = seg.length === 0 || Boolean(alias);
 
-  /* Route change: top par jao, meta apply karo, ScrollTrigger refresh */
+  /* Route change: home par section scroll ya top, detail par top + meta */
   useEffect(() => {
-    scrollTopNow();
-    const meta = metaForPath(path);
-    if (meta) applyPageMeta({ ...meta, path });
+    if (isHome) {
+      const homeMeta = metaForPath("/");
+      if (homeMeta) applyPageMeta({ ...homeMeta, path: "/" });
+      if (alias) scrollToSectionNow(alias);
+      else if (!consumePendingSection()) scrollTopNow();
+    } else {
+      scrollTopNow();
+      const meta = metaForPath(path);
+      if (meta) applyPageMeta({ ...meta, path });
+    }
     const t = setTimeout(() => ScrollTrigger.refresh(), 400);
     return () => clearTimeout(t);
   }, [path]);
 
-  if (seg.length === 0) {
-    return (
-      <>
-        <Home introDone={introDone} />
-        <TechTicker />
-        <Suspense fallback={<div className="py-20" />}>
-          <ErrorBoundary>
-            <Stats />
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <FeaturedWork preview />
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Testimonials />
-            <CtaBand />
-          </ErrorBoundary>
-        </Suspense>
-      </>
-    );
-  }
+  if (isHome) return <HomeSections introDone={introDone} />;
 
   const [head, tail] = seg;
   const page = (node) => (
@@ -127,35 +186,11 @@ function RouteView({ introDone }) {
     </Suspense>
   );
 
-  switch (head) {
-    case "about":
-      return seg.length === 1 ? page(<About />) : <NotFound />;
-    case "skills":
-      return seg.length === 1 ? page(<Skills />) : <NotFound />;
-    case "services":
-      if (seg.length === 1) return page(<Services />);
-      if (seg.length === 2 && getService(tail)) return page(<ServiceDetail slug={tail} />);
-      return <NotFound />;
-    case "projects":
-      if (seg.length === 1) return page(<ProjectsPage />);
-      if (seg.length === 2 && getFeaturedBySlug(tail))
-        return page(<ProjectCaseStudy slug={tail} />);
-      return <NotFound />;
-    case "experience":
-      return seg.length === 1 ? page(<Experience />) : <NotFound />;
-    case "certifications":
-      return seg.length === 1 ? page(<Certifications />) : <NotFound />;
-    case "process":
-      return seg.length === 1 ? page(<Process />) : <NotFound />;
-    case "blog":
-      return seg.length === 1 ? page(<Blog />) : <NotFound />;
-    case "faq":
-      return seg.length === 1 ? page(<Faq />) : <NotFound />;
-    case "contact":
-      return seg.length === 1 ? page(<Contact />) : <NotFound />;
-    default:
-      return <NotFound />;
-  }
+  if (head === "projects" && seg.length === 2 && getFeaturedBySlug(tail))
+    return page(<ProjectCaseStudy slug={tail} />);
+  if (head === "services" && seg.length === 2 && getService(tail))
+    return page(<ServiceDetail slug={tail} />);
+  return <NotFound />;
 }
 
 function Site() {
@@ -208,6 +243,14 @@ function Site() {
     return () => {
       document.body.style.overflow = prev;
     };
+  }, [introDone]);
+
+  /* Splash khatam hone par agar URL hash / pending section ho to
+     wahan scroll karo (redirect se aayi hui /#about type landings). */
+  useEffect(() => {
+    if (introDone && window.location.pathname === "/") {
+      consumePendingSection();
+    }
   }, [introDone]);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { featuredProjects, projectSlug } from "../data/projects";
-import { scrollToSection } from "../lib/smoothScroll";
-import { navigateTo } from "../lib/router";
+import { navigateTo, goSection } from "../lib/router";
 import { playClickSound, playOpenSound } from "../lib/sound";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { showToast } from "../lib/toast";
@@ -12,80 +11,77 @@ const actions = [
     label: "Home",
     group: "Navigation",
     icon: "🏠",
-    action: () => navigateTo("/"),
+    action: () => goSection("home"),
   },
   {
     id: "nav-about",
     label: "About Me",
     group: "Navigation",
     icon: "👤",
-    action: () => navigateTo("/about"),
+    action: () => goSection("about"),
   },
   {
     id: "nav-services",
     label: "Services & Solutions",
     group: "Navigation",
     icon: "⚡",
-    action: () => navigateTo("/services"),
+    action: () => goSection("services"),
   },
   {
     id: "nav-projects",
     label: "Projects & GitHub",
     group: "Navigation",
     icon: "💻",
-    action: () => navigateTo("/projects"),
+    action: () => goSection("projects"),
   },
   {
     id: "nav-certs",
     label: "Certifications & Credentials",
     group: "Navigation",
     icon: "🎓",
-    action: () => navigateTo("/certifications"),
+    action: () => goSection("certifications"),
   },
   {
     id: "nav-skills",
     label: "Skills & Arsenal",
     group: "Navigation",
     icon: "🛠️",
-    action: () => navigateTo("/skills"),
+    action: () => goSection("skills"),
   },
   {
     id: "nav-blog",
     label: "Blog & Articles",
     group: "Navigation",
     icon: "📝",
-    action: () => navigateTo("/blog"),
+    action: () => goSection("blog"),
   },
   {
     id: "nav-process",
     label: "Work Process",
     group: "Navigation",
     icon: "📋",
-    action: () => navigateTo("/process"),
+    action: () => goSection("process"),
   },
   {
     id: "nav-testimonials",
     label: "Client Testimonials",
     group: "Navigation",
     icon: "💬",
-    action: () => {
-      navigateTo("/");
-      setTimeout(() => scrollToSection("testimonials"), 800);
-    },
+action: () => goSection("testimonials"),
   },
   {
     id: "nav-faq",
     label: "FAQ",
     group: "Navigation",
     icon: "❓",
-    action: () => navigateTo("/faq"),
+    action: () => goSection("faq"),
   },
   {
     id: "nav-contact",
     label: "Contact & Hire Me",
     group: "Navigation",
     icon: "✉️",
-    action: () => navigateTo("/contact"),
+    action: () => goSection("contact"),
   },
   {
     id: "act-resume",
