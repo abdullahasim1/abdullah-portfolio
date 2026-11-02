@@ -1,100 +1,190 @@
 import React from "react";
-import { useScrollReveal } from "../hooks";
-import SectionHeading from "../components/SectionHeading";
-import MagneticButton from "../components/MagneticButton";
+import { siClaude, siMake, siN8n, siZapier } from "simple-icons";
+import TiltCard from "../components/TiltCard";
 import ProjectEstimator from "../components/ProjectEstimator";
-
-const automationTools = [
-  "GoHighLevel",
-  "Make.com",
-  "n8n",
-  "Claude",
-  "OpenAI",
-  "Zapier",
-];
+import { scrollToSection } from "../lib/smoothScroll";
+import { playClickSound } from "../lib/sound";
 
 const heroServices = [
-  { title: "Full-Stack Web Development", desc: "Modern, responsive and high-performance web apps — React, Next.js and Node.js.", icon: "monitor" },
-  { title: "Generative AI Integration", desc: "Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).", icon: "cpu" },
-  { title: "AWS Cloud & Serverless", desc: "Deploy, scale and automate apps on AWS — Lambda, S3 and API Gateway.", icon: "cloud" },
+  { title: "Full-Stack Web Development", desc: "Modern, responsive and high-performance web apps — React, Next.js and Node.js.", icon: "laptop" },
+  { title: "Generative AI Integration", desc: "Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).", icon: "ai" },
+  { title: "AWS Cloud & Serverless", desc: "Deploy, scale and automate apps on AWS — Lambda, S3 and API Gateway.", icon: "aws" },
   { title: "AI-Powered Product Development", desc: "End-to-end SaaS development from idea to launch.", icon: "rocket" },
 ];
 
-function HeroServiceIcon({ name }) {
-  const cls = "w-6 h-6";
-  const common = { className: cls, fill: "none", stroke: "currentColor", strokeWidth: 1.7, viewBox: "0 0 24 24" };
-  if (name === "monitor")
-    return (<svg {...common}><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>);
-  if (name === "cpu")
-    return (<svg {...common}><rect x="7" y="7" width="10" height="10" rx="2" /><path strokeLinecap="round" d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3" /></svg>);
-  if (name === "cloud")
-    return (<svg {...common}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>);
-  return (<svg {...common}><path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-6.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>);
+/* Board ki 3D illustrations ki jagah CSS/SVG art — white glass tile +
+   lavender blob, halki floating animation ke sath. */
+function ServiceArt({ name, delay = "0s" }) {
+  return (
+    <div aria-hidden className="relative flex h-[92px] items-center justify-start">
+      <div className="absolute left-0 h-20 w-36 rounded-[45%_55%_60%_40%/55%_45%_60%_50%] bg-gradient-to-br from-violet-200/80 via-purple-100 to-indigo-100 dark:from-violet-500/20 dark:via-purple-500/10 dark:to-indigo-500/10" />
+      <div
+        className="animate-[floatY_6s_ease-in-out_infinite] relative ml-3 flex h-16 w-16 rotate-[-4deg] items-center justify-center rounded-[1.05rem] border border-white/70 bg-white/85 shadow-[0_16px_34px_-14px_rgba(124,58,237,0.45)] backdrop-blur-sm dark:border-white/15 dark:bg-white/10"
+        style={{ animationDelay: delay }}
+      >
+        {name === "laptop" && (
+          <svg className="h-8 w-8 text-violet-600 dark:text-violet-300" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24">
+            <rect x="4" y="4.5" width="16" height="11.5" rx="1.8" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.3 8.8L7.2 10.7l2.1 1.9m5.4-3.8l2.1 1.9-2.1 1.9M2.8 19.5h18.4" />
+          </svg>
+        )}
+        {name === "ai" && (
+          <span className="relative flex h-full w-full items-center justify-center">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 font-display text-[12px] font-extrabold text-white shadow-md">
+              AI
+            </span>
+            <span className="animate-pulse absolute left-2 top-2 h-1.5 w-1.5 rounded-full bg-violet-400" />
+            <span className="animate-pulse absolute right-2 top-2.5 h-1.5 w-1.5 rounded-full bg-fuchsia-400" style={{ animationDelay: "0.4s" }} />
+            <span className="animate-pulse absolute bottom-2 left-2.5 h-1.5 w-1.5 rounded-full bg-indigo-400" style={{ animationDelay: "0.8s" }} />
+            <span className="animate-pulse absolute bottom-2.5 right-2 h-1.5 w-1.5 rounded-full bg-violet-500" style={{ animationDelay: "1.2s" }} />
+          </span>
+        )}
+        {name === "aws" && (
+          <span className="flex flex-col items-center">
+            <span className="text-[15px] font-extrabold lowercase leading-none tracking-tight text-slate-900 dark:text-white">
+              aws
+            </span>
+            <svg className="mt-0.5 h-2.5 w-7 text-[#FF9900]" viewBox="0 0 28 10" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M2 3c6 4.5 18 4.5 24 0" strokeLinecap="round" />
+              <path d="M23.5 1.2l2.8 1.6-3.4 1.4" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+        )}
+        {name === "rocket" && (
+          <svg className="h-8 w-8 text-violet-600 dark:text-violet-300" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.8 1.9 4.5 5.3 4.5 9l-4.5 4.5L7.5 12C7.5 8.3 9.2 4.9 12 3z" />
+            <circle cx="12" cy="9.5" r="1.8" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 13.5L5 18l2.5-.5M16.5 13.5L19 18l-2.5-.5" />
+          </svg>
+        )}
+      </div>
+    </div>
+  );
 }
 
-function Services() {
-  useScrollReveal("#services .reveal");
-
+function BrandIcon({ name }) {
+  const cls = "h-[18px] w-[18px] shrink-0";
+  if (name === "GoHighLevel") {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <rect x="4" y="13" width="4" height="7" rx="1" fill="#22C55E" />
+        <rect x="10" y="9" width="4" height="11" rx="1" fill="#3B82F6" />
+        <rect x="16" y="5" width="4" height="15" rx="1" fill="#F97316" />
+      </svg>
+    );
+  }
+  if (name === "Make.com") {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="#7C3AED" aria-hidden>
+        <path d={siMake.path} />
+      </svg>
+    );
+  }
+  if (name === "n8n") {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="#E11D63" aria-hidden>
+        <path d={siN8n.path} />
+      </svg>
+    );
+  }
+  if (name === "Claude") {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="#D97757" aria-hidden>
+        <path d={siClaude.path} />
+      </svg>
+    );
+  }
+  if (name === "OpenAI") {
+    return (
+      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] bg-gradient-to-br from-teal-400 to-sky-500 text-[8px] font-extrabold text-white" aria-hidden>
+        AI
+      </span>
+    );
+  }
   return (
-    <section id="services" className="py-28">
-      <div className="max-w-6xl mx-auto px-6 md:px-0">
-        <SectionHeading
-          scene="02"
-          label="Services"
-          title="Hire a Freelance n8n Developer & AI Automation Expert"
-          subtitle="AI agents, n8n/Make.com workflow automation, GoHighLevel CRM and full-stack web apps — from first wireframe to production deployment."
-        />
+    <svg className={cls} viewBox="0 0 24 24" fill="#FF4A00" aria-hidden>
+      <path d={siZapier.path} />
+    </svg>
+  );
+}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-          {heroServices.map((s) => (
-            <div
-              key={s.title}
-              data-stagger
-              className="reveal group relative rounded-3xl glass p-7 card-glow-hover hover:-translate-y-1 transition-transform duration-300"
-            >
-              <div className="flex items-start justify-between mb-6">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/10 border border-violet-400/25 text-violet-300">
-                  <HeroServiceIcon name={s.icon} />
+const automationTools = ["GoHighLevel", "Make.com", "n8n", "Claude", "OpenAI", "Zapier"];
+
+function Services() {
+  return (
+    <section id="services" className="relative scroll-mt-24 overflow-hidden py-28">
+      <div aria-hidden className="absolute -left-40 top-40 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
+      <div className="relative mx-auto max-w-[1400px] px-6">
+        {/* Board header */}
+        <div className="mb-12">
+          <span className="inline-flex items-center gap-2 rounded-full bg-violet-100 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l9 5-9 5-9-5 9-5zm-9 9.5l9 5 9-5M3 17.5l9 5 9-5" />
+            </svg>
+            Services
+          </span>
+          <h2 className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.12] tracking-tight text-slate-900 dark:text-white sm:text-[44px]">
+            Hire a Freelance n8n Developer &amp; AI Automation Expert
+          </h2>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
+            AI agents, n8n/Make.com workflow automation, GoHighLevel CRM and full-stack web apps — from first wireframe to production deployment.
+          </p>
+          <div className="mt-4 h-[3px] w-14 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500" />
+        </div>
+
+        {/* Service cards — 3D tilt + hover lift, floating art */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" style={{ perspective: "1200px" }}>
+          {heroServices.map((s, i) => (
+            <TiltCard key={s.title} className="h-full">
+              <article className="group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
+                <span className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-violet-200 text-violet-500 transition-all duration-300 group-hover:bg-violet-600 group-hover:text-white dark:border-white/15 dark:text-violet-300">
+                  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
+                  </svg>
                 </span>
-                <svg className="w-5 h-5 text-slate-500 group-hover:text-violet-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
-                </svg>
-              </div>
-              <h3 className="font-display text-lg font-semibold text-white light:text-slate-900 mb-2">
-                {s.title}
-              </h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{s.desc}</p>
-            </div>
+                <ServiceArt name={s.icon} delay={`${i * 0.7}s`} />
+                <h3 className="mt-4 font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white">
+                  {s.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {s.desc}
+                </p>
+              </article>
+            </TiltCard>
           ))}
         </div>
 
         {/* AI & Automation spotlight */}
-        <div className="reveal mt-14 relative overflow-hidden rounded-3xl glass-strong neon-ring p-8 md:p-10">
-          <div
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-          />
-          <div className="flex flex-col lg:flex-row items-center gap-8">
-            <div className="text-center lg:text-left flex-1">
-              <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/15 border border-violet-400/30 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300 mb-4">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-400 blink-dot" />
+        <div className="relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] p-8 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:p-10">
+          {/* Animated connector line — tools ke darmiyan data flow */}
+          <svg aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-24 w-full -translate-y-1/2 text-violet-300/70 dark:text-violet-400/25 lg:block" viewBox="0 0 1200 96" preserveAspectRatio="none" fill="none">
+            <path className="dash-flow" d="M-10 62 C 260 12, 520 92, 800 44 S 1120 20, 1210 52" stroke="currentColor" strokeWidth="1.6" />
+          </svg>
+          <div className="relative flex flex-col items-start gap-8 lg:flex-row lg:items-center">
+            <div className="flex-1">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-violet-600 shadow-sm dark:bg-white/10 dark:text-violet-300">
+                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
                 AI &amp; Automation
               </span>
-              <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 leading-tight">
-                I don't just build apps — I automate entire businesses.
+              <h3 className="mt-4 font-display text-2xl font-extrabold leading-tight text-slate-900 dark:text-white sm:text-[28px]">
+                I don&apos;t just build apps — I automate entire businesses.
               </h3>
-              <p className="text-slate-400 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <p className="mt-3 max-w-xl leading-relaxed text-slate-500 dark:text-slate-400">
                 From GoHighLevel funnels &amp; CRM automations to Make.com
                 scenarios, n8n workflows, and Claude-powered AI agents — I
                 connect your tools so work happens on autopilot.
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-3 shrink-0">
-              {automationTools.map((tool) => (
+            <div className="grid shrink-0 grid-cols-2 gap-3 min-[480px]:grid-cols-3">
+              {automationTools.map((tool, i) => (
                 <span
                   key={tool}
-                  className="inline-flex items-center justify-center rounded-xl glass px-4 py-3 text-xs font-semibold text-slate-200 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors cursor-default whitespace-nowrap"
+                  className="animate-[floatY_7s_ease-in-out_infinite] inline-flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-violet-100 bg-white px-4 py-3.5 text-[13px] font-semibold text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
+                  style={{ animationDelay: `${i * 0.55}s` }}
                 >
+                  <BrandIcon name={tool} />
                   {tool}
                 </span>
               ))}
@@ -102,25 +192,43 @@ function Services() {
           </div>
         </div>
 
-        {/* Interactive Scope & Cost Estimator */}
+        {/* Interactive Scope & Timeline Estimator */}
         <ProjectEstimator />
 
-        <div className="reveal mt-14">
-          <div className="relative overflow-hidden rounded-3xl glass-strong neon-ring p-10 text-center">
-            <div
-              aria-hidden
-              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-            />
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">
-              Need Something Custom?
-            </h3>
-            <p className="text-slate-400 mb-8 max-w-xl mx-auto leading-relaxed">
-              Don't see exactly what you need? I'm always open to discussing
-              custom solutions that fit your specific requirements and goals.
-            </p>
-            <MagneticButton href="#contact">
-              Let's Discuss Your Project
-            </MagneticButton>
+        {/* Need Something Custom — board band */}
+        <div className="relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] px-8 py-9 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:px-10">
+          <div className="flex flex-col items-start gap-7 lg:flex-row lg:items-center">
+            <div aria-hidden className="relative hidden h-[74px] w-[120px] shrink-0 min-[480px]:block">
+              <div className="absolute left-0 top-1 h-14 w-[74px] rotate-[-6deg] rounded-xl border border-white/70 bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg" />
+              <div className="absolute bottom-0 right-0 flex h-14 w-[74px] rotate-[5deg] items-center justify-center rounded-xl border border-violet-100 bg-white shadow-lg dark:border-white/15 dark:bg-slate-800">
+                <svg className="h-6 w-6 text-violet-600 dark:text-violet-300" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                </svg>
+              </div>
+            </div>
+            <span aria-hidden className="hidden h-14 w-px bg-violet-300/50 dark:bg-white/10 lg:block" />
+            <div className="flex-1">
+              <h3 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white sm:text-[28px]">
+                Need Something Custom?
+              </h3>
+              <p className="mt-2 max-w-xl leading-relaxed text-slate-500 dark:text-slate-400">
+                Don&apos;t see exactly what you need? I&apos;m always open to discussing
+                custom solutions that fit your specific requirements and goals.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                playClickSound();
+                scrollToSection("contact");
+              }}
+              className="animate-glowPulse group inline-flex shrink-0 items-center gap-2.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-opacity hover:opacity-90"
+            >
+              Let&apos;s Discuss Your Project
+              <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

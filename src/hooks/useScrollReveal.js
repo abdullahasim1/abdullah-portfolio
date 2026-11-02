@@ -25,17 +25,21 @@ export function useScrollReveal(targetSelector, options = {}) {
       ctxRef.current.revert();
     }
 
+    /* Motion spec: fade-up 28px, 0.7s, premium bezier, animate ONCE.
+       Reduced-motion users skip reveals entirely (content just shows). */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     ctxRef.current = gsap.context(() => {
       gsap.utils.toArray(elements).forEach((el) => {
         gsap.from(el, {
           opacity: 0,
-          y: 24,
-          duration: 0.8,
-          ease: "power2.out",
+          y: 28,
+          duration: 0.7,
+          ease: "cubic-bezier(0.22, 1, 0.36, 1)",
           scrollTrigger: {
             trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
+            start: "top 88%",
+            once: true,
           },
           ...optionsRef.current,
         });

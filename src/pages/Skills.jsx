@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import {
   siReact,
   siNextdotjs,
@@ -133,7 +133,10 @@ function SkillTile({ skill, index }) {
       className="skill-tile group flex items-center gap-3 rounded-2xl border border-white/10 light:border-slate-200/90 bg-white/[0.04] light:bg-white px-3.5 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-400/50 light:hover:border-violet-300 hover:shadow-[0_14px_28px_-14px_rgba(124,58,237,0.45)]"
       style={{ animationDelay: `${index * 40}ms` }}
     >
-      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-violet-500/10 light:bg-violet-50 border border-violet-400/15 light:border-violet-100">
+      <span
+        className="animate-[floatY_5s_ease-in-out_infinite] inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-violet-500/10 light:bg-violet-50 border border-violet-400/15 light:border-violet-100"
+        style={{ animationDelay: `${(index % 6) * 0.4}s` }}
+      >
         {skill.mono ? (
           <span
             className="inline-flex h-[22px] items-center justify-center rounded-md px-1 text-[9.5px] font-bold"
@@ -183,6 +186,20 @@ function GroupHeader({ group, count }) {
 
 function Skills() {
   const [active, setActive] = useState("All");
+
+  /* Sliding active indicator — active pill ke peeche gradient bar slide
+     hota hai (motion spec §8). */
+  const btnRefs = useRef({});
+  const [ind, setInd] = useState({ x: 0, y: 0, w: 0, ready: false });
+  useLayoutEffect(() => {
+    const measure = () => {
+      const btn = btnRefs.current[active];
+      if (btn) setInd({ x: btn.offsetLeft, y: btn.offsetTop, w: btn.offsetWidth, ready: true });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [active]);
 
   const tilesFor = (group) => {
     if (active === "All") {
@@ -251,17 +268,29 @@ function Skills() {
           </div>
         </div>
 
-        {/* Filter pills */}
-        <div className="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Skill categories">
+        {/* Filter pills — sliding gradient indicator */}
+        <div className="relative flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Skill categories">
+          <span
+            aria-hidden
+            className="absolute left-0 top-0 h-9 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 shadow-[0_10px_24px_-10px_rgba(124,58,237,0.6)] transition-all duration-300 ease-out"
+            style={{
+              width: ind.w,
+              transform: `translate(${ind.x}px, ${ind.y}px)`,
+              opacity: ind.ready ? 1 : 0,
+            }}
+          />
           {FILTERS.map((f) => (
             <button
               key={f.value}
+              ref={(el) => {
+                btnRefs.current[f.value] = el;
+              }}
               role="tab"
               aria-selected={active === f.value}
               onClick={() => setActive(f.value)}
-              className={`px-5 py-2 rounded-full text-[13px] font-semibold transition-all cursor-pointer ${
+              className={`relative z-10 h-9 px-5 rounded-full text-[13px] font-semibold transition-colors duration-300 cursor-pointer ${
                 active === f.value
-                  ? "text-white bg-gradient-to-r from-cyan-500 to-violet-600 shadow-[0_10px_24px_-10px_rgba(124,58,237,0.6)]"
+                  ? "text-white"
                   : "glass text-slate-300 light:text-slate-600 hover:border-violet-400/40 hover:text-violet-500"
               }`}
             >
@@ -279,7 +308,7 @@ function Skills() {
             {cardGroups.map(({ group, tiles }) => (
               <article
                 key={group.id}
-                className="rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white/80 p-6 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]"
+                className="animate-[fadeUpSm_.5s_cubic-bezier(0.22,1,0.36,1)_both] rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white/80 p-6 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]"
               >
                 <GroupHeader group={group} count={tiles.length} />
                 <div className={`grid gap-3 ${tileCols(group)}`}>

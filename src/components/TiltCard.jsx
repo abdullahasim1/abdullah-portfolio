@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useRafThrottle } from "../hooks/useRafThrottle";
 
-export default function TiltCard({ children, className = "" }) {
+export default function TiltCard({ children, className = "", divisor = 15, maxDeg = 6 }) {
   const cardRef = useRef(null);
 
   const handleMouseMove = useRafThrottle((e) => {
@@ -11,8 +11,8 @@ export default function TiltCard({ children, className = "" }) {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = Math.max(-6, Math.min(6, (y - centerY) / 15));
-    const rotateY = Math.max(-6, Math.min(6, (centerX - x) / 15));
+    const rotateX = Math.max(-maxDeg, Math.min(maxDeg, (y - centerY) / divisor));
+    const rotateY = Math.max(-maxDeg, Math.min(maxDeg, (centerX - x) / divisor));
 
     cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px) scale(1.02)`;
   });

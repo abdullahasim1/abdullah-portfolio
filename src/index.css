@@ -604,6 +604,49 @@ html.light .text-cyan-500 { color: #7C3AED; }
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
 }
+/* Featured screenshot entry — scale 0.92 → 1 (projects spec §3) */
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.zoom-in {
+  animation: zoomIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+/* Navbar entrance — upar se slide down (motion spec §4) */
+@keyframes navIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: none; }
+}
+.nav-in {
+  animation: navIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* Animated connector line — automation banner (spec §10) */
+@keyframes dashFlow {
+  to { stroke-dashoffset: -28; }
+}
+.dash-flow {
+  stroke-dasharray: 5 9;
+  animation: dashFlow 1.4s linear infinite;
+}
+/* Light sweep — badges/photo borders par roshni guzarti hai (spec §7/§15) */
+@keyframes sweepX {
+  from { transform: translateX(-130%) skewX(-18deg); }
+  to { transform: translateX(240%) skewX(-18deg); }
+}
+.sweep-host { position: relative; overflow: hidden; }
+.sweep-host::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+.sweep-host:hover::after {
+  animation: sweepX 0.9s ease;
+}
 .skill-tile {
   animation: fadeUpSm 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

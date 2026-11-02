@@ -102,7 +102,7 @@ function AwardArt() {
 
 function FeaturedCert({ cert }) {
   return (
-    <div className="relative mb-10 overflow-hidden rounded-[1.8rem] bg-gradient-to-br from-violet-200 via-purple-200 to-violet-300 shadow-[0_24px_50px_-24px_rgba(124,58,237,0.45)]">
+    <div className="sweep-host relative mb-10 overflow-hidden rounded-[1.8rem] bg-gradient-to-br from-violet-200 via-purple-200 to-violet-300 shadow-[0_24px_50px_-24px_rgba(124,58,237,0.45)]">
       <div aria-hidden className="absolute -left-20 -top-24 h-72 w-72 rounded-full bg-white/40 blur-3xl" />
       <div aria-hidden className="absolute -bottom-28 right-1/4 h-72 w-72 rounded-full bg-fuchsia-300/40 blur-3xl" />
       <div className="relative grid items-center gap-6 p-7 sm:p-9 lg:grid-cols-[1fr_1.5fr] lg:gap-10">

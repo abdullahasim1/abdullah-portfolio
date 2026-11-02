@@ -4,12 +4,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const useStaggerAnimation = (stagger = 0.1, delay = 0) => {
+export const useStaggerAnimation = (stagger = 0.08, delay = 0) => {
   const elementRef = useRef(null);
   const ctxRef = useRef(null);
 
   useEffect(() => {
     if (!elementRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     // Clean up previous animation
     if (ctxRef.current) {
@@ -20,20 +21,20 @@ export const useStaggerAnimation = (stagger = 0.1, delay = 0) => {
       const elements = elementRef.current?.querySelectorAll("[data-stagger]");
       if (!elements || elements.length === 0) return;
 
-      gsap.set(elements, { opacity: 0, y: 30 });
+      gsap.set(elements, { opacity: 0, y: 28 });
 
-      // Apply smooth stagger to the group on scroll
+      // Motion spec: stagger 0.08s, 0.7s, premium bezier, animate ONCE
       gsap.to(elements, {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.7,
         stagger: stagger,
         delay: delay,
-        ease: "power2.out",
+        ease: "cubic-bezier(0.22, 1, 0.36, 1)",
         scrollTrigger: {
           trigger: elementRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
+          start: "top 88%",
+          once: true,
         },
       });
     }, elementRef);

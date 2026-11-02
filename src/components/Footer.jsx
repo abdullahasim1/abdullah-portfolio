@@ -220,9 +220,22 @@ function Footer() {
             </span>
             <span className="h-px flex-1 bg-violet-100 dark:bg-white/[0.07]" />
           </div>
-          <div className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-5">
-            {techTiles.map((t) => (
-              <div key={t.name} className="flex w-[76px] flex-col items-center gap-2">
+          <div
+            className="relative mt-7 overflow-hidden"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            }}
+          >
+            <div className="ticker-track flex w-max">
+              {[...techTiles, ...techTiles].map((t, i) => (
+                <div
+                  key={`${t.name}-${i}`}
+                  aria-hidden={i >= techTiles.length}
+                  className="mx-2.5 flex w-[76px] shrink-0 flex-col items-center gap-2"
+                >
                 <span className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl border border-violet-100 bg-white shadow-sm dark:border-white/10 dark:bg-white/5">
                   {t.ai ? (
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-sky-500 font-display text-sm font-extrabold text-white">
@@ -247,9 +260,10 @@ function Footer() {
                     </svg>
                   )}
                 </span>
-                <span className="text-[13px] font-medium text-slate-600 dark:text-slate-300">{t.name}</span>
-              </div>
-            ))}
+                  <span className="text-[13px] font-medium text-slate-600 dark:text-slate-300">{t.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

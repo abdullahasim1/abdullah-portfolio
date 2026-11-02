@@ -12,6 +12,12 @@ export const useCounterAnimation = (targetValue, duration = 2, delay = 0) => {
     if (!elementRef.current) return;
 
     const element = elementRef.current;
+    /* Reduced motion: final value foran dikha do, count-up skip */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      element.innerHTML = targetValue;
+      hasAnimatedRef.current = true;
+      return;
+    }
     const trigger = ScrollTrigger.create({
       trigger: element,
       start: "top 80%",

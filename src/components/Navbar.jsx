@@ -158,7 +158,7 @@ function Navbar() {
     }`;
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 px-4 pt-4">
+    <header className="nav-in fixed top-0 inset-x-0 z-50 px-4 pt-4">
       <nav
         className={`max-w-[1440px] mx-auto flex items-center justify-between gap-2 rounded-[26px] lg:rounded-full px-4 py-3 transition-all duration-300 ${
           scrolled || theme === "light"
