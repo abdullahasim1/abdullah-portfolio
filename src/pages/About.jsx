@@ -223,6 +223,56 @@ function About() {
           </div>
         </div>
 
+        {/* Detail cards — education, writing, current role (equal height) */}
+        <div className="reveal mt-10 grid gap-5 md:grid-cols-3">
+          {[
+            {
+              label: "Education",
+              title: "BSCS — Computer Science",
+              desc: "Government College University Faisalabad (2021–2025). The foundation behind everything I ship today.",
+              icon: (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+              ),
+            },
+            {
+              label: "Published Writing",
+              title: "daily.dev Author",
+              desc: "“The 4-File System That Makes Claude Code 10× Smarter” — my system for making AI coding assistants dramatically more effective.",
+              icon: (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3-.512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6-2.292m0-14.25v14.25" />
+              ),
+            },
+            {
+              label: "Currently",
+              title: "AI Cloud Engineer @ Experts Cloud",
+              desc: "Building production GenAI systems on AWS Bedrock — and running DevRox, my AI & automation agency, for client projects.",
+              icon: (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              ),
+            },
+          ].map((card) => (
+            <article
+              key={card.label}
+              className="flex h-full flex-col rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white p-6 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]"
+            >
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/12 light:bg-violet-100/80 text-violet-300 light:text-violet-600 border border-violet-400/20 light:border-violet-200/70">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.7} viewBox="0 0 24 24" aria-hidden="true">
+                  {card.icon}
+                </svg>
+              </span>
+              <span className="mt-4 text-[10.5px] font-bold uppercase tracking-[0.18em] text-violet-400 light:text-violet-500">
+                {card.label}
+              </span>
+              <h3 className="mt-1.5 font-display text-[17px] font-bold leading-snug text-white light:text-slate-900">
+                {card.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400 light:text-slate-600">
+                {card.desc}
+              </p>
+            </article>
+          ))}
+        </div>
+
       </div>
     </section>
   );

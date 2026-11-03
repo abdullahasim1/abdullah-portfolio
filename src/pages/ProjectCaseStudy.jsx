@@ -94,6 +94,33 @@ export default function ProjectCaseStudy({ slug }) {
               {project.overview || project.description}
             </p>
 
+            {/* Project facts strip */}
+            <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              {[
+                { label: "My Role", value: project.role },
+                { label: "Year", value: project.year },
+                { label: "Project Type", value: project.type },
+                {
+                  label: "Status",
+                  value: enriched.liveLink ? "Live & Public" : "Client Delivery",
+                },
+              ]
+                .filter((f) => f.value)
+                .map((f) => (
+                  <div
+                    key={f.label}
+                    className="flex flex-col justify-between rounded-2xl border border-violet-100 bg-violet-50/60 p-4 dark:border-white/10 dark:bg-white/5"
+                  >
+                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">
+                      {f.label}
+                    </span>
+                    <span className="mt-1.5 text-sm font-bold leading-snug text-slate-800 dark:text-slate-100">
+                      {f.value}
+                    </span>
+                  </div>
+                ))}
+            </div>
+
             {(project.results?.length ?? 0) > 0 && (
               <div className="mt-8">
                 <h2 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
@@ -138,6 +165,32 @@ export default function ProjectCaseStudy({ slug }) {
               </div>
             )}
 
+            {(project.challenges?.length ?? 0) > 0 && (
+              <div className="mt-8">
+                <h2 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+                  Key Challenges &amp; Solutions
+                </h2>
+                <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+                  {project.challenges.map((c) => (
+                    <div
+                      key={c.title}
+                      className="flex flex-col rounded-2xl border border-violet-100 bg-violet-50/60 p-5 dark:border-white/10 dark:bg-white/5"
+                    >
+                      <h3 className="flex items-start gap-2 text-sm font-bold leading-snug text-slate-800 dark:text-slate-100">
+                        <svg className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                        </svg>
+                        {c.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                        {c.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {project.architectureFlow && (
               <div className="mt-8 rounded-3xl border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] p-6 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10">
                 <div className="flex items-center gap-2">
@@ -166,6 +219,27 @@ export default function ProjectCaseStudy({ slug }) {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {(project.responsibilities?.length ?? 0) > 0 && (
+              <div className="mt-8">
+                <h2 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+                  My Responsibilities
+                </h2>
+                <ul className="mt-3 grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                  {project.responsibilities.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300"
+                    >
+                      <svg className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
 

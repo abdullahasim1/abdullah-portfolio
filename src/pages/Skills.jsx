@@ -101,6 +101,7 @@ const GROUPS = [
     title: "Frontend & UI",
     sub: "Building modern, responsive and delightful UIs.",
     cats: ["Frontend"],
+    projects: "Four-AI Platform · Upmatch · Portfolio Website",
     icon: <GroupIcon d={["M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z", "M12 16v3", "M8.5 21h7"]} />,
   },
   {
@@ -108,6 +109,7 @@ const GROUPS = [
     title: "Backend & Data",
     sub: "APIs, server logic and scalable data solutions.",
     cats: ["Backend"],
+    projects: "Four-AI Platform · HireGen AI · Business Help",
     icon: <GroupIcon ellipse d={["M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5", "M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"]} />,
   },
   {
@@ -115,6 +117,7 @@ const GROUPS = [
     title: "AI, Cloud & Automation",
     sub: "Generative AI, cloud services and workflow automation.",
     cats: ["AI / GenAI", "Cloud (AWS)"],
+    projects: "Events Agent · Business Help · HireGen AI",
     icon: <GroupIcon d={["M17.5 19a4.5 4.5 0 0 0 .9-8.9A7 7 0 0 0 4.6 8.6 5.5 5.5 0 0 0 6 19h11.5Z"]} />,
   },
   {
@@ -122,6 +125,7 @@ const GROUPS = [
     title: "Tools & Workflow",
     sub: "Developer tools for productivity, collaboration and faster development.",
     cats: ["Tools"],
+    projects: "Daily workflow across all 25+ shipped projects",
     bar: true,
     icon: <GroupIcon d={["m12 3 9.5 5L12 13 2.5 8 12 3Z", "m2.5 13 9.5 5 9.5-5"]} />,
   },
@@ -316,6 +320,14 @@ function Skills() {
                     <SkillTile key={skill.name} skill={skill} index={i} />
                   ))}
                 </div>
+                {group.projects && (
+                  <p className="mt-5 border-t border-white/[0.07] light:border-slate-200/80 pt-4 text-[12px] leading-relaxed text-slate-400 light:text-slate-500">
+                    <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet-400 light:text-violet-500">
+                      In production —{" "}
+                    </span>
+                    {group.projects}
+                  </p>
+                )}
               </article>
             ))}
           </div>
@@ -337,6 +349,14 @@ function Skills() {
                 ))}
               </div>
             </div>
+            {group.projects && (
+              <p className="mt-5 border-t border-white/[0.07] light:border-slate-200/80 pt-4 text-[12px] leading-relaxed text-slate-400 light:text-slate-500">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet-400 light:text-violet-500">
+                  In production —{" "}
+                </span>
+                {group.projects}
+              </p>
+            )}
           </article>
         ))}
       </div>

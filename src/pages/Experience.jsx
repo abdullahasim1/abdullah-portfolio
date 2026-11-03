@@ -214,6 +214,21 @@ function Experience() {
                         <p className="mt-2.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
                           {item.desc}
                         </p>
+                        {(item.points?.length ?? 0) > 0 && (
+                          <ul className="mt-4 space-y-2">
+                            {item.points.map((point) => (
+                              <li
+                                key={point}
+                                className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300"
+                              >
+                                <svg className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" fill="none" stroke="currentColor" strokeWidth={2.4} viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {point}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                         <div className="mt-4 flex flex-wrap gap-2">
                           {item.tags.map((tag) => (
                             <span

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getService, services } from "../data/services";
 import { featuredProjects, projectSlug } from "../data/projects";
 import { ServiceArt } from "./Services";
@@ -9,6 +9,7 @@ import { applyPageMeta } from "../lib/pageMeta";
 
 export default function ServiceDetail({ slug }) {
   const service = getService(slug);
+  const [openFaq, setOpenFaq] = useState(0);
 
   useEffect(() => {
     if (!service) return;
@@ -50,6 +51,18 @@ export default function ServiceDetail({ slug }) {
             {service.intro}
           </p>
 
+          {service.idealFor && (
+            <div className="mt-6 flex items-start gap-3 rounded-2xl border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] to-[#FAF8FF] p-5 dark:border-white/10 dark:from-violet-500/10 dark:to-slate-900/60">
+              <svg className="mt-0.5 h-5 w-5 shrink-0 text-violet-500" fill="none" stroke="currentColor" strokeWidth={1.9} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+              </svg>
+              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                <span className="font-bold text-slate-800 dark:text-white">Best for: </span>
+                {service.idealFor}
+              </p>
+            </div>
+          )}
+
           <h2 className="mt-9 font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
             What&apos;s Included
           </h2>
@@ -67,6 +80,32 @@ export default function ServiceDetail({ slug }) {
             ))}
           </ul>
 
+          {(service.process?.length ?? 0) > 0 && (
+            <>
+              <h2 className="mt-9 font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+                How It Works
+              </h2>
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {service.process.map((step, i) => (
+                  <div
+                    key={step.title}
+                    className="flex flex-col rounded-2xl border border-violet-100 bg-violet-50/60 p-5 dark:border-white/10 dark:bg-white/5"
+                  >
+                    <span className="font-mono text-[11px] font-bold text-violet-500">
+                      STEP 0{i + 1}
+                    </span>
+                    <h3 className="mt-1.5 text-sm font-bold text-slate-800 dark:text-slate-100">
+                      {step.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                      {step.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
           <h2 className="mt-9 font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
             Tools I Use
           </h2>
@@ -80,6 +119,55 @@ export default function ServiceDetail({ slug }) {
               </span>
             ))}
           </div>
+
+          {(service.faqs?.length ?? 0) > 0 && (
+            <>
+              <h2 className="mt-9 font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+                Common Questions
+              </h2>
+              <div className="mt-4 space-y-2.5">
+                {service.faqs.map((f, i) => {
+                  const open = openFaq === i;
+                  return (
+                    <div
+                      key={f.q}
+                      className="overflow-hidden rounded-2xl border border-violet-100 bg-violet-50/50 dark:border-white/10 dark:bg-white/5"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaq(open ? -1 : i)}
+                        aria-expanded={open}
+                        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                      >
+                        <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                          {f.q}
+                        </span>
+                        <svg
+                          className={`h-4 w-4 shrink-0 text-violet-500 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.2}
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                      </button>
+                      <div
+                        className="grid transition-[grid-template-rows] duration-300 ease-out"
+                        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="px-5 pb-4 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                            {f.a}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
 
           <div className="mt-9 flex flex-wrap gap-2.5">
             <Link

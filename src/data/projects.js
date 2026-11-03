@@ -1,10 +1,9 @@
 // @ts-check
-/* NOTE: Har project mein `results` array (optional) — case-study modal mein
-   "Results & Impact" section dikhata hai. REAL numbers bharein, e.g.:
-   results: [
-     { value: "10k+", label: "Monthly active users" },
-     { value: "-45%", label: "Load time vs previous build" },
-   ] */
+/* NOTE: Har project mein `results` array — case-study page par
+   "Results & Impact" section dikhata hai. Sirf REAL, verifiable
+   product facts bharein — koi invented impact metrics nahi.
+   `challenges` = key problems + unke solutions, `responsibilities`
+   = Abdullah ka asal role detail mein. */
 
 export const featuredProjects = [
   {
@@ -19,7 +18,12 @@ export const featuredProjects = [
     image: "/projects/four-ai.webp",
     role: "Full Stack Developer",
     year: "2024",
-    results: [],
+    type: "AI Web Platform",
+    results: [
+      { value: "3", label: "AI tools — TTS, image generation & voice effects" },
+      { value: "25", label: "Free image generations per user, per day" },
+      { value: "v3.0", label: "Current production release" },
+    ],
     overview:
       "A browser-based AI studio that bundles text-to-speech, text-to-image and voice-effect tools behind one polished interface — no installs, no setup, straight from the tab.",
     features: [
@@ -27,6 +31,26 @@ export const featuredProjects = [
       "Voice-effects engine with real-time preview",
       "Secure Node.js API layer with MySQL usage tracking",
       "GSAP-driven micro-interactions across the UI",
+    ],
+    challenges: [
+      {
+        title: "Three AI tools, one consistent studio",
+        desc: "Text-to-speech, image generation and voice effects each have completely different inputs and outputs. I unified them behind one dashboard shell with shared history, so users learn the interface once and switch tools without friction.",
+      },
+      {
+        title: "Protecting paid AI APIs",
+        desc: "AI inference is expensive and easy to abuse. Every call goes through a secure server-side layer with rate limiting and per-user usage tracking — API keys never reach the browser.",
+      },
+      {
+        title: "Keeping generation honest",
+        desc: "Long AI calls can look like a hang, and unlimited free use burns budget. The UI shows progress clearly and enforces a fair daily quota, so users always know what's happening and how many generations they have left.",
+      },
+    ],
+    responsibilities: [
+      "Designed and built the full product — UI, API layer and database",
+      "Integrated TTS, text-to-image and voice-effect AI pipelines",
+      "Added authentication, per-user quotas and rate limiting for safe public use",
+      "Hardened the platform's security and shipped the v3.0 release",
     ],
     architectureFlow: [
       {
@@ -59,7 +83,12 @@ export const featuredProjects = [
     image: "/projects/genai.webp",
     role: "Full Stack Developer & AI Integrator",
     year: "2025",
-    results: [],
+    type: "AI SaaS — Recruitment",
+    results: [
+      { value: "3", label: "Pipeline stages — parse, match, outreach" },
+      { value: "100%", label: "Matches include a scoring rationale" },
+      { value: "Skill-gap", label: "Analytics built into every match report" },
+    ],
     overview:
       "Hiring automation platform that matches resumes to roles with generative AI, auto-drafts candidate emails, and turns skill data into recruiter-friendly insights.",
     features: [
@@ -67,6 +96,26 @@ export const featuredProjects = [
       "Automated email sequences for shortlisted candidates",
       "Skill-gap analytics dashboard for recruiters",
       "Next.js App Router + Neon serverless Postgres",
+    ],
+    challenges: [
+      {
+        title: "Messy, unstructured resumes",
+        desc: "Resumes arrive as PDFs in every format imaginable. The ingestion step parses them into structured candidate data — skills, experience, contact details — before any matching happens.",
+      },
+      {
+        title: "Matching recruiters can trust",
+        desc: "A bare similarity score isn't enough to act on. The LLM layer returns a suitability rationale and a skill-gap report with every score, so recruiters see why a candidate fits — or doesn't.",
+      },
+      {
+        title: "Outreach without the busywork",
+        desc: "Shortlisted candidates get personalized email sequences drafted automatically from their profile and the role, turning hours of manual writing into a review-and-send step.",
+      },
+    ],
+    responsibilities: [
+      "Built the Next.js app and the Neon Postgres data model",
+      "Designed the resume-parsing and semantic matching pipeline",
+      "Integrated LLM scoring with explainable skill-gap reporting",
+      "Built the automated candidate email sequences",
     ],
     architectureFlow: [
       {
@@ -99,7 +148,12 @@ export const featuredProjects = [
     image: "/projects/job-recruitment.webp",
     role: "Frontend Developer",
     year: "2024",
-    results: [],
+    type: "Job Portal",
+    results: [
+      { value: "2-sided", label: "Employers and candidates in one product" },
+      { value: "End-to-end", label: "Post → apply → track in a single flow" },
+      { value: "Responsive", label: "Full experience on mobile and desktop" },
+    ],
     overview:
       "A modern job portal connecting employers and candidates — searchable listings, rich profiles, and a clean application pipeline end to end.",
     features: [
@@ -107,6 +161,40 @@ export const featuredProjects = [
       "Candidate profiles with applied-jobs tracking",
       "Application status pipeline for recruiters",
       "Fully responsive UI with Tailwind design system",
+    ],
+    challenges: [
+      {
+        title: "Two audiences, one clean flow",
+        desc: "Employers and candidates need opposite things from the same product. I split the experience into role-based views — posting and pipeline tools for employers, profiles and application tracking for candidates.",
+      },
+      {
+        title: "Application chaos",
+        desc: "Without structure, applications scatter across inboxes and get lost. A single status pipeline keeps every application in one place, with a visible stage for both sides.",
+      },
+    ],
+    responsibilities: [
+      "Built the frontend with React, Next.js and TypeScript",
+      "Implemented employer listings and candidate profiles",
+      "Built the application status tracking pipeline",
+      "Delivered a fully responsive Tailwind design system",
+    ],
+    architectureFlow: [
+      {
+        step: "Job Listings",
+        desc: "Employers post roles with requirements & details",
+      },
+      {
+        step: "Search & Filter",
+        desc: "Candidates find openings that match their profile",
+      },
+      {
+        step: "Applications",
+        desc: "Profile-based submissions in a few clicks",
+      },
+      {
+        step: "Status Pipeline",
+        desc: "Recruiters move candidates through hiring stages",
+      },
     ],
   },
   {
@@ -121,7 +209,12 @@ export const featuredProjects = [
     image: "/projects/business-help.webp",
     role: "Full Stack Developer",
     year: "2025",
-    results: [],
+    type: "Multi-tenant SaaS — AI Chat & Voice",
+    results: [
+      { value: "2", label: "Channels — AI chat & voice in one widget" },
+      { value: "Multi-tenant", label: "Per-business branding, SMTP & admin" },
+      { value: "Auto-booked", label: "Appointments synced via Calendly" },
+    ],
     overview:
       "A white-label, multi-tenant SaaS that gives any business an AI chat + voice-call widget — visitors chat or talk to an AI agent that answers questions and books appointments, while owners manage everything from one admin panel.",
     features: [
@@ -129,6 +222,26 @@ export const featuredProjects = [
       "Calendly sync for automatic appointment booking",
       "Multi-tenant admin with per-business SMTP and branding",
       "Next.js API with Prisma and secure session handling",
+    ],
+    challenges: [
+      {
+        title: "One codebase, many businesses",
+        desc: "Every tenant needs its own branding, email setup and data — with zero leakage between businesses. The multi-tenant architecture isolates each tenant's data, SMTP credentials and widget configuration.",
+      },
+      {
+        title: "Voice that actually books",
+        desc: "A voice agent that only chats is a demo. The Retell AI agent is wired into Calendly, so a conversation can end with a real appointment on the business's calendar.",
+      },
+      {
+        title: "A widget that drops into any website",
+        desc: "The chat + voice widget has to embed into arbitrary client sites without breaking their layout, so it ships as a self-contained embed with its own scoped styling and configuration.",
+      },
+    ],
+    responsibilities: [
+      "Architected the multi-tenant SaaS and its admin panel",
+      "Integrated Retell AI voice and chat agents",
+      "Wired Calendly appointment booking into the agent flow",
+      "Built the Next.js API with Prisma and secure session handling",
     ],
     architectureFlow: [
       {
@@ -161,7 +274,12 @@ export const featuredProjects = [
     image: "/projects/events-agent.webp",
     role: "AI Engineer & Full Stack Developer",
     year: "2026",
-    results: [],
+    type: "Client Project — AI Agent",
+    results: [
+      { value: "3", label: "Search sources — SerpAPI, Tavily & PredictHQ" },
+      { value: "Live", label: "Results stream in as events are verified" },
+      { value: "AI-verified", label: "Every event checked & deduped by Claude" },
+    ],
     overview:
       "An events discovery agent built for a client: it searches multiple sources city by city, verifies and deduplicates events with Claude, enriches them, and streams new finds live into the dashboard as they are confirmed.",
     features: [
@@ -169,6 +287,26 @@ export const featuredProjects = [
       "Claude Haiku verification, dedupe and structured extraction",
       "Live streaming UI with real-time counters and NEW badges",
       "PostgreSQL upserts with per-category targeted search",
+    ],
+    challenges: [
+      {
+        title: "The same event, listed five different ways",
+        desc: "Sources disagree on names, dates and venues, and duplicates flood the results. Claude Haiku verifies each candidate event, merges duplicates and extracts one clean, structured record.",
+      },
+      {
+        title: "Search costs that scale with cities",
+        desc: "Blanket searching burns API quota fast. Queries are targeted per city and per category, and results are upserted into PostgreSQL — nothing is fetched or stored twice.",
+      },
+      {
+        title: "Making a long search feel instant",
+        desc: "A full city scan takes time, so verified events stream into the UI as they're confirmed — live counters and NEW badges show real progress instead of a spinner.",
+      },
+    ],
+    responsibilities: [
+      "Built the multi-source discovery pipeline — SerpAPI, Tavily, PredictHQ",
+      "Designed the Claude verification, dedupe and extraction flow",
+      "Built the live-streaming React dashboard",
+      "Modeled PostgreSQL upserts for clean, duplicate-free event data",
     ],
     architectureFlow: [
       {
@@ -201,7 +339,12 @@ export const featuredProjects = [
     image: "/projects/portfolio.webp",
     role: "Design & Development",
     year: "2026",
-    results: [],
+    type: "Personal Portfolio — React SPA",
+    results: [
+      { value: "60fps", label: "Animation target on capable devices" },
+      { value: "0", label: "External 3D assets — every scene is procedural" },
+      { value: "13", label: "Sections on the home page, plus detail routes" },
+    ],
     overview:
       "The site you're looking at — React 19 + Tailwind v4 portfolio with procedural Three.js scenes, scroll-driven storytelling, and low-end device fallbacks. Zero external 3D assets.",
     features: [
@@ -209,6 +352,22 @@ export const featuredProjects = [
       "Scroll-linked GSAP animations via Lenis smooth scroll",
       "60fps on capable devices, graceful fallbacks on low-end",
       "SEO-ready: JSON-LD, OG tags, agent metadata (webmcp)",
+    ],
+    challenges: [
+      {
+        title: "Cinematic motion that low-end phones survive",
+        desc: "Heavy 3D and scroll animation can exclude half the audience. The site detects device capability and swaps in graceful fallbacks, keeping the experience smooth on every device.",
+      },
+      {
+        title: "SEO on a JavaScript single-page app",
+        desc: "Client-rendered pages are invisible to some crawlers and AI search engines. Key routes ship prerendered shells with per-page metadata, JSON-LD schema and a complete sitemap.",
+      },
+    ],
+    responsibilities: [
+      "Designed and built the entire site — React 19, Tailwind v4, GSAP",
+      "Built procedural Three.js scenes with zero external assets",
+      "Implemented device-aware performance fallbacks",
+      "Set up SEO end to end — metadata, JSON-LD, sitemaps, prerendering",
     ],
   },
 ];
