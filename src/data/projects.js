@@ -398,23 +398,52 @@ export const GITHUB_USERNAME = "abdullahasim1";
 
 /* Total repos (public + private) — GitHub ki public API private repos
    nahi dikhati, is liye ye number authenticated GitHub search se
-   verify karke yahan rakha hai (32 total: 19 public + 13 private,
-   verified 2026-11-03). Nayi repo bane to number update karna. */
+   verify karke yahan rakha hai (32 total: 21 public + 11 private,
+   verified 2026-11-03; Events wali dono repos usi din public hui).
+   Nayi repo bane to number update karna. */
 export const TOTAL_REPO_COUNT = 32;
 
-/* Repos grid me NA dikhne wali repos — khaali/practice/personal ya
-   kisi aur ki repos. Sirf asal content wali repos show hoti hain
-   (Abdullah ki hidayat, 2026-11-03). */
-export const HIDDEN_REPOS = new Set([
-  "abdullahasim1", // profile README repo — project nahi
-  "Saif-Portfolio", // kisi aur ka portfolio
-  "React-Proj", // practice repo
-  "Adnois", // description-less experiment
-  "autovance", // description-less experiment
-  "HomeServices", // 11KB stub
-  "codealpha_age-calculator", // 1KB internship task
-  "birthday-main", // personal page
-]);
+/* Repos grid me SIRF ye repos, isi order me show hoti hain
+   (Abdullah ki hidayat, 2026-11-03 — baqi sab hide). */
+export const CURATED_REPOS = [
+  "four-ai-ai-powered-voice-image-generation-platform",
+  "Job-Recuitment",
+  "GENAI",
+  "abdullah-portfolio",
+  "events-agent-frontend",
+  "events-agents-backend",
+];
+
+/* Events repos ke GitHub par descriptions nahi hain — ye static
+   descriptions unke cards par overlay hoti hain, aur API se repo na
+   mile to pura card bhi isi data se banta hai (repos 2026-11-03 ko
+   public hui; descriptions yahin se atay hain). */
+export const STATIC_REPOS = {
+  "events-agent-frontend": {
+    id: "static-events-agent-frontend",
+    name: "events-agent-frontend",
+    html_url: "https://github.com/abdullahasim1/events-agent-frontend",
+    description:
+      "AI agent that discovers events across the web — multi-source search, Claude verification & dedupe, enrichment and live-streamed results.",
+    language: "JavaScript",
+    stargazers_count: 0,
+    forks_count: 0,
+    pushed_at: "2026-10-09T00:00:00Z",
+    homepage: "",
+  },
+  "events-agents-backend": {
+    id: "static-events-agents-backend",
+    name: "events-agents-backend",
+    html_url: "https://github.com/abdullahasim1/events-agents-backend",
+    description:
+      "Backend API for the Events Discovery Agent — multi-source event search (SerpAPI, Tavily, PredictHQ), Claude verification & dedupe, streamed to the frontend.",
+    language: "JavaScript",
+    stargazers_count: 0,
+    forks_count: 0,
+    pushed_at: "2026-10-11T00:00:00Z",
+    homepage: "",
+  },
+};
 
 export const languageColors = {
   JavaScript: "#f1e05a",

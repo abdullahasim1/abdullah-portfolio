@@ -14,7 +14,8 @@ import {
   projectSlug,
   GITHUB_USERNAME,
   TOTAL_REPO_COUNT,
-  HIDDEN_REPOS,
+  CURATED_REPOS,
+  STATIC_REPOS,
 } from "../data/projects";
 
 /* Featured project categories — filter tabs ke liye (repoName keyed) */
@@ -675,16 +676,18 @@ export function ProjectsPage({ embedded = false } = {}) {
   const { repos, profile, loading, error, rateLimited, retry } = useGithubRepos();
   const [activeFilter, setActiveFilter] = useState("All");
 
-  const featuredRepoNames = useMemo(
-    () => new Set(featuredProjects.map((p) => p.repoName)),
-    []
-  );
-
+  /* Grid = sirf CURATED_REPOS (Abdullah ki list), usi order me.
+     Data live API se; jin repos ki API description khaali ho
+     (Events wali dono), un par static description overlay hoti hai. */
   const otherRepos = useMemo(() => {
-    return repos.filter(
-      (repo) => !featuredRepoNames.has(repo.name) && !HIDDEN_REPOS.has(repo.name)
-    );
-  }, [repos, featuredRepoNames]);
+    const byName = new Map(repos.map((r) => [r.name, r]));
+    return CURATED_REPOS.map((name) => {
+      const api = byName.get(name);
+      const stat = STATIC_REPOS[name];
+      if (api && stat && !api.description) return { ...api, description: stat.description };
+      return api || stat;
+    }).filter(Boolean);
+  }, [repos]);
 
   const languages = useMemo(() => {
     const langs = new Set(otherRepos.map((r) => r.language).filter(Boolean));
