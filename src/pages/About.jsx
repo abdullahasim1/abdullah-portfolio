@@ -82,13 +82,13 @@ function About() {
 
         <div className="grid lg:grid-cols-12 gap-10 items-stretch">
           {/* Photo — board badges: white AWS pill + dark Generative AI pill */}
-          <div className="reveal lg:col-span-3 max-w-xs mx-auto w-full lg:max-w-none h-full">
-            <TiltCard className="h-full">
-            <div className="sweep-host relative h-full rounded-[28px] overflow-hidden border border-violet-300/50 light:border-violet-200 shadow-[0_30px_60px_-25px_rgba(124,58,237,0.45)]">
+          <div className="reveal lg:col-span-3 max-w-xs mx-auto w-full lg:max-w-none self-start">
+            <TiltCard>
+            <div className="sweep-host relative rounded-[28px] overflow-hidden border border-violet-300/50 light:border-violet-200 shadow-[0_30px_60px_-25px_rgba(124,58,237,0.45)]">
               <img
                 src="/IMG-20240224-WA0006.jpg"
                 alt="Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer"
-                className="w-full aspect-[3/4] object-cover lg:aspect-auto lg:h-full"
+                className="w-full aspect-[3/4] object-cover"
                 loading="lazy"
                 width="720"
                 height="960"
