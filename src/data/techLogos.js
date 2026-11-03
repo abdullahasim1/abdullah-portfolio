@@ -49,7 +49,9 @@ export const techLogos = [
   { name: "n8n", icon: pick(siN8n) },
   { name: "Claude", icon: pick(siClaude) },
   { name: "OpenAI", mono: { label: "AI", from: "#14b8a6", to: "#0ea5e9" } },
-  { name: "AWS", mono: { label: "AWS", from: "#ff9900", to: "#f97316" } },
+  /* AWS ka asal logo (public/logos/aws.svg — navy wordmark + orange smile);
+     dark theme ke liye white variant, warna navy text dark tile par gayab. */
+  { name: "AWS", img: "/logos/aws.svg", imgDark: "/logos/aws-white.svg" },
   { name: "Tailwind CSS", icon: pick(siTailwindcss) },
   { name: "GSAP", icon: pick(siGsap) },
 ];
@@ -61,7 +63,7 @@ export const techStack = [
   { name: "Node.js", icon: pick(siNodedotjs) },
   { name: "TypeScript", icon: pick(siTypescript) },
   { name: "Tailwind CSS", icon: pick(siTailwindcss) },
-  { name: "AWS", mono: { label: "AWS", from: "#ff9900", to: "#f97316" } },
+  { name: "AWS", img: "/logos/aws.svg", imgDark: "/logos/aws-white.svg" },
   { name: "PostgreSQL", icon: pick(siPostgresql) },
   { name: "MySQL", icon: pick(siMysql) },
   { name: "Docker", icon: pick(siDocker) },

@@ -18,49 +18,21 @@ function formatDate(iso) {
 
 /* ---------------- Board cards ---------------- */
 
-/* NOTE: post ki OG images (/blog/<slug>.jpg) generator se clipped banti hain
-   (title canvas se bahar) — is liye cards par designed gradient cover use
-   hota hai. OG images sirf social-share meta me rehti hain. */
-const COVER_ICONS = {
-  briefcase:
-    "M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m16.5 0a2.18 2.18 0 01-1.5-1.523M3.75 14.15a2.18 2.18 0 001.5-1.523m0 0a2.18 2.18 0 01-.75-1.661V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0",
-  share:
-    "M7.217 10.907a2.752 2.752 0 100 5.504 2.752 2.752 0 000-5.504zm9.875-5.659a2.754 2.754 0 10-1.698-4.947 2.754 2.754 0 001.698 4.947zM4.38 13.05l6.066-3.391a2.772 2.772 0 01-.051-.973l-6.61-3.691a2.752 2.752 0 10-.905 1.618l6.41 3.58a2.752 2.752 0 01.698-.028l6.25 3.485a2.753 2.753 0 101.032-1.85l-6.776-3.783a2.772 2.772 0 01-.05.973L4.38 13.05z",
-  cloud:
-    "M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z",
-  bolt: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z",
-  code: "M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5",
-  pencil:
-    "M16.862 3.487a2.25 2.25 0 113.182 3.182L7.5 19.213 3 21l1.787-4.5L16.862 3.487z",
-};
-
-function coverIconFor(post) {
-  const hay = `${post.slug} ${post.tags.join(" ")}`.toLowerCase();
-  if (hay.includes("hiring") || hay.includes("case study")) return COVER_ICONS.briefcase;
-  if (hay.includes("n8n") || hay.includes("make")) return COVER_ICONS.share;
-  if (hay.includes("aws")) return COVER_ICONS.cloud;
-  if (hay.includes("lcp") || hay.includes("performance")) return COVER_ICONS.bolt;
-  if (hay.includes("react") || hay.includes("vite") || hay.includes("three")) return COVER_ICONS.code;
-  return COVER_ICONS.pencil;
-}
-
-function PostCover({ post, className = "", iconClass = "h-10 w-10" }) {
-  const filled = coverIconFor(post) === COVER_ICONS.share || coverIconFor(post) === COVER_ICONS.bolt;
+/* Har post ki asal cover image — build time par generated title card
+   (/blog/<slug>.jpg, scripts/build-content.mjs ka OG generator, fixed
+   layout). Peeche gradient fallback hai taake image load hone tak
+   card khaali na lage. */
+function PostCover({ post, className = "", imgClass = "" }) {
   return (
-    <span className={`block overflow-hidden ${className}`}>
-      <span className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-800 transition-transform duration-500 group-hover:scale-[1.06]">
-        <span aria-hidden className="absolute -left-6 -top-8 h-24 w-24 rounded-full bg-white/10 blur-md" />
-        <span aria-hidden className="absolute -bottom-10 -right-4 h-28 w-28 rounded-full bg-fuchsia-400/20 blur-md" />
-        {filled ? (
-          <svg viewBox="0 0 24 24" className={`relative ${iconClass} text-white/90`} fill="currentColor" aria-hidden>
-            <path d={coverIconFor(post)} />
-          </svg>
-        ) : (
-          <svg viewBox="0 0 24 24" className={`relative ${iconClass} text-white/90`} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d={coverIconFor(post)} />
-          </svg>
-        )}
-      </span>
+    <span className={`relative block overflow-hidden bg-gradient-to-br from-violet-700 via-purple-800 to-indigo-950 ${className}`}>
+      <img
+        src={`/blog/${post.slug}.jpg`}
+        alt={post.title}
+        loading="lazy"
+        width="1200"
+        height="630"
+        className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06] ${imgClass}`}
+      />
     </span>
   );
 }
@@ -86,9 +58,9 @@ const cardShell =
 function FeaturedCard({ post }) {
   return (
     <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex flex-col overflow-hidden sm:flex-row`}>
-      <span className="relative block shrink-0 sm:w-[46%]">
-        <PostCover post={post} className="h-52 w-full sm:h-full" iconClass="h-16 w-16" />
-        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-lg">
+      <span className="relative block shrink-0 p-5 pb-0 sm:w-[54%] sm:self-center sm:p-6 sm:pr-0">
+        <PostCover post={post} className="aspect-[1200/630] w-full rounded-2xl" />
+        <span className="absolute left-9 top-9 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-lg sm:left-10 sm:top-10">
           <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
             <path d="M11.48 3.5a.56.56 0 011.04 0l2.13 5.11a.56.56 0 00.47.35l5.52.44c.5.04.7.66.32.99l-4.2 3.6a.56.56 0 00-.18.55l1.28 5.38a.56.56 0 01-.83.6l-4.72-2.88a.56.56 0 00-.59 0l-4.73 2.88a.56.56 0 01-.83-.6l1.29-5.38a.56.56 0 00-.19-.55l-4.2-3.6a.56.56 0 01.33-.99l5.51-.44a.56.56 0 00.48-.35L11.48 3.5z" />
           </svg>
@@ -122,7 +94,7 @@ function FeaturedCard({ post }) {
 function SideCard({ post }) {
   return (
     <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex gap-5 p-5`}>
-      <PostCover post={post} className="hidden h-[118px] w-[132px] shrink-0 rounded-2xl min-[420px]:block" />
+      <PostCover post={post} className="hidden h-[118px] w-[196px] shrink-0 rounded-2xl min-[420px]:block" imgClass="object-left" />
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="text-xs font-medium text-slate-400">
           {formatDate(post.date)} &nbsp;·&nbsp; {post.readingMinutes} min read
@@ -145,19 +117,15 @@ function SideCard({ post }) {
 
 function RowCard({ post }) {
   return (
-    <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex flex-col p-5`}>
-      <span className="flex gap-4">
-        <PostCover post={post} className="h-[104px] w-[104px] shrink-0 rounded-2xl" />
-        <span className="min-w-0">
-          <span className="text-xs font-medium text-slate-400">
-            {formatDate(post.date)} &nbsp;·&nbsp; {post.readingMinutes} min read
-          </span>
-          <span className="mt-1.5 line-clamp-3 block font-display text-[16px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-violet-700 dark:text-white dark:group-hover:text-violet-300">
-            {post.title}
-          </span>
-        </span>
+    <a href={`/blog/${post.slug}`} data-cursor="hover" className={`${cardShell} flex h-full flex-col p-5`}>
+      <PostCover post={post} className="h-44 w-full shrink-0 rounded-2xl" />
+      <span className="mt-4 text-xs font-medium text-slate-400">
+        {formatDate(post.date)} &nbsp;·&nbsp; {post.readingMinutes} min read
       </span>
-      <span className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+      <span className="mt-1.5 line-clamp-2 block font-display text-[17px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-violet-700 dark:text-white dark:group-hover:text-violet-300">
+        {post.title}
+      </span>
+      <span className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
         {post.description}
       </span>
       <span className="mt-4 flex items-center justify-between gap-3">
@@ -283,15 +251,6 @@ function Blog() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </button>
-          <a
-            href="/rss.xml"
-            className="inline-flex items-center gap-2.5 rounded-full border border-violet-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-violet-400 hover:text-violet-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
-          >
-            <svg className="h-[18px] w-[18px] text-violet-600 dark:text-violet-300" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 19.5v-.75a7.5 7.5 0 00-7.5-7.5H4.5m0-6.75c.75 0 1.477.083 2.175.238A13.495 13.495 0 0119.5 17.325c0 .578-.03 1.152-.088 1.718a.75.75 0 01-1.328.553A15.883 15.883 0 0012.75 12.5m-8.25 7.5h-.75a.75.75 0 01-.75-.75v-.008c0-.414.336-.75.75-.75h.75a.75.75 0 01.75.75v.008c0 .414-.336.75-.75.75z" transform="rotate(90 12 12)" />
-            </svg>
-            Subscribe via RSS
-          </a>
         </div>
       </div>
     </section>

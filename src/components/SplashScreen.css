@@ -254,8 +254,8 @@
 .aa-tech-next { right: -15%; top: 40%; animation: aa-tile-float 7.5s -3s ease-in-out infinite; }
 .aa-react-mark, .aa-code-mark, .aa-cloud-mark, .aa-stack-mark { width: 58%; height: 58%; }
 .aa-code-mark, .aa-cloud-mark, .aa-stack-mark { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-.aa-aws-mark { display: flex; flex-direction: column; align-items: center; color: #182341; font-size: clamp(21px, 2.7vw, 32px); font-weight: 750; letter-spacing: -2px; font-family: Inter, sans-serif; }
-.aa-aws-mark i { width: 43px; height: 12px; margin-top: -2px; border-bottom: 3px solid #ff9900; border-radius: 0 0 60% 60%; transform: rotate(7deg); }
+.aa-aws-mark { display: flex; flex-direction: column; align-items: center; }
+.aa-aws-mark img { width: clamp(56px, 6vw, 80px); height: auto; display: block; }
 .aa-next-mark { width: 48%; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; color: #fff; background: #11172b; font-size: clamp(25px, 3.4vw, 39px); font-weight: 300; font-family: Georgia, serif; }
 
 .aa-intro { text-align: center; margin-top: clamp(2px, .7vh, 12px); animation: aa-text-rise 850ms 250ms both; }

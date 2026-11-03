@@ -243,20 +243,39 @@ function writeOgImages(posts) {
   };
 
   posts.forEach((post) => {
-    const titleLines = wrapText(post.title, 38);
+    /* Layout (fixed 2026-11-03): pehle title 54px par 38 chars/line wrap
+       hota tha — lines canvas se bahar jaati thi aur URL pehli line par
+       overlap karta tha. Ab: 56px font, 32 chars/line (safe width),
+       title block vertically centered, kicker upar, URL neeche footer me. */
+    const titleLines = wrapText(post.title, 32);
+    const lineHeight = 74;
+    const firstBaseline = Math.round(330 - ((titleLines.length - 1) * lineHeight) / 2);
     const svg = `
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#05060a"/>
-      <stop offset="100%" stop-color="#0b1222"/>
+      <stop offset="0%" stop-color="#0a0618"/>
+      <stop offset="100%" stop-color="#1d1042"/>
     </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#d946ef"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#g)"/>
-  <text x="60" y="300" font-family="DejaVu Sans, sans-serif" font-size="54" font-weight="bold" fill="#f1f5f9">
-    ${titleLines.map((t, i) => `<tspan x="60" dy="${(i * 80) + 80}">${escapeXml(t)}</tspan>`).join("\n")}
+  <circle cx="1080" cy="60" r="340" fill="url(#glow)"/>
+  <circle cx="90" cy="590" r="260" fill="url(#glow)"/>
+  <text x="60" y="94" font-family="DejaVu Sans, sans-serif" font-size="25" letter-spacing="5" fill="#a78bfa">ABDULLAH BIN ASIM &#183; BLOG</text>
+  <rect x="60" y="${firstBaseline - 82}" width="64" height="7" rx="3.5" fill="url(#accent)"/>
+  <text x="60" y="${firstBaseline}" font-family="DejaVu Sans, sans-serif" font-size="56" font-weight="bold" fill="#f1f5f9">
+    ${titleLines.map((t, i) => `<tspan x="60" dy="${i === 0 ? 0 : lineHeight}">${escapeXml(t)}</tspan>`).join("\n")}
   </text>
-  <text x="60" y="380" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#67e8f9">${SITE_URL}</text>
+  <text x="60" y="556" font-family="DejaVu Sans, sans-serif" font-size="24" fill="#94a3b8">${SITE_URL.replace("https://", "")}</text>
+  <rect x="0" y="620" width="1200" height="10" fill="url(#accent)"/>
 </svg>`;
 
     const imagePath = path.join(ogDir, `${post.slug}.jpg`);
@@ -369,6 +388,7 @@ function writeStaticBlogPages(posts) {
         <p class="meta"><time datetime="${post.date}">${new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</time> &middot; ${post.readingMinutes} min read</p>
         <h1>${escapeXml(post.title)}</h1>
         <p>${post.tags.map((tag) => `<span class="tag">${escapeXml(tag)}</span>`).join(" ")}</p>
+        <img src="/blog/${post.slug}.jpg" alt="${escapeXml(post.title)}" width="1200" height="630" style="margin:16px 0 4px" />
         <div class="prose-content">${post.html}</div>
       </article>
       <div class="cta">
@@ -377,7 +397,7 @@ function writeStaticBlogPages(posts) {
         <a href="/contact">Start a Project</a>
       </div>
     </main>
-    <footer class="foot"><a href="/">Home</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/rss.xml">Subscribe via RSS</a></footer>
+    <footer class="foot"><a href="/">Home</a> &middot; <a href="/blog">Blog</a></footer>
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"BlogPosting","headline":"${escapeXml(post.title)}","description":"${escapeXml(post.description)}","datePublished":"${post.date}","url":"${canonical}","author":{"@id":"${SITE_URL}/#person"},"publisher":{"@id":"${SITE_URL}/#person"},"mainEntityOfPage":"${canonical}","image":"${ogImage}"}
     </script>

@@ -13,6 +13,8 @@ import {
   githubOgImage,
   projectSlug,
   GITHUB_USERNAME,
+  TOTAL_REPO_COUNT,
+  HIDDEN_REPOS,
 } from "../data/projects";
 
 /* Featured project categories — filter tabs ke liye (repoName keyed) */
@@ -679,13 +681,15 @@ export function ProjectsPage({ embedded = false } = {}) {
   );
 
   const otherRepos = useMemo(() => {
-    return repos.filter((repo) => !featuredRepoNames.has(repo.name));
+    return repos.filter(
+      (repo) => !featuredRepoNames.has(repo.name) && !HIDDEN_REPOS.has(repo.name)
+    );
   }, [repos, featuredRepoNames]);
 
   const languages = useMemo(() => {
-    const langs = new Set(repos.map((r) => r.language).filter(Boolean));
+    const langs = new Set(otherRepos.map((r) => r.language).filter(Boolean));
     return ["All", ...Array.from(langs).sort()];
-  }, [repos]);
+  }, [otherRepos]);
 
   const filteredRepos = useMemo(() => {
     if (activeFilter === "All") return otherRepos;
@@ -710,7 +714,8 @@ export function ProjectsPage({ embedded = false } = {}) {
               My GitHub Repositories
             </h2>
             <p className="text-slate-400 light:text-slate-500 max-w-xl leading-relaxed">
-              A collection of my open-source work, projects and experiments.
+              Selected repositories with real, shipped content — from {TOTAL_REPO_COUNT} total
+              projects across my GitHub, public and private.
             </p>
             <span className="block h-1 w-14 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" aria-hidden="true" />
           </div>
@@ -745,7 +750,7 @@ export function ProjectsPage({ embedded = false } = {}) {
             <div className="min-w-0">
               <div className="font-display font-bold text-[19px] text-slate-100 light:text-slate-900">@{GITHUB_USERNAME}</div>
               <div className="text-[13px] text-slate-400 light:text-slate-500">
-                {loading ? "Loading…" : error ? "Live stats unavailable" : `${profile?.public_repos ?? repos.length} public repos · ${profile?.followers ?? "—"} followers`}
+                {loading ? "Loading…" : error ? "Live stats unavailable" : `${TOTAL_REPO_COUNT} total repos · ${profile?.public_repos ?? "—"} public · ${profile?.followers ?? "—"} followers`}
               </div>
             </div>
           </div>
@@ -761,9 +766,9 @@ export function ProjectsPage({ embedded = false } = {}) {
             </span>
             <span className="leading-tight">
               <span className="block font-display text-[19px] font-bold text-slate-100 light:text-slate-900">
-                {loading || error ? "—" : profile?.public_repos ?? repos.length}
+                {TOTAL_REPO_COUNT}
               </span>
-              <span className="block text-[12px] text-slate-400 light:text-slate-500">Public Repos</span>
+              <span className="block text-[12px] text-slate-400 light:text-slate-500">Total Repositories</span>
             </span>
           </div>
 
@@ -815,7 +820,7 @@ export function ProjectsPage({ embedded = false } = {}) {
           </h3>
           <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[13px] font-medium text-slate-300 light:text-slate-600">
             <span className={`h-2 w-2 rounded-full ${error ? "bg-amber-400" : "bg-emerald-500"}`} />
-            {loading ? "Fetching…" : error ? "Unavailable right now" : `${filteredRepos.length} repositories · live from GitHub`}
+            {loading ? "Fetching…" : error ? "Unavailable right now" : `${filteredRepos.length} curated repositories · live from GitHub`}
           </span>
         </div>
 

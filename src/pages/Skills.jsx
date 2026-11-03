@@ -55,13 +55,13 @@ const SKILLS = [
   // AI / GenAI
   { name: "Claude (Anthropic)", cat: "AI / GenAI", icon: pick(siClaude) },
   { name: "OpenAI APIs", cat: "AI / GenAI", ...mono("AI", "#14b8a6", "#0ea5e9") },
-  { name: "AWS Bedrock", cat: "AI / GenAI", ...mono("AWS", "#ff9900", "#f97316") },
+  { name: "AWS Bedrock", cat: "AI / GenAI", img: "/logos/aws.svg", imgDark: "/logos/aws-white.svg" },
   { name: "n8n", cat: "AI / GenAI", icon: pick(siN8n) },
   { name: "Make.com", cat: "AI / GenAI", icon: pick(siMake) },
   { name: "GoHighLevel", cat: "AI / GenAI", ...mono("GHL", "#2dd4bf", "#22c55e") },
   { name: "Prompt Engineering", cat: "AI / GenAI", ...mono("✦", "#a855f7", "#6366f1") },
   // Cloud (AWS)
-  { name: "AWS", cat: "Cloud (AWS)", ...mono("AWS", "#ff9900", "#f97316") },
+  { name: "AWS", cat: "Cloud (AWS)", img: "/logos/aws.svg", imgDark: "/logos/aws-white.svg" },
   { name: "Lambda", cat: "Cloud (AWS)", ...mono("λ", "#ff9900", "#f97316") },
   { name: "S3", cat: "Cloud (AWS)", ...mono("S3", "#84cc16", "#22c55e") },
   { name: "DynamoDB", cat: "Cloud (AWS)", ...mono("DB", "#38bdf8", "#6366f1") },
@@ -141,7 +141,12 @@ function SkillTile({ skill, index }) {
         className="animate-[floatY_5s_ease-in-out_infinite] inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-violet-500/10 light:bg-violet-50 border border-violet-400/15 light:border-violet-100"
         style={{ animationDelay: `${(index % 6) * 0.4}s` }}
       >
-        {skill.mono ? (
+        {skill.img ? (
+          <span className="flex w-[38px] items-center justify-center">
+            <img src={skill.img} alt="" aria-hidden="true" className="max-h-[17px] w-auto max-w-[38px] object-contain dark:hidden" />
+            <img src={skill.imgDark} alt="" aria-hidden="true" className="hidden max-h-[17px] w-auto max-w-[38px] object-contain dark:block" />
+          </span>
+        ) : skill.mono ? (
           <span
             className="inline-flex h-[22px] items-center justify-center rounded-md px-1 text-[9.5px] font-bold"
             style={{

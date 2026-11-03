@@ -66,7 +66,12 @@ function HeroChip({ item, className = "", delay = "0s" }) {
       className={`absolute inline-flex items-center gap-2 rounded-2xl glass-strong px-3.5 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y ${className}`}
       style={{ animationDelay: delay }}
     >
-      {item.mono ? (
+      {item.img ? (
+        <span className="inline-flex h-[22px] items-center">
+          <img src={item.img} alt="" aria-hidden="true" className="h-[15px] w-auto dark:hidden" />
+          <img src={item.imgDark} alt="" aria-hidden="true" className="hidden h-[15px] w-auto dark:block" />
+        </span>
+      ) : item.mono ? (
         <span
           className="inline-flex h-[22px] items-center justify-center rounded-md px-1.5 text-[9px] font-bold"
           style={{

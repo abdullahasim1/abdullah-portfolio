@@ -61,8 +61,7 @@ function RocketMark() {
 function AwsMark() {
   return (
     <div className="aa-aws-mark" aria-label="AWS">
-      <span>aws</span>
-      <i />
+      <img src="/logos/aws.svg" alt="AWS" />
     </div>
   );
 }

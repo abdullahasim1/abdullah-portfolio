@@ -46,7 +46,12 @@ function TiltIcon({ logo, size = 56, iconSize = 28, showLabel = false }) {
               "radial-gradient(80px circle at var(--mx, 50%) var(--my, 50%), rgba(34,211,238,0.20), transparent 65%)",
           }}
         />
-        {logo.icon ? (
+        {logo.img ? (
+          <span className="pop-3d relative z-10 transition-transform duration-200 group-hover:scale-110" style={{ width: iconSize * 1.55 }}>
+            <img src={logo.img} alt="" aria-hidden="true" className="block w-full dark:hidden" />
+            <img src={logo.imgDark} alt="" aria-hidden="true" className="hidden w-full dark:block" />
+          </span>
+        ) : logo.icon ? (
           <svg
             viewBox="0 0 24 24"
             width={iconSize}

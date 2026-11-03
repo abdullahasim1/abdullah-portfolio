@@ -236,11 +236,9 @@ function Footer() {
                       AI
                     </span>
                   ) : t.aws ? (
-                    <span className="relative font-display text-xl font-extrabold lowercase leading-none text-slate-900 dark:text-white">
-                      aws
-                      <svg className="absolute -bottom-[7px] left-0 h-[6px] w-full text-[#FF9900]" viewBox="0 0 24 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                        <path d="M1 1.5 C 7 5.5, 17 5.5, 23 1.5" />
-                      </svg>
+                    <span className="flex items-center justify-center">
+                      <img src="/logos/aws.svg" alt="AWS" className="h-8 w-auto dark:hidden" />
+                      <img src="/logos/aws-white.svg" alt="AWS" className="hidden h-8 w-auto dark:block" />
                     </span>
                   ) : (
                     <svg

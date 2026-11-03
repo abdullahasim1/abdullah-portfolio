@@ -7,7 +7,12 @@ import { techStack } from "../data/techLogos";
 function StackTile({ item }) {
   return (
     <div className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-white/[0.03] light:bg-white border border-white/[0.06] light:border-slate-200/90 light:shadow-[0_10px_24px_-16px_rgba(76,29,149,0.35)] px-1 py-4 hover:border-violet-400/40 transition-colors">
-      {item.mono ? (
+      {item.img ? (
+        <span className="flex h-[27px] items-center justify-center">
+          <img src={item.img} alt="" aria-hidden="true" className="h-[21px] w-auto max-w-[56px] object-contain dark:hidden" />
+          <img src={item.imgDark} alt="" aria-hidden="true" className="hidden h-[21px] w-auto max-w-[56px] object-contain dark:block" />
+        </span>
+      ) : item.mono ? (
         <span
           className="inline-flex h-[26px] items-center justify-center rounded-md px-1.5 text-[10px] font-bold"
           style={{
@@ -98,10 +103,7 @@ function About() {
                 className="absolute inset-0 bg-gradient-to-t from-violet-500/25 via-transparent to-violet-400/10"
               />
               <span className="absolute top-3.5 right-3.5 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[12px] font-bold text-slate-800 shadow-[0_10px_24px_-10px_rgba(15,23,42,0.45)] float-y">
-                <span className="flex flex-col items-center leading-none text-[#232f3e]">
-                  <span className="text-[12px] font-extrabold tracking-tight">aws</span>
-                  <span className="mt-[1px] block h-[5px] w-6 rounded-b-full border-b-[2.5px] border-[#ff9900]" aria-hidden="true" />
-                </span>
+                <img src="/logos/aws.svg" alt="AWS" className="h-[17px] w-auto" />
                 AWS Certified
               </span>
               <span className="absolute bottom-3.5 left-3.5 inline-flex items-center gap-1.5 rounded-full bg-[#131a38] px-4 py-2 text-[12px] font-semibold text-white shadow-[0_12px_26px_-10px_rgba(19,26,56,0.8)] float-y" style={{ animationDelay: "0.8s" }}>
