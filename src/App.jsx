@@ -166,8 +166,19 @@ function RouteView({ introDone }) {
     if (isHome) {
       const homeMeta = metaForPath("/");
       if (homeMeta) applyPageMeta({ ...homeMeta, path: "/" });
-      if (alias) scrollToSectionNow(alias);
-      else if (!consumePendingSection()) scrollTopNow();
+      if (alias) {
+        /* Splash chal raha ho to scroll abhi mat karo — body lock mein
+           scroll gum ho jata tha aur user ghalat section par atak jata
+           tha. Pending rakh do; splash khatam hote hi Site wala effect
+           consume karke wahan le jayega. */
+        if (!introDone) {
+          try {
+            sessionStorage.setItem("aa-pending-section", alias);
+          } catch {}
+        } else {
+          scrollToSectionNow(alias);
+        }
+      } else if (!consumePendingSection()) scrollTopNow();
     } else {
       scrollTopNow();
       const meta = metaForPath(path);

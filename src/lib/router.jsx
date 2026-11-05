@@ -7,7 +7,32 @@ import { getLenis, scrollToSection } from "./smoothScroll";
 
 const RouterContext = createContext({ path: "/", navigate: () => {} });
 
+/* Section alias paths (/about, /contact waghera) — ye home one-pager
+   ke hi sections hain, alag pages nahi. */
+export const SECTION_ALIAS_IDS = [
+  "about",
+  "skills",
+  "services",
+  "projects",
+  "experience",
+  "certifications",
+  "process",
+  "blog",
+  "faq",
+  "contact",
+];
+
+export function isSectionAliasPath(path) {
+  const seg = path.split("/").filter(Boolean);
+  return seg.length === 1 && SECTION_ALIAS_IDS.includes(seg[0]);
+}
+
+/* Har nayi scroll command purani settle-loop ko cancel kar deti hai,
+   warna do loops aapas mein lar sakti hain. */
+let settleGen = 0;
+
 export function navigateTo(path) {
+  settleGen++;
   if (window.location.pathname === path) {
     scrollTopNow();
     return;
@@ -17,6 +42,7 @@ export function navigateTo(path) {
 }
 
 export function scrollTopNow() {
+  settleGen++;
   const lenis = getLenis();
   if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
   window.scrollTo(0, 0);
@@ -29,35 +55,66 @@ export function scrollToSectionNow(id) {
     scrollTopNow();
     return;
   }
-  /* Lazy sections mount hone par layout shift hota hai — pehli scroll
-     ke baad do correction passes, lekin sirf tab jab user ne scroll
-     takeover na kiya ho (landing position ke aas paas ho). */
-  /* Sections par scroll-mt-24 (96px) hai aur Lenis use bhi count karta
-     hai — offset -20 ke sath landing ~116px par hoti hai (navbar clear). */
-  let landingY = null;
-  const correct = () => {
-    if (landingY === null) return;
-    if (Math.abs(window.scrollY - landingY) > 250) return;
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (Math.abs(el.getBoundingClientRect().top - 116) > 160) {
-      scrollToSection(id, -20);
-    }
-  };
+  const gen = ++settleGen;
   let tries = 0;
   const attempt = () => {
+    if (gen !== settleGen) return;
     if (document.getElementById(id)) {
-      scrollToSection(id, -20);
-      setTimeout(() => {
-        landingY = window.scrollY;
-      }, 1350);
-      setTimeout(correct, 1600);
-      setTimeout(correct, 2900);
+      settleScroll(id, gen);
       return;
     }
-    if (tries++ < 30) setTimeout(attempt, 120);
+    if (tries++ < 40) setTimeout(attempt, 120);
   };
   attempt();
+}
+
+/* Lazy sections mount hone par layout shift hota hai — pehli landing
+   aksar ghalat section par rukti thi. Ye loop tab tak halki corrections
+   karta hai jab tak section apni jagah (navbar ke neeche ~116px) par
+   stable na ho jaye. User khud scroll kar le to loop ruk jata hai.
+   Sections par scroll-mt-24 (96px) hai — offset -20 ke sath landing
+   ~116px par hoti hai. */
+function settleScroll(id, gen) {
+  let lastCommandAt = 0;
+  let expectedY = null;
+  let stable = 0;
+  let ticks = 0;
+  const command = () => {
+    scrollToSection(id, -20);
+    lastCommandAt = Date.now();
+    setTimeout(() => {
+      if (gen === settleGen) expectedY = window.scrollY;
+    }, 1300);
+  };
+  command();
+  const timer = setInterval(() => {
+    if (gen !== settleGen) {
+      clearInterval(timer);
+      return;
+    }
+    ticks++;
+    const el = document.getElementById(id);
+    if (!el || ticks > 36) {
+      clearInterval(timer);
+      return;
+    }
+    /* Lenis ki scroll animation (~1.2s) chal rahi ho to beech mein
+       dobara command mat do — position abhi wahan ja rahi hai. */
+    if (Date.now() - lastCommandAt < 1300) return;
+    /* User ne landing spot se door scroll kar liya = takeover, ruk jao */
+    if (expectedY !== null && Math.abs(window.scrollY - expectedY) > 320) {
+      clearInterval(timer);
+      return;
+    }
+    const top = el.getBoundingClientRect().top;
+    if (Math.abs(top - 116) <= 20) {
+      stable++;
+      if (stable >= 2) clearInterval(timer);
+    } else {
+      stable = 0;
+      command();
+    }
+  }, 500);
 }
 
 export function goSection(id) {

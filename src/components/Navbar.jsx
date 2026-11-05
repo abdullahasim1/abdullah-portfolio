@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getSoundMuted, toggleSound, playClickSound } from "../lib/sound";
 import { getTheme, applyTheme } from "../lib/theme";
-import { Link, useRoute } from "../lib/router";
+import { Link, useRoute, isSectionAliasPath } from "../lib/router";
 
 /* Board design: har nav link ke sath chhota violet line icon */
 const ICONS = {
@@ -95,9 +95,21 @@ function Navbar() {
   const [spy, setSpy] = useState("home");
 
   useEffect(() => {
-    if (path !== "/") return;
+    /* Alias paths (/contact waghera) bhi home one-pager hi hain —
+       wahan bhi spy chale, warna koi link highlight hi nahi hota tha. */
+    if (path !== "/" && !isSectionAliasPath(path)) return;
     let raf = 0;
     const compute = () => {
+      /* Page ke bilkul aakhir mein spy line (scrollY+220) kabhi contact
+         ke top tak nahi pohanchti (footer beech mein hai) — bottom par
+         hamesha aakhri section (Contact) active rakho. */
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 120
+      ) {
+        setSpy("contact");
+        return;
+      }
       const y = window.scrollY + 220;
       let current = "home";
       for (const link of links) {
@@ -115,7 +127,7 @@ function Navbar() {
     };
     compute();
     // Lazy sections der se mount hote hain — offsets settle hone do
-    const timers = [600, 1600, 3000].map((ms) => setTimeout(compute, ms));
+    const timers = [600, 1600, 3000, 5000].map((ms) => setTimeout(compute, ms));
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
@@ -125,7 +137,7 @@ function Navbar() {
   }, [path]);
 
   const active =
-    path === "/"
+    path === "/" || isSectionAliasPath(path)
       ? spy
       : path.startsWith("/projects")
         ? "projects"

@@ -16,6 +16,11 @@ export const featuredProjects = [
     gradient: "from-violet-500 to-purple-600",
     emoji: "🤖",
     image: "/projects/four-ai.webp",
+    gallery: [
+      "/projects/four-ai.webp",
+      "/projects/four-ai-2.webp",
+      "/projects/four-ai-3.webp",
+    ],
     role: "Full Stack Developer",
     year: "2024",
     type: "AI Web Platform",
@@ -81,6 +86,11 @@ export const featuredProjects = [
     gradient: "from-sky-500 to-blue-600",
     emoji: "✨",
     image: "/projects/genai.webp",
+    gallery: [
+      "/projects/genai.webp",
+      "/projects/genai-2.webp",
+      "/projects/genai-3.webp",
+    ],
     role: "Full Stack Developer & AI Integrator",
     year: "2025",
     type: "AI SaaS — Recruitment",
@@ -146,6 +156,7 @@ export const featuredProjects = [
     gradient: "from-indigo-500 to-blue-600",
     emoji: "💼",
     image: "/projects/job-recruitment.webp",
+    gallery: ["/projects/job-recruitment.webp", "/projects/job-recruitment-2.webp"],
     role: "Frontend Developer",
     year: "2024",
     type: "Job Portal",
@@ -207,6 +218,7 @@ export const featuredProjects = [
     gradient: "from-cyan-500 to-blue-600",
     emoji: "💬",
     image: "/projects/business-help.webp",
+    gallery: ["/projects/business-help.webp", "/projects/business-help-2.webp"],
     role: "Full Stack Developer",
     year: "2025",
     type: "Multi-tenant SaaS — AI Chat & Voice",
@@ -337,6 +349,12 @@ export const featuredProjects = [
     gradient: "from-indigo-500 to-fuchsia-500",
     emoji: "✨",
     image: "/projects/portfolio.webp",
+    gallery: [
+      "/projects/portfolio.webp",
+      "/projects/portfolio-2.webp",
+      "/projects/portfolio-3.webp",
+      "/projects/portfolio-4.webp",
+    ],
     role: "Design & Development",
     year: "2026",
     type: "Personal Portfolio — React SPA",
@@ -373,7 +391,6 @@ export const featuredProjects = [
 ];
 
 /* Case-study page slugs — /projects/<slug> */
-/** @type {Record<string, string>} */
 export const PROJECT_SLUGS = {
   "four-ai-ai-powered-voice-image-generation-platform": "four-ai",
   GENAI: "hiregen-ai",

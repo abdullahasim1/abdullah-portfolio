@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   featuredProjects,
   getFeaturedBySlug,
@@ -15,6 +15,21 @@ import { applyPageMeta, SITE_URL } from "../lib/pageMeta";
 export default function ProjectCaseStudy({ slug }) {
   const project = getFeaturedBySlug(slug);
   const { repos } = useGithubRepos();
+  const [lightbox, setLightbox] = useState(-1);
+
+  const gallery = project?.gallery?.length ? project.gallery : project ? [project.image] : [];
+
+  useEffect(() => {
+    if (lightbox < 0) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setLightbox(-1);
+      if (e.key === "ArrowRight") setLightbox((i) => (i + 1) % gallery.length);
+      if (e.key === "ArrowLeft")
+        setLightbox((i) => (i - 1 + gallery.length) % gallery.length);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightbox, gallery.length]);
 
   const enriched = useMemo(() => {
     if (!project) return null;
@@ -280,8 +295,102 @@ export default function ProjectCaseStudy({ slug }) {
                 View Code
               </a>
             </div>
+
+            {/* Project gallery — live product ki asal screenshots */}
+            {gallery.length > 0 && (
+              <div className="mt-10">
+                <h2 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+                  Project Gallery
+                </h2>
+                <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+                  Screenshots taken from the live product — no mockups.
+                </p>
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {gallery.map((src, i) => (
+                    <button
+                      key={src}
+                      type="button"
+                      onClick={() => setLightbox(i)}
+                      aria-label={`Open screenshot ${i + 1} of ${project.title}`}
+                      className={`group relative block w-full overflow-hidden rounded-2xl border border-violet-100 bg-violet-50/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:border-white/10 dark:bg-white/5 ${
+                        i === 0 ? "aspect-[16/8] sm:col-span-2" : "aspect-[16/10]"
+                      }`}
+                    >
+                      <img
+                        src={src}
+                        alt={`${project.title} screenshot ${i + 1}`}
+                        loading="lazy"
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Lightbox — gallery image full size */}
+        {lightbox >= 0 && (
+          <div
+            className="fixed inset-0 z-[120] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm sm:p-8"
+            onClick={() => setLightbox(-1)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${project.title} screenshot viewer`}
+          >
+            <img
+              src={gallery[lightbox]}
+              alt={`${project.title} screenshot ${lightbox + 1}`}
+              className="max-h-[86vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={() => setLightbox(-1)}
+              className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            {gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous screenshot"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightbox((lightbox - 1 + gallery.length) % gallery.length);
+                  }}
+                  className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next screenshot"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightbox((lightbox + 1) % gallery.length);
+                  }}
+                  className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <span className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+                  {lightbox + 1} / {gallery.length}
+                </span>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Prev / Next */}
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">

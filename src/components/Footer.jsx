@@ -9,7 +9,6 @@ import {
   siN8n,
   siClaude,
 } from "simple-icons";
-import { scrollToTop } from "../lib/smoothScroll";
 import { playClickSound } from "../lib/sound";
 import { Link } from "../lib/router";
 
@@ -224,7 +223,11 @@ function Footer() {
             }}
           >
             <div className="ticker-track flex w-max">
-              {[...techTiles, ...techTiles].map((t, i) => (
+              {/* 6 copies zaroori hain: ticker animation -50% par loop
+                  hoti hai, aur har aadhi track container se lambi honi
+                  chahiye — 2 copies par wide screens par strip peeche
+                  khaali ho jati thi aur phir reset par full ati thi. */}
+              {[...techTiles, ...techTiles, ...techTiles, ...techTiles, ...techTiles, ...techTiles].map((t, i) => (
                 <div
                   key={`${t.name}-${i}`}
                   aria-hidden={i >= techTiles.length}
@@ -279,19 +282,6 @@ function Footer() {
               </span>
               Available for new opportunities
             </p>
-            <button
-              type="button"
-              aria-label="Back to top"
-              onClick={() => {
-                playClickSound();
-                scrollToTop();
-              }}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/30 transition-transform hover:-translate-y-0.5"
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-              </svg>
-            </button>
           </div>
         </div>
       </div>
