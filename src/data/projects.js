@@ -391,6 +391,7 @@ export const featuredProjects = [
 ];
 
 /* Case-study page slugs — /projects/<slug> */
+/** @type {Record<string, string>} */
 export const PROJECT_SLUGS = {
   "four-ai-ai-powered-voice-image-generation-platform": "four-ai",
   GENAI: "hiregen-ai",
