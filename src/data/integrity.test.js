@@ -2,7 +2,17 @@ import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { featuredProjects, GITHUB_USERNAME, githubOgImage } from "./projects";
+import {
+  featuredProjects,
+  GITHUB_USERNAME,
+  githubOgImage,
+  projectSlug,
+  resolveLiveLink,
+  repoLiveUrl,
+  LIVE_URL_OVERRIDES,
+} from "./projects";
+import { services } from "./services";
+import { faqs } from "./faqs";
 import { certifications } from "./certifications";
 import { testimonials } from "./testimonials";
 import { timeline } from "./experience";
@@ -73,5 +83,82 @@ describe("testimonials & experience data", () => {
     for (const item of timeline) {
       expect(item.title || item.role, "role").toBeTruthy();
     }
+  });
+});
+
+describe("live-link honesty (manual status, no dead-homepage Live claims)", () => {
+  it("every featured project carries a manual status field", () => {
+    for (const p of featuredProjects) {
+      expect(["live", "client-delivery"], p.repoName).toContain(p.status);
+    }
+  });
+
+  it("non-live projects never resolve a live link, even with a homepage set", () => {
+    for (const p of featuredProjects.filter((x) => x.status !== "live")) {
+      expect(resolveLiveLink(p, { homepage: "https://dead.example" })).toBeNull();
+    }
+  });
+
+  it("Events Agent repos never resolve a live URL (deployments are gone)", () => {
+    expect(
+      repoLiveUrl({ name: "events-agent-frontend", homepage: "https://events-agent-frontend.vercel.app" })
+    ).toBeNull();
+    expect(
+      repoLiveUrl({ name: "events-agents-backend", homepage: "https://events-agents-backend.vercel.app" })
+    ).toBeNull();
+  });
+
+  it("HireGen canonical live URL is hiregen-ai.vercel.app everywhere", () => {
+    expect(LIVE_URL_OVERRIDES.GENAI).toBe("https://hiregen-ai.vercel.app");
+    expect(
+      repoLiveUrl({ name: "GENAI", homepage: "https://genai-orcin-sigma.vercel.app" })
+    ).toBe("https://hiregen-ai.vercel.app");
+    const hiregen = featuredProjects.find((p) => p.repoName === "GENAI");
+    expect(hiregen?.liveLink).toBe("https://hiregen-ai.vercel.app");
+  });
+});
+
+describe("generated artefacts stay fresh", () => {
+  it("committed sitemap covers every project + service detail route", () => {
+    const xml = fs.readFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), "utf8");
+    for (const p of featuredProjects) {
+      expect(xml, `sitemap missing project ${p.repoName}`).toContain(`/projects/${projectSlug(p)}`);
+    }
+    for (const s of services) {
+      expect(xml, `sitemap missing service ${s.slug}`).toContain(`/services/${s.slug}`);
+    }
+  });
+
+  it("index.html FAQ schema count matches faqs.js", () => {
+    const html = fs.readFileSync(path.resolve(PUBLIC_DIR, "..", "index.html"), "utf8");
+    const block = html.slice(html.indexOf("FAQ-SCHEMA:START"), html.indexOf("FAQ-SCHEMA:END"));
+    const count = (block.match(/"@type": "Question"/g) || []).length;
+    expect(count).toBe(faqs.length);
+  });
+
+  it("about photo WebP is generated from the JPG source", () => {
+    expectPublicFile("/about-photo.webp");
+  });
+});
+
+describe("section aliases agree across all three sources", () => {
+  it("vercel.json redirects == App.jsx SECTION_ALIASES == router.jsx SECTION_ALIAS_IDS", () => {
+    const root = path.resolve(PUBLIC_DIR, "..");
+    const vercel = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
+    const fromVercel = vercel.redirects
+      .filter((r) => r.destination.startsWith("/#"))
+      .map((r) => r.source.slice(1))
+      .sort();
+
+    const routerSrc = fs.readFileSync(path.join(root, "src/lib/router.jsx"), "utf8");
+    const routerBlock = routerSrc.match(/SECTION_ALIAS_IDS = \[([\s\S]*?)\]/)?.[1] ?? "";
+    const fromRouter = [...routerBlock.matchAll(/"([a-z-]+)"/g)].map((m) => m[1]).sort();
+
+    const appSrc = fs.readFileSync(path.join(root, "src/App.jsx"), "utf8");
+    const appBlock = appSrc.match(/SECTION_ALIASES = \{([\s\S]*?)\}/)?.[1] ?? "";
+    const fromApp = [...appBlock.matchAll(/(\w+):/g)].map((m) => m[1]).sort();
+
+    expect(fromRouter).toEqual(fromVercel);
+    expect(fromApp).toEqual(fromVercel);
   });
 });

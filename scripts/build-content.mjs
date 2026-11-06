@@ -450,7 +450,25 @@ function escapeRegex(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/** About photo: JPG source (public/IMG-20240224-WA0006.jpg) se WebP
+    generate karo — site har jagah /about-photo.webp serve karti hai,
+    JPG sirf build source hai. Dimensions bilkul wahi rehte hain. */
+function writeAboutPhoto() {
+  const src = path.join(ROOT, "public", "IMG-20240224-WA0006.jpg");
+  const out = path.join(ROOT, "public", "about-photo.webp");
+  if (!fs.existsSync(src)) {
+    console.error("about photo source missing:", src);
+    return;
+  }
+  sharp(src)
+    .webp({ quality: 82 })
+    .toFile(out)
+    .then(() => console.log("about photo generated: about-photo.webp"))
+    .catch((e) => console.error("about photo failed:", e));
+}
+
 const posts = loadPosts();
+writeAboutPhoto();
 writePostsModule(posts);
 writeRss(posts);
 writeSitemap(posts);

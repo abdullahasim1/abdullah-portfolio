@@ -1,3 +1,4 @@
+// @ts-check
 /* Har route ka SEO meta — client-side apply + build-time prerender
    shells (scripts/prerender-shells.mjs) dono yahi se lete hain. */
 
@@ -8,10 +9,16 @@ export const DEFAULT_TITLE =
 export const DEFAULT_DESCRIPTION =
   "Portfolio of Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer building generative AI products, n8n/Make automation and AWS serverless systems.";
 
+/** @type {Record<string, { title: string, description: string }>} */
 export const PAGE_META = {
   "/": { title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION },
 };
 
+/**
+ * @param {string} attr
+ * @param {string} key
+ * @param {string | undefined | null} content
+ */
 function setMeta(attr, key, content) {
   if (content == null) return;
   let el = document.head.querySelector(`meta[${attr}="${key}"]`);
@@ -23,6 +30,7 @@ function setMeta(attr, key, content) {
   el.setAttribute("content", content);
 }
 
+/** @param {string} href */
 function setCanonical(href) {
   let el = document.head.querySelector('link[rel="canonical"]');
   if (!el) {
@@ -35,6 +43,9 @@ function setCanonical(href) {
 
 /** Client-side meta apply — route change par App se call hota hai.
     Detail pages (project/service/post) apne data se khud call karti hain. */
+/**
+ * @param {{ title?: string, description?: string, path: string, type?: string, image?: string }} meta
+ */
 export function applyPageMeta({ title, description, path, type = "website", image }) {
   const url = `${SITE_URL}${path === "/" ? "/" : path}`;
   if (title) document.title = title;
@@ -50,6 +61,7 @@ export function applyPageMeta({ title, description, path, type = "website", imag
   if (image) setMeta("name", "twitter:image", image);
 }
 
+/** @param {string} path */
 export function metaForPath(path) {
   return PAGE_META[path] ?? null;
 }

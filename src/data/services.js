@@ -1,3 +1,4 @@
+// @ts-check
 /* Services — /services list + /services/<slug> detail pages dono ka data.
    Copy site par pehle se mojood descriptions se li gayi hai; deliverables,
    process aur FAQs har service ke asal scope ko bayan karte hain
@@ -269,6 +270,7 @@ export const services = [
   },
 ];
 
+/** @param {string} slug */
 export function getService(slug) {
   return services.find((s) => s.slug === slug) ?? null;
 }

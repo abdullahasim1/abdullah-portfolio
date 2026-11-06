@@ -1,4 +1,6 @@
+// @ts-check
 /** Minimal toast utility — alerts ke badle use karo. 0KB, no deps. */
+/** @type {HTMLElement | null} */
 let toastEl = null;
 
 function ensureToast() {
@@ -29,6 +31,10 @@ function ensureToast() {
   return toastEl;
 }
 
+/**
+ * @param {string} message
+ * @param {number} [duration]
+ */
 export function showToast(message, duration = 3000) {
   const el = ensureToast();
   el.textContent = message;
