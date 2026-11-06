@@ -13,6 +13,7 @@ export const featuredProjects = [
       "AI-powered web app with Text-to-Speech, Text-to-Image, and voice effects built with React and Node.js.",
     tags: ["React", "GSAP", "Node.js", "MySQL"],
     liveLink: "https://four-ai-dev.vercel.app",
+    status: "live",
     gradient: "from-violet-500 to-purple-600",
     emoji: "🤖",
     image: "/projects/four-ai.webp",
@@ -83,6 +84,7 @@ export const featuredProjects = [
       "Smart hiring & communication automation — AI resume matching, email automation, and skill-gap insights.",
     tags: ["Next.js", "Generative AI", "TypeScript", "Neon"],
     liveLink: "https://hiregen-ai.vercel.app",
+    status: "live",
     gradient: "from-sky-500 to-blue-600",
     emoji: "✨",
     image: "/projects/genai.webp",
@@ -153,6 +155,7 @@ export const featuredProjects = [
       "Modern job portal with employer listings, candidate profiles, and application management.",
     tags: ["TypeScript", "React", "Next.js", "Tailwind"],
     liveLink: "https://job-recuitment.vercel.app",
+    status: "live",
     gradient: "from-indigo-500 to-blue-600",
     emoji: "💼",
     image: "/projects/job-recruitment.webp",
@@ -215,6 +218,7 @@ export const featuredProjects = [
       "White-label AI chat & voice-call widget for businesses — Retell AI voice agents, Calendly booking and a multi-tenant admin.",
     tags: ["Next.js", "TypeScript", "Retell AI", "Prisma"],
     liveLink: "",
+    status: "live",
     gradient: "from-cyan-500 to-blue-600",
     emoji: "💬",
     image: "/projects/business-help.webp",
@@ -281,6 +285,7 @@ export const featuredProjects = [
       "AI agent that discovers events across the web — multi-source search, Claude verification & dedupe, enrichment and live-streamed results.",
     tags: ["React", "Claude AI", "SerpAPI", "PostgreSQL"],
     liveLink: "",
+    status: "client-delivery",
     gradient: "from-violet-500 to-fuchsia-600",
     emoji: "🎟️",
     image: "/projects/events-agent.webp",
@@ -346,6 +351,7 @@ export const featuredProjects = [
       "Animated developer portfolio built with React 19, Vite, Tailwind CSS v4, and GSAP.",
     tags: ["React", "Tailwind CSS", "GSAP"],
     liveLink: "https://abdullah-asim-dev.vercel.app",
+    status: "live",
     gradient: "from-indigo-500 to-fuchsia-500",
     emoji: "✨",
     image: "/projects/portfolio.webp",
@@ -421,6 +427,51 @@ export const GITHUB_USERNAME = "abdullahasim1";
    verified 2026-11-03; Events wali dono repos usi din public hui).
    Nayi repo bane to number update karna. */
 export const TOTAL_REPO_COUNT = 32;
+
+/* Live URL overrides — GitHub repo `homepage` hamesha sach nahi hota:
+   kuch deployments move/delete ho chuke hain lekin homepage purana
+   pada hai. Yahan diya gaya URL (ya null = koi live deployment nahi)
+   GitHub homepage par hamesha jeet-ta hai. Har entry live-verify
+   shuda hai (2026-11-06):
+   - GENAI: GitHub homepage (genai-orcin-sigma.vercel.app) 404 hai;
+     asal live deployment hiregen-ai.vercel.app hai (HTTP 200).
+   - Business-Help: GitHub homepage (business-help-phi.vercel.app)
+     404 hai; live-verified deployment clone-bussiness-help hai (200).
+   - Events Agent dono repos: deployments exist hi nahi karte (404),
+     is liye null — koi "Live" button/status kahin render nahi hoga
+     jab tak redeploy karke yahan asal URL na dala jaye. */
+/** @type {Record<string, string | null>} */
+export const LIVE_URL_OVERRIDES = {
+  GENAI: "https://hiregen-ai.vercel.app",
+  "Business-Help": "https://clone-bussiness-help.vercel.app",
+  "events-agent-frontend": null,
+  "events-agents-backend": null,
+};
+
+/**
+ * Featured project ka asal live URL — override > data liveLink >
+ * GitHub homepage. Status field se independent rakha hai taake
+ * "Live & Public" sirf manually-set `status: "live"` se aye.
+ * @param {{ repoName: string, liveLink?: string }} project
+ * @param {{ homepage?: string } | null | undefined} repo
+ */
+export function resolveLiveLink(project, repo) {
+  if (Object.prototype.hasOwnProperty.call(LIVE_URL_OVERRIDES, project.repoName)) {
+    return LIVE_URL_OVERRIDES[project.repoName];
+  }
+  return project.liveLink || repo?.homepage || null;
+}
+
+/**
+ * Repos-grid card ka live URL — override > GitHub homepage.
+ * @param {{ name: string, homepage?: string }} repo
+ */
+export function repoLiveUrl(repo) {
+  if (Object.prototype.hasOwnProperty.call(LIVE_URL_OVERRIDES, repo.name)) {
+    return LIVE_URL_OVERRIDES[repo.name];
+  }
+  return repo.homepage || null;
+}
 
 /* Repos grid me SIRF ye repos, isi order me show hoti hain
    (Abdullah ki hidayat, 2026-11-03 — baqi sab hide). */
