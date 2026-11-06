@@ -1,7 +1,7 @@
 // @ts-check
-/* Theme management — dark (default) / light.
+/* Theme management — light (default) / dark.
    - localStorage mein `aa-theme` save hota hai
-   - Pehli visit par dark default hai (neon mockup); stored choice hamesha respect hoti hai
+   - Pehli visit par light default hai (Clean Light redesign); stored choice hamesha respect hoti hai
    - `light` class <html> par lagti hai; Tailwind `light:` variant isi se chalta hai */
 
 const THEME_KEY = "aa-theme";
