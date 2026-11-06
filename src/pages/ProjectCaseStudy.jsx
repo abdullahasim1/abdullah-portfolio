@@ -3,6 +3,7 @@ import {
   featuredProjects,
   getFeaturedBySlug,
   projectSlug,
+  resolveLiveLink,
   GITHUB_USERNAME,
 } from "../data/projects";
 import { useGithubRepos } from "../hooks/useGithubRepos";
@@ -17,7 +18,8 @@ export default function ProjectCaseStudy({ slug }) {
   const { repos } = useGithubRepos();
   const [lightbox, setLightbox] = useState(-1);
 
-  const gallery = project?.gallery?.length ? project.gallery : project ? [project.image] : [];
+  const hasGallery = Boolean(project?.gallery?.length);
+  const gallery = hasGallery ? project.gallery : project ? [project.image] : [];
 
   useEffect(() => {
     if (lightbox < 0) return;
@@ -36,7 +38,7 @@ export default function ProjectCaseStudy({ slug }) {
     const repo = repos.find((r) => r.name === project.repoName);
     return {
       ...project,
-      liveLink: project.liveLink || repo?.homepage || null,
+      liveLink: resolveLiveLink(project, repo),
       githubLink:
         repo?.html_url ??
         `https://github.com/${GITHUB_USERNAME}/${project.repoName}`,
@@ -116,8 +118,11 @@ export default function ProjectCaseStudy({ slug }) {
                 { label: "Year", value: project.year },
                 { label: "Project Type", value: project.type },
                 {
+                  /* Status sirf data ke manual `status` field se ata hai —
+                     liveLink ki mojoodgi se nahi (dead GitHub homepage
+                     kabhi "Live & Public" nahi bana sakta). */
                   label: "Status",
-                  value: enriched.liveLink ? "Live & Public" : "Client Delivery",
+                  value: project.status === "live" ? "Live & Public" : "Client Delivery",
                 },
               ]
                 .filter((f) => f.value)
@@ -296,14 +301,17 @@ export default function ProjectCaseStudy({ slug }) {
               </a>
             </div>
 
-            {/* Project gallery — live product ki asal screenshots */}
+            {/* Project gallery — sirf asal gallery ho to "live product
+                screenshots" ka dawa; warna sirf cover image, imaandari se */}
             {gallery.length > 0 && (
               <div className="mt-10">
                 <h2 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
-                  Project Gallery
+                  {hasGallery ? "Project Gallery" : "Project Cover"}
                 </h2>
                 <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
-                  Screenshots taken from the live product — no mockups.
+                  {hasGallery
+                    ? "Screenshots taken from the live product — no mockups."
+                    : "Cover image of the project."}
                 </p>
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {gallery.map((src, i) => (
