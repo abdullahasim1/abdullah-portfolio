@@ -1,9 +1,11 @@
+// @ts-check
 import { useCallback, useEffect, useState } from "react";
 import { GITHUB_USERNAME } from "../data/projects";
 
 const CACHE_KEY = "aa-github-repos";
 const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
+/** @param {string} username */
 function readCache(username) {
   try {
     const raw = sessionStorage.getItem(CACHE_KEY);
@@ -20,6 +22,11 @@ function readCache(username) {
   }
 }
 
+/**
+ * @param {string} username
+ * @param {any} profile
+ * @param {any[]} repos
+ */
 function writeCache(username, profile, repos) {
   try {
     sessionStorage.setItem(
@@ -77,16 +84,17 @@ export function useGithubRepos(username = GITHUB_USERNAME) {
         if (cancelled) return;
 
         const sorted = reposData
-          .filter((repo) => !repo.fork)
-          .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+          .filter((/** @type {any} */ repo) => !repo.fork)
+          .sort((/** @type {any} */ a, /** @type {any} */ b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime());
 
         setProfile(user);
         setRepos(sorted);
         writeCache(username, user, sorted);
       } catch (err) {
-        if (cancelled || err.name === "AbortError") return;
-        setError(err.message);
-        setRateLimited(Boolean(err.rateLimited));
+        const e = /** @type {any} */ (err);
+        if (cancelled || e.name === "AbortError") return;
+        setError(e.message);
+        setRateLimited(Boolean(e.rateLimited));
       } finally {
         if (!cancelled) setLoading(false);
       }
