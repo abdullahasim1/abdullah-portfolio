@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
   "/",
   "/index.html",
   "/og-image.jpg",
-  "/IMG-20240224-WA0006.jpg",
+  "/about-photo.webp",
   "/manifest.webmanifest",
 ];
 
