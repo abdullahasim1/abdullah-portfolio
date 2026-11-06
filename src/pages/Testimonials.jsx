@@ -75,7 +75,9 @@ function Testimonials() {
             What People Say
           </h2>
           <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
-            Real feedback from clients and collaborators who trusted me with their projects.
+            Feedback from clients and collaborators who trusted me with their projects.
+            Client names and companies are withheld for confidentiality (NDA), so
+            each quote is shown with the person&apos;s role and industry instead.
           </p>
           <div className="mt-4 h-[3px] w-14 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500" />
 
