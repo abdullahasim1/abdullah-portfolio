@@ -486,6 +486,22 @@ function writeKiroBadge() {
     .catch((e) => console.error("kiro badge failed:", e));
 }
 
+/** Baqi Credly badges ke liye generic generator — official badge image
+    (images.credly.com, har badge page ka og:image) se WebP banti hai,
+    Kiro wali hi pattern: build/pretest ke waqt download hoti hai, binary
+    repo mein commit nahi hota. */
+function writeCredlyBadge(imageUrl, outName) {
+  const out = path.join(ROOT, "public", "certifications", outName);
+  fetch(imageUrl)
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.arrayBuffer();
+    })
+    .then((buf) => sharp(Buffer.from(buf)).webp({ quality: 90 }).toFile(out))
+    .then(() => console.log(`credly badge generated: ${outName}`))
+    .catch((e) => console.error(`credly badge failed (${outName}):`, e));
+}
+
 /** Accredible (OpenAI Partner Network) badges: official badge art
     credential page ke og:image (artifacts.credential.net) se WebP generate
     karo — Kiro wali hi pattern: binary badge repo mein commit nahi hota,
@@ -523,6 +539,26 @@ writeAccredibleBadge(
 writeAccredibleBadge(
   "https://artifacts.credential.net/27t4pa8y/badge/d51717b1fedd519a5440616b0a1a1170/open-graph.png",
   "openai-technical-practitioner.webp"
+);
+writeAccredibleBadge(
+  "https://api.accredible.com/v1/frontend/credential_opengraph_seo_image/197965327",
+  "openai-consultative-solutions.webp"
+);
+writeAccredibleBadge(
+  "https://api.accredible.com/v1/frontend/credential_opengraph_seo_image/197965326",
+  "openai-chatgpt-deployment.webp"
+);
+writeCredlyBadge(
+  "https://images.credly.com/images/46ea4542-72a8-46a1-8d68-b72c4ca50820/blob",
+  "aws-partner-sales.webp"
+);
+writeCredlyBadge(
+  "https://images.credly.com/images/8f006312-3154-45bf-a845-4a043641e83c/blob",
+  "aws-partner-technical.webp"
+);
+writeCredlyBadge(
+  "https://images.credly.com/images/f2040db3-3904-4240-8966-e87b1510bea0/blob",
+  "claude-certified-architect.webp"
 );
 writePostsModule(posts);
 writeRss(posts);
