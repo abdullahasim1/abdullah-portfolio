@@ -33,6 +33,11 @@ public/about-photo.webp
 public/certifications/aws-partner-kiro.webp
 public/certifications/openai-chatgpt-solutions.webp
 public/certifications/openai-technical-practitioner.webp
+public/certifications/openai-consultative-solutions.webp
+public/certifications/openai-chatgpt-deployment.webp
+public/certifications/aws-partner-sales.webp
+public/certifications/aws-partner-technical.webp
+public/certifications/claude-certified-architect.webp
 
 # Test artifacts
 playwright-report/
