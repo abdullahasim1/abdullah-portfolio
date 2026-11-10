@@ -486,9 +486,44 @@ function writeKiroBadge() {
     .catch((e) => console.error("kiro badge failed:", e));
 }
 
+/** Accredible (OpenAI Partner Network) badges: official badge art
+    credential page ke og:image (artifacts.credential.net) se WebP generate
+    karo — Kiro wali hi pattern: binary badge repo mein commit nahi hota,
+    build/pretest ke waqt official image download karke
+    public/certifications/*.webp banti hai. og:image wide (672x352)
+    hota hai, badge circle center mein hai — central square crop lete hain. */
+function writeAccredibleBadge(ogImageUrl, outName) {
+  const out = path.join(ROOT, "public", "certifications", outName);
+  fetch(ogImageUrl)
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.arrayBuffer();
+    })
+    .then(async (buf) => {
+      const img = sharp(Buffer.from(buf));
+      const meta = await img.metadata();
+      const side = meta.height;
+      const left = Math.max(0, Math.floor((meta.width - side) / 2));
+      return img
+        .extract({ left, top: 0, width: side, height: side })
+        .webp({ quality: 90 })
+        .toFile(out);
+    })
+    .then(() => console.log(`accredible badge generated: ${outName}`))
+    .catch((e) => console.error(`accredible badge failed (${outName}):`, e));
+}
+
 const posts = loadPosts();
 writeAboutPhoto();
 writeKiroBadge();
+writeAccredibleBadge(
+  "https://artifacts.credential.net/ufs9pq4x/badge/17f399e2cfba618f6098ccd8b6ed2ec6/open-graph.png",
+  "openai-chatgpt-solutions.webp"
+);
+writeAccredibleBadge(
+  "https://artifacts.credential.net/27t4pa8y/badge/d51717b1fedd519a5440616b0a1a1170/open-graph.png",
+  "openai-technical-practitioner.webp"
+);
 writePostsModule(posts);
 writeRss(posts);
 writeSitemap(posts);

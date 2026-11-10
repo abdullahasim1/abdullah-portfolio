@@ -25,6 +25,10 @@ const DESCRIPTIONS = {
     "Deploy and manage ChatGPT solutions in real-world use cases.",
   "openai-consultative-solutions":
     "Design and deliver business solutions using OpenAI models.",
+  "openai-chatgpt-solutions":
+    "Qualify, position and hand off ChatGPT opportunities around real customer workflows.",
+  "openai-technical-practitioner":
+    "Design and validate OpenAI-powered solutions across architecture, security, governance and data.",
 };
 
 function kindOf(cert) {
