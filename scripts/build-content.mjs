@@ -467,8 +467,28 @@ function writeAboutPhoto() {
     .catch((e) => console.error("about photo failed:", e));
 }
 
+/** Kiro badge: official Credly badge image (images.credly.com, badge
+    6dce3d97 — AWS Partner: Kiro Learning Plan Assessment) se WebP generate
+    karo — binary badge repo mein commit nahi hota, about-photo wali hi
+    pattern hai: build/pretest ke waqt official image download karke
+    public/certifications/aws-partner-kiro.webp banti hai. */
+function writeKiroBadge() {
+  const url =
+    "https://images.credly.com/images/8e3bc0ae-ac9d-4d19-a734-bc892f44f0a9/blob";
+  const out = path.join(ROOT, "public", "certifications", "aws-partner-kiro.webp");
+  fetch(url)
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.arrayBuffer();
+    })
+    .then((buf) => sharp(Buffer.from(buf)).webp({ quality: 90 }).toFile(out))
+    .then(() => console.log("kiro badge generated: aws-partner-kiro.webp"))
+    .catch((e) => console.error("kiro badge failed:", e));
+}
+
 const posts = loadPosts();
 writeAboutPhoto();
+writeKiroBadge();
 writePostsModule(posts);
 writeRss(posts);
 writeSitemap(posts);

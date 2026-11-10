@@ -28,6 +28,10 @@ dist-ssr
 *.sw?
 stats.html
 
+# Generated at build time by scripts/build-content.mjs
+public/about-photo.webp
+public/certifications/aws-partner-kiro.webp
+
 # Test artifacts
 playwright-report/
 test-results/
