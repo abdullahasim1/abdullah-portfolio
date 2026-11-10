@@ -91,7 +91,7 @@ export const certifications = [
     date: "July 2026",
     credentialUrl: "https://www.credly.com/badges/15a8ac12-57fc-4d16-aff6-89faa59a71ad",
     skills: ["Claude", "AI Architecture", "Anthropic API", "LLM Apps"],
-    image: "/certifications/claude-certified-architect.svg",
+    image: "/certifications/claude-certified-architect.webp",
     description:
       "Claude Certified Architect – Foundations (CCAF) — architecting production solutions with Claude and the Anthropic API.",
   },
@@ -102,7 +102,7 @@ export const certifications = [
     date: "Oct 2026",
     credentialUrl: "https://www.credential.net/8a265f00-4d95-4b6f-9f85-6e73cfd336b5",
     skills: ["ChatGPT", "OpenAI", "AI Deployment", "Enterprise AI"],
-    image: "/certifications/openai-chatgpt-deployment.svg",
+    image: "/certifications/openai-chatgpt-deployment.webp",
   },
   {
     id: "openai-consultative-solutions",
@@ -111,7 +111,7 @@ export const certifications = [
     date: "Oct 2026",
     credentialUrl: "https://www.credential.net/dafdb3c4-ae20-4646-a179-8fb9208cc7d9",
     skills: ["ChatGPT", "Solutions Consulting", "AI Strategy", "OpenAI"],
-    image: "/certifications/openai-solutions.svg",
+    image: "/certifications/openai-consultative-solutions.webp",
   },
   {
     id: "openai-chatgpt-solutions",
