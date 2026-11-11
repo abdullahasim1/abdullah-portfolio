@@ -279,72 +279,6 @@ export const featuredProjects = [
     ],
   },
   {
-    repoName: "events-agent-frontend",
-    title: "Events Agent — AI Event Discovery",
-    description:
-      "AI agent that discovers events across the web — multi-source search, Claude verification & dedupe, enrichment and live-streamed results.",
-    tags: ["React", "Claude AI", "SerpAPI", "PostgreSQL"],
-    liveLink: "",
-    status: "client-delivery",
-    gradient: "from-violet-500 to-fuchsia-600",
-    emoji: "🎟️",
-    image: "/projects/events-agent.webp",
-    role: "AI Engineer & Full Stack Developer",
-    year: "2026",
-    type: "Client Project — AI Agent",
-    results: [
-      { value: "3", label: "Search sources — SerpAPI, Tavily & PredictHQ" },
-      { value: "Live", label: "Results stream in as events are verified" },
-      { value: "AI-verified", label: "Every event checked & deduped by Claude" },
-    ],
-    overview:
-      "An events discovery agent built for a client: it searches multiple sources city by city, verifies and deduplicates events with Claude, enriches them, and streams new finds live into the dashboard as they are confirmed.",
-    features: [
-      "Multi-source search — SerpAPI/Google, Tavily and PredictHQ",
-      "Claude Haiku verification, dedupe and structured extraction",
-      "Live streaming UI with real-time counters and NEW badges",
-      "PostgreSQL upserts with per-category targeted search",
-    ],
-    challenges: [
-      {
-        title: "The same event, listed five different ways",
-        desc: "Sources disagree on names, dates and venues, and duplicates flood the results. Claude Haiku verifies each candidate event, merges duplicates and extracts one clean, structured record.",
-      },
-      {
-        title: "Search costs that scale with cities",
-        desc: "Blanket searching burns API quota fast. Queries are targeted per city and per category, and results are upserted into PostgreSQL — nothing is fetched or stored twice.",
-      },
-      {
-        title: "Making a long search feel instant",
-        desc: "A full city scan takes time, so verified events stream into the UI as they're confirmed — live counters and NEW badges show real progress instead of a spinner.",
-      },
-    ],
-    responsibilities: [
-      "Built the multi-source discovery pipeline — SerpAPI, Tavily, PredictHQ",
-      "Designed the Claude verification, dedupe and extraction flow",
-      "Built the live-streaming React dashboard",
-      "Modeled PostgreSQL upserts for clean, duplicate-free event data",
-    ],
-    architectureFlow: [
-      {
-        step: "Targeted Search",
-        desc: "Per-city, per-category queries across search sources",
-      },
-      {
-        step: "Claude Verify",
-        desc: "Haiku verifies, dedupes and extracts clean JSON",
-      },
-      {
-        step: "Enrichment",
-        desc: "Tavily enrichment for venue, dates and details",
-      },
-      {
-        step: "Live Dashboard",
-        desc: "Streamed results saved to PostgreSQL in real time",
-      },
-    ],
-  },
-  {
     repoName: "abdullah-portfolio",
     title: "Portfolio Website",
     description:
@@ -403,7 +337,6 @@ export const PROJECT_SLUGS = {
   GENAI: "hiregen-ai",
   "Job-Recuitment": "upmatch",
   "Business-Help": "business-help",
-  "events-agent-frontend": "events-agent",
   "abdullah-portfolio": "portfolio-website",
 };
 
@@ -437,15 +370,11 @@ export const TOTAL_REPO_COUNT = 32;
      asal live deployment hiregen-ai.vercel.app hai (HTTP 200).
    - Business-Help: GitHub homepage (business-help-phi.vercel.app)
      404 hai; live-verified deployment clone-bussiness-help hai (200).
-   - Events Agent dono repos: deployments exist hi nahi karte (404),
-     is liye null — koi "Live" button/status kahin render nahi hoga
-     jab tak redeploy karke yahan asal URL na dala jaye. */
+ */
 /** @type {Record<string, string | null>} */
 export const LIVE_URL_OVERRIDES = {
   GENAI: "https://hiregen-ai.vercel.app",
   "Business-Help": "https://clone-bussiness-help.vercel.app",
-  "events-agent-frontend": null,
-  "events-agents-backend": null,
 };
 
 /**
@@ -480,40 +409,14 @@ export const CURATED_REPOS = [
   "Job-Recuitment",
   "GENAI",
   "abdullah-portfolio",
-  "events-agent-frontend",
-  "events-agents-backend",
 ];
 
-/* Events repos ke GitHub par descriptions nahi hain — ye static
-   descriptions unke cards par overlay hoti hain, aur API se repo na
-   mile to pura card bhi isi data se banta hai (repos 2026-11-03 ko
-   public hui; descriptions yahin se atay hain). */
-export const STATIC_REPOS = {
-  "events-agent-frontend": {
-    id: "static-events-agent-frontend",
-    name: "events-agent-frontend",
-    html_url: "https://github.com/abdullahasim1/events-agent-frontend",
-    description:
-      "AI agent that discovers events across the web — multi-source search, Claude verification & dedupe, enrichment and live-streamed results.",
-    language: "JavaScript",
-    stargazers_count: 0,
-    forks_count: 0,
-    pushed_at: "2026-10-09T00:00:00Z",
-    homepage: "",
-  },
-  "events-agents-backend": {
-    id: "static-events-agents-backend",
-    name: "events-agents-backend",
-    html_url: "https://github.com/abdullahasim1/events-agents-backend",
-    description:
-      "Backend API for the Events Discovery Agent — multi-source event search (SerpAPI, Tavily, PredictHQ), Claude verification & dedupe, streamed to the frontend.",
-    language: "JavaScript",
-    stargazers_count: 0,
-    forks_count: 0,
-    pushed_at: "2026-10-11T00:00:00Z",
-    homepage: "",
-  },
-};
+/* Kuch repos ke GitHub par descriptions nahi hote — unke liye static
+   descriptions yahan overlay hoti hain, aur API se repo na mile to
+   pura card bhi isi data se banta hai. (Events Agent ki dono entries
+   2026-11-12 ko project showcase se hatane par remove kar di gayin;
+   abhi koi static repo nahi hai.) */
+export const STATIC_REPOS = {};
 
 export const languageColors = {
   JavaScript: "#f1e05a",

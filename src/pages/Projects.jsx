@@ -23,14 +23,14 @@ const FEATURED_CATEGORIES = {
   GENAI: "ai",
   "Job-Recuitment": "web",
   "Business-Help": "ai",
-  "events-agent-frontend": "cloud",
   "abdullah-portfolio": "web",
 };
+/* Cloud filter tab 2026-11-12 ko hata diya — woh sirf Events Agent ke
+   liye tha, jo ab showcase mein nahi hai; khaali tab bachta tha. */
 const FEATURED_FILTERS = [
   { id: "all", label: "All" },
   { id: "ai", label: "AI / ML" },
   { id: "web", label: "Web Apps" },
-  { id: "cloud", label: "Cloud" },
 ];
 
 /* ---------------- Featured project card (large = bento hero) ---------------- */
@@ -427,7 +427,10 @@ export function FeaturedWork({ preview = false, embedded = false }) {
                 </div>
               ))}
             </div>
-            <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
+            {/* Wide row: 2 cards hon to 2 col, sirf 1 bache (Events Agent
+                hatne ke baad 5 featured) to full-width — khaali aadhi
+                jagah nahi banti (2026-11-12). */}
+            <div className={`mt-6 grid grid-cols-1 gap-6 ${enrichedFeatured.slice(4, 6).length > 1 ? "xl:grid-cols-2" : "xl:grid-cols-1"}`}>
               {enrichedFeatured.slice(4, 6).map((project, i) => (
                 <div
                   key={project.repoName}
@@ -468,8 +471,8 @@ export function ProjectsPage({ embedded = false } = {}) {
   const [activeFilter, setActiveFilter] = useState("All");
 
   /* Grid = sirf CURATED_REPOS (Abdullah ki list), usi order me.
-     Data live API se; jin repos ki API description khaali ho
-     (Events wali dono), un par static description overlay hoti hai. */
+     Data live API se; jin repos ki API description khaali ho,
+     un par STATIC_REPOS se static description overlay hoti hai. */
   const otherRepos = useMemo(() => {
     const byName = new Map(repos.map((r) => [r.name, r]));
     return CURATED_REPOS.map((name) => {

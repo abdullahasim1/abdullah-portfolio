@@ -1,15 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Detail routes', () => {
-  test('project case study loads — Events Agent shows honest status', async ({ page }) => {
+  test('removed project route renders the in-app 404 — Events Agent is gone', async ({ page }) => {
+    // Events Agent was removed from the portfolio entirely on
+    // 2026-11-12 (Abdullah's order), so its old case-study URL must
+    // behave exactly like any other unknown project slug.
     await page.goto('/projects/events-agent');
-    await expect(page.locator('h1')).toContainText('Events Agent');
-    await expect(page.getByText('Client Delivery')).toBeVisible();
-    // Regression guard (2026-11-06): the Events Agent deployments no
-    // longer exist, so no Live Demo link / "Live & Public" claim may
-    // ever render for it again.
-    await expect(page.getByRole('link', { name: /Live Demo/i })).toHaveCount(0);
-    await expect(page.getByText('Live & Public')).toHaveCount(0);
+    await expect(page.getByText('404').first()).toBeVisible();
+    await expect(page.locator('h1')).not.toContainText('Events Agent');
   });
 
   test('live project case study shows its Live Demo link', async ({ page }) => {

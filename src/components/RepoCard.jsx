@@ -152,7 +152,7 @@ function RepoIcon({ repo }) {
 function RepoCard({ repo }) {
   const displayName = formatRepoName(repo.name);
   /* Live URL: override (projects.js) GitHub homepage par jeet-ta hai —
-     dead homepages (Events Agent, purana GENAI) kabhi link nahi bante */
+     dead homepages (masalan purana GENAI) kabhi link nahi bante */
   const liveUrl = repoLiveUrl(repo);
   const description =
     repo.description ||

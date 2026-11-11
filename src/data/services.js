@@ -161,7 +161,7 @@ export const services = [
       },
     ],
     tools: ["AWS Lambda", "AWS Bedrock", "API Gateway", "S3", "CloudWatch", "Vercel"],
-    related: ["events-agent-frontend"],
+    related: [],
   },
   {
     slug: "ai-product-development",
