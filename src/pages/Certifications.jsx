@@ -29,6 +29,32 @@ const DESCRIPTIONS = {
     "Qualify, position and hand off ChatGPT opportunities around real customer workflows.",
   "openai-technical-practitioner":
     "Design and validate OpenAI-powered solutions across architecture, security, governance and data.",
+  "aws-apt-technical":
+    "AWS Training completion certificate — Agentic Process Transformation, technical track.",
+  "aws-apt-foundations":
+    "AWS Training completion certificate — foundations of Agentic Process Transformation (APT).",
+  "aws-apt-business-value":
+    "AWS Training completion certificate — business value assessment for agentic process transformation.",
+  "aws-agentic-ai-technical-foundations":
+    "AWS Training completion certificate — technical foundations of agentic AI on AWS.",
+  "aws-aidlc-kiro":
+    "AWS Training completion certificate — AI-Driven Development LifeCycle (AI-DLC) with Kiro.",
+  "aws-aidlc-foundations-introduction":
+    "AWS Training completion certificate — introduction to the AI-DLC Foundations series.",
+  "aws-aidlc-foundations-principles":
+    "AWS Training completion certificate — core principles of AI-DLC Foundations.",
+  "aws-aidlc-foundations-workflow":
+    "AWS Training completion certificate — workflow and collaboration in AI-DLC Foundations.",
+  "aws-aidlc-foundations-planning":
+    "AWS Training completion certificate — planning, implementation and measurement in AI-DLC Foundations.",
+  "aws-aidlc-foundations-construction":
+    "AWS Training completion certificate — construction deep dive in AI-DLC Foundations.",
+  "aws-aidlc-foundations-operations":
+    "AWS Training completion certificate — operations deep dive in AI-DLC Foundations.",
+  "aws-aidlc-foundations-best-practices":
+    "AWS Training completion certificate — best practices in AI-DLC Foundations.",
+  "aws-aidlc-foundations-evolution":
+    "AWS Training completion certificate — evolution in AI-DLC Foundations.",
 };
 
 function kindOf(cert) {
@@ -221,7 +247,7 @@ function CertCard({ cert }) {
           </span>
         )}
         <a
-          href={hasLink ? cert.credentialUrl : CREDLY_URL}
+          href={hasLink ? cert.credentialUrl : cert.image}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open credential for ${cert.title}`}
@@ -274,9 +300,15 @@ const FILTER_DEFS = [
   { key: "openai", label: "OpenAI" },
 ];
 
+/* "All" view mein pehle itne cards preview hote hain — baqi saare
+   "View All Certifications" expand se khulte hain (koi entry chhupti
+   nahi, toggle ke baghair hard-truncate bhi nahi hota). */
+const PREVIEW_COUNT = 12;
+
 function Certifications() {
   useScrollReveal("#certifications .reveal");
   const [filter, setFilter] = useState("all");
+  const [expanded, setExpanded] = useState(false);
 
   const featured = certifications.find((c) => c.featured);
   const counts = {
@@ -286,6 +318,8 @@ function Certifications() {
     openai: certifications.filter((c) => kindOf(c) === "openai").length,
   };
   const shown = certifications.filter((c) => filter === "all" || kindOf(c) === filter);
+  const visible = filter === "all" && !expanded ? shown.slice(0, PREVIEW_COUNT) : shown;
+  const hasMore = filter === "all" && shown.length > PREVIEW_COUNT;
 
   return (
     <section id="certifications" className="relative scroll-mt-24 overflow-hidden py-16">
@@ -323,7 +357,10 @@ function Certifications() {
               <button
                 key={f.key}
                 type="button"
-                onClick={() => setFilter(f.key)}
+                onClick={() => {
+                  setFilter(f.key);
+                  setExpanded(false);
+                }}
                 className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                   active
                     ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/25"
@@ -339,11 +376,34 @@ function Certifications() {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {shown.map((cert) => (
+          {visible.map((cert) => (
             <CertCard key={cert.id} cert={cert} />
           ))}
-          {filter === "all" && <KeepLearning />}
+          {filter === "all" && (expanded || !hasMore) && <KeepLearning />}
         </div>
+
+        {/* View All / Show Less — "All" view ka poora data yahin se khulta hai */}
+        {hasMore && (
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-600/25 transition-opacity hover:opacity-90"
+            >
+              {expanded ? "Show Less" : `View All Certifications (${counts.all})`}
+              <svg
+                className={`h-4 w-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.2}
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
