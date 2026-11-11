@@ -37,6 +37,10 @@ const Blog = lazy(() => import("./pages/Blog"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ProjectCaseStudy = lazy(() => import("./pages/ProjectCaseStudy"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
+/* Portfolio Assistant (AI chatbot) — lazy, taake pehle paint par
+   is ka chunk load na ho; bubble click hone tak sirf chhota sa
+   launcher chunk aata hai jab component mount hota hai. */
+const PortfolioAssistant = lazy(() => import("./components/PortfolioAssistant"));
 
 function NotFound() {
   useEffect(() => {
@@ -305,6 +309,9 @@ function Site() {
 
       <Footer />
       <ScrollToTop />
+      <Suspense fallback={null}>
+        <PortfolioAssistant />
+      </Suspense>
       <CommandPalette
         isOpen={isPaletteOpen}
         onClose={() => setIsPaletteOpen(false)}
