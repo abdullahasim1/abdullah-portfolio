@@ -16,6 +16,7 @@ import sharp from "sharp";
 import { faqs } from "../src/data/faqs.js";
 import { featuredProjects, PROJECT_SLUGS } from "../src/data/projects.js";
 import { services } from "../src/data/services.js";
+import { PDF_CERT_THUMBNAILS } from "./pdf-cert-thumbnails.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const POSTS_DIR = path.join(ROOT, "content", "posts");
@@ -529,8 +530,22 @@ function writeAccredibleBadge(ogImageUrl, outName) {
     .catch((e) => console.error(`accredible badge failed (${outName}):`, e));
 }
 
+/** PDF completion certificates (AWS Training, Nov 2026) ke thumbnails:
+    user ke upload kiye gaye asal certificate PDFs ke page-1 renders hain,
+    scripts/pdf-cert-thumbnails.mjs mein base64 WebP ke tor par embedded —
+    binary repo mein commit nahi ho sakti, is liye build/pretest ke waqt
+    yahan decode karke public/certifications/*.webp ban jati hain. */
+function writePdfCertThumbnails() {
+  const dir = path.join(ROOT, "public", "certifications");
+  for (const [name, b64] of Object.entries(PDF_CERT_THUMBNAILS)) {
+    fs.writeFileSync(path.join(dir, name), Buffer.from(b64, "base64"));
+  }
+  console.log(`pdf cert thumbnails generated: ${Object.keys(PDF_CERT_THUMBNAILS).length}`);
+}
+
 const posts = loadPosts();
 writeAboutPhoto();
+writePdfCertThumbnails();
 writeKiroBadge();
 writeAccredibleBadge(
   "https://artifacts.credential.net/ufs9pq4x/badge/17f399e2cfba618f6098ccd8b6ed2ec6/open-graph.png",

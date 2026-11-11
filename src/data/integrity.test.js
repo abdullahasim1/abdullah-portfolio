@@ -67,6 +67,29 @@ describe("certifications data", () => {
   it("has at least one featured certification", () => {
     expect(certifications.some((c) => c.featured)).toBe(true);
   });
+
+  it("Stats.jsx exact Certifications count matches the data total", () => {
+    const root = path.resolve(PUBLIC_DIR, "..");
+    const statsSrc = fs.readFileSync(path.join(root, "src/pages/Stats.jsx"), "utf8");
+    const m = statsSrc.match(/\{ number: (\d+), suffix: "", label: "Certifications"/);
+    expect(m, "Stats.jsx Certifications entry").toBeTruthy();
+    expect(Number(m[1])).toBe(certifications.length);
+  });
+
+  it("homepage section can display the full total — View All toggle, no silent hard slice", () => {
+    const root = path.resolve(PUBLIC_DIR, "..");
+    const src = fs.readFileSync(path.join(root, "src/pages/Certifications.jsx"), "utf8");
+    // Toggle exists with an accessible expanded state and both labels.
+    expect(src).toContain("View All Certifications");
+    expect(src).toContain("Show Less");
+    expect(src).toContain("aria-expanded={expanded}");
+    // The only preview truncation is the one gated behind the toggle:
+    // collapsed "all" view slices, expanded view renders the full list.
+    expect(src).toMatch(/!expanded \? shown\.slice\(0, PREVIEW_COUNT\) : shown/);
+    expect(src).toMatch(/const PREVIEW_COUNT = \d+/);
+    const preview = Number(src.match(/const PREVIEW_COUNT = (\d+)/)[1]);
+    expect(preview).toBeLessThan(certifications.length);
+  });
 });
 
 describe("testimonials & experience data", () => {

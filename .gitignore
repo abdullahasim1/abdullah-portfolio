@@ -38,6 +38,19 @@ public/certifications/openai-chatgpt-deployment.webp
 public/certifications/aws-partner-sales.webp
 public/certifications/aws-partner-technical.webp
 public/certifications/claude-certified-architect.webp
+public/certifications/aws-apt-technical.webp
+public/certifications/aws-apt-foundations.webp
+public/certifications/aws-apt-business-value.webp
+public/certifications/aws-agentic-ai-technical-foundations.webp
+public/certifications/aws-aidlc-kiro.webp
+public/certifications/aws-aidlc-foundations-introduction.webp
+public/certifications/aws-aidlc-foundations-principles.webp
+public/certifications/aws-aidlc-foundations-workflow.webp
+public/certifications/aws-aidlc-foundations-planning.webp
+public/certifications/aws-aidlc-foundations-construction.webp
+public/certifications/aws-aidlc-foundations-operations.webp
+public/certifications/aws-aidlc-foundations-best-practices.webp
+public/certifications/aws-aidlc-foundations-evolution.webp
 
 # Test artifacts
 playwright-report/
