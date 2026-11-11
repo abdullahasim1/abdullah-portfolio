@@ -118,7 +118,7 @@ const GROUPS = [
     title: "AI, Cloud & Automation",
     sub: "Generative AI, cloud services and workflow automation.",
     cats: ["AI / GenAI", "Cloud (AWS)"],
-    projects: "Events Agent · Business Help · HireGen AI",
+    projects: "Business Help · HireGen AI",
     icon: <GroupIcon d={["M17.5 19a4.5 4.5 0 0 0 .9-8.9A7 7 0 0 0 4.6 8.6 5.5 5.5 0 0 0 6 19h11.5Z"]} />,
   },
   {

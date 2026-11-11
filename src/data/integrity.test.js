@@ -10,6 +10,9 @@ import {
   resolveLiveLink,
   repoLiveUrl,
   LIVE_URL_OVERRIDES,
+  CURATED_REPOS,
+  STATIC_REPOS,
+  PROJECT_SLUGS,
 } from "./projects";
 import { services } from "./services";
 import { faqs } from "./faqs";
@@ -122,13 +125,17 @@ describe("live-link honesty (manual status, no dead-homepage Live claims)", () =
     }
   });
 
-  it("Events Agent repos never resolve a live URL (deployments are gone)", () => {
-    expect(
-      repoLiveUrl({ name: "events-agent-frontend", homepage: "https://events-agent-frontend.vercel.app" })
-    ).toBeNull();
-    expect(
-      repoLiveUrl({ name: "events-agents-backend", homepage: "https://events-agents-backend.vercel.app" })
-    ).toBeNull();
+  it("Events Agent is not showcased anywhere (removed 2026-11-12 on Abdullah's order)", () => {
+    // Featured case studies, slug map, repos grid, static fallbacks and
+    // live-URL overrides must all be free of the events repos — the
+    // project must not render on the portfolio in any form.
+    expect(featuredProjects.some((p) => p.repoName.includes("events-agent"))).toBe(false);
+    expect(Object.keys(PROJECT_SLUGS).some((k) => k.includes("events-agent"))).toBe(false);
+    expect(CURATED_REPOS.some((n) => n.includes("events-agent"))).toBe(false);
+    expect(Object.keys(STATIC_REPOS).some((k) => k.includes("events-agent"))).toBe(false);
+    expect(Object.keys(LIVE_URL_OVERRIDES).some((k) => k.includes("events-agent"))).toBe(false);
+    const xml = fs.readFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), "utf8");
+    expect(xml).not.toContain("events-agent");
   });
 
   it("HireGen canonical live URL is hiregen-ai.vercel.app everywhere", () => {
