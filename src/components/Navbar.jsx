@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getSoundMuted, toggleSound, playClickSound } from "../lib/sound";
-import { getTheme, applyTheme } from "../lib/theme";
+/* DARK THEME DISABLED (2026-11-11, Abdullah's call): light theme only. To restore dark mode, uncomment this toggle, the ThemeContext dark logic, and the index.html theme script — all dark: styles in components are untouched and still in place. */
+// import { getTheme, applyTheme } from "../lib/theme";
 import { Link, useRoute, isSectionAliasPath } from "../lib/router";
 
 /* Board design: har nav link ke sath chhota violet line icon */
@@ -87,7 +88,10 @@ function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [muted, setMuted] = useState(() => getSoundMuted());
-  const [theme, setTheme] = useState(() => getTheme());
+  /* DARK THEME DISABLED: theme hamesha "light" — original state line:
+  // const [theme, setTheme] = useState(() => getTheme());
+  */
+  const theme = "light";
 
   /* Active link: home (one-page) par scroll-spy, detail pages par
      parent section (case study → Projects, service → Services). */
@@ -170,23 +174,28 @@ function Navbar() {
     window.dispatchEvent(new CustomEvent("aa-open-palette"));
   };
 
-  const handleSetTheme = (next) => {
-    if (next === theme) return;
-    playClickSound();
-    applyTheme(next);
-    setTheme(next);
-  };
+  /* DARK THEME DISABLED: theme change handler band — original code:
+  // const handleSetTheme = (next) => {
+  //   if (next === theme) return;
+  //   playClickSound();
+  //   applyTheme(next);
+  //   setTheme(next);
+  // };
+  */
 
   const closeMobile = () => setMobileOpen(false);
 
   const circleBtn =
     "inline-flex items-center justify-center w-10 h-10 rounded-full glass text-slate-300 light:text-violet-600 hover:text-violet-500 hover:border-violet-400/40 transition-colors cursor-pointer shrink-0";
+  /* DARK THEME DISABLED: segmented theme pill ke button ka style helper —
+     sirf toggle ke liye tha. Original code:
   const segBtn = (isOn) =>
     `inline-flex h-8 w-8 items-center justify-center rounded-full transition-all cursor-pointer ${
       isOn
         ? "bg-violet-500/15 light:bg-violet-200/80 text-violet-500 shadow-[inset_0_1px_3px_rgba(124,58,237,0.25)]"
         : "text-slate-400 hover:text-violet-400"
     }`;
+  */
 
   return (
     <header className="nav-in fixed top-0 inset-x-0 z-50 px-4 pt-4">
@@ -300,7 +309,8 @@ function Navbar() {
             )}
           </button>
 
-          {/* Theme — board style segmented sun/moon pill */}
+          {/* DARK THEME DISABLED (2026-11-11, Abdullah's call): light theme only. To restore dark mode, uncomment this toggle, the ThemeContext dark logic, and the index.html theme script — all dark: styles in components are untouched and still in place.
+              Original toggle — Theme, board style segmented sun/moon pill (markup neeche comment mein mehfooz hai; sirf is block ke andar wale purane comment ke delimiters hataye gaye hain taake nested comment JSX ko break na kare):
           <div className="inline-flex items-center gap-0.5 rounded-full glass p-1 shrink-0" role="group" aria-label="Theme">
             <button
               type="button"
@@ -327,6 +337,7 @@ function Navbar() {
               </svg>
             </button>
           </div>
+          */}
 
           <a
             href="/resume.pdf"
