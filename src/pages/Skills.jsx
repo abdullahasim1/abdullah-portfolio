@@ -23,6 +23,7 @@ import {
   siGsap,
   siServerless,
 } from "simple-icons";
+import { useScrollReveal } from "../hooks";
 
 /* Dark backgrounds pe black logos dikhte nahi — white fallback
    (light mode mein CSS net inhe slate-900 kar deta hai). */
@@ -194,6 +195,13 @@ function GroupHeader({ group, count }) {
 }
 
 function Skills() {
+  /* Section-level scroll reveal (header + filter row) — baqi sections
+     wala shared hook. Group cards is hook se bahar hain: woh filter
+     switch par re-mount hote hain aur un ki apni fadeUpSm entrance
+     animation hi un ka interaction feedback hai (double animation
+     se bachne ke liye cards par .reveal nahi lagaya). */
+  useScrollReveal("#skills .reveal");
+
   const [active, setActive] = useState("All");
 
   /* Sliding active indicator — active pill ke peeche gradient bar slide
@@ -236,7 +244,7 @@ function Skills() {
     <section id="skills" className="py-16 scroll-mt-24">
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Header — board layout: left title block, right cube + availability */}
-        <div className="flex flex-wrap items-start justify-between gap-8 mb-10">
+        <div className="reveal flex flex-wrap items-start justify-between gap-8 mb-10">
           <div className="flex flex-col items-start gap-4">
             <span className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 border border-violet-400/25 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-300 light:text-violet-600">
               <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
@@ -278,7 +286,7 @@ function Skills() {
         </div>
 
         {/* Filter pills — sliding gradient indicator */}
-        <div className="relative flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Skill categories">
+        <div className="reveal relative flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Skill categories">
           <span
             aria-hidden
             className="absolute left-0 top-0 h-9 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 shadow-[0_10px_24px_-10px_rgba(124,58,237,0.6)] transition-all duration-300 ease-out"

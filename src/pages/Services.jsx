@@ -1,6 +1,7 @@
 import React from "react";
 import { siClaude, siMake, siN8n, siZapier } from "simple-icons";
 import TiltCard from "../components/TiltCard";
+import { useScrollReveal } from "../hooks";
 import ProjectEstimator from "../components/ProjectEstimator";
 import { playClickSound } from "../lib/sound";
 import { Link, goSection } from "../lib/router";
@@ -116,12 +117,14 @@ function BrandIcon({ name }) {
 const automationTools = ["GoHighLevel", "Make.com", "n8n", "Claude", "OpenAI", "Zapier"];
 
 function Services() {
+  useScrollReveal("#services .reveal");
+
   return (
     <section id="services" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -left-40 top-40 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
       <div className="relative mx-auto max-w-[1400px] px-6">
         {/* Board header */}
-        <div className="mb-12">
+        <div className="reveal mb-12">
           <span className="inline-flex items-center gap-2 rounded-full bg-violet-100 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l9 5-9 5-9-5 9-5zm-9 9.5l9 5 9-5M3 17.5l9 5 9-5" />
@@ -141,7 +144,7 @@ function Services() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" style={{ perspective: "1200px" }}>
           {heroServices.map((s, i) => (
             <TiltCard key={s.title} className="h-full">
-              <article className="group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
+              <article className="reveal group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
                 <Link
                   href={`/services/${s.slug}`}
                   aria-label={`${s.title} — details`}
@@ -166,7 +169,7 @@ function Services() {
         </div>
 
         {/* AI & Automation spotlight */}
-        <div className="relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] p-8 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:p-10">
+        <div className="reveal relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] p-8 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:p-10">
           {/* Animated connector line — tools ke darmiyan data flow */}
           <svg aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-24 w-full -translate-y-1/2 text-violet-300/70 dark:text-violet-400/25 lg:block" viewBox="0 0 1200 96" preserveAspectRatio="none" fill="none">
             <path className="dash-flow" d="M-10 62 C 260 12, 520 92, 800 44 S 1120 20, 1210 52" stroke="currentColor" strokeWidth="1.6" />
@@ -216,7 +219,7 @@ function Services() {
         <ProjectEstimator />
 
         {/* Need Something Custom — board band */}
-        <div className="relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] px-8 py-9 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:px-10">
+        <div className="reveal relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] px-8 py-9 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:px-10">
           <div className="flex flex-col items-start gap-7 lg:flex-row lg:items-center">
             <div aria-hidden className="relative hidden h-[74px] w-[120px] shrink-0 min-[480px]:block">
               <div className="absolute left-0 top-1 h-14 w-[74px] rotate-[-6deg] rounded-xl border border-white/70 bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg" />
