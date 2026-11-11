@@ -79,19 +79,25 @@ describe("certifications data", () => {
     expect(Number(m[1])).toBe(certifications.length);
   });
 
-  it("homepage section can display the full total — View All toggle, no silent hard slice", () => {
+  it("certifications can display the full total — page shows all, preview keeps toggle, no silent hard slice", () => {
     const root = path.resolve(PUBLIC_DIR, "..");
     const src = fs.readFileSync(path.join(root, "src/pages/Certifications.jsx"), "utf8");
     // Toggle exists with an accessible expanded state and both labels.
     expect(src).toContain("View All Certifications");
     expect(src).toContain("Show Less");
     expect(src).toContain("aria-expanded={expanded}");
-    // The only preview truncation is the one gated behind the toggle:
-    // collapsed "all" view slices, expanded view renders the full list.
-    expect(src).toMatch(/!expanded \? shown\.slice\(0, PREVIEW_COUNT\) : shown/);
+    // The only truncation is the preview slice, gated behind isPreviewing
+    // (not showAll, "all" filter, collapsed). The /certifications page
+    // renders with showAll, so there the full list is always visible.
+    expect(src).toContain(
+      'const isPreviewing = !showAll && filter === "all" && !expanded',
+    );
+    expect(src).toMatch(/isPreviewing \? shown\.slice\(0, PREVIEW_COUNT\) : shown/);
     expect(src).toMatch(/const PREVIEW_COUNT = \d+/);
     const preview = Number(src.match(/const PREVIEW_COUNT = (\d+)/)[1]);
     expect(preview).toBeLessThan(certifications.length);
+    const appSrc = fs.readFileSync(path.join(root, "src/App.jsx"), "utf8");
+    expect(appSrc).toContain("<Certifications showAll />");
   });
 });
 
@@ -171,24 +177,61 @@ describe("generated artefacts stay fresh", () => {
   });
 });
 
-describe("section aliases agree across all three sources", () => {
-  it("vercel.json redirects == App.jsx SECTION_ALIASES == router.jsx SECTION_ALIAS_IDS", () => {
+describe("multi-page routes agree across all sources", () => {
+  /* 2026-11-12: site full multi-page hai — har section ka asal page.
+     Route set har jagah ek jaisa hona chahiye: router PAGE_ROUTES,
+     pageMeta PAGE_META, App.jsx route table, sitemap — aur vercel.json
+     mein kisi asal page ka purana /# redirect nahi bacha hona chahiye. */
+  const EXPECTED_PAGES = [
+    "/",
+    "/about",
+    "/skills",
+    "/services",
+    "/projects",
+    "/experience",
+    "/certifications",
+    "/blog",
+    "/contact",
+  ];
+
+  it("router.jsx PAGE_ROUTES == pageMeta.js PAGE_META == expected page set", async () => {
+    const root = path.resolve(PUBLIC_DIR, "..");
+    const routerSrc = fs.readFileSync(path.join(root, "src/lib/router.jsx"), "utf8");
+    const routerBlock = routerSrc.match(/PAGE_ROUTES = \[([\s\S]*?)\]/)?.[1] ?? "";
+    const fromRouter = [...routerBlock.matchAll(/"(\/[^"]*)"/g)]
+      .map((m) => m[1])
+      .sort();
+    const { PAGE_META } = await import("../lib/pageMeta.js");
+    expect(fromRouter).toEqual([...EXPECTED_PAGES].sort());
+    expect(Object.keys(PAGE_META).sort()).toEqual([...EXPECTED_PAGES].sort());
+  });
+
+  it("App.jsx route table has a case for every section page", () => {
+    const root = path.resolve(PUBLIC_DIR, "..");
+    const appSrc = fs.readFileSync(path.join(root, "src/App.jsx"), "utf8");
+    for (const p of EXPECTED_PAGES.slice(1)) {
+      expect(appSrc, `App.jsx missing route case for ${p}`).toContain(
+        `case "${p.slice(1)}":`,
+      );
+    }
+  });
+
+  it("vercel.json has no leftover /# redirect for any real page", () => {
     const root = path.resolve(PUBLIC_DIR, "..");
     const vercel = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
-    const fromVercel = vercel.redirects
-      .filter((r) => r.destination.startsWith("/#"))
-      .map((r) => r.source.slice(1))
-      .sort();
+    for (const r of vercel.redirects ?? []) {
+      expect(EXPECTED_PAGES, `stale redirect for real page ${r.source}`).not.toContain(
+        r.source,
+      );
+    }
+  });
 
-    const routerSrc = fs.readFileSync(path.join(root, "src/lib/router.jsx"), "utf8");
-    const routerBlock = routerSrc.match(/SECTION_ALIAS_IDS = \[([\s\S]*?)\]/)?.[1] ?? "";
-    const fromRouter = [...routerBlock.matchAll(/"([a-z-]+)"/g)].map((m) => m[1]).sort();
-
-    const appSrc = fs.readFileSync(path.join(root, "src/App.jsx"), "utf8");
-    const appBlock = appSrc.match(/SECTION_ALIASES = \{([\s\S]*?)\}/)?.[1] ?? "";
-    const fromApp = [...appBlock.matchAll(/(\w+):/g)].map((m) => m[1]).sort();
-
-    expect(fromRouter).toEqual(fromVercel);
-    expect(fromApp).toEqual(fromVercel);
+  it("committed sitemap covers every page route", () => {
+    const xml = fs.readFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), "utf8");
+    for (const p of EXPECTED_PAGES.slice(1)) {
+      expect(xml, `sitemap missing page ${p}`).toContain(
+        `https://abdullah-asim-dev.vercel.app${p}<`,
+      );
+    }
   });
 });

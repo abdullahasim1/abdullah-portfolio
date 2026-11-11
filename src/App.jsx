@@ -10,7 +10,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import SplashScreen from "./components/SplashScreen";
 import { IS_LOW_END } from "./lib/device";
-import { RouterProvider, useRoute, scrollTopNow, scrollToSectionNow, consumePendingSection, Link } from "./lib/router";
+import { RouterProvider, useRoute, scrollTopNow, consumePendingSection, redirectHashToPage, Link } from "./lib/router";
 import { applyPageMeta, metaForPath } from "./lib/pageMeta";
 import { getFeaturedBySlug } from "./data/projects";
 import { getService } from "./data/services";
@@ -26,6 +26,9 @@ const Services = lazy(() => import("./pages/Services"));
 const Stats = lazy(() => import("./pages/Stats"));
 const ProjectsPage = lazy(() =>
   import("./pages/Projects").then((m) => ({ default: m.ProjectsPage })),
+);
+const FeaturedWork = lazy(() =>
+  import("./pages/Projects").then((m) => ({ default: m.FeaturedWork })),
 );
 const Experience = lazy(() => import("./pages/Experience"));
 const Skills = lazy(() => import("./pages/Skills"));
@@ -76,7 +79,7 @@ function NotFound() {
             Back to Home
           </Link>
           <Link
-            href="/#projects"
+            href="/projects"
             className="rounded-full border border-violet-300 bg-white px-6 py-3 text-sm font-semibold text-violet-600 transition-colors hover:bg-violet-50 dark:border-white/15 dark:bg-white/5 dark:text-violet-300 dark:hover:bg-white/10"
           >
             View Projects
@@ -87,23 +90,13 @@ function NotFound() {
   );
 }
 
-/* Hybrid structure (Abdullah ka faisla, 2026-11-03): Home full one-page
-   hai — saari sections ek scroll mein. Sirf DETAIL pages alag hain:
-   /projects/<slug> case studies, /services/<slug>, /blog/<slug> posts.
-   Purane section URLs (/about waghera) home ke usi section par le jate
-   hain — vercel.json redirects + yahan SPA alias, dono taraf se. */
-const SECTION_ALIASES = {
-  about: "about",
-  skills: "skills",
-  services: "services",
-  projects: "projects",
-  experience: "experience",
-  certifications: "certifications",
-  process: "process",
-  blog: "blog",
-  faq: "faq",
-  contact: "contact",
-};
+/* Multi-page structure (Abdullah ka faisla, 2026-11-12): har section
+   ka apna asal page hai — /, /about, /skills, /services, /projects,
+   /experience, /certifications, /blog, /contact — aur DETAIL pages
+   pehle ki tarah: /projects/<slug> case studies, /services/<slug>,
+   /blog/<slug> static posts. Purani hash links (/#services waghera)
+   home par land hon to router ka redirectHashToPage unhein asal page
+   par bhej deta hai. */
 
 function Section({ children }) {
   return (
@@ -113,93 +106,115 @@ function Section({ children }) {
   );
 }
 
-function HomeSections({ introDone }) {
+/* Home = asal homepage: hero, achievements, featured projects ka
+   preview, testimonials, FAQ aur contact CTA band. */
+function HomePage({ introDone }) {
   return (
     <>
       <Home introDone={introDone} />
       <TechTicker />
       <Section>
-        <About />
-      </Section>
-      <Section>
-        <Skills />
-      </Section>
-      <Section>
-        <Services />
-      </Section>
-      <Section>
-        <Process />
-      </Section>
-      <Section>
         <Stats />
       </Section>
       <Section>
-        <ProjectsPage embedded />
-      </Section>
-      <Section>
-        <Experience />
-      </Section>
-      <Section>
-        <Certifications />
-      </Section>
-      <Section>
-        <Blog />
+        <FeaturedWork preview />
       </Section>
       <Section>
         <Testimonials />
       </Section>
-      <CtaBand />
       <Section>
         <Faq />
       </Section>
-      <Section>
-        <Contact />
-      </Section>
+      <CtaBand />
     </>
   );
+}
+
+/* Standalone section pages: fixed navbar ke neeche jagah ke liye
+   upar padding — sections apni py-16 waisi ki waisi rakhti hain. */
+function SectionPage({ children }) {
+  return <div className="pt-20 sm:pt-24">{children}</div>;
 }
 
 function RouteView({ introDone }) {
   const { path } = useRoute();
   const seg = path.split("/").filter(Boolean);
-  const alias = seg.length === 1 ? SECTION_ALIASES[seg[0]] : undefined;
-  const isHome = seg.length === 0 || Boolean(alias);
 
-  /* Route change: home par section scroll ya top, detail par top + meta */
+  /* Route change: meta apply + (pending section scroll ya top) +
+     ScrollTrigger refresh taake naye page ke reveals sahi chalen.
+     Splash chal raha ho to scroll defer hota hai — introDone true
+     hote hi yehi effect dobara chal kar consume kar leta hai. */
   useEffect(() => {
-    if (isHome) {
-      const homeMeta = metaForPath("/");
-      if (homeMeta) applyPageMeta({ ...homeMeta, path: "/" });
-      if (alias) {
-        /* Splash chal raha ho to scroll abhi mat karo — body lock mein
-           scroll gum ho jata tha aur user ghalat section par atak jata
-           tha. Pending rakh do; splash khatam hote hi Site wala effect
-           consume karke wahan le jayega. */
-        if (!introDone) {
-          try {
-            sessionStorage.setItem("aa-pending-section", alias);
-          } catch {}
-        } else {
-          scrollToSectionNow(alias);
-        }
-      } else if (!consumePendingSection()) scrollTopNow();
-    } else {
-      scrollTopNow();
-      const meta = metaForPath(path);
-      if (meta) applyPageMeta({ ...meta, path });
+    if (path === "/" && redirectHashToPage()) return;
+    const meta = metaForPath(path);
+    if (meta) applyPageMeta({ ...meta, path });
+    if (introDone) {
+      if (!consumePendingSection()) scrollTopNow();
     }
     const t = setTimeout(() => ScrollTrigger.refresh(), 400);
     return () => clearTimeout(t);
-  }, [path]);
+  }, [path, introDone]);
 
-  if (isHome) return <HomeSections introDone={introDone} />;
-
-  const [head, tail] = seg;
   const page = (node) => (
     <Suspense fallback={<div className="py-40" />}>
       <ErrorBoundary>{node}</ErrorBoundary>
     </Suspense>
   );
+
+  if (seg.length === 0) return <HomePage introDone={introDone} />;
+
+  const [head, tail] = seg;
+  if (seg.length === 1) {
+    switch (head) {
+      case "about":
+        return page(
+          <SectionPage>
+            <About />
+          </SectionPage>,
+        );
+      case "skills":
+        return page(
+          <SectionPage>
+            <Skills />
+          </SectionPage>,
+        );
+      case "services":
+        return page(
+          <SectionPage>
+            <Services />
+            <Process />
+          </SectionPage>,
+        );
+      case "projects":
+        return page(<ProjectsPage />);
+      case "experience":
+        return page(
+          <SectionPage>
+            <Experience />
+          </SectionPage>,
+        );
+      case "certifications":
+        return page(
+          <SectionPage>
+            <Certifications showAll />
+          </SectionPage>,
+        );
+      case "blog":
+        return page(
+          <SectionPage>
+            <Blog />
+          </SectionPage>,
+        );
+      case "contact":
+        return page(
+          <SectionPage>
+            <Contact />
+          </SectionPage>,
+        );
+      default:
+        break;
+    }
+  }
 
   if (head === "projects" && seg.length === 2 && getFeaturedBySlug(tail))
     return page(<ProjectCaseStudy slug={tail} />);
@@ -260,13 +275,9 @@ function Site() {
     };
   }, [introDone]);
 
-  /* Splash khatam hone par agar URL hash / pending section ho to
-     wahan scroll karo (redirect se aayi hui /#about type landings). */
-  useEffect(() => {
-    if (introDone && window.location.pathname === "/") {
-      consumePendingSection();
-    }
-  }, [introDone]);
+  /* Splash khatam hone par pending section / scroll ka kaam
+     RouteView ka effect (introDone dependency ke sath) khud kar
+     leta hai — yahan alag se kuch nahi karna. */
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">

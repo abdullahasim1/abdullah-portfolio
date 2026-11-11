@@ -169,7 +169,7 @@ function Home({ introDone = true }) {
             </p>
 
             <div data-hero-stagger className="flex flex-wrap items-center gap-4 pt-1">
-              <MagneticButton href="/#projects">View Projects</MagneticButton>
+              <MagneticButton href="/projects">View Projects</MagneticButton>
               <a
                 href="/resume.pdf"
                 download="Abdullah-Bin-Asim-Resume.pdf"

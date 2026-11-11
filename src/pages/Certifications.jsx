@@ -305,7 +305,10 @@ const FILTER_DEFS = [
    nahi, toggle ke baghair hard-truncate bhi nahi hota). */
 const PREVIEW_COUNT = 12;
 
-function Certifications() {
+/* showAll: apne asal page (/certifications) par poori list ek sath
+   dikhti hai — preview slice + View All toggle sirf embedded
+   (preview) istemal ke liye hai. */
+function Certifications({ showAll = false } = {}) {
   useScrollReveal("#certifications .reveal");
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(false);
@@ -318,8 +321,9 @@ function Certifications() {
     openai: certifications.filter((c) => kindOf(c) === "openai").length,
   };
   const shown = certifications.filter((c) => filter === "all" || kindOf(c) === filter);
-  const visible = filter === "all" && !expanded ? shown.slice(0, PREVIEW_COUNT) : shown;
-  const hasMore = filter === "all" && shown.length > PREVIEW_COUNT;
+  const isPreviewing = !showAll && filter === "all" && !expanded;
+  const visible = isPreviewing ? shown.slice(0, PREVIEW_COUNT) : shown;
+  const hasMore = !showAll && filter === "all" && shown.length > PREVIEW_COUNT;
 
   return (
     <section id="certifications" className="relative scroll-mt-24 overflow-hidden py-16">
@@ -379,7 +383,7 @@ function Certifications() {
           {visible.map((cert) => (
             <CertCard key={cert.id} cert={cert} />
           ))}
-          {filter === "all" && (expanded || !hasMore) && <KeepLearning />}
+          {filter === "all" && (showAll || expanded || !hasMore) && <KeepLearning />}
         </div>
 
         {/* View All / Show Less — "All" view ka poora data yahin se khulta hai */}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getSoundMuted, toggleSound, playClickSound } from "../lib/sound";
 /* DARK THEME DISABLED (2026-11-11, Abdullah's call): light theme only. To restore dark mode, uncomment this toggle, the ThemeContext dark logic, and the index.html theme script — all dark: styles in components are untouched and still in place. */
 // import { getTheme, applyTheme } from "../lib/theme";
-import { Link, useRoute, isSectionAliasPath } from "../lib/router";
+import { Link, useRoute } from "../lib/router";
 
 /* Board design: har nav link ke sath chhota violet line icon */
 const ICONS = {
@@ -58,13 +58,13 @@ const ICONS = {
 
 const links = [
   { label: "Home", id: "home", path: "/" },
-  { label: "About", id: "about", path: "/#about" },
-  { label: "Skills", id: "skills", path: "/#skills" },
-  { label: "Services", id: "services", path: "/#services" },
-  { label: "Projects", id: "projects", path: "/#projects" },
-  { label: "Experience", id: "experience", path: "/#experience" },
-  { label: "Certifications", id: "certifications", path: "/#certifications" },
-  { label: "Contact", id: "contact", path: "/#contact" },
+  { label: "About", id: "about", path: "/about" },
+  { label: "Skills", id: "skills", path: "/skills" },
+  { label: "Services", id: "services", path: "/services" },
+  { label: "Projects", id: "projects", path: "/projects" },
+  { label: "Experience", id: "experience", path: "/experience" },
+  { label: "Certifications", id: "certifications", path: "/certifications" },
+  { label: "Contact", id: "contact", path: "/contact" },
 ];
 
 function NavIcon({ id, className = "w-4 h-4" }) {
@@ -93,61 +93,16 @@ function Navbar() {
   */
   const theme = "light";
 
-  /* Active link: home (one-page) par scroll-spy, detail pages par
-     parent section (case study → Projects, service → Services). */
+  /* Active link: multi-page mein sirf current route se banta hai
+     (scrollspy 2026-11-12 ko retire ho gaya — har section ab apna
+     page hai). Detail pages par parent section active rehta hai
+     (case study → Projects, service detail → Services). */
   const { path } = useRoute();
-  const [spy, setSpy] = useState("home");
-
-  useEffect(() => {
-    /* Alias paths (/contact waghera) bhi home one-pager hi hain —
-       wahan bhi spy chale, warna koi link highlight hi nahi hota tha. */
-    if (path !== "/" && !isSectionAliasPath(path)) return;
-    let raf = 0;
-    const compute = () => {
-      /* Page ke bilkul aakhir mein spy line (scrollY+220) kabhi contact
-         ke top tak nahi pohanchti (footer beech mein hai) — bottom par
-         hamesha aakhri section (Contact) active rakho. */
-      if (
-        window.scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - 120
-      ) {
-        setSpy("contact");
-        return;
-      }
-      const y = window.scrollY + 220;
-      let current = "home";
-      for (const link of links) {
-        if (link.id === "home") continue;
-        const el = document.getElementById(link.id);
-        if (el && el.getBoundingClientRect().top + window.scrollY <= y) {
-          current = link.id;
-        }
-      }
-      setSpy(current);
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(compute);
-    };
-    compute();
-    // Lazy sections der se mount hote hain — offsets settle hone do
-    const timers = [600, 1600, 3000, 5000].map((ms) => setTimeout(compute, ms));
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-      timers.forEach(clearTimeout);
-    };
-  }, [path]);
-
+  const firstSeg = path.split("/").filter(Boolean)[0];
   const active =
-    path === "/" || isSectionAliasPath(path)
-      ? spy
-      : path.startsWith("/projects")
-        ? "projects"
-        : path.startsWith("/services")
-          ? "services"
-          : "";
+    path === "/"
+      ? "home"
+      : (links.find((l) => l.id === firstSeg)?.id ?? "");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -351,7 +306,7 @@ function Navbar() {
           </a>
 
           <Link
-            href="/#contact"
+            href="/contact"
             className="hidden sm:inline-flex sheen-btn items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 transition-all shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.35)]"
           >
             Let&apos;s Talk
@@ -374,7 +329,7 @@ function Navbar() {
       {/* Mobile menu */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          mobileOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0 mt-0 invisible"
+          mobileOpen ? "max-h-[32rem] opacity-100 mt-2" : "max-h-0 opacity-0 mt-0 invisible"
         }`}
         aria-hidden={!mobileOpen}
       >
@@ -397,7 +352,7 @@ function Navbar() {
             </Link>
           ))}
           <Link
-            href="/#contact"
+            href="/contact"
             onClick={closeMobile}
             className="mt-2 inline-flex items-center justify-center rounded-full px-4 py-2.5 font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600"
           >

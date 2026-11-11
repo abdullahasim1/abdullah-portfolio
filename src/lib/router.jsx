@@ -7,24 +7,79 @@ import { getLenis, scrollToSection } from "./smoothScroll";
 
 const RouterContext = createContext({ path: "/", navigate: () => {} });
 
-/* Section alias paths (/about, /contact waghera) — ye home one-pager
-   ke hi sections hain, alag pages nahi. */
-export const SECTION_ALIAS_IDS = [
-  "about",
-  "skills",
-  "services",
-  "projects",
-  "experience",
-  "certifications",
-  "process",
-  "blog",
-  "faq",
-  "contact",
+/* Multi-page structure (Abdullah ka faisla, 2026-11-12): har section
+   ka apna asal page hai. PAGE_ROUTES hi woh asal pages hain —
+   pageMeta.js PAGE_META aur App.jsx route table se agree karne
+   chahiye (integrity test ye pakka karta hai). */
+export const PAGE_ROUTES = [
+  "/",
+  "/about",
+  "/skills",
+  "/services",
+  "/projects",
+  "/experience",
+  "/certifications",
+  "/blog",
+  "/contact",
 ];
 
-export function isSectionAliasPath(path) {
-  const seg = path.split("/").filter(Boolean);
-  return seg.length === 1 && SECTION_ALIAS_IDS.includes(seg[0]);
+/* Section id → us ka page. Kuch sections kisi page ke andar hain:
+   process → /services page ke andar, faq + testimonials → home par. */
+const SECTION_PAGE = {
+  home: "/",
+  about: "/about",
+  skills: "/skills",
+  services: "/services",
+  projects: "/projects",
+  experience: "/experience",
+  certifications: "/certifications",
+  blog: "/blog",
+  contact: "/contact",
+  process: "/services",
+  faq: "/",
+  testimonials: "/",
+};
+
+export function pageForSection(id) {
+  return SECTION_PAGE[id] ?? "/";
+}
+
+/* Purani bookmark/shared hash links (/#services waghera): home par
+   land hon to hash wale section ke PAGE par replace-redirect karo.
+   True = redirect hua (caller aage scroll na kare). */
+const HASH_PAGE = {
+  about: "/about",
+  skills: "/skills",
+  services: "/services",
+  projects: "/projects",
+  experience: "/experience",
+  certifications: "/certifications",
+  blog: "/blog",
+  contact: "/contact",
+  process: "/services",
+};
+
+/* Hash ka target page (ya null). Page ke andar wala section ho
+   (process) to pending bhi set kar deta hai. */
+function hashPageTarget() {
+  const h = window.location.hash.replace(/^#\/?/, "");
+  if (!h || h.startsWith("blog/")) return null;
+  const target = HASH_PAGE[h];
+  if (!target) return null;
+  if (h !== target.slice(1)) {
+    try {
+      sessionStorage.setItem("aa-pending-section", h);
+    } catch {}
+  }
+  return target;
+}
+
+export function redirectHashToPage() {
+  const target = hashPageTarget();
+  if (!target) return false;
+  window.history.replaceState({}, "", target);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+  return true;
 }
 
 /* Har nayi scroll command purani settle-loop ko cancel kar deti hai,
@@ -48,8 +103,9 @@ export function scrollTopNow() {
   window.scrollTo(0, 0);
 }
 
-/* Hybrid nav: home one-page hai — section par scroll karo. Lazy sections
-   der se mount hote hain, is liye element milne tak thora poll karo. */
+/* Page ke andar wale section par scroll karo (process /services par,
+   faq + testimonials home par). Lazy chunks der se mount hote hain,
+   is liye element milne tak thora poll karo. */
 export function scrollToSectionNow(id) {
   if (id === "home") {
     scrollTopNow();
@@ -117,31 +173,39 @@ function settleScroll(id, gen) {
   }, 500);
 }
 
+/* Section ki taraf jao — multi-page mein is ka matlab hai: us
+   section ke PAGE par navigate karo. Jo section kisi page ke andar
+   hai (process → /services, faq/testimonials → home), wahan page par
+   land karke us section tak scroll hota hai (pending mechanism). */
 export function goSection(id) {
   if (id === "home") {
     if (window.location.pathname !== "/") navigateTo("/");
     else scrollTopNow();
     return;
   }
-  if (window.location.pathname !== "/") {
-    try {
-      sessionStorage.setItem("aa-pending-section", id);
-    } catch {}
-    navigateTo("/");
+  const target = pageForSection(id);
+  if (window.location.pathname !== target) {
+    if (id !== target.slice(1)) {
+      try {
+        sessionStorage.setItem("aa-pending-section", id);
+      } catch {}
+    }
+    navigateTo(target);
     return;
   }
   scrollToSectionNow(id);
 }
 
-/* Home par land hone ke baad pending section (doosre page se aaye ho)
-   ya URL hash (#about waghera) consume karo. True = scroll hua. */
+/* Kisi page par land hone ke baad pending section (doosre page se
+   aaye ho) ya home par URL hash (#faq waghera) consume karo.
+   True = scroll hua. */
 export function consumePendingSection() {
   let id = null;
   try {
     id = sessionStorage.getItem("aa-pending-section");
     if (id) sessionStorage.removeItem("aa-pending-section");
   } catch {}
-  if (!id && window.location.hash) {
+  if (!id && window.location.pathname === "/" && window.location.hash) {
     const h = window.location.hash.replace(/^#\/?/, "");
     if (h && !h.startsWith("blog")) id = h;
   }
@@ -153,7 +217,20 @@ export function consumePendingSection() {
 }
 
 export function RouterProvider({ children }) {
-  const [path, setPath] = useState(() => window.location.pathname);
+  /* Pehli load par hi hash (/#services waghera) ko asal page se
+     badal do — initial state mein, taake pehla render hi sahi page
+     ka ho (popstate listener tab tak laga nahi hota). */
+  const [path, setPath] = useState(() => {
+    const p = window.location.pathname;
+    if (p === "/") {
+      const target = hashPageTarget();
+      if (target) {
+        window.history.replaceState({}, "", target);
+        return target;
+      }
+    }
+    return p;
+  });
 
   useEffect(() => {
     const onPop = () => setPath(window.location.pathname);
