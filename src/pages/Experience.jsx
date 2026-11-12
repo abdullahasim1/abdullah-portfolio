@@ -20,10 +20,13 @@ function CountValue({ value }) {
 }
 import { goSection } from "../lib/router";
 import { playClickSound } from "../lib/sound";
+import ViewAllButton from "../components/ViewAllButton";
 
-/* Board sirf pehli 4 entries dikhata hai (3 roles + AWS GenAI credential) —
-   baaki certification milestones Certifications section me maujood hain. */
-const shown = timeline.slice(0, 4);
+/* Board page par pehli 4 entries dikhata hai (3 roles + AWS GenAI
+   credential) — baaki certification milestones Certifications section
+   me maujood hain. Home preview sirf pehli 2 entries dikhata hai. */
+const PAGE_COUNT = 4;
+const PREVIEW_COUNT = 2;
 
 function EntryIcon({ index }) {
   if (index === 3) {
@@ -89,7 +92,8 @@ const HIGHLIGHTS = [
   },
 ];
 
-function Experience() {
+function Experience({ preview = false } = {}) {
+  const shown = timeline.slice(0, preview ? PREVIEW_COUNT : PAGE_COUNT);
   /* Timeline line scroll ke sath draw hoti hai (motion spec §14) */
   const timelineRef = useRef(null);
   const lineRef = useRef(null);
@@ -147,7 +151,8 @@ function Experience() {
           </a>
         </div>
 
-        {/* Tabs row */}
+        {/* Tabs row (home preview mein nahi) */}
+        {!preview && (
         <div className="mt-9 flex flex-wrap items-center gap-5">
           <div className="inline-flex rounded-full border border-violet-100 bg-white p-1.5 shadow-sm dark:border-white/10 dark:bg-slate-900/70">
             <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md">
@@ -176,9 +181,10 @@ function Experience() {
             Career Timeline
           </span>
         </div>
+        )}
 
         {/* Content grid */}
-        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[1fr_360px]">
+        <div className={`mt-10 grid items-start gap-8 ${preview ? "" : "lg:grid-cols-[1fr_360px]"}`}>
           {/* Timeline */}
           <div className="relative" ref={timelineRef}>
             <span
@@ -247,7 +253,8 @@ function Experience() {
             </div>
           </div>
 
-          {/* Journey Highlights */}
+          {/* Journey Highlights (home preview mein nahi) */}
+          {!preview && (
           <aside className="rounded-[1.8rem] border border-violet-100 bg-white p-7 shadow-[0_16px_44px_-20px_rgba(124,58,237,0.22)] dark:border-white/10 dark:bg-slate-900/70 lg:sticky lg:top-28">
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
@@ -296,9 +303,11 @@ function Experience() {
               <ellipse cx="282" cy="42" rx="17" ry="4.5" fill="#C4B5FD" opacity="0.7" />
             </svg>
           </aside>
+          )}
         </div>
 
-        {/* Bottom flow */}
+        {/* Bottom flow (home preview mein nahi) */}
+        {!preview && (
         <div className="mt-14 flex items-center justify-center gap-3 sm:gap-5">
           <span className="inline-flex items-center gap-2.5 rounded-full bg-violet-100 px-6 py-3 text-[12px] font-bold uppercase tracking-[0.18em] text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.7} viewBox="0 0 24 24">
@@ -326,6 +335,9 @@ function Experience() {
             Ship
           </span>
         </div>
+        )}
+
+        {preview && <ViewAllButton href="/experience">View All Experience</ViewAllButton>}
       </div>
     </section>
   );

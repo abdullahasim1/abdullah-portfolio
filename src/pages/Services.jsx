@@ -6,6 +6,7 @@ import ProjectEstimator from "../components/ProjectEstimator";
 import { playClickSound } from "../lib/sound";
 import { Link, goSection } from "../lib/router";
 import { services as serviceData } from "../data/services";
+import ViewAllButton from "../components/ViewAllButton";
 
 /* Cards ka data data/services.js se — detail pages ke sath shared */
 const heroServices = serviceData.filter((s) => s.icon !== "automation");
@@ -116,7 +117,9 @@ function BrandIcon({ name }) {
 
 const automationTools = ["GoHighLevel", "Make.com", "n8n", "Claude", "OpenAI", "Zapier"];
 
-function Services() {
+/* preview: home par header + pehle 3 service cards — spotlight,
+   estimator aur custom band sirf asal /services page par. */
+function Services({ preview = false } = {}) {
   useScrollReveal("#services .reveal");
 
   return (
@@ -140,9 +143,9 @@ function Services() {
           <div className="mt-4 h-[3px] w-14 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500" />
         </div>
 
-        {/* Service cards — 3D tilt + hover lift, floating art */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" style={{ perspective: "1200px" }}>
-          {heroServices.map((s, i) => (
+        {/* Service cards — 3D tilt + hover lift, floating art (preview: pehle 3) */}
+        <div className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${preview ? "xl:grid-cols-3" : "xl:grid-cols-4"}`} style={{ perspective: "1200px" }}>
+          {(preview ? heroServices.slice(0, 3) : heroServices).map((s, i) => (
             <TiltCard key={s.title} className="h-full">
               <article className="reveal group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
                 <Link
@@ -168,7 +171,10 @@ function Services() {
           ))}
         </div>
 
-        {/* AI & Automation spotlight */}
+        {preview && <ViewAllButton href="/services">View All Services</ViewAllButton>}
+
+        {/* AI & Automation spotlight (home preview mein nahi) */}
+        {!preview && (
         <div className="reveal relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] p-8 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:p-10">
           {/* Animated connector line — tools ke darmiyan data flow */}
           <svg aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-24 w-full -translate-y-1/2 text-violet-300/70 dark:text-violet-400/25 lg:block" viewBox="0 0 1200 96" preserveAspectRatio="none" fill="none">
@@ -214,11 +220,13 @@ function Services() {
             </div>
           </div>
         </div>
+        )}
 
-        {/* Interactive Scope & Timeline Estimator */}
-        <ProjectEstimator />
+        {/* Interactive Scope & Timeline Estimator (home preview mein nahi) */}
+        {!preview && <ProjectEstimator />}
 
-        {/* Need Something Custom — board band */}
+        {/* Need Something Custom — board band (home preview mein nahi) */}
+        {!preview && (
         <div className="reveal relative mt-8 overflow-hidden rounded-[1.8rem] border border-violet-200/70 bg-gradient-to-r from-[#F3EFFF] via-[#FAF8FF] to-[#F3EFFF] px-8 py-9 dark:border-white/10 dark:from-violet-500/10 dark:via-slate-900/60 dark:to-violet-500/10 sm:px-10">
           <div className="flex flex-col items-start gap-7 lg:flex-row lg:items-center">
             <div aria-hidden className="relative hidden h-[74px] w-[120px] shrink-0 min-[480px]:block">
@@ -254,6 +262,7 @@ function Services() {
             </button>
           </div>
         </div>
+        )}
       </div>
     </section>
   );

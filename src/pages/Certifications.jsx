@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { siAnthropic } from "simple-icons";
 import { useScrollReveal } from "../hooks";
 import { certifications } from "../data/certifications";
+import ViewAllButton from "../components/ViewAllButton";
 
 const CREDLY_URL = "https://www.credly.com/users/abdullah-asim/badges";
 
@@ -308,7 +309,11 @@ const PREVIEW_COUNT = 12;
 /* showAll: apne asal page (/certifications) par poori list ek sath
    dikhti hai — preview slice + View All toggle sirf embedded
    (preview) istemal ke liye hai. */
-function Certifications({ showAll = false } = {}) {
+/* preview (home): 12 cards, koi filter/banner nahi — neeche ka button
+   jagah par expand NAHI karta, /certifications page par le jata hai.
+   showAll (/certifications page): hamesha poori list. Embedded default
+   (bina props) purana toggle behaviour rakhta hai. */
+function Certifications({ showAll = false, preview = false } = {}) {
   useScrollReveal("#certifications .reveal");
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(false);
@@ -351,9 +356,10 @@ function Certifications({ showAll = false } = {}) {
           <AwardArt />
         </div>
 
-        {featured && <FeaturedCert cert={featured} />}
+        {featured && !preview && <FeaturedCert cert={featured} />}
 
-        {/* Filter pills */}
+        {/* Filter pills (home preview mein nahi — filters page par) */}
+        {!preview && (
         <div className="mb-8 flex flex-wrap gap-2.5">
           {FILTER_DEFS.map((f) => {
             const active = filter === f.key;
@@ -377,6 +383,7 @@ function Certifications({ showAll = false } = {}) {
             );
           })}
         </div>
+        )}
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -386,8 +393,15 @@ function Certifications({ showAll = false } = {}) {
           {filter === "all" && (showAll || expanded || !hasMore) && <KeepLearning />}
         </div>
 
+        {/* Home preview: button /certifications page par le jata hai (expand nahi) */}
+        {preview && hasMore && (
+          <ViewAllButton href="/certifications">
+            View All Certifications ({counts.all})
+          </ViewAllButton>
+        )}
+
         {/* View All / Show Less — "All" view ka poora data yahin se khulta hai */}
-        {hasMore && (
+        {!preview && hasMore && (
           <div className="mt-10 flex justify-center">
             <button
               type="button"

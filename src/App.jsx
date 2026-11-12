@@ -106,18 +106,40 @@ function Section({ children }) {
   );
 }
 
-/* Home = asal homepage: hero, achievements, featured projects ka
-   preview, testimonials, FAQ aur contact CTA band. */
+/* Home = preview hub (Abdullah ka design, 2026-11-12): har section
+   home par THORA sa nazar aata hai aur us ka "View All" button asal
+   page par le jata hai. Order purani one-pager wala hi hai: Hero,
+   About, Skills, Services, Stats, Projects, Experience,
+   Certifications, Blog, Testimonials, FAQ, CTA. Stats/Testimonials/
+   FAQ ke apne pages nahi — ye poore home par hi rehte hain. */
 function HomePage({ introDone }) {
   return (
     <>
       <Home introDone={introDone} />
       <TechTicker />
       <Section>
+        <About preview />
+      </Section>
+      <Section>
+        <Skills preview />
+      </Section>
+      <Section>
+        <Services preview />
+      </Section>
+      <Section>
         <Stats />
       </Section>
       <Section>
         <FeaturedWork preview />
+      </Section>
+      <Section>
+        <Experience preview />
+      </Section>
+      <Section>
+        <Certifications preview />
+      </Section>
+      <Section>
+        <Blog preview />
       </Section>
       <Section>
         <Testimonials />
