@@ -4,6 +4,7 @@ import MagneticButton from "../components/MagneticButton";
 import TiltCard from "../components/TiltCard";
 import ViewAllButton from "../components/ViewAllButton";
 import { techStack } from "../data/techLogos";
+import { certifications } from "../data/certifications";
 
 function StackTile({ item }) {
   return (
@@ -61,7 +62,7 @@ const STAT_ICONS = {
 const STATS = [
   { icon: "calendar", num: "3+", label: "Years Experience" },
   { icon: "layers", num: "25+", label: "Projects Shipped" },
-  { icon: "award", num: "11+", label: "Certifications" },
+  { icon: "award", num: `${certifications.length}+`, label: "Certifications" },
 ];
 
 /* preview: home par sirf header + photo + intro text — tech stack

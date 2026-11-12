@@ -11,6 +11,7 @@ import {
 } from "simple-icons";
 import { playClickSound } from "../lib/sound";
 import { Link } from "../lib/router";
+import { certifications } from "../data/certifications";
 
 const exploreLinks = [
   { name: "Home", href: "/" },
@@ -66,7 +67,7 @@ const whatIDo = [
 const highlights = [
   { icon: "calendar", value: "3+", label: "Years Experience" },
   { icon: "layers", value: "25+", label: "Projects Shipped" },
-  { icon: "award", value: "11+", label: "Certifications" },
+  { icon: "award", value: `${certifications.length}+`, label: "Certifications" },
   { icon: "code", value: "15+", label: "Technologies" },
 ];
 

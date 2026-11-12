@@ -79,6 +79,23 @@ describe("certifications data", () => {
     expect(Number(m[1])).toBe(certifications.length);
   });
 
+  it("hero/about/experience/footer Certifications stats derive from the data total (no stale hardcoded count)", () => {
+    const root = path.resolve(PUBLIC_DIR, "..");
+    const files = [
+      "src/pages/Home.jsx",
+      "src/pages/About.jsx",
+      "src/pages/Experience.jsx",
+      "src/components/Footer.jsx",
+    ];
+    for (const rel of files) {
+      const src = fs.readFileSync(path.join(root, rel), "utf8");
+      // Certifications stat entry ka number data se derive ho, hardcode na ho.
+      expect(src, rel).toMatch(/certifications\.length\}\+`/);
+      expect(src, rel).toContain('label: "Certifications"');
+      expect(src, rel).not.toContain('"11+"');
+    }
+  });
+
   it("certifications can display the full total — page shows all, preview keeps toggle, no silent hard slice", () => {
     const root = path.resolve(PUBLIC_DIR, "..");
     const src = fs.readFileSync(path.join(root, "src/pages/Certifications.jsx"), "utf8");
