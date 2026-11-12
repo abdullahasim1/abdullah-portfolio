@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "../components/MagneticButton";
 import { goSection } from "../lib/router";
 import { techStack } from "../data/techLogos";
+import { certifications } from "../data/certifications";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +12,7 @@ const stats = [
   { icon: "code", num: "25+", label: "Projects Completed" },
   { icon: "users", num: "10+", label: "Happy Clients" },
   { icon: "bolt", num: "3+", label: "Years Experience" },
-  { icon: "award", num: "11+", label: "Certifications" },
+  { icon: "award", num: `${certifications.length}+`, label: "Certifications" },
 ];
 
 function StatIcon({ name }) {

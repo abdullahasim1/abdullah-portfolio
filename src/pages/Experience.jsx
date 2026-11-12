@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { timeline } from "../data/experience";
+import { certifications } from "../data/certifications";
 import { useCounterAnimation } from "../hooks/useCounterAnimation";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -81,7 +82,7 @@ const HIGHLIGHTS = [
     ),
   },
   {
-    value: "11+",
+    value: `${certifications.length}+`,
     label: "Certifications",
     icon: (
       <>
