@@ -98,32 +98,6 @@ function Navbar() {
      page hai). Detail pages par parent section active rehta hai
      (case study → Projects, service detail → Services). */
   const { path } = useRoute();
-
-  /* Home ke DARK hero ke upar navbar ki scoped dark shakal (2026-11-12,
-     Dua-style hero ke sath): sirf tab jab home route par hero screen
-     par ho — scroll karke hero guzar jaye ya koi aur page khule to
-     navbar bilkul pehle jaisa (light glass). Rang .nav-over-hero
-     CSS (index.css) + neeche wale conditional text colors se aate
-     hain; koi dark: variant istemal nahi hua. */
-  const [overHero, setOverHero] = useState(false);
-  useEffect(() => {
-    if (path !== "/") {
-      setOverHero(false);
-      return;
-    }
-    const el = document.getElementById("home");
-    if (!el) {
-      setOverHero(false);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => setOverHero(entry.isIntersecting),
-      { rootMargin: "-72px 0px 0px 0px" },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [path]);
-
   const firstSeg = path.split("/").filter(Boolean)[0];
   const active =
     path === "/"
@@ -166,11 +140,8 @@ function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
 
-  const circleBtn = `inline-flex items-center justify-center w-10 h-10 rounded-full glass transition-colors cursor-pointer shrink-0 ${
-    overHero
-      ? "text-[#EDE7D9] hover:text-white hover:border-[#F4EFE3]/50"
-      : "text-slate-300 light:text-violet-600 hover:text-violet-500 hover:border-violet-400/40"
-  }`;
+  const circleBtn =
+    "inline-flex items-center justify-center w-10 h-10 rounded-full glass text-slate-300 light:text-violet-600 hover:text-violet-500 hover:border-violet-400/40 transition-colors cursor-pointer shrink-0";
   /* DARK THEME DISABLED: segmented theme pill ke button ka style helper —
      sirf toggle ke liye tha. Original code:
   const segBtn = (isOn) =>
@@ -188,7 +159,7 @@ function Navbar() {
           scrolled || theme === "light"
             ? "glass-strong neon-ring shadow-2xl"
             : "glass"
-        } ${overHero ? "nav-over-hero" : ""}`}
+        }`}
       >
         {/* Brand — board style line-A mark + sparkle */}
         <Link
@@ -213,29 +184,16 @@ function Navbar() {
             <span className="absolute -right-1 -top-0.5 text-[13px] leading-none text-fuchsia-500">✦</span>
           </span>
           <span className="hidden sm:block leading-tight">
-            <span
-              className={`block font-display font-bold tracking-tight text-[15px] ${
-                overHero ? "text-[#F4EFE3]" : "text-white light:text-slate-900"
-              }`}
-            >
+            <span className="block font-display font-bold tracking-tight text-[15px] text-white light:text-slate-900">
               Abdullah Asim
             </span>
-            <span
-              className={`block text-[11px] ${
-                overHero ? "text-[#A79E8E]" : "text-slate-400"
-              }`}
-            >
+            <span className="block text-[11px] text-slate-400">
               Full-Stack Developer
             </span>
           </span>
         </Link>
 
-        <span
-          className={`hidden lg:block h-9 w-px shrink-0 ${
-            overHero ? "bg-white/20" : "bg-slate-400/25 light:bg-slate-300/70"
-          }`}
-          aria-hidden="true"
-        />
+        <span className="hidden lg:block h-9 w-px bg-slate-400/25 light:bg-slate-300/70 shrink-0" aria-hidden="true" />
 
         {/* Desktop links — icon + label, active = gradient pill + hanging underline */}
         <div
@@ -253,20 +211,10 @@ function Navbar() {
                 className={`relative inline-flex items-center gap-1 px-2.5 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
                   isActive
                     ? "text-white bg-gradient-to-r from-cyan-500 to-violet-600 shadow-[0_8px_20px_-8px_rgba(124,58,237,0.55)]"
-                    : overHero
-                      ? "text-[#D8D2C2] hover:text-white hover:bg-white/10"
-                      : "text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50"
+                    : "text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50"
                 }`}
               >
-                <span
-                  className={
-                    isActive
-                      ? "text-white"
-                      : overHero
-                        ? "text-[#C4B5FD]"
-                        : "text-violet-400 light:text-violet-500"
-                  }
-                >
+                <span className={isActive ? "text-white" : "text-violet-400 light:text-violet-500"}>
                   <NavIcon id={link.id} />
                 </span>
                 {link.label}
@@ -349,19 +297,9 @@ function Navbar() {
           <a
             href="/resume.pdf"
             download="Abdullah-Bin-Asim-Resume.pdf"
-            className={`hidden sm:inline-flex items-center gap-1.5 rounded-full glass px-4 py-2.5 text-sm font-semibold transition-colors ${
-              overHero
-                ? "text-[#EDE7D9] hover:text-white hover:border-[#F4EFE3]/50"
-                : "text-slate-200 light:text-slate-700 hover:text-violet-500 hover:border-violet-400/40"
-            }`}
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full glass px-4 py-2.5 text-sm font-semibold text-slate-200 light:text-slate-700 hover:text-violet-500 hover:border-violet-400/40 transition-colors"
           >
-            <svg
-              className={`w-4 h-4 ${overHero ? "text-[#C4B5FD]" : "text-violet-400 light:text-violet-500"}`}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4 text-violet-400 light:text-violet-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
             </svg>
             Resume
@@ -378,9 +316,7 @@ function Navbar() {
           </Link>
 
           <button
-            className={`lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full glass ${
-              overHero ? "text-[#EDE7D9]" : "text-slate-300 light:text-slate-700"
-            }`}
+            className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full glass text-slate-300 light:text-slate-700"
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
@@ -398,9 +334,7 @@ function Navbar() {
         aria-hidden={!mobileOpen}
       >
         <div
-          className={`max-w-[1440px] mx-auto rounded-3xl glass-strong p-4 grid gap-1 text-sm ${
-            overHero ? "nav-over-hero" : ""
-          }`}
+          className="max-w-[1440px] mx-auto rounded-3xl glass-strong p-4 grid gap-1 text-sm"
           role="navigation"
           aria-label="Mobile navigation"
         >
@@ -409,13 +343,9 @@ function Navbar() {
               key={link.id}
               href={link.path}
               onClick={closeMobile}
-              className={`inline-flex items-center gap-2.5 rounded-lg px-4 py-2.5 transition-colors ${
-                overHero
-                  ? "text-[#D8D2C2] hover:text-white hover:bg-white/10"
-                  : "text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50"
-              }`}
+              className="inline-flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50 transition-colors"
             >
-              <span className={overHero ? "text-[#C4B5FD]" : "text-violet-400 light:text-violet-500"}>
+              <span className="text-violet-400 light:text-violet-500">
                 <NavIcon id={link.id} />
               </span>
               {link.label}

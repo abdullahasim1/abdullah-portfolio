@@ -79,15 +79,13 @@ describe("certifications data", () => {
     expect(Number(m[1])).toBe(certifications.length);
   });
 
-  it("hero/about/experience Certifications stats derive from the data total (no stale hardcoded count)", () => {
+  it("hero/about/experience/footer Certifications stats derive from the data total (no stale hardcoded count)", () => {
     const root = path.resolve(PUBLIC_DIR, "..");
-    // Footer is list se 2026-11-12 ko hata: Dua-style footer mein ab
-    // koi Certifications stat display hi nahi hota (guard un jagahon
-    // ke liye hai jahan count asal mein dikhta hai).
     const files = [
       "src/pages/Home.jsx",
       "src/pages/About.jsx",
       "src/pages/Experience.jsx",
+      "src/components/Footer.jsx",
     ];
     for (const rel of files) {
       const src = fs.readFileSync(path.join(root, rel), "utf8");
