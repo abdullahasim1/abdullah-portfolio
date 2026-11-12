@@ -511,8 +511,7 @@ export function ProjectsPage({ embedded = false } = {}) {
               My GitHub Repositories
             </h2>
             <p className="text-slate-400 light:text-slate-500 max-w-xl leading-relaxed">
-              Selected repositories with real, shipped content — from {TOTAL_REPO_COUNT} total
-              projects across my GitHub, public and private.
+              {`Selected repositories with real, shipped content — from ${TOTAL_REPO_COUNT} total projects across my GitHub, public and private.`}
             </p>
             <span className="block h-1 w-14 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" aria-hidden="true" />
           </div>
