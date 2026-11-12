@@ -3,10 +3,19 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "../components/MagneticButton";
 import { goSection } from "../lib/router";
-import { techStack } from "../data/techLogos";
 import { certifications } from "../data/certifications";
 
 gsap.registerPlugin(ScrollTrigger);
+
+/* Dua Fatima Khan style hero (Abdullah ka order, 2026-11-12): solid
+   near-black band, screen bhar devasa cream headline, blueprint
+   (dashed) annotations — lekin saari copy Abdullah ki apni hai.
+   Band ke rang EXPLICIT hex hain (bg-[#060607], cream #F4EFE3) —
+   dark-variant bilkul istemal nahi hua, theme light-only hi hai
+   (PR #23 ki commented machinery untouched). Ek warning: index.css
+   ki unlayered "light safety net" slate/violet text classes ko
+   light mode mein dark shades par remap karti hai, is liye is band
+   ke andar woh classes nahi chal sakteen — sirf arbitrary hex. */
 
 const stats = [
   { icon: "code", num: "25+", label: "Projects Completed" },
@@ -61,38 +70,6 @@ const socials = [
   },
 ];
 
-function HeroChip({ item, className = "", delay = "0s" }) {
-  return (
-    <span
-      className={`absolute inline-flex items-center gap-2 rounded-2xl glass-strong px-3.5 py-2.5 text-xs font-semibold text-slate-100 light:text-slate-800 float-y ${className}`}
-      style={{ animationDelay: delay }}
-    >
-      {item.img ? (
-        <span className="inline-flex h-[22px] items-center">
-          <img src={item.img} alt="" aria-hidden="true" className="h-[15px] w-auto dark:hidden" />
-          <img src={item.imgDark} alt="" aria-hidden="true" className="hidden h-[15px] w-auto dark:block" />
-        </span>
-      ) : item.mono ? (
-        <span
-          className="inline-flex h-[22px] items-center justify-center rounded-md px-1.5 text-[9px] font-bold"
-          style={{
-            background: `linear-gradient(135deg, ${item.mono.from}22, ${item.mono.to}22)`,
-            border: `1px solid ${item.mono.from}55`,
-            color: item.mono.from,
-          }}
-        >
-          {item.mono.label}
-        </span>
-      ) : (
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-          <path d={item.icon.path} fill={`#${item.icon.hex}`} />
-        </svg>
-      )}
-      {item.name}
-    </span>
-  );
-}
-
 function Home({ introDone = true }) {
   const sectionRef = useRef(null);
   const visualRef = useRef(null);
@@ -112,7 +89,7 @@ function Home({ introDone = true }) {
     return () => ctx.revert();
   }, [introDone]);
 
-  /* Hero visual par halka scroll parallax — inkwell-style scrub feel */
+  /* Photo par halka scroll parallax — purani hero visual wali feel */
   useEffect(() => {
     if (!visualRef.current) return;
     const tween = gsap.to(visualRef.current, {
@@ -137,31 +114,58 @@ function Home({ introDone = true }) {
   };
 
   return (
-    <section id="home" ref={sectionRef} className="relative overflow-hidden">
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-0 pt-36 pb-16 w-full">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-          {/* Left — intro */}
-          <div className="space-y-7">
-            <span
-              data-hero-stagger
-              className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-slate-300"
-            >
-              👋 Hello, I&apos;m
+    <section id="home" ref={sectionRef} className="relative overflow-hidden bg-[#060607]">
+      <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1440px] flex-col justify-center px-5 pb-14 pt-32 sm:px-8 lg:pt-36">
+        {/* Upar wali annotation patti — naam + asal role, dashed rule ke sath */}
+        <div
+          data-hero-stagger
+          className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-dashed border-white/15 pb-5 font-mono text-[11px] uppercase tracking-[0.28em] text-[#A79E8E]"
+        >
+          <span>👋 Hello, I&apos;m Abdullah Asim</span>
+          <span className="hidden md:inline">AI Cloud Engineer — Experts Cloud</span>
+        </div>
+
+        {/* Devasa headline — do lines, cream, screen bhar */}
+        <div className="relative mt-9">
+          <h1
+            data-hero-stagger
+            aria-label="Generative AI Engineer"
+            className="font-display font-extrabold uppercase leading-[0.94] tracking-tight text-[#F4EFE3]"
+            style={{ fontSize: "clamp(2.35rem, 10.5vw, 10.5rem)" }}
+          >
+            <span className="block whitespace-nowrap">
+              Generative{" "}
+              <span className="relative inline-block">
+                AI
+                {/* Blueprint annotation: "AI" ke gird dashed box + label */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-x-2 -inset-y-1 rounded-[4px] border border-dashed border-[#F4EFE3]/45"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-8 left-0 hidden whitespace-nowrap font-mono text-[10px] font-medium normal-case tracking-[0.3em] text-[#B7AE9C] sm:block"
+                >
+                  / AWS Bedrock
+                </span>
+              </span>
             </span>
+            <span className="block whitespace-nowrap">Engineer</span>
+          </h1>
 
-            <h1
-              data-hero-stagger
-              className="font-display font-bold leading-[1.04] tracking-tight text-5xl sm:text-6xl lg:text-7xl"
-            >
-              <span className="text-white light:text-slate-900">Abdullah </span>
-              <span className="text-gradient">Asim</span>
-            </h1>
+          {/* Blueprint tag — headline ke dayein, us ke apne stack ke lafz */}
+          <span
+            aria-hidden="true"
+            className="absolute right-1 top-[62%] hidden -translate-y-1/2 items-center gap-2 rounded-full border border-dashed border-[#F4EFE3]/35 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.3em] text-[#B7AE9C] lg:inline-flex"
+          >
+            AI Agents · n8n · Claude
+          </span>
+        </div>
 
-            <p data-hero-stagger className="font-display text-xl md:text-2xl font-semibold text-slate-200 light:text-slate-700">
-              Generative AI Engineer
-            </p>
-
-            <p data-hero-stagger className="text-slate-400 leading-relaxed max-w-xl">
+        {/* Neeche wali qataar — intro copy, CTAs, socials | chhoti photo */}
+        <div className="mt-11 grid items-end gap-10 lg:grid-cols-[1fr_auto]">
+          <div className="max-w-2xl space-y-7">
+            <p data-hero-stagger className="leading-relaxed text-[#B9B2A2]">
               AI Cloud Engineer at Experts Cloud with AWS Generative AI
               Professional &amp; Claude Certified Architect credentials. I build
               modern, scalable and AI-powered web applications using React,
@@ -174,7 +178,7 @@ function Home({ introDone = true }) {
               <a
                 href="/resume.pdf"
                 download="Abdullah-Bin-Asim-Resume.pdf"
-                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3.5 font-semibold text-slate-200 light:text-slate-700 hover:border-violet-400/40 hover:text-violet-300 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 font-semibold text-[#F4EFE3] transition-colors hover:border-[#F4EFE3]/60"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
@@ -191,9 +195,9 @@ function Home({ introDone = true }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-slate-300 light:text-slate-600 hover:text-violet-300 hover:border-violet-400/40 transition-colors"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-[#D8D2C2] transition-colors hover:border-[#F4EFE3]/60 hover:text-white"
                 >
-                  <svg className="w-4.5 h-4.5 w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
                     <path d={s.path} />
                   </svg>
                 </a>
@@ -202,7 +206,7 @@ function Home({ introDone = true }) {
                 href="#contact"
                 onClick={(e) => scrollTo(e, "contact")}
                 aria-label="Email"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-slate-300 light:text-slate-600 hover:text-violet-300 hover:border-violet-400/40 transition-colors"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-[#D8D2C2] transition-colors hover:border-[#F4EFE3]/60 hover:text-white"
               >
                 <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -211,46 +215,42 @@ function Home({ introDone = true }) {
             </div>
           </div>
 
-          {/* Right — hero visual with floating badges */}
-          <div data-hero-stagger className="relative">
+          {/* Photo — headline ke neeche, type ke muqable chhoti aur
+              subordinate. Yehi asset About/assistant mein bhi hai
+              (/about-photo.webp, build par banta hai). Purani
+              hero-light.webp (lavender laptop graphic) dark band se
+              takrati thi, is liye hero se hat gayi — file maujood hai. */}
+          <div data-hero-stagger className="relative w-44 justify-self-start sm:w-52 lg:w-60 lg:justify-self-end">
             <div ref={visualRef} className="relative will-change-transform">
-              <div
-                aria-hidden
-                className="absolute -inset-6 rounded-[36px] bg-violet-600/[0.13] blur-3xl"
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-2.5 rounded-[26px] border border-dashed border-white/20"
               />
               <img
-                src="/hero-light.webp"
-                alt="Floating laptop with a code editor on a soft lavender background"
-                className="relative w-full rounded-[28px] border border-violet-200/70 light:border-violet-100 object-cover shadow-[0_30px_80px_-30px_rgba(124,58,237,0.35)]"
-                width="960"
-                height="640"
+                src="/about-photo.webp"
+                alt="Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer"
+                className="relative aspect-[3/4] w-full rounded-[22px] border border-white/15 object-cover"
+                width="720"
+                height="960"
                 fetchPriority="high"
-              />
-              <HeroChip item={techStack[5]} className="-top-4 right-6" />
-              <HeroChip item={techStack[0]} className="top-1/3 -left-3 sm:-left-6" delay="0.7s" />
-              <HeroChip item={techStack[1]} className="-bottom-4 left-8" delay="1.2s" />
-              <HeroChip
-                item={{ name: "Generative AI", mono: { label: "AI", from: "#8b5cf6", to: "#6366f1" } }}
-                className="-bottom-4 right-8"
-                delay="0.4s"
               />
             </div>
           </div>
         </div>
 
-        {/* Stats bar — mockup style */}
+        {/* Stats bar — wohi 4 stats, dark band ke andar minimal frame */}
         <div
           data-hero-stagger
-          className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-y-8 rounded-3xl glass px-8 py-7"
+          className="mt-14 grid grid-cols-2 gap-y-8 rounded-3xl border border-white/10 bg-white/[0.03] px-8 py-7 lg:grid-cols-4"
         >
           {stats.map((s) => (
             <div key={s.label} className="flex items-center gap-4">
               <StatIcon name={s.icon} />
               <div>
-                <div className="font-display text-2xl font-bold text-white light:text-slate-900 leading-none">
+                <div className="font-display text-2xl font-bold leading-none text-[#F4EFE3]">
                   {s.num}
                 </div>
-                <div className="text-xs text-slate-400 mt-1.5">{s.label}</div>
+                <div className="mt-1.5 text-xs text-[#A79E8E]">{s.label}</div>
               </div>
             </div>
           ))}

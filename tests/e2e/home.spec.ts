@@ -32,9 +32,11 @@ test.describe('Home page', () => {
 test.describe('Core functionality', () => {
   test('home page has hero heading', async ({ page }) => {
     await page.goto('/');
-    // Asal hero h1 naam hai ("Abdullah Asim") — purani expectation
-    // ("Full StackDeveloper") hero ke purane copy par thi, 2026-11-12
-    // ko asal heading ke mutabiq theek ki gayi.
-    await expect(page.locator('h1').first()).toContainText('Abdullah');
+    // Dua-style hero (2026-11-12): h1 ab devasa role headline hai
+    // ("Generative AI Engineer") — naam hero ki annotation patti mein
+    // asal text ke tor par maujood hai, h1 nahi raha.
+    await expect(page.locator('h1').first()).toContainText('Generative AI');
+    await expect(page.locator('h1').first()).toContainText('Engineer');
+    await expect(page.locator('#home')).toContainText("Hello, I'm Abdullah Asim");
   });
 });
