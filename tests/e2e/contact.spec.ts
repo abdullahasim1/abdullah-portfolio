@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Contact section', () => {
-  test.skip('contact form exists when scrolled to', async ({ page }) => {
-    await page.goto('/');
+test.describe('Contact page', () => {
+  test.skip('contact form exists on its page', async ({ page }) => {
+    await page.goto('/contact');
     await page.waitForLoadState('networkidle');
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(1000);

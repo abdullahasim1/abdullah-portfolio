@@ -82,7 +82,7 @@ function projectsAnswer() {
       `These are Abdullah's featured projects (${featuredProjects.length}):\n` +
       lines.join("\n") +
       "\n\nAsk about any project by name and I'll pull up its case study.",
-    links: [{ label: "View Projects section", section: "projects" }],
+    links: [{ label: "View Projects page", path: "/projects" }],
   };
 }
 
@@ -97,7 +97,7 @@ function certificationsAnswer() {
       `Abdullah holds ${certifications.length} certifications and training credentials, from ${issuers.join(", ")}. Highlights:\n` +
       highlighted +
       `\n\nThe full list is in the Certifications section — every badge there carries its verification link.`,
-    links: [{ label: "View all certifications", section: "certifications" }],
+    links: [{ label: "View all certifications", path: "/certifications" }],
   };
 }
 
@@ -108,7 +108,7 @@ function hireAnswer() {
       `${freelance ? freelance.a : "Yes — Abdullah is available for new projects."}\n\n` +
       `The easiest way to hire him: email ${CONTACT_EMAIL} with a short brief of your project, or use the Contact form below — he usually replies within a few hours.`,
     links: [
-      { label: "Go to Contact section", section: "contact" },
+      { label: "Go to Contact page", path: "/contact" },
       { label: `Email ${CONTACT_EMAIL}`, href: `mailto:${CONTACT_EMAIL}` },
     ],
   };
@@ -123,7 +123,7 @@ function techStackAnswer() {
     text:
       `${techFaq ? techFaq.a : "React, Next.js, Node.js, TypeScript, Tailwind CSS, AWS and AI tooling."}\n\n` +
       `Across his projects and services you'll also see: ${[...tags].join(", ")}.`,
-    links: [{ label: "View Skills section", section: "skills" }],
+    links: [{ label: "View Skills page", path: "/skills" }],
   };
 }
 
@@ -134,7 +134,7 @@ function experienceAnswer() {
     .join("\n");
   return {
     text: `Abdullah's background:\n${lines}\n\nHe has 3+ years of experience and 25+ shipped projects.`,
-    links: [{ label: "View Experience section", section: "experience" }],
+    links: [{ label: "View Experience page", path: "/experience" }],
   };
 }
 
@@ -144,7 +144,7 @@ function fallbackAnswer() {
       "I don't have that in Abdullah's portfolio data, so I won't guess. " +
       "You can ask me about his services, projects, certifications, tech stack, experience, or hiring — " +
       `or reach Abdullah directly at ${CONTACT_EMAIL} / the Contact section.`,
-    links: [{ label: "Go to Contact section", section: "contact" }],
+    links: [{ label: "Go to Contact page", path: "/contact" }],
   };
 }
 
@@ -185,7 +185,7 @@ function buildEntries() {
   }
 
   for (const c of certifications) {
-    const links = [{ label: "View Certifications section", section: "certifications" }];
+    const links = [{ label: "View Certifications page", path: "/certifications" }];
     if (c.credentialUrl) links.unshift({ label: "Verify credential", href: c.credentialUrl });
     entries.push({
       kind: "certification",
@@ -208,7 +208,7 @@ function buildEntries() {
       haystack: `${t.title} ${t.org} ${t.desc} ${(t.tags || []).join(" ")}`,
       answer: () => ({
         text: `${t.title} at ${t.org} (${t.period}): ${t.desc}`,
-        links: [{ label: "View Experience section", section: "experience" }],
+        links: [{ label: "View Experience page", path: "/experience" }],
       }),
     });
   }
@@ -249,7 +249,7 @@ function scoreEntry(queryTokens, queryNorm, entry) {
 
 /**
  * Visitor ke sawal ka jawab — hamesha { text, links }.
- * links: { label, section } | { label, path } | { label, href }
+ * links: { label, path } | { label, href }  (path = asal page route, multi-page 2026-11-12)
  */
 export function answerQuestion(rawQuestion) {
   const question = String(rawQuestion || "").trim();
@@ -279,7 +279,7 @@ export function answerQuestion(rawQuestion) {
     if (pricing) {
       return {
         text: pricing.a,
-        links: [{ label: "Try the project estimator / Contact", section: "contact" }],
+        links: [{ label: "Try the project estimator / Contact", path: "/contact" }],
       };
     }
   }

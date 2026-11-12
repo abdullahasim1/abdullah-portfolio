@@ -34,3 +34,51 @@ test.describe('Detail routes', () => {
     await expect(page.getByText('404').first()).toBeVisible();
   });
 });
+
+test.describe('Multi-page routes (2026-11-12 restructure)', () => {
+  // Har section ka apna asal page hai — heading se verify karo ke
+  // sahi page ka sahi content load hua.
+  const pages: Array<[string, RegExp]> = [
+    ['/about', /Turning Ideas into AI-Powered Solutions/i],
+    ['/skills', /My Tech Stack/i],
+    ['/services', /Hire a Freelance n8n Developer/i],
+    ['/projects', /My Recent Work/i],
+    ['/experience', /My Journey/i],
+    ['/certifications', /Credentials & Learning/i],
+    ['/blog', /Notes & Articles/i],
+    ['/contact', /Have a Project in Mind/i],
+  ];
+
+  for (const [path, heading] of pages) {
+    test(`${path} loads as its own page`, async ({ page }) => {
+      const response = await page.goto(path);
+      expect(response?.status()).toBe(200);
+      await expect(page.getByRole('heading', { name: heading }).first()).toBeVisible();
+      await expect(page).toHaveTitle(/Abdullah Bin Asim/);
+    });
+  }
+
+  test('certifications page shows the full list without a View All gate', async ({ page }) => {
+    await page.goto('/certifications');
+    await expect(page.getByRole('button', { name: /View All Certifications/i })).toHaveCount(0);
+    // Aakhir wali entries bhi pehli render mein maujood hain
+    await expect(page.getByText(/AI-DLC Foundations/i).first()).toBeVisible();
+  });
+
+  test('old hash link /#services lands on the services page', async ({ page }) => {
+    await page.goto('/#services');
+    await expect(page).toHaveURL(/\/services$/);
+    await expect(
+      page.getByRole('heading', { name: /Hire a Freelance n8n Developer/i }).first(),
+    ).toBeVisible();
+  });
+
+  test('navbar navigates between pages', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('link', { name: /^About$/ }).first().click();
+    await expect(page).toHaveURL(/\/about$/);
+    await expect(
+      page.getByRole('heading', { name: /Turning Ideas into AI-Powered Solutions/i }).first(),
+    ).toBeVisible();
+  });
+});

@@ -14,7 +14,7 @@ describe("portfolio assistant matcher", () => {
   it("answers the certifications count from the data, not a hardcoded number", () => {
     const a = answerQuestion("How many certifications does he have?");
     expect(a.text).toContain(String(certifications.length));
-    expect(a.links.some((l) => l.section === "certifications")).toBe(true);
+    expect(a.links.some((l) => l.path === "/certifications")).toBe(true);
   });
 
   it("answers a specific certification question (Kiro badge)", () => {
@@ -25,7 +25,7 @@ describe("portfolio assistant matcher", () => {
   it("answers hiring with the real contact email and contact link", () => {
     const a = answerQuestion("How can I hire Abdullah?");
     expect(a.text).toContain("abdullah.gc.18@gmail.com");
-    expect(a.links.some((l) => l.section === "contact")).toBe(true);
+    expect(a.links.some((l) => l.path === "/contact")).toBe(true);
   });
 
   it("answers pricing from the portfolio FAQ, without inventing numbers", () => {
@@ -58,7 +58,7 @@ describe("portfolio assistant matcher", () => {
   it("falls back politely for questions outside the portfolio data", () => {
     const a = answerQuestion("What is the weather in Tokyo today?");
     expect(a.text).toContain("I don't have that in Abdullah's portfolio data");
-    expect(a.links.some((l) => l.section === "contact")).toBe(true);
+    expect(a.links.some((l) => l.path === "/contact")).toBe(true);
   });
 
   it("greets back on a greeting", () => {

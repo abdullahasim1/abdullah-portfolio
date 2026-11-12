@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "../hooks/useFocusTrap";
-import { goSection, navigateTo } from "../lib/router";
+import { navigateTo } from "../lib/router";
 import {
   ASSISTANT_GREETING,
   SUGGESTED_QUESTIONS,
@@ -137,8 +137,7 @@ export default function PortfolioAssistant() {
 
   const onNavigate = (link) => {
     setOpen(false);
-    if (link.section) goSection(link.section);
-    else if (link.path) navigateTo(link.path);
+    if (link.path) navigateTo(link.path);
   };
 
   if (!open) {
