@@ -24,6 +24,7 @@ import {
   siServerless,
 } from "simple-icons";
 import { useScrollReveal } from "../hooks";
+import ViewAllButton from "../components/ViewAllButton";
 
 /* Dark backgrounds pe black logos dikhte nahi — white fallback
    (light mode mein CSS net inhe slate-900 kar deta hai). */
@@ -194,7 +195,9 @@ function GroupHeader({ group, count }) {
   );
 }
 
-function Skills() {
+/* preview: home par header + pehle 2 skill groups — filter pills aur
+   Tools bar sirf asal /skills page par; neeche View All wahan jata hai. */
+function Skills({ preview = false } = {}) {
   /* Section-level scroll reveal (header + filter row) — baqi sections
      wala shared hook. Group cards is hook se bahar hain: woh filter
      switch par re-mount hote hain aur un ki apni fadeUpSm entrance
@@ -233,6 +236,7 @@ function Skills() {
   );
   const cardGroups = visibleGroups.filter((e) => !e.group.bar);
   const barGroups = visibleGroups.filter((e) => e.group.bar);
+  const shownCardGroups = preview ? cardGroups.slice(0, 2) : cardGroups;
   const single = active !== "All";
 
   const tileCols = (group) => {
@@ -285,7 +289,8 @@ function Skills() {
           </div>
         </div>
 
-        {/* Filter pills — sliding gradient indicator */}
+        {/* Filter pills — sliding gradient indicator (home preview mein nahi) */}
+        {!preview && (
         <div className="reveal relative flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Skill categories">
           <span
             aria-hidden
@@ -315,14 +320,15 @@ function Skills() {
             </button>
           ))}
         </div>
+        )}
 
         {/* Group cards */}
-        {cardGroups.length > 0 && (
+        {shownCardGroups.length > 0 && (
           <div
             key={active}
-            className={`grid gap-6 ${single ? "" : "lg:grid-cols-[1fr_1fr_1.45fr]"}`}
+            className={`grid gap-6 ${single ? "" : preview ? "lg:grid-cols-2" : "lg:grid-cols-[1fr_1fr_1.45fr]"}`}
           >
-            {cardGroups.map(({ group, tiles }) => (
+            {shownCardGroups.map(({ group, tiles }) => (
               <article
                 key={group.id}
                 className="animate-[fadeUpSm_.5s_cubic-bezier(0.22,1,0.36,1)_both] rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white/80 p-6 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]"
@@ -346,8 +352,8 @@ function Skills() {
           </div>
         )}
 
-        {/* Tools & Workflow bar */}
-        {barGroups.map(({ group, tiles }) => (
+        {/* Tools & Workflow bar (home preview mein nahi) */}
+        {!preview && barGroups.map(({ group, tiles }) => (
           <article
             key={`${group.id}-${active}`}
             className="mt-6 rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white/80 p-6 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]"
@@ -372,6 +378,8 @@ function Skills() {
             )}
           </article>
         ))}
+
+        {preview && <ViewAllButton href="/skills">View All Skills</ViewAllButton>}
       </div>
     </section>
   );

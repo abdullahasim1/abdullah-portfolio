@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { posts } from "../data/posts.gen";
 import { useScrollReveal } from "../hooks";
 import { playClickSound } from "../lib/sound";
+import ViewAllButton from "../components/ViewAllButton";
 
 /* Har post ki apni asal page hai: /blog/<slug> (build time par static
    prerender hoti hai — scripts/build-content.mjs). Cards wahan link
@@ -143,7 +144,9 @@ function RowCard({ post }) {
 
 /* ---------------- Section ---------------- */
 
-function Blog() {
+/* preview (home): sirf latest 3 posts (featured + 2 side), search
+   nahi — neeche View All /blog page par le jata hai. */
+function Blog({ preview = false } = {}) {
   const [query, setQuery] = useState("");
   useScrollReveal("#blog .reveal");
 
@@ -185,6 +188,7 @@ function Blog() {
             </p>
             <div className="mt-4 h-[3px] w-14 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500" />
           </div>
+          {!preview && (
           <label className="relative block w-full max-w-xs">
             <span className="sr-only">Search articles</span>
             <svg className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -198,6 +202,7 @@ function Blog() {
               className="w-full rounded-full border border-violet-100 bg-white py-3 pl-11 pr-4 text-sm text-slate-800 shadow-sm transition-all placeholder:text-slate-400 focus:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/10 dark:bg-white/5 dark:text-slate-100"
             />
           </label>
+          )}
         </div>
 
         {q ? (
@@ -222,6 +227,7 @@ function Blog() {
                 ))}
               </div>
             </div>
+            {!preview && (
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {row.map((post) => (
                 <RowCard key={post.slug} post={post} />
@@ -230,10 +236,14 @@ function Blog() {
                 <RowCard key={post.slug} post={post} />
               ))}
             </div>
+            )}
           </>
         )}
 
-        {/* Bottom actions */}
+        {/* Bottom actions — page par query-reset; preview mein asal View All */}
+        {preview ? (
+          <ViewAllButton href="/blog">View All Posts</ViewAllButton>
+        ) : (
         <div className="reveal mt-12 flex flex-wrap items-center justify-center gap-4">
           <button
             type="button"
@@ -252,6 +262,7 @@ function Blog() {
             </svg>
           </button>
         </div>
+        )}
       </div>
     </section>
   );

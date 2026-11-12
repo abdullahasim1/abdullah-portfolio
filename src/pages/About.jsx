@@ -2,6 +2,7 @@ import React from "react";
 import { useScrollReveal } from "../hooks";
 import MagneticButton from "../components/MagneticButton";
 import TiltCard from "../components/TiltCard";
+import ViewAllButton from "../components/ViewAllButton";
 import { techStack } from "../data/techLogos";
 
 function StackTile({ item }) {
@@ -63,7 +64,10 @@ const STATS = [
   { icon: "award", num: "11+", label: "Certifications" },
 ];
 
-function About() {
+/* preview: home par sirf header + photo + intro text — tech stack
+   panel aur detail cards sirf asal /about page par; neeche "More
+   About Me" View All wahan le jata hai. */
+function About({ preview = false } = {}) {
   useScrollReveal("#about .reveal");
 
   return (
@@ -114,7 +118,7 @@ function About() {
           </div>
 
           {/* Text */}
-          <div className="reveal lg:col-span-5 space-y-5 text-slate-400 light:text-slate-600 leading-relaxed">
+          <div className={`reveal ${preview ? "lg:col-span-9" : "lg:col-span-5"} space-y-5 text-slate-400 light:text-slate-600 leading-relaxed`}>
             <div>
               <h3 className="font-display text-[26px] font-bold text-white light:text-slate-900 leading-snug">
                 Building Web Experiences That Make an Impact
@@ -191,6 +195,7 @@ function About() {
                 </span>
               ))}
             </div>
+            {!preview && (
             <div className="pt-2">
               <MagneticButton href="/experience">
                 More About Me
@@ -199,9 +204,11 @@ function About() {
                 </svg>
               </MagneticButton>
             </div>
+            )}
           </div>
 
-          {/* Tech stack panel — board header + tiles */}
+          {/* Tech stack panel — board header + tiles (home preview mein nahi) */}
+          {!preview && (
           <div className="reveal lg:col-span-4 h-full">
             <div className="flex h-full flex-col rounded-[26px] border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white p-6 md:p-7 shadow-[0_20px_45px_-25px_rgba(76,29,149,0.35)]">
               <h3 className="flex items-center gap-3 mb-6">
@@ -223,9 +230,11 @@ function About() {
               </div>
             </div>
           </div>
+          )}
         </div>
 
-        {/* Detail cards — education, writing, current role (equal height) */}
+        {/* Detail cards — education, writing, current role (equal height; home preview mein nahi) */}
+        {!preview && (
         <div className="reveal mt-10 grid gap-5 md:grid-cols-3">
           {[
             {
@@ -274,6 +283,9 @@ function About() {
             </article>
           ))}
         </div>
+        )}
+
+        {preview && <ViewAllButton href="/about">More About Me</ViewAllButton>}
 
       </div>
     </section>
