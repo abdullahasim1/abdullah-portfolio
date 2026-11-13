@@ -123,6 +123,12 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* Business Help chat widget — message list ke top/bottom par scroll
+   page mein chain na ho (root par data-lenis-prevent component lagata hai) */
+#ai-widget-root .aiw-messages {
+  overscroll-behavior: contain;
+}
+
 /* Surface classes components layer mein — taake Tailwind utilities (light: variants)
    inhe override kar saken. Unlayered CSS utilities ko beat karta hai, isliye yeh zaroori hai. */
 @layer components {
