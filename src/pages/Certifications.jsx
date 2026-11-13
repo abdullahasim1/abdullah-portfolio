@@ -342,16 +342,14 @@ function Certifications({ showAll = false, preview = false } = {}) {
   const fxRaw = useScrollFxEnabled();
   const fx = fxRaw && filter === "all";
   const rowsRef = useRef(null);
-  const showKeepLearning = filter === "all" && (showAll || expanded || !hasMore);
-  const rowItems = [
-    ...visible.map((cert) => ({
-      key: cert.id,
-      node: <CertCard key={cert.id} cert={cert} />,
-    })),
-    ...(showKeepLearning
-      ? [{ key: "__keep-learning", node: <KeepLearning /> }]
-      : []),
-  ];
+  /* FX rows mein sirf asal certification cards hote hain — Keep
+     Learning wala dashed balancing tile sirf static grid layout ke
+     liye hai, drifting rows mein kabhi nahi (wahan woh khaali
+     placeholder lagta tha). */
+  const rowItems = visible.map((cert) => ({
+    key: cert.id,
+    node: <CertCard key={cert.id} cert={cert} />,
+  }));
   const rowCount = preview ? 2 : 3;
   const perRow = Math.ceil(rowItems.length / rowCount) || 1;
   const rows = Array.from({ length: rowCount }, (_, r) =>
@@ -360,29 +358,78 @@ function Certifications({ showAll = false, preview = false } = {}) {
 
   useEffect(() => {
     if (!fx || !rowsRef.current) return undefined;
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray(".cert-row", rowsRef.current).forEach((row, ri) => {
-        const excess = () =>
-          Math.max(0, row.scrollWidth - row.parentElement.clientWidth);
+    /* Har row APNI traversal par chalti hai (pehle saari rows aik hi
+       container progress par bandhi thi — peeche wali rows ke cards
+       apni row ke view se nikalne ke baad bhi travel karte rehte
+       thay, is liye darmiyan walay cards kabhi poore nazar nahi aate
+       thay).
+       Progress ScrollTrigger ki measured positions se NAHI aata —
+       home par ye rows doosre pinned sections ke neeche hain aur
+       lazy chunks ki wajah se trigger positions pin-spacers lagne se
+       pehle measure ho kar hamesha ke liye stale reh jati thin (drift
+       asal section se ~1000px pehle hi khatam ho jata tha). Is liye
+       progress har scroll event par LIVE geometry (getBoundingClientRect)
+       se nikalta hai — spacer kabhi bhi lage, hisaab hamesha durust.
+       Mapping: drift usi waqt shuru hota hai jab row poori viewport
+       ke andar aa jaye, aur row ke nikalna shuru hone se pehle poora
+       ho jata hai — dono taraf rest plateaus, taake pehla aur aakhri
+       card bhi kisi scroll position par 100% frame ke andar ho.
+       Rows x = 0 se shuru hoti hain (rest) — koi pre-shift nahi. */
+    const rows = gsap.utils
+      .toArray(".cert-row", rowsRef.current)
+      .map((row, ri) => {
+        const wrap = row.parentElement;
         const movesLeft = ri % 2 === 0;
-        gsap.fromTo(
-          row,
-          { x: () => (movesLeft ? 0 : -excess()) },
-          {
-            x: () => (movesLeft ? -excess() : 0),
-            ease: "none",
-            scrollTrigger: {
-              trigger: rowsRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-              invalidateOnRefresh: true,
-            },
-          },
-        );
+        let excess = 0;
+        const measure = () => {
+          excess = Math.max(0, row.offsetWidth - wrap.clientWidth);
+        };
+        const apply = () => {
+          const vh = window.innerHeight || 1;
+          const rowH = wrap.offsetHeight || 1;
+          const travel = vh + rowH;
+          const absTop = wrap.getBoundingClientRect().top + window.scrollY;
+          const progress = Math.min(
+            1,
+            Math.max(0, (window.scrollY + vh - absTop) / travel),
+          );
+          const enterAt = rowH / travel; // row poori andar
+          const leaveAt = vh / travel; // row nikalna shuru
+          const margin = Math.min(48 / travel, (leaveAt - enterAt) / 4);
+          const span = Math.max(leaveAt - enterAt - margin * 2, 0.0001);
+          const local = Math.min(
+            1,
+            Math.max(0, (progress - enterAt - margin) / span),
+          );
+          gsap.set(row, {
+            x: movesLeft ? -excess * local : -excess * (1 - local),
+          });
+        };
+        measure();
+        apply();
+        return { measure, apply };
       });
-    }, rowsRef);
-    return () => ctx.revert();
+    const update = () => rows.forEach((r) => r.apply());
+    const remeasure = () =>
+      rows.forEach((r) => {
+        r.measure();
+        r.apply();
+      });
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", remeasure);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", remeasure);
+    };
   }, [fx, filter, expanded, visible.length]);
 
   return (

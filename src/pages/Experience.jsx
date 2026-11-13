@@ -200,40 +200,54 @@ function Experience({ preview = false } = {}) {
       gsap.set(panels, { autoAlpha: 0, y: 28 });
       gsap.set(panels[0], { autoAlpha: 1, y: 0 });
       const total = panels.length;
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.inOut" },
-        scrollTrigger: {
-          trigger: stageRef.current,
-          start: "top top+=104",
-          end: () => `+=${(total - 1) * window.innerHeight * 0.55}`,
-          scrub: 0.6,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const idx = Math.min(
-              total - 1,
-              Math.floor(self.progress * total),
-            );
-            if (counterRef.current) {
-              counterRef.current.textContent = `${String(idx + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+      let current = 0;
+      /* Counter, progress line aur active panel — teeno EK hi
+         scroll-progress value se drive hote hain, bilkul ek hi
+         thresholds par: idx = floor(progress * N). Panel swap aur
+         counter update hamesha aik hi frame mein hote hain — timeline
+         ki alag tween positions wala purana mapping counter ko card
+         se aage/peeche kar deta tha, is liye ab koi timeline nahi. */
+      const applyProgress = (progress) => {
+        const idx = Math.min(total - 1, Math.floor(progress * total));
+        if (counterRef.current) {
+          counterRef.current.textContent = `${String(idx + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+        }
+        if (barRef.current) {
+          barRef.current.style.transform = `scaleX(${progress})`;
+        }
+        if (idx !== current) {
+          current = idx;
+          panels.forEach((panel, i) => {
+            if (i === idx) {
+              gsap.to(panel, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power2.out",
+                overwrite: "auto",
+              });
+            } else {
+              gsap.to(panel, {
+                autoAlpha: 0,
+                y: i < idx ? -28 : 28,
+                duration: 0.3,
+                ease: "power2.in",
+                overwrite: "auto",
+              });
             }
-            if (barRef.current) {
-              barRef.current.style.transform = `scaleX(${self.progress})`;
-            }
-          },
-        },
+          });
+        }
+      };
+      const st = ScrollTrigger.create({
+        trigger: stageRef.current,
+        start: "top top+=104",
+        end: () => `+=${(total - 1) * window.innerHeight * 0.55}`,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => applyProgress(self.progress),
       });
-      for (let i = 0; i < total - 1; i += 1) {
-        tl.to(panels[i], { autoAlpha: 0, y: -28, duration: 0.42 }, i)
-          .fromTo(
-            panels[i + 1],
-            { autoAlpha: 0, y: 28 },
-            { autoAlpha: 1, y: 0, duration: 0.42 },
-            i + 0.08,
-          );
-      }
-      tl.to({}, { duration: 0.2 }); // aakhri step par halka sa hold
+      applyProgress(st.progress);
     }, stageRef);
     return () => ctx.revert();
   }, [fx, shown.length]);
