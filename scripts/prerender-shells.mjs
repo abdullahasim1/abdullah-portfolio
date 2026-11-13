@@ -13,7 +13,6 @@ import { fileURLToPath } from "node:url";
 
 import { PAGE_META, SITE_URL } from "../src/lib/pageMeta.js";
 import { featuredProjects, PROJECT_SLUGS } from "../src/data/projects.js";
-import { services } from "../src/data/services.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
@@ -85,14 +84,8 @@ for (const p of featuredProjects) {
   });
 }
 
-/* Service detail pages */
-for (const s of services) {
-  routes.push({
-    path: `/services/${s.slug}`,
-    title: `${s.title} — Services | Abdullah Bin Asim`,
-    description: s.short,
-  });
-}
+/* Service detail pages khatam (2026-11-13, one-pager) — un ke
+   shells ab generate nahi hote. */
 
 let written = 0;
 for (const route of routes) {

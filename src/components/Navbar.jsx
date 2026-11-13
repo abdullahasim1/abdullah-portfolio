@@ -57,15 +57,19 @@ const ICONS = {
   ),
 };
 
+/* One-pager nav (2026-11-13): About/Skills/Services/Experience/
+   Contact home ke sections hain (/#anchor — Link inhein goSection
+   scroll mein badal deta hai); Projects/Certifications asal pages
+   hain. Blog navbar mein pehle bhi nahi tha. */
 const links = [
   { label: "Home", id: "home", path: "/" },
-  { label: "About", id: "about", path: "/about" },
-  { label: "Skills", id: "skills", path: "/skills" },
-  { label: "Services", id: "services", path: "/services" },
+  { label: "About", id: "about", path: "/#about" },
+  { label: "Skills", id: "skills", path: "/#skills" },
+  { label: "Services", id: "services", path: "/#services" },
   { label: "Projects", id: "projects", path: "/projects" },
-  { label: "Experience", id: "experience", path: "/experience" },
+  { label: "Experience", id: "experience", path: "/#experience" },
   { label: "Certifications", id: "certifications", path: "/certifications" },
-  { label: "Contact", id: "contact", path: "/contact" },
+  { label: "Contact", id: "contact", path: "/#contact" },
 ];
 
 function NavIcon({ id, className = "w-4 h-4" }) {
@@ -101,15 +105,55 @@ function Navbar() {
   */
   const theme = "light";
 
-  /* Active link: multi-page mein sirf current route se banta hai
-     (scrollspy 2026-11-12 ko retire ho gaya — har section ab apna
-     page hai). Detail pages par parent section active rehta hai
-     (case study → Projects, service detail → Services). */
+  /* Active link: home (one-pager) par scrollspy — PR #26 se pehle
+     wala pattern, wapas (2026-11-13). Asal pages par route se
+     banta hai (case study → Projects). Spy line scrollY + 220 hai;
+     page ke aakhir mein footer ki wajah se spy line contact ke top
+     tak nahi pohanchti, is liye bottom par hamesha Contact active. */
   const { path } = useRoute();
+  const [spy, setSpy] = useState("home");
+
+  useEffect(() => {
+    if (path !== "/") return undefined;
+    let raf = 0;
+    const compute = () => {
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 120
+      ) {
+        setSpy("contact");
+        return;
+      }
+      const y = window.scrollY + 220;
+      let current = "home";
+      for (const link of links) {
+        if (link.id === "home") continue;
+        const el = document.getElementById(link.id);
+        if (el && el.getBoundingClientRect().top + window.scrollY <= y) {
+          current = link.id;
+        }
+      }
+      setSpy(current);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(compute);
+    };
+    compute();
+    // Lazy sections der se mount hote hain — offsets settle hone do
+    const timers = [600, 1600, 3000, 5000].map((ms) => setTimeout(compute, ms));
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+      timers.forEach(clearTimeout);
+    };
+  }, [path]);
+
   const firstSeg = path.split("/").filter(Boolean)[0];
   const active =
     path === "/"
-      ? "home"
+      ? spy
       : (links.find((l) => l.id === firstSeg)?.id ?? "");
 
   useEffect(() => {
@@ -328,7 +372,7 @@ function Navbar() {
           </a>
 
           <Link
-            href="/contact"
+            href="/#contact"
             className="hidden sm:inline-flex sheen-btn items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 transition-all shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.35)]"
           >
             Let&apos;s Talk
@@ -374,7 +418,7 @@ function Navbar() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/#contact"
             onClick={closeMobile}
             className="mt-2 inline-flex items-center justify-center rounded-full px-4 py-2.5 font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600"
           >

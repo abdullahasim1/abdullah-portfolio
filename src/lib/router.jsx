@@ -7,75 +7,82 @@ import { getLenis, scrollToSection } from "./smoothScroll";
 
 const RouterContext = createContext({ path: "/", navigate: () => {} });
 
-/* Multi-page structure (Abdullah ka faisla, 2026-11-12): har section
-   ka apna asal page hai. PAGE_ROUTES hi woh asal pages hain —
-   pageMeta.js PAGE_META aur App.jsx route table se agree karne
-   chahiye (integrity test ye pakka karta hai). */
-export const PAGE_ROUTES = [
-  "/",
-  "/about",
-  "/skills",
-  "/services",
-  "/projects",
-  "/experience",
-  "/certifications",
-  "/blog",
-  "/contact",
+/* One-pager structure (Abdullah ka faisla, 2026-11-13 — multi-page
+   experiment khatam): sirf teen asal pages bache hain — Projects,
+   Certifications aur Blog (detail routes ke sath). Baaki tamam
+   sections HOME par full sections hain aur anchor scroll se khulte
+   hain — bilkul PR #26 se pehle wali tarteeb. PAGE_ROUTES asal
+   pages hain; pageMeta.js PAGE_META aur App.jsx route table se
+   agree karne chahiye (integrity test ye pakka karta hai). */
+export const PAGE_ROUTES = ["/", "/projects", "/certifications", "/blog"];
+
+/* Home par maujood section ids — navbar scrollspy aur anchor
+   navigation inhi par chalta hai. */
+const HOME_SECTIONS = [
+  "home",
+  "about",
+  "skills",
+  "services",
+  "process",
+  "experience",
+  "testimonials",
+  "faq",
+  "contact",
 ];
 
-/* Section id → us ka page. Kuch sections kisi page ke andar hain:
-   process → /services page ke andar, faq + testimonials → home par. */
+/* Section id → us ka page. Sirf teen sections ke apne pages hain;
+   baaki sab home sections hain (pageForSection "/" deta hai). */
 const SECTION_PAGE = {
-  home: "/",
-  about: "/about",
-  skills: "/skills",
-  services: "/services",
   projects: "/projects",
-  experience: "/experience",
   certifications: "/certifications",
   blog: "/blog",
-  contact: "/contact",
-  process: "/services",
-  faq: "/",
-  testimonials: "/",
 };
 
 export function pageForSection(id) {
   return SECTION_PAGE[id] ?? "/";
 }
 
-/* Purani bookmark/shared hash links (/#services waghera): home par
-   land hon to hash wale section ke PAGE par replace-redirect karo.
-   True = redirect hua (caller aage scroll na kare). */
-const HASH_PAGE = {
-  about: "/about",
-  skills: "/skills",
-  services: "/services",
-  projects: "/projects",
-  experience: "/experience",
-  certifications: "/certifications",
-  blog: "/blog",
-  contact: "/contact",
-  process: "/services",
+/* Multi-page era (2026-11-12 → 2026-11-13) ke purane URLs:
+   /about, /skills, /services, /experience, /contact aur
+   /services/<slug> — ye ab routes nahi; home ke matching section
+   par land karte hain. Client side ye mapping navigateTo /
+   RouterProvider sambhalte hain, server side vercel.json redirects
+   (/#about waghera) — dono ek hi jagah land karte hain. */
+const LEGACY_PATH_SECTION = {
+  about: "about",
+  skills: "skills",
+  services: "services",
+  experience: "experience",
+  contact: "contact",
 };
 
-/* Hash ka target page (ya null). Page ke andar wala section ho
-   (process) to pending bhi set kar deta hai. */
-function hashPageTarget() {
-  const h = window.location.hash.replace(/^#\/?/, "");
-  if (!h || h.startsWith("blog/")) return null;
-  const target = HASH_PAGE[h];
-  if (!target) return null;
-  if (h !== target.slice(1)) {
-    try {
-      sessionStorage.setItem("aa-pending-section", h);
-    } catch {}
-  }
-  return target;
+function legacySectionForPath(path) {
+  const seg = path.split("/").filter(Boolean);
+  if (seg.length === 1 && LEGACY_PATH_SECTION[seg[0]])
+    return LEGACY_PATH_SECTION[seg[0]];
+  if (seg.length === 2 && seg[0] === "services") return "services";
+  return null;
 }
 
-export function redirectHashToPage() {
-  const target = hashPageTarget();
+/* Home par land honay wali hash links (/#projects waghera): jo
+   sections ab asal pages hain, un ki hash ko route par
+   replace-redirect karo. Jo home sections hain, un ki hash
+   consumePendingSection scroll ke liye utha leta hai.
+   True = redirect hua (caller aage scroll na kare). */
+const HASH_ROUTE = {
+  projects: "/projects",
+  certifications: "/certifications",
+  blog: "/blog",
+};
+
+function hashRouteTarget() {
+  const h = window.location.hash.replace(/^#\/?/, "");
+  if (!h || h.startsWith("blog/")) return null;
+  return HASH_ROUTE[h] ?? null;
+}
+
+export function redirectHashToRoute() {
+  const target = hashRouteTarget();
   if (!target) return false;
   window.history.replaceState({}, "", target);
   window.dispatchEvent(new PopStateEvent("popstate"));
@@ -88,6 +95,21 @@ let settleGen = 0;
 
 export function navigateTo(path) {
   settleGen++;
+  /* Purane multi-page URLs kabhi asal route nahi bante — home ke
+     matching section par land karo. */
+  const legacy = legacySectionForPath(path);
+  if (legacy) {
+    if (window.location.pathname !== "/") {
+      try {
+        sessionStorage.setItem("aa-pending-section", legacy);
+      } catch {}
+      window.history.pushState({}, "", "/");
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    } else {
+      scrollToSectionNow(legacy);
+    }
+    return;
+  }
   if (window.location.pathname === path) {
     scrollTopNow();
     return;
@@ -173,10 +195,10 @@ function settleScroll(id, gen) {
   }, 500);
 }
 
-/* Section ki taraf jao — multi-page mein is ka matlab hai: us
-   section ke PAGE par navigate karo. Jo section kisi page ke andar
-   hai (process → /services, faq/testimonials → home), wahan page par
-   land karke us section tak scroll hota hai (pending mechanism). */
+/* Section ki taraf jao — one-pager mein do hi soortain hain:
+   (1) section ka apna page hai (projects / certifications / blog)
+   → wahan navigate karo; (2) home section hai → pehle home par
+   jao (pending mechanism), phir Lenis se us section tak scroll. */
 export function goSection(id) {
   if (id === "home") {
     if (window.location.pathname !== "/") navigateTo("/");
@@ -184,13 +206,16 @@ export function goSection(id) {
     return;
   }
   const target = pageForSection(id);
-  if (window.location.pathname !== target) {
-    if (id !== target.slice(1)) {
-      try {
-        sessionStorage.setItem("aa-pending-section", id);
-      } catch {}
-    }
-    navigateTo(target);
+  if (target !== "/") {
+    if (window.location.pathname !== target) navigateTo(target);
+    else scrollTopNow();
+    return;
+  }
+  if (window.location.pathname !== "/") {
+    try {
+      sessionStorage.setItem("aa-pending-section", id);
+    } catch {}
+    navigateTo("/");
     return;
   }
   scrollToSectionNow(id);
@@ -207,7 +232,7 @@ export function consumePendingSection() {
   } catch {}
   if (!id && window.location.pathname === "/" && window.location.hash) {
     const h = window.location.hash.replace(/^#\/?/, "");
-    if (h && !h.startsWith("blog")) id = h;
+    if (h && HOME_SECTIONS.includes(h)) id = h;
   }
   if (id) {
     scrollToSectionNow(id);
@@ -217,13 +242,23 @@ export function consumePendingSection() {
 }
 
 export function RouterProvider({ children }) {
-  /* Pehli load par hi hash (/#services waghera) ko asal page se
-     badal do — initial state mein, taake pehla render hi sahi page
-     ka ho (popstate listener tab tak laga nahi hota). */
+  /* Pehli load par hi purani shaklon ko seedha kar do — initial
+     state mein, taake pehla render hi sahi page ka ho (popstate
+     listener tab tak laga nahi hota):
+     - purana page URL (/about waghera) → home + pending section
+     - page-section ki hash (/#projects waghera) → asal route */
   const [path, setPath] = useState(() => {
     const p = window.location.pathname;
+    const legacy = legacySectionForPath(p);
+    if (legacy) {
+      try {
+        sessionStorage.setItem("aa-pending-section", legacy);
+      } catch {}
+      window.history.replaceState({}, "", "/");
+      return "/";
+    }
     if (p === "/") {
-      const target = hashPageTarget();
+      const target = hashRouteTarget();
       if (target) {
         window.history.replaceState({}, "", target);
         return target;
@@ -233,7 +268,19 @@ export function RouterProvider({ children }) {
   });
 
   useEffect(() => {
-    const onPop = () => setPath(window.location.pathname);
+    const onPop = () => {
+      /* Back/forward se purana page URL aaye to wahi normalization */
+      const legacy = legacySectionForPath(window.location.pathname);
+      if (legacy) {
+        try {
+          sessionStorage.setItem("aa-pending-section", legacy);
+        } catch {}
+        window.history.replaceState({}, "", "/");
+        setPath("/");
+        return;
+      }
+      setPath(window.location.pathname);
+    };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);

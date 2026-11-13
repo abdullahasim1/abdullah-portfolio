@@ -90,31 +90,11 @@
   ],
   "rewrites": [
     {
-      "source": "/services/:slug",
-      "destination": "/index.html"
-    },
-    {
       "source": "/projects/:slug",
       "destination": "/index.html"
     },
     {
-      "source": "/about",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/skills",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/services",
-      "destination": "/index.html"
-    },
-    {
       "source": "/projects",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/experience",
       "destination": "/index.html"
     },
     {
@@ -124,21 +104,47 @@
     {
       "source": "/blog",
       "destination": "/index.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/index.html"
     }
   ],
   "redirects": [
     {
       "source": "/process",
-      "destination": "/services",
+      "destination": "/#services",
       "permanent": true
     },
     {
       "source": "/faq",
       "destination": "/#faq",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/skills",
+      "destination": "/#skills",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/services/:slug",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/experience",
+      "destination": "/#experience",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/#contact",
       "permanent": true
     }
   ]

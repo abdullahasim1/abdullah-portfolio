@@ -347,10 +347,35 @@ export function FeaturedWork({ preview = false, embedded = false }) {
   const barRef = useRef(null);
   useEffect(() => {
     if (!fx || !pinRef.current || !trackRef.current) return undefined;
+    const trackElCleanup = trackRef.current;
     const ctx = gsap.context(() => {
       const trackEl = trackRef.current;
-      const getAmount = () =>
-        Math.max(0, trackEl.scrollWidth - trackEl.parentElement.clientWidth);
+      /* Ek card ka pitch (card width + gap) — snap stops isi par
+         bante hain. Doosre card ka offsetLeft pehle se ghatao to
+         offsetParent ka asar cancel ho jata hai. */
+      const getPitch = () => {
+        const [first, second] = trackEl.children;
+        if (first && second) return second.offsetLeft - first.offsetLeft;
+        return first ? first.offsetWidth : 0;
+      };
+      /* Travel (amount) ko pitch ka mukammal multiple rakho: track
+         ke aakhir mein utni padding jitni kami hai. Warna aakhri
+         stop par ya to leading card aadha kata rehta hai ya aakhri
+         card kabhi poora nazar nahi aata — owner ki "half screen
+         na ho" shikayat dono suraton par hai. Har measure se pehle
+         padding reset karke dobara lagti hai, taake refresh/resize
+         par bhi alignment barqarar rahe. */
+      const getAmount = () => {
+        const parent = trackEl.parentElement;
+        trackEl.style.paddingRight = "";
+        const raw = Math.max(0, trackEl.scrollWidth - parent.clientWidth);
+        const pitch = getPitch();
+        if (raw > 0 && pitch > 0) {
+          const rem = raw % pitch;
+          if (rem !== 0) trackEl.style.paddingRight = `${pitch - rem}px`;
+        }
+        return Math.max(0, trackEl.scrollWidth - parent.clientWidth);
+      };
       gsap.to(trackEl, {
         x: () => -getAmount(),
         ease: "none",
@@ -362,6 +387,25 @@ export function FeaturedWork({ preview = false, embedded = false }) {
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          /* "Half screen na ho" (Abdullah, 2026-11-13): scroll rukne
+             par track aadhe card par atki na rahe — qareeb tareen
+             card boundary par settle ho, taake leading card hamesha
+             poora nazar aye. Amount khud pitch ka multiple hai
+             (getAmount ki end padding), is liye progress 1 wala
+             aakhri stop bhi ek mukammal boundary hai. */
+          snap: {
+            snapTo: (value) => {
+              const amount = getAmount();
+              const pitch = getPitch();
+              if (amount <= 0 || pitch <= 0) return value;
+              const step = pitch / amount;
+              const snapped = Math.round(value / step) * step;
+              return Math.min(1, Math.max(0, snapped));
+            },
+            duration: { min: 0.15, max: 0.45 },
+            delay: 0.05,
+            ease: "power2.out",
+          },
           onUpdate: (self) => {
             if (barRef.current) {
               barRef.current.style.transform = `scaleX(${self.progress})`;
@@ -374,6 +418,7 @@ export function FeaturedWork({ preview = false, embedded = false }) {
     window.addEventListener("load", onLoad);
     return () => {
       window.removeEventListener("load", onLoad);
+      if (trackElCleanup) trackElCleanup.style.paddingRight = "";
       ctx.revert();
     };
   }, [fx]);

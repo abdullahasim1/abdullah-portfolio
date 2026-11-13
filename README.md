@@ -10,42 +10,36 @@ The personal portfolio of Abdullah Bin Asim, built to present his services, proj
 
 ## Overview
 
-This repository contains a production React and Vite portfolio with real multi-page routes, structured content, a build-time content pipeline, and Vercel deployment configuration.
+This repository contains a production React and Vite portfolio with a full one-pager home, dedicated pages for projects, certifications and the blog, structured content, a build-time content pipeline, and Vercel deployment configuration.
 
 The site is intentionally content-driven. Projects, services, certifications, experience, FAQs, testimonials, and related information live in structured data files instead of being hard-coded throughout the interface. Blog posts are maintained as Markdown and converted by the build pipeline into application data, static article pages, RSS, Open Graph images, and sitemap entries.
 
 ## Features
 
-### Multi-page portfolio
+### One-pager home + three dedicated pages
 
-The application has dedicated pages for the main sections and detail routes for projects, services, and blog articles:
+The home page is a full one-pager; only Projects, Certifications and Blog have their own pages (plus project case studies and static blog articles):
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Home and preview hub |
-| `/about` | About Abdullah |
-| `/skills` | Skills and technologies |
-| `/services` | Services, process, and project estimator |
-| `/services/<slug>` | Individual service detail pages |
+| `/` | One-pager home: Hero, About, Skills, Services, Process, Stats, Featured Projects (preview), Experience, Certifications (preview), Blog (preview), Testimonials, FAQ, Contact |
 | `/projects` | Featured work and curated GitHub repositories |
 | `/projects/<slug>` | Project case studies |
-| `/experience` | Professional experience |
 | `/certifications` | Complete certifications list |
 | `/blog` | Blog index |
 | `/blog/<slug>` | Static, prerendered blog articles |
-| `/contact` | Contact page |
 
-The router is a lightweight History API implementation in `src/lib/router.jsx`; it renders real links, supports browser navigation, and redirects older home-section hash links such as `/#services` to the corresponding page.
+The router is a lightweight History API implementation in `src/lib/router.jsx`; it renders real links and supports browser navigation. Home-section links use hash URLs such as `/#services`, which smooth-scroll to the section (from another page they navigate home first, then scroll). The former page URLs — `/about`, `/skills`, `/services`, `/services/<slug>`, `/experience`, `/contact` — redirect to the matching home anchor, both in the client router and in `vercel.json`.
 
-### Home preview hub
+### Home page
 
-The home page introduces every major area without becoming a full one-page copy of the site. It includes:
+The home page carries the full content of the former section pages:
 
 - Hero and technology ticker
-- Limited previews of About, Skills, Services, Featured Projects, Experience, Certifications, and Blog
+- Full About, Skills, Services, Experience, and Contact sections (no content was cut when the separate pages were removed)
 - Full Stats, Testimonials, and FAQ sections
+- Previews of Featured Projects, Certifications, and Blog with a shared **View All** action to their dedicated pages
 - A contact call-to-action band
-- A shared **View All** action that navigates from each preview to its dedicated page
 
 ### AI chat widget
 
@@ -57,9 +51,9 @@ The site embeds Abdullah's own Business Help chat widget (`src/components/Busine
 
 ### Services and estimator
 
-There are five service detail pages covering full-stack web development, generative AI integration, AWS cloud and serverless, AI product development, and AI and workflow automation.
+The home Services section presents the five services — full-stack web development, generative AI integration, AWS cloud and serverless, AI product development, and AI and workflow automation — as stacked cards with a spotlight and a custom-project band. (Standalone per-service detail pages were removed in the November 2026 one-pager restructure.)
 
-The Services page also includes an interactive scope and timeline estimator. A visitor can carry the estimator result into the contact form through a `sessionStorage` handoff, which prefills the inquiry subject and message on the Contact page.
+The section also includes an interactive scope and timeline estimator. A visitor can carry the estimator result into the contact form through a `sessionStorage` handoff, which prefills the inquiry subject and message in the home Contact section.
 
 ### Projects and certifications
 
@@ -96,7 +90,7 @@ Do not edit `src/data/posts.gen.js` directly; it is generated from the Markdown 
 The repository includes both runtime and build-time discovery support:
 
 - Route-specific titles, descriptions, canonical URLs, Open Graph data, and Twitter card data
-- Prerendered HTML shells for the main, project-detail, and service-detail routes via `scripts/prerender-shells.mjs`
+- Prerendered HTML shells for the main routes and project-detail routes via `scripts/prerender-shells.mjs`
 - Fully static blog article pages with article metadata and `BlogPosting` structured data
 - JSON-LD for `Person`, `WebSite`, `FAQPage`, `Blog`, `BlogPosting`, and featured-project `SoftwareSourceCode`
 - Generated `sitemap.xml` and `rss.xml`
@@ -132,7 +126,7 @@ abdullah-portfolio/
 │   ├── data/                # Structured portfolio content and generated post data
 │   ├── hooks/               # Scroll, viewport, focus, GitHub, and animation hooks
 │   ├── lib/                 # Router, metadata, theme, and utilities
-│   ├── pages/               # Route pages and detail pages
+│   ├── pages/               # Home sections, route pages, and case-study pages
 │   ├── test/                # Vitest setup
 │   ├── App.jsx              # Route composition and site shell
 │   ├── main.jsx             # Application entry point
@@ -210,7 +204,7 @@ There is no `e2e` npm script; Playwright is run directly as shown below.
 
 ### Unit and integrity tests
 
-Vitest tests are colocated under `src/` and include component tests, chat-widget embed tests, focus-trap and error-boundary tests, theme tests, home-preview tests, and data integrity tests. The integrity suite checks structured content, generated artifacts, and agreement between the router, page metadata, App route table, and sitemap sources.
+Vitest tests are colocated under `src/` and include component tests, chat-widget embed tests, focus-trap and error-boundary tests, theme tests, home-structure tests, and data integrity tests. The integrity suite checks structured content, generated artifacts, and agreement between the router, page metadata, App route table, sitemap, and the legacy-redirect map.
 
 ```bash
 npm test
@@ -224,7 +218,7 @@ npm run test:watch
 
 ### Playwright end-to-end tests
 
-The Playwright suites in `tests/e2e/` cover the home page, contact page, detail routes, multi-page navigation, static blog delivery, and removed-route behavior. The configuration runs Desktop Chrome and Pixel 5 projects against the Vite preview server on port 4173.
+The Playwright suites in `tests/e2e/` cover the home page, the home Contact section, detail routes, the one-pager structure (kept pages load; legacy page URLs land on their home sections), static blog delivery, and removed-route behavior. The configuration runs Desktop Chrome and Pixel 5 projects against the Vite preview server on port 4173.
 
 Build first, then run:
 

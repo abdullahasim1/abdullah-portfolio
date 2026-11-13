@@ -17,10 +17,15 @@ test.describe('Detail routes', () => {
     await expect(page.getByRole('link', { name: /Live Demo/i })).toBeVisible();
   });
 
-  test('service detail route loads', async ({ page }) => {
+  test('removed service detail route lands on the home Services section', async ({ page }) => {
+    // Service detail pages were removed in the 2026-11-13 one-pager
+    // restructure — the old URL must land on home's Services section
+    // (client normalization locally; vercel.json redirect in prod).
     await page.goto('/services/generative-ai-integration');
-    await expect(page.locator('h1')).toContainText('AI');
-    await expect(page).toHaveTitle(/Abdullah Bin Asim/);
+    await expect(page).toHaveURL(/\/(#services)?$/);
+    await expect(
+      page.getByRole('heading', { name: /Hire a Freelance n8n Developer/i }).first(),
+    ).toBeVisible();
   });
 
   test('blog post serves as a full static HTML article', async ({ page }) => {
@@ -35,18 +40,12 @@ test.describe('Detail routes', () => {
   });
 });
 
-test.describe('Multi-page routes (2026-11-12 restructure)', () => {
-  // Har section ka apna asal page hai — heading se verify karo ke
-  // sahi page ka sahi content load hua.
+test.describe('One-pager structure (2026-11-13 restructure)', () => {
+  // Sirf teen asal pages bache hain — baaki sections home par hain.
   const pages: Array<[string, RegExp]> = [
-    ['/about', /Turning Ideas into AI-Powered Solutions/i],
-    ['/skills', /My Tech Stack/i],
-    ['/services', /Hire a Freelance n8n Developer/i],
     ['/projects', /My Recent Work/i],
-    ['/experience', /My Journey/i],
     ['/certifications', /Credentials & Learning/i],
     ['/blog', /Notes & Articles/i],
-    ['/contact', /Have a Project in Mind/i],
   ];
 
   for (const [path, heading] of pages) {
@@ -58,6 +57,23 @@ test.describe('Multi-page routes (2026-11-12 restructure)', () => {
     });
   }
 
+  // Purane page URLs home ke matching section par land karte hain.
+  const legacy: Array<[string, RegExp]> = [
+    ['/about', /Turning Ideas into AI-Powered Solutions/i],
+    ['/skills', /My Tech Stack/i],
+    ['/services', /Hire a Freelance n8n Developer/i],
+    ['/experience', /My Journey/i],
+    ['/contact', /Have a Project in Mind/i],
+  ];
+
+  for (const [path, heading] of legacy) {
+    test(`legacy ${path} lands on the home section`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page).toHaveURL(/\/(#\w+)?$/);
+      await expect(page.getByRole('heading', { name: heading }).first()).toBeVisible();
+    });
+  }
+
   test('certifications page shows the full list without a View All gate', async ({ page }) => {
     await page.goto('/certifications');
     await expect(page.getByRole('button', { name: /View All Certifications/i })).toHaveCount(0);
@@ -65,20 +81,43 @@ test.describe('Multi-page routes (2026-11-12 restructure)', () => {
     await expect(page.getByText(/AI-DLC Foundations/i).first()).toBeVisible();
   });
 
-  test('old hash link /#services lands on the services page', async ({ page }) => {
+  test('home contains the full About/Skills/Services/Experience/Contact sections', async ({ page }) => {
+    await page.goto('/');
+    for (const heading of [
+      /Turning Ideas into AI-Powered Solutions/i,
+      /My Tech Stack/i,
+      /Hire a Freelance n8n Developer/i,
+      /My Journey/i,
+    ]) {
+      await expect(page.getByRole('heading', { name: heading }).first()).toBeAttached();
+    }
+    await expect(page.locator('#contact form')).toBeAttached();
+  });
+
+  test('hash link /#services stays on home and reaches the Services section', async ({ page }) => {
     await page.goto('/#services');
-    await expect(page).toHaveURL(/\/services$/);
+    await expect(page).toHaveURL(/\/($|#services$)/);
     await expect(
       page.getByRole('heading', { name: /Hire a Freelance n8n Developer/i }).first(),
     ).toBeVisible();
   });
 
-  test('navbar navigates between pages', async ({ page }) => {
+  test('hash link /#projects goes to the projects page', async ({ page }) => {
+    await page.goto('/#projects');
+    await expect(page).toHaveURL(/\/projects$/);
+  });
+
+  test('navbar section links scroll on home; page links navigate', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('link', { name: /^About$/ }).first().click();
-    await expect(page).toHaveURL(/\/about$/);
+    await expect(page).toHaveURL(/\/($|#about$)/);
     await expect(
       page.getByRole('heading', { name: /Turning Ideas into AI-Powered Solutions/i }).first(),
+    ).toBeVisible();
+    await page.getByRole('link', { name: /^Projects$/ }).first().click();
+    await expect(page).toHaveURL(/\/projects$/);
+    await expect(
+      page.getByRole('heading', { name: /My Recent Work/i }).first(),
     ).toBeVisible();
   });
 });
