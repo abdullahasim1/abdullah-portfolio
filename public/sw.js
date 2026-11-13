@@ -1,5 +1,5 @@
-const STATIC_CACHE = "portfolio-static-v3";
-const DYNAMIC_CACHE = "portfolio-dynamic-v3";
+const STATIC_CACHE = "portfolio-static-v4";
+const DYNAMIC_CACHE = "portfolio-dynamic-v4";
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
@@ -76,8 +76,13 @@ self.addEventListener("fetch", (event) => {
   // Skip chrome-extension and other non-http requests
   if (!url.protocol.startsWith("http")) return;
 
-  // Skip cross-origin non-asset requests (analytics etc.)
-  if (url.origin !== self.location.origin && !ASSET_EXT_RE.test(url.pathname)) {
+  // Cross-origin requests ko bilkul haath NA lagao — bina respondWith ke
+  // return, taake embeds (Business Help widget waghera) seedha network se
+  // page ki CURRENT CSP ke tehat load hon. SW ke andar fetch() karne par
+  // SW ki apni (register ke waqt wali, purani ho sakti hai) CSP lagti hai —
+  // v3 mein .js/.css jaisi cross-origin files isi liye block ho kar 503
+  // synthetic response ban jati thin aur widget gayab ho jata tha.
+  if (url.origin !== self.location.origin) {
     return;
   }
 
