@@ -13,16 +13,19 @@ import { playClickSound } from "../lib/sound";
 import { Link } from "../lib/router";
 import { certifications } from "../data/certifications";
 
+/* One-pager (2026-11-13): About/Skills/Services/Experience/Contact
+   home sections hain (/#anchor); Projects/Certifications/Blog asal
+   pages hain. */
 const exploreLinks = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Skills", href: "/skills" },
-  { name: "Services", href: "/services" },
+  { name: "About", href: "/#about" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Services", href: "/#services" },
   { name: "Projects", href: "/projects" },
-  { name: "Experience", href: "/experience" },
+  { name: "Experience", href: "/#experience" },
   { name: "Certifications", href: "/certifications" },
   { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 const ICONS = {
@@ -55,13 +58,15 @@ function LineIcon({ d, className = "h-5 w-5", filled = false }) {
   );
 }
 
+/* Service detail pages khatam (2026-11-13) — saare service chips
+   ab home ke Services section par jate hain. */
 const whatIDo = [
-  { icon: "sparkles", label: "Generative AI Integration", filled: true, path: "/services/generative-ai-integration" },
-  { icon: "share", label: "Workflow Automation", filled: true, path: "/services/ai-automation-workflows" },
-  { icon: "code", label: "Web Development", path: "/services/full-stack-web-development" },
-  { icon: "cloud", label: "AWS & Cloud Solutions", path: "/services/aws-cloud-serverless" },
-  { icon: "cube", label: "SaaS Product Development", path: "/services/ai-product-development" },
-  { icon: "layers", label: "API Integration", path: "/services" },
+  { icon: "sparkles", label: "Generative AI Integration", filled: true, path: "/#services" },
+  { icon: "share", label: "Workflow Automation", filled: true, path: "/#services" },
+  { icon: "code", label: "Web Development", path: "/#services" },
+  { icon: "cloud", label: "AWS & Cloud Solutions", path: "/#services" },
+  { icon: "cube", label: "SaaS Product Development", path: "/#services" },
+  { icon: "layers", label: "API Integration", path: "/#services" },
 ];
 
 const highlights = [

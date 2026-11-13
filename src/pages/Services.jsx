@@ -129,7 +129,7 @@ function ServiceCard({ s, i, reveal = true }) {
     <TiltCard className="h-full">
       <article className={`${reveal ? "reveal " : ""}group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7`}>
         <Link
-          href={`/services/${s.slug}`}
+          href="/#services"
           aria-label={`${s.title} — details`}
           className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-violet-200 text-violet-500 transition-all duration-300 group-hover:bg-violet-600 group-hover:text-white dark:border-white/15 dark:text-violet-300"
         >
@@ -139,7 +139,7 @@ function ServiceCard({ s, i, reveal = true }) {
         </Link>
         <ServiceArt name={s.icon} delay={`${i * 0.7}s`} />
         <h3 className="mt-4 font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white">
-          <Link href={`/services/${s.slug}`} className="transition-colors hover:text-violet-600 dark:hover:text-violet-300">
+          <Link href="/#services" className="transition-colors hover:text-violet-600 dark:hover:text-violet-300">
             {s.title}
           </Link>
         </h3>
@@ -276,7 +276,7 @@ function Services({ preview = false } = {}) {
           </div>
         )}
 
-        {preview && <ViewAllButton href="/services">View All Services</ViewAllButton>}
+        {preview && <ViewAllButton href="/#services">View All Services</ViewAllButton>}
 
         {/* AI & Automation spotlight (home preview mein nahi) */}
         {!preview && (
@@ -302,7 +302,7 @@ function Services({ preview = false } = {}) {
                 connect your tools so work happens on autopilot.
               </p>
               <Link
-                href="/services/ai-automation-workflows"
+                href="/#services"
                 className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-500 dark:text-violet-300"
               >
                 Explore automation services

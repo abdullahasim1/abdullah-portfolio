@@ -11,10 +11,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import SplashScreen from "./components/SplashScreen";
 import { IS_LOW_END } from "./lib/device";
-import { RouterProvider, useRoute, scrollTopNow, consumePendingSection, redirectHashToPage, Link } from "./lib/router";
+import { RouterProvider, useRoute, scrollTopNow, consumePendingSection, redirectHashToRoute, Link } from "./lib/router";
 import { applyPageMeta, metaForPath } from "./lib/pageMeta";
 import { getFeaturedBySlug } from "./data/projects";
-import { getService } from "./data/services";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 /* Splash EAGER import hai (lazy nahi): ye sirf CSS/SVG hai, three is
@@ -40,7 +39,6 @@ const Faq = lazy(() => import("./pages/Faq"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ProjectCaseStudy = lazy(() => import("./pages/ProjectCaseStudy"));
-const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 function NotFound() {
   useEffect(() => {
     applyPageMeta({
@@ -86,13 +84,14 @@ function NotFound() {
   );
 }
 
-/* Multi-page structure (Abdullah ka faisla, 2026-11-12): har section
-   ka apna asal page hai — /, /about, /skills, /services, /projects,
-   /experience, /certifications, /blog, /contact — aur DETAIL pages
-   pehle ki tarah: /projects/<slug> case studies, /services/<slug>,
-   /blog/<slug> static posts. Purani hash links (/#services waghera)
-   home par land hon to router ka redirectHashToPage unhein asal page
-   par bhej deta hai. */
+/* One-pager structure (Abdullah ka faisla, 2026-11-13): sirf teen
+   asal pages hain — /projects, /certifications, /blog — baqi saare
+   sections home par FULL hain. Detail pages pehle ki tarah:
+   /projects/<slug> case studies, /blog/<slug> static posts.
+   Purane page URLs (/about, /skills, /services, /services/<slug>,
+   /experience, /contact) home ke matching anchor par redirect
+   hote hain (router mapping + vercel.json), aur hash links
+   (/#services waghera) home sections par smooth scroll karte hain. */
 
 function Section({ children }) {
   return (
@@ -102,25 +101,28 @@ function Section({ children }) {
   );
 }
 
-/* Home = preview hub (Abdullah ka design, 2026-11-12): har section
-   home par THORA sa nazar aata hai aur us ka "View All" button asal
-   page par le jata hai. Order purani one-pager wala hi hai: Hero,
-   About, Skills, Services, Stats, Projects, Experience,
-   Certifications, Blog, Testimonials, FAQ, CTA. Stats/Testimonials/
-   FAQ ke apne pages nahi — ye poore home par hi rehte hain. */
+/* Home = full one-pager (PR #26 se pehle wali composition, aaj ke
+   components ke sath): Hero, About FULL, Skills FULL, Services FULL
+   (+Process), Stats, Featured Projects preview, Experience FULL,
+   Certifications preview, Blog preview, Testimonials, FAQ, Contact
+   FULL, CTA. Sirf teen previews bache hain jin ke asal pages hain —
+   Projects, Certifications, Blog. */
 function HomePage({ introDone }) {
   return (
     <>
       <Home introDone={introDone} />
       <TechTicker />
       <Section>
-        <About preview />
+        <About />
       </Section>
       <Section>
-        <Skills preview />
+        <Skills />
       </Section>
       <Section>
-        <Services preview />
+        <Services />
+      </Section>
+      <Section>
+        <Process />
       </Section>
       <Section>
         <Stats />
@@ -129,7 +131,7 @@ function HomePage({ introDone }) {
         <FeaturedWork preview />
       </Section>
       <Section>
-        <Experience preview />
+        <Experience />
       </Section>
       <Section>
         <Certifications preview />
@@ -143,13 +145,16 @@ function HomePage({ introDone }) {
       <Section>
         <Faq />
       </Section>
+      <Section>
+        <Contact />
+      </Section>
       <CtaBand />
     </>
   );
 }
 
-/* Standalone section pages: fixed navbar ke neeche jagah ke liye
-   upar padding — sections apni py-16 waisi ki waisi rakhti hain. */
+/* Standalone pages: fixed navbar ke neeche jagah ke liye upar
+   padding — sections apni py-16 waisi ki waisi rakhti hain. */
 function SectionPage({ children }) {
   return <div className="pt-20 sm:pt-24">{children}</div>;
 }
@@ -163,14 +168,29 @@ function RouteView({ introDone }) {
      Splash chal raha ho to scroll defer hota hai — introDone true
      hote hi yehi effect dobara chal kar consume kar leta hai. */
   useEffect(() => {
-    if (path === "/" && redirectHashToPage()) return;
+    if (path === "/" && redirectHashToRoute()) return;
     const meta = metaForPath(path);
     if (meta) applyPageMeta({ ...meta, path });
     if (introDone) {
       if (!consumePendingSection()) scrollTopNow();
     }
-    const t = setTimeout(() => ScrollTrigger.refresh(), 400);
-    return () => clearTimeout(t);
+    /* Refresh ek se zyada martaba: home one-pager ke lazy sections
+       mukhtalif auqaat par mount hote hain — kisi section ka
+       ScrollTrigger agar baqi sections ke mount hone se pehle ban
+       jaye to uski pin/scrub positions purani (chhoti) layout par
+       reh jati hain (2026-11-13 ko stepper/drift isi wajah se galat
+       chale). Load event + ek late refresh final layout par le
+       aate hain; refresh idempotent hai, koi jump nahi aata. */
+    const timers = [400, 1400, 3000].map((ms) =>
+      setTimeout(() => ScrollTrigger.refresh(), ms),
+    );
+    const onLoad = () => ScrollTrigger.refresh();
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad);
+    return () => {
+      timers.forEach(clearTimeout);
+      window.removeEventListener("load", onLoad);
+    };
   }, [path, introDone]);
 
   const page = (node) => (
@@ -184,33 +204,8 @@ function RouteView({ introDone }) {
   const [head, tail] = seg;
   if (seg.length === 1) {
     switch (head) {
-      case "about":
-        return page(
-          <SectionPage>
-            <About />
-          </SectionPage>,
-        );
-      case "skills":
-        return page(
-          <SectionPage>
-            <Skills />
-          </SectionPage>,
-        );
-      case "services":
-        return page(
-          <SectionPage>
-            <Services />
-            <Process />
-          </SectionPage>,
-        );
       case "projects":
         return page(<ProjectsPage />);
-      case "experience":
-        return page(
-          <SectionPage>
-            <Experience />
-          </SectionPage>,
-        );
       case "certifications":
         return page(
           <SectionPage>
@@ -223,12 +218,6 @@ function RouteView({ introDone }) {
             <Blog />
           </SectionPage>,
         );
-      case "contact":
-        return page(
-          <SectionPage>
-            <Contact />
-          </SectionPage>,
-        );
       default:
         break;
     }
@@ -236,8 +225,6 @@ function RouteView({ introDone }) {
 
   if (head === "projects" && seg.length === 2 && getFeaturedBySlug(tail))
     return page(<ProjectCaseStudy slug={tail} />);
-  if (head === "services" && seg.length === 2 && getService(tail))
-    return page(<ServiceDetail slug={tail} />);
   return <NotFound />;
 }
 

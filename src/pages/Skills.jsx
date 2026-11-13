@@ -379,7 +379,7 @@ function Skills({ preview = false } = {}) {
           </article>
         ))}
 
-        {preview && <ViewAllButton href="/skills">View All Skills</ViewAllButton>}
+        {preview && <ViewAllButton href="/#skills">View All Skills</ViewAllButton>}
       </div>
     </section>
   );

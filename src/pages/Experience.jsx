@@ -24,10 +24,14 @@ import { goSection } from "../lib/router";
 import { playClickSound } from "../lib/sound";
 import ViewAllButton from "../components/ViewAllButton";
 
-/* Board page par pehli 4 entries dikhata hai (3 roles + AWS GenAI
-   credential) — baaki certification milestones Certifications section
-   me maujood hain. Home preview sirf pehli 2 entries dikhata hai. */
-const PAGE_COUNT = 4;
+/* Timeline ki pehli 3 entries asal jobs hain (Experts Cloud, Gen
+   Clouds, DevRox); chothi entry AWS GenAI credential hai. Abdullah
+   ka faisla (2026-11-13): pinned stepper SIRF jobs gin-ta hai
+   (counter 01/03–03/03) aur credential panel stepper ke BAAD ek
+   normal static block ki tarah aata hai — numbered step nahi.
+   Baaki certification milestones Certifications section me hain.
+   Home preview sirf pehli 2 entries dikhata hai. */
+const JOB_COUNT = 3;
 const PREVIEW_COUNT = 2;
 
 function EntryIcon({ index }) {
@@ -156,7 +160,12 @@ function TimelineEntry({ item, index: i }) {
 }
 
 function Experience({ preview = false } = {}) {
-  const shown = timeline.slice(0, preview ? PREVIEW_COUNT : PAGE_COUNT);
+  const jobs = timeline.slice(0, JOB_COUNT);
+  const certEntry = timeline[JOB_COUNT];
+  /* Stepper/list mein sirf jobs; classic (non-FX) list mein
+     credential entry aakhir mein static shamil rehti hai. */
+  const shown = preview ? timeline.slice(0, PREVIEW_COUNT) : jobs;
+  const listEntries = preview ? shown : [...shown, certEntry];
   /* Timeline line scroll ke sath draw hoti hai (motion spec §14) */
   const timelineRef = useRef(null);
   const lineRef = useRef(null);
@@ -322,33 +331,42 @@ function Experience({ preview = false } = {}) {
               progress line); warna classic line + list */}
           <div className="relative" ref={timelineRef}>
             {fx ? (
-              <div ref={stageRef} className="exp-stage">
-                <div className="mb-7">
-                  <span
-                    ref={counterRef}
-                    className="font-display text-[40px] font-extrabold leading-none tracking-tight text-slate-900 dark:text-white"
-                  >
-                    01 / {String(shown.length).padStart(2, "0")}
-                  </span>
-                  <div className="mt-4 h-[3px] w-full max-w-xs overflow-hidden rounded-full bg-violet-100 dark:bg-white/10">
-                    <div
-                      ref={barRef}
-                      className="h-full w-full origin-left rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500"
-                      style={{ transform: "scaleX(0)" }}
-                    />
+              <>
+                <div ref={stageRef} className="exp-stage">
+                  <div className="mb-7">
+                    <span
+                      ref={counterRef}
+                      className="font-display text-[40px] font-extrabold leading-none tracking-tight text-slate-900 dark:text-white"
+                    >
+                      01 / {String(shown.length).padStart(2, "0")}
+                    </span>
+                    <div className="mt-4 h-[3px] w-full max-w-xs overflow-hidden rounded-full bg-violet-100 dark:bg-white/10">
+                      <div
+                        ref={barRef}
+                        className="h-full w-full origin-left rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500"
+                        style={{ transform: "scaleX(0)" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid">
+                    {shown.map((item, i) => (
+                      <div
+                        key={item.title}
+                        className="exp-panel col-start-1 row-start-1"
+                      >
+                        <TimelineEntry item={item} index={i} />
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="grid">
-                  {shown.map((item, i) => (
-                    <div
-                      key={item.title}
-                      className="exp-panel col-start-1 row-start-1"
-                    >
-                      <TimelineEntry item={item} index={i} />
-                    </div>
-                  ))}
-                </div>
-              </div>
+                {/* Credential panel — stepper ke baad static block
+                    (numbered step nahi; Abdullah ka faisla 2026-11-13) */}
+                {!preview && certEntry && (
+                  <div className="mt-6">
+                    <TimelineEntry item={certEntry} index={JOB_COUNT} />
+                  </div>
+                )}
+              </>
             ) : (
               <>
                 <span
@@ -358,7 +376,7 @@ function Experience({ preview = false } = {}) {
                   className="absolute bottom-8 left-[27px] top-8 w-px bg-gradient-to-b from-violet-400 via-violet-300 to-violet-200 dark:from-violet-400/60 dark:via-violet-500/30 dark:to-violet-500/10"
                 />
                 <div className="space-y-6">
-                  {shown.map((item, i) => (
+                  {listEntries.map((item, i) => (
                     <TimelineEntry key={item.title} item={item} index={i} />
                   ))}
                 </div>
@@ -450,7 +468,7 @@ function Experience({ preview = false } = {}) {
         </div>
         )}
 
-        {preview && <ViewAllButton href="/experience">View All Experience</ViewAllButton>}
+        {preview && <ViewAllButton href="/#experience">View All Experience</ViewAllButton>}
       </div>
     </section>
   );

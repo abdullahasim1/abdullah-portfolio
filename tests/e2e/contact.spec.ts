@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Contact page', () => {
-  test.skip('contact form exists on its page', async ({ page }) => {
+test.describe('Contact section (home one-pager)', () => {
+  test.skip('contact form exists in the home Contact section', async ({ page }) => {
+    // 2026-11-13: /contact page khatam — form home ke #contact
+    // section mein hai (purana URL bhi wahin land karta hai).
     await page.goto('/contact');
     await page.waitForLoadState('networkidle');
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));

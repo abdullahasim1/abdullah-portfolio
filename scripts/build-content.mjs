@@ -15,7 +15,6 @@ import sharp from "sharp";
 
 import { faqs } from "../src/data/faqs.js";
 import { featuredProjects, PROJECT_SLUGS } from "../src/data/projects.js";
-import { services } from "../src/data/services.js";
 import { PDF_CERT_THUMBNAILS } from "./pdf-cert-thumbnails.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -126,28 +125,19 @@ ${items}
 
 function writeSitemap(posts) {
   const today = new Date().toISOString().slice(0, 10);
-  /* Multi-page site (2026-11-12): home + har section ka asal page +
-     detail pages (services/projects/posts) sitemap mein. Ye list
-     pageMeta.js PAGE_META / router PAGE_ROUTES se agree karti hai. */
+  /* One-pager site (2026-11-13): home + teen asal pages (projects,
+     certifications, blog) + detail pages (projects/posts) sitemap
+     mein. About/Skills/Services/Experience/Contact home ke sections
+     hain — un ke alag URLs nahi rahe. Ye list pageMeta.js PAGE_META
+     / router PAGE_ROUTES se agree karti hai. */
   const staticRoutes = [
-    { loc: `${SITE_URL}/about`, priority: "0.8" },
-    { loc: `${SITE_URL}/skills`, priority: "0.7" },
-    { loc: `${SITE_URL}/services`, priority: "0.9" },
     { loc: `${SITE_URL}/projects`, priority: "0.9" },
-    { loc: `${SITE_URL}/experience`, priority: "0.7" },
     { loc: `${SITE_URL}/certifications`, priority: "0.8" },
     { loc: `${SITE_URL}/blog`, priority: "0.8" },
-    { loc: `${SITE_URL}/contact`, priority: "0.8" },
   ];
   const urls = [
     { loc: `${SITE_URL}/`, lastmod: today, changefreq: "weekly", priority: "1.0" },
     ...staticRoutes.map((r) => ({ ...r, lastmod: today, changefreq: "monthly" })),
-    ...services.map((s) => ({
-      loc: `${SITE_URL}/services/${s.slug}`,
-      lastmod: today,
-      changefreq: "monthly",
-      priority: "0.7",
-    })),
     ...featuredProjects.map((p) => ({
       loc: `${SITE_URL}/projects/${PROJECT_SLUGS[p.repoName] ?? p.repoName}`,
       lastmod: today,
@@ -388,9 +378,9 @@ function writeStaticBlogPages(posts) {
         <nav class="topnav">
           <a href="/">Home</a>
           <a href="/projects">Projects</a>
-          <a href="/services">Services</a>
+          <a href="/#services">Services</a>
           <a href="/blog">Blog</a>
-          <a href="/contact">Contact</a>
+          <a href="/#contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -406,7 +396,7 @@ function writeStaticBlogPages(posts) {
       <div class="cta">
         <h2>Have a project in mind?</h2>
         <p>I build AI agents, automation systems and full-stack products for clients worldwide.</p>
-        <a href="/contact">Start a Project</a>
+        <a href="/#contact">Start a Project</a>
       </div>
     </main>
     <footer class="foot"><a href="/">Home</a> &middot; <a href="/blog">Blog</a></footer>

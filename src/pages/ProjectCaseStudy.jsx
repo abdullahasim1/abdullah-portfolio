@@ -434,7 +434,7 @@ export default function ProjectCaseStudy({ slug }) {
             honest next steps, no pressure.
           </p>
           <Link
-            href="/contact"
+            href="/#contact"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-opacity hover:opacity-90"
           >
             Start a Project
