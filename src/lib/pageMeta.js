@@ -5,9 +5,9 @@
 export const SITE_URL = "https://abdullah-asim-dev.vercel.app";
 export const SITE_NAME = "Abdullah Asim — Portfolio";
 export const DEFAULT_TITLE =
-  "Abdullah Bin Asim — AI Cloud Engineer & Full Stack Developer";
+  "Abdullah Bin Asim — AI Cloud Engineer & Full Stack Developer in Lahore, Pakistan";
 export const DEFAULT_DESCRIPTION =
-  "Portfolio of Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer building generative AI products, n8n/Make automation and AWS serverless systems.";
+  "Abdullah Bin Asim — AI Cloud Engineer at Experts Cloud & Full Stack Developer based in Lahore, Pakistan. AWS Certified Generative AI Developer (Professional) and Claude Certified Architect. Bedrock, RAG, n8n & AI automation — 25+ projects shipped, open to full-time remote roles and freelance projects.";
 
 /** @type {Record<string, { title: string, description: string }>} */
 /* One-pager (2026-11-13): sirf asal pages ki meta — About / Skills /
@@ -18,17 +18,17 @@ export const PAGE_META = {
   "/projects": {
     title: "Projects — Abdullah Bin Asim",
     description:
-      "Selected projects and open-source work by Abdullah Bin Asim — AI products, automation platforms and web apps, with full case studies and GitHub repositories.",
+      "Selected projects and open-source work by Abdullah Bin Asim — AI products, automation platforms and web apps built in Lahore, Pakistan, with full case studies and GitHub repositories.",
   },
   "/certifications": {
     title: "Certifications — Abdullah Bin Asim",
     description:
-      "27 certifications and credentials held by Abdullah Bin Asim across AWS, Anthropic and OpenAI — including AWS Generative AI Developer Professional and Claude Certified Architect.",
+      "27 certifications and credentials held by Abdullah Bin Asim, AI Cloud Engineer based in Lahore, Pakistan — across AWS, Anthropic and OpenAI, including AWS Generative AI Developer Professional and Claude Certified Architect.",
   },
   "/blog": {
     title: "Blog — Abdullah Bin Asim",
     description:
-      "Articles by Abdullah Bin Asim on AI engineering, automation, AWS and web performance.",
+      "Articles by Abdullah Bin Asim on AI engineering, automation, AWS and web performance — written from Lahore, Pakistan.",
   },
 };
 

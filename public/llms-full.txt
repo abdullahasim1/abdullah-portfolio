@@ -1,14 +1,16 @@
 # Abdullah Bin Asim — Full Stack Developer & AI Builder
 
-> Results-driven Full Stack Developer and UI/UX designer with AWS Generative AI credentials. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
+> AI Cloud Engineer at Experts Cloud and Full Stack Developer based in Lahore, Pakistan; Founder & CTO of DevRox. AWS Certified Generative AI Developer – Professional and Claude Certified Architect – Foundations. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
 
 Portfolio: https://abdullah-asim-dev.vercel.app/
 GitHub: https://github.com/abdullahasim1
+LinkedIn: https://www.linkedin.com/in/abdullahasim1/
+Credly: https://www.credly.com/users/abdullah-bin-asim.ed30d504
 Email: abdullah.gc.18@gmail.com
 
 ## About
 
-I'm a passionate Full Stack Developer with a love for creating seamless digital experiences. With expertise across frontend and backend — plus AWS Generative AI credentials — I bring ideas to life with clean code and intuitive design.
+I'm a passionate Full Stack Developer with a love for creating seamless digital experiences. With expertise across frontend and backend — plus AWS Generative AI credentials — I bring ideas to life with clean code and intuitive design. I work as an AI Cloud Engineer at Experts Cloud in Lahore and run DevRox, my AI, automation & software agency.
 
 My journey started with curiosity and evolved into a commitment to shipping high-quality products that solve real problems. From AI-powered platforms to full-stack web apps — I build things that work, scale, and look great doing it.
 
@@ -21,64 +23,25 @@ React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, C
 - 3+ Years Experience
 - 25+ Projects Done
 - 15+ Technologies
-- 8 Certifications
-- 100% Client Satisfaction
+- 27 Certifications
+- Open to full-time remote roles & freelance projects
 
 ## Services
 
-### AI Integration
-- Claude & LLM APIs
-- Custom AI Chatbots
-- AI Agents & Assistants
-- RAG Applications
+### Full-Stack Web Development
+Modern, responsive and high-performance web apps — React, Next.js and Node.js.
 
-### Workflow Automation
-- Make.com Scenarios
-- n8n Workflows
-- Webhooks & API Glue
-- Business Process Automation
+### Generative AI Integration
+Integrate powerful AI capabilities (Claude, OpenAI, Bedrock, etc.).
 
-### GoHighLevel (GHL)
-- Funnel Building
-- CRM Setup & Migration
-- Automated Follow-ups
-- White-label SaaS (SaaS Mode)
+### AWS Cloud & Serverless
+Deploy, scale and automate apps on AWS — Lambda, S3 and API Gateway.
 
-### Web App Development
-- Custom Web Applications
-- E-commerce Platforms
-- Progressive Web Apps
-- Admin Dashboards
+### AI-Powered Product Development
+End-to-end SaaS development from idea to launch.
 
-### Mobile App Development
-- React Native Apps
-- Cross-platform Solutions
-- Native iOS/Android
-- App Maintenance
-
-### Backend Development
-- API Development
-- Database Design
-- Server Architecture
-- Cloud Integration
-
-### Frontend Development
-- React Applications
-- Responsive Design
-- Performance Optimization
-- UI/UX Implementation
-
-### UI/UX Design
-- User Interface Design
-- User Experience Design
-- Prototyping
-- Design Systems
-
-### Payment Gateway
-- Stripe Integration
-- PayPal Setup
-- Payment Security
-- Transaction Management
+### AI & Workflow Automation
+n8n, Make.com, GoHighLevel and Zapier automations — funnels, CRM and AI agents that run your business on autopilot.
 
 ## Featured Projects
 
@@ -121,31 +84,18 @@ Modern job portal with employer listings, candidate profiles, and application ma
   - Application status pipeline for recruiters
   - Fully responsive UI with Tailwind design system
 
-### Food Ordering System
-Full-stack food ordering app with cart management, meal listings, and a polished React UI.
-- Live: https://food-order-project.vercel.app
-- GitHub: https://github.com/abdullahasim1/food-order-project
-- Stack: React, Node.js, MySQL, Express
+### Business Help — AI Chat & Voice SaaS
+White-label AI chat & voice-call widget for businesses — Retell AI voice agents, Calendly booking and a multi-tenant admin.
+- Case study: https://abdullah-asim-dev.vercel.app/projects/business-help
+- GitHub: https://github.com/abdullahasim1/Business-Help
+- Stack: Next.js, TypeScript, Retell AI, Prisma
 - Role: Full Stack Developer
-- Year: 2023
+- Year: 2025
 - Features:
-  - Cart management with quantity & pricing logic
-  - Category-based meal listings with search
-  - Order placement & history per user
-  - Express REST API with MySQL persistence
-
-### Home Services App
-Service booking platform for finding home repair and service providers near you.
-- Live: https://home-services-tau.vercel.app
-- GitHub: https://github.com/abdullahasim1/HomeServices
-- Stack: HTML, CSS, JavaScript
-- Role: Web Developer
-- Year: 2023
-- Features:
-  - Provider discovery by service category
-  - Simple multi-step booking flow
-  - Lightweight vanilla-JS build — instant loads
-  - Mobile-first responsive layout
+  - AI voice + chat widget powered by Retell AI
+  - Calendly sync for automatic appointment booking
+  - Multi-tenant admin with per-business SMTP and branding
+  - Next.js API with Prisma and secure session handling
 
 ### Portfolio Website
 Animated developer portfolio built with React 19, Vite, Tailwind CSS v4, and GSAP.
@@ -163,54 +113,58 @@ Animated developer portfolio built with React 19, Vite, Tailwind CSS v4, and GSA
 ## Skills
 
 ### AI & Automation
-- GoHighLevel (GHL): 90%
-- Make.com: 90%
-- n8n: 85%
-- Claude / LLM APIs: 85%
-- OpenAI APIs: 80%
-- Prompt Engineering: 88%
+- GoHighLevel (GHL)
+- Make.com
+- n8n
+- Claude / LLM APIs
+- OpenAI APIs
+- Prompt Engineering
 
 ### Frontend
-- React: 90%
-- JavaScript: 85%
-- TypeScript: 80%
-- HTML/CSS: 95%
-- Tailwind CSS: 90%
-- Next.js: 75%
+- React
+- JavaScript
+- TypeScript
+- HTML/CSS
+- Tailwind CSS
+- Next.js
 
 ### Backend
-- Node.js: 85%
-- Express.js: 80%
-- Python: 70%
-- MySQL: 75%
-- MongoDB: 70%
-- REST APIs: 85%
+- Node.js
+- Express.js
+- Python
+- MySQL
+- MongoDB
+- REST APIs
 
 ### Mobile & Tools
-- React Native: 75%
-- Git/GitHub: 90%
-- Docker: 65%
-- AWS: 60%
-- Figma: 70%
-- GSAP: 80%
+- React Native
+- Git/GitHub
+- Docker
+- AWS
+- Figma
+- GSAP
 
 ## Certifications
 
+27 certifications and credentials in total. Verified profiles: Credly (https://www.credly.com/users/abdullah-bin-asim.ed30d504) · Accredible (https://www.credential.net/profile/abdullahbinsim860299/wallet). Full list: https://abdullah-asim-dev.vercel.app/certifications
+
 ### AWS Certified Generative AI Developer — Professional
 - Issuer: Amazon Web Services (AWS)
-- Date: 2026
+- Date: Mar 2026
 - Skills: Generative AI, Amazon Bedrock, LLM Apps, AWS
-- Credential: https://www.credly.com/users/abdullah-asim/badges
+- Credential: https://www.credly.com/badges/b0f200d2-e284-4a02-950d-fb8e1834dba5
 
 ### Generative AI Developer — Early Adopter
 - Issuer: Amazon Web Services (AWS)
 - Date: 2026
 - Skills: Early Adopter, Generative AI, AWS
+- Credential: https://www.credly.com/badges/81c9377a-033b-48e9-b0b9-3d58b1d8c1a9
 
 ### AWS Certified AI Practitioner
 - Issuer: Amazon Web Services (AWS)
-- Date: 2025
+- Date: Dec 2025
 - Skills: AI Fundamentals, ML Concepts, AWS AI Services
+- Credential: https://www.credly.com/badges/9fd7ce44-213e-4c9d-a2e8-c648179191bc
 
 ### Claude Code in Action
 - Issuer: Anthropic Education
@@ -233,11 +187,64 @@ Animated developer portfolio built with React 19, Vite, Tailwind CSS v4, and GSA
 - Issuer: AWS Training & Certification
 - Date: June 2026
 - Skills: AWS Partner, Cloud Architecture, Technical
+- Credential: https://www.credly.com/badges/eff88b84-1143-40d0-92f1-7024c32d7f7c
 
 ### AWS Partner: Sales Accreditation (Business)
 - Issuer: AWS Training & Certification
 - Date: June 2026
 - Skills: AWS Partner, Cloud Business, Sales
+- Credential: https://www.credly.com/badges/d4cf230b-dfbf-4a96-a2bc-a002d9fafb44
+
+### AWS Partner: Kiro Learning Plan Assessment
+- Issuer: AWS Training & Certification
+- Date: Nov 2026
+- Skills: AWS Partner, Kiro, Generative AI
+- Credential: https://www.credly.com/badges/6dce3d97-9a36-4483-89e3-542933ef26c5
+
+### Claude Certified Architect – Foundations
+- Issuer: Anthropic
+- Date: July 2026
+- Skills: Claude, AI Architecture, Anthropic API, LLM Apps
+- Credential: https://www.credly.com/badges/15a8ac12-57fc-4d16-aff6-89faa59a71ad
+
+### ChatGPT Deployment Practitioner
+- Issuer: OpenAI
+- Date: Oct 2026
+- Skills: ChatGPT, OpenAI, AI Deployment, Enterprise AI
+- Credential: https://www.credential.net/8a265f00-4d95-4b6f-9f85-6e73cfd336b5
+
+### OpenAI Consultative Solutions Practitioner
+- Issuer: OpenAI
+- Date: Oct 2026
+- Skills: ChatGPT, Solutions Consulting, AI Strategy, OpenAI
+- Credential: https://www.credential.net/dafdb3c4-ae20-4646-a179-8fb9208cc7d9
+
+### ChatGPT Solutions Practitioner
+- Issuer: OpenAI
+- Date: Oct 2026
+- Skills: Opportunity Qualification, Workflow Design, Solution Positioning, Value Framing
+- Credential: https://www.credential.net/e9271da4-38be-4aeb-84ae-e5ed1b8b8778
+
+### OpenAI Technical Practitioner
+- Issuer: OpenAI
+- Date: Oct 2026
+- Skills: Solution Architecture, API Integration, Security Governance, OpenAI
+- Credential: https://www.credential.net/8eecf460-dd01-491d-b6ce-1d63d1c68f8e
+
+### AWS Training completion certificates (Nov 2026)
+- AWS Partner: Agentic Process Transformation - Technical
+- AWS Partner: Agentic Process Transformation (APT) Foundations
+- AWS Partner: Agentic Process Transformation - Business Value Assessment
+- AWS Partner: Agentic AI Technical Foundations
+- AWS Partner: AI-Driven Development LifeCycle (AI-DLC) with Kiro
+- AI-DLC Foundations: Introduction
+- AI-DLC Foundations: Principles
+- AI-DLC Foundations: Workflow and Collaboration
+- AI-DLC Foundations: Planning, Implementation and Measurement
+- AI-DLC Foundations: Construction Deep Dive
+- AI-DLC Foundations: Operations Deep Dive
+- AI-DLC Foundations: Best Practices
+- AI-DLC Foundations: Evolution
 
 ## Process
 
@@ -284,6 +291,7 @@ Anonymous client feedback (names withheld for privacy; roles/industries shared w
 - Phone/WhatsApp: +92 307 0796208
 - LinkedIn: https://www.linkedin.com/in/abdullahasim1/
 - GitHub: https://github.com/abdullahasim1
+- Credly: https://www.credly.com/users/abdullah-bin-asim.ed30d504
 - Portfolio: https://abdullah-asim-dev.vercel.app/
 
 <!-- LLMS-BLOG:START -->
