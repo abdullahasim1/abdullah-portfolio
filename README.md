@@ -47,16 +47,13 @@ The home page introduces every major area without becoming a full one-page copy 
 - A contact call-to-action band
 - A shared **View All** action that navigates from each preview to its dedicated page
 
-### Portfolio AI assistant
+### AI chat widget
 
-The built-in assistant answers questions about Abdullah's services, projects, certifications, experience, tech stack, and hiring process.
+The site embeds Abdullah's own Business Help chat widget (`src/components/BusinessHelpWidget.jsx`), a live AI assistant configured in the Business Help dashboard:
 
-It is deliberately data-grounded rather than a general-purpose chatbot:
-
-- Answers are generated from the structured files in `src/data/`
-- It does not call an external LLM API to compose answers
-- Suggested questions are provided for common topics
-- When a topic is not present in the portfolio data, it declines to guess and points the visitor to Abdullah's contact details
+- Loaded site-wide from `https://clone-bussiness-help.vercel.app/widget.js` with the business's public embed key
+- The portfolio origin is allowlisted for the widget in the Business Help dashboard
+- `vercel.json` CSP allows that origin in `script-src` and `connect-src` only
 
 ### Services and estimator
 
@@ -90,7 +87,7 @@ Do not edit `src/data/posts.gen.js` directly; it is generated from the Markdown 
 - GSAP animations for hero, reveal, stagger, and counter effects
 - Lenis smooth scrolling synchronized with GSAP ScrollTrigger
 - Lenis is not initialized when the visitor prefers reduced motion
-- Lazy loading for page routes and the portfolio assistant
+- Lazy loading for page routes and an asynchronously loaded chat widget
 - A keyboard-accessible **Cmd/Ctrl + K** command palette for navigation, quick actions, and featured projects
 - Focus trapping in dialogs, a skip-to-content link, ARIA labels, and error boundaries around lazily loaded sections
 
@@ -131,10 +128,10 @@ abdullah-portfolio/
 ├── public/                  # Static assets, feeds, sitemap, and agent resources
 ├── scripts/                 # Content generation and prerendering
 ├── src/
-│   ├── components/          # Shared UI, assistant, palette, estimator, and 3D components
+│   ├── components/          # Shared UI, chat widget, palette, estimator, and 3D components
 │   ├── data/                # Structured portfolio content and generated post data
 │   ├── hooks/               # Scroll, viewport, focus, GitHub, and animation hooks
-│   ├── lib/                 # Router, assistant logic, metadata, theme, and utilities
+│   ├── lib/                 # Router, metadata, theme, and utilities
 │   ├── pages/               # Route pages and detail pages
 │   ├── test/                # Vitest setup
 │   ├── App.jsx              # Route composition and site shell
@@ -213,7 +210,7 @@ There is no `e2e` npm script; Playwright is run directly as shown below.
 
 ### Unit and integrity tests
 
-Vitest tests are colocated under `src/` and include component tests, assistant matching tests, focus-trap and error-boundary tests, theme tests, home-preview tests, and data integrity tests. The integrity suite checks structured content, generated artifacts, and agreement between the router, page metadata, App route table, and sitemap sources.
+Vitest tests are colocated under `src/` and include component tests, chat-widget embed tests, focus-trap and error-boundary tests, theme tests, home-preview tests, and data integrity tests. The integrity suite checks structured content, generated artifacts, and agreement between the router, page metadata, App route table, and sitemap sources.
 
 ```bash
 npm test
