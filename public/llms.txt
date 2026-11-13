@@ -1,6 +1,6 @@
 # Abdullah Bin Asim — Full Stack Developer & AI Builder
 
-> Results-driven Full Stack Developer and UI/UX designer with AWS Generative AI credentials. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
+> AI Cloud Engineer at Experts Cloud and Full Stack Developer based in Lahore, Pakistan; Founder & CTO of DevRox. AWS Certified Generative AI Developer – Professional and Claude Certified Architect – Foundations. 3+ years experience, 25+ projects shipped. Builds fast, scalable web apps with React, Next.js, Node.js, and AI-powered automation.
 
 Portfolio: https://abdullah-asim-dev.vercel.app/
 Markdown summary (for agents): https://abdullah-asim-dev.vercel.app/index.md
@@ -16,12 +16,20 @@ React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, C
 - 25+ projects shipped
 - 15+ technologies
 - AWS Certified Generative AI Developer – Professional
+- Claude Certified Architect – Foundations (Anthropic)
 - AWS Certified AI Practitioner
+- 27 certifications and credentials in total across AWS, Anthropic and OpenAI
 
 ## Links
 
 - [GitHub](https://github.com/abdullahasim1): source code & open-source work
-- [Featured Projects](https://abdullah-asim-dev.vercel.app/#projects): live demos
+- [LinkedIn](https://www.linkedin.com/in/abdullahasim1/): professional profile
+- [Credly](https://www.credly.com/users/abdullah-bin-asim.ed30d504): verified AWS & Anthropic badges
+- [Accredible](https://www.credential.net/profile/abdullahbinsim860299/wallet): verified OpenAI Partner credentials
+- [Certifications](https://abdullah-asim-dev.vercel.app/certifications): all 27 certifications and credentials
+- [Projects](https://abdullah-asim-dev.vercel.app/projects): case studies & live demos
+- [Blog](https://abdullah-asim-dev.vercel.app/blog): articles on AI engineering & automation
+- [DevRox](https://thedevrox.com): his AI, automation & software agency
 
 ## Blog
 

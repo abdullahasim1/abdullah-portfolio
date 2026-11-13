@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 import { certifications } from "../data/certifications";
 import ViewAllButton from "../components/ViewAllButton";
 
-const CREDLY_URL = "https://www.credly.com/users/abdullah-asim/badges";
+const CREDLY_URL = "https://www.credly.com/users/abdullah-bin-asim.ed30d504";
 
 /* Short card descriptions (board copy, matched to each real credential). */
 const DESCRIPTIONS = {

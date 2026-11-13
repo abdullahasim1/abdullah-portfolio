@@ -403,6 +403,9 @@ function writeStaticBlogPages(posts) {
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"BlogPosting","headline":"${escapeXml(post.title)}","description":"${escapeXml(post.description)}","datePublished":"${post.date}","url":"${canonical}","author":{"@id":"${SITE_URL}/#person"},"publisher":{"@id":"${SITE_URL}/#person"},"mainEntityOfPage":"${canonical}","image":"${ogImage}"}
     </script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"${SITE_URL}/"},{"@type":"ListItem","position":2,"name":"Blog","item":"${SITE_URL}/blog"},{"@type":"ListItem","position":3,"name":"${escapeXml(post.title)}","item":"${canonical}"}]}
+    </script>
   </body>
 </html>`;
 
