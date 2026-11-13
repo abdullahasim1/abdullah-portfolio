@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { siClaude, siMake, siN8n, siZapier } from "simple-icons";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TiltCard from "../components/TiltCard";
-import { useScrollReveal } from "../hooks";
+import { useScrollReveal, useScrollFxEnabled } from "../hooks";
+
+gsap.registerPlugin(ScrollTrigger);
 import ProjectEstimator from "../components/ProjectEstimator";
 import { playClickSound } from "../lib/sound";
 import { Link, goSection } from "../lib/router";
@@ -117,10 +121,116 @@ function BrandIcon({ name }) {
 
 const automationTools = ["GoHighLevel", "Make.com", "n8n", "Claude", "OpenAI", "Zapier"];
 
+/* Ek service card — grid aur stacked (FX) dono layouts mein istemal.
+   FX mode mein generic .reveal nahi lagta: card ki scale/dim scrub
+   timeline control karti hai, double animation nahi hone dete. */
+function ServiceCard({ s, i, reveal = true }) {
+  return (
+    <TiltCard className="h-full">
+      <article className={`${reveal ? "reveal " : ""}group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7`}>
+        <Link
+          href={`/services/${s.slug}`}
+          aria-label={`${s.title} — details`}
+          className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-violet-200 text-violet-500 transition-all duration-300 group-hover:bg-violet-600 group-hover:text-white dark:border-white/15 dark:text-violet-300"
+        >
+          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
+          </svg>
+        </Link>
+        <ServiceArt name={s.icon} delay={`${i * 0.7}s`} />
+        <h3 className="mt-4 font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white">
+          <Link href={`/services/${s.slug}`} className="transition-colors hover:text-violet-600 dark:hover:text-violet-300">
+            {s.title}
+          </Link>
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+          {s.short}
+        </p>
+      </article>
+    </TiltCard>
+  );
+}
+
 /* preview: home par header + pehle 3 service cards — spotlight,
    estimator aur custom band sirf asal /services page par. */
 function Services({ preview = false } = {}) {
   useScrollReveal("#services .reveal");
+  const fx = useScrollFxEnabled();
+  const stackRef = useRef(null);
+
+  /* Sticky stacked cards (ExpertsCloud pattern) — desktop FX only.
+     Section par overflow-hidden hai, is liye CSS position:sticky yahan
+     kaam nahi karta (overflow ancestor sticky ko maar deta hai); usi
+     sticky maths ko ScrollTrigger-driven transforms se karte hain:
+     har card apni jagah chipka rehta hai, agla card us par slide karke
+     aata hai, aur chipka hua card scale 0.95 + dim ho jata hai. Container
+     ke end par har card naturally scroll away hota hai — koi pin-spacer
+     ya jump nahi. */
+  useEffect(() => {
+    if (!fx || !stackRef.current) return undefined;
+    const container = stackRef.current;
+    const ctx = gsap.context(() => {
+      const items = gsap.utils.toArray(".svc-stack-item", container);
+      if (items.length < 2) return;
+      const articles = items.map((el) => el.querySelector("article"));
+      const TOP = 104; // navbar ke neeche saans ki jagah
+      const STEP = 14; // har agla card itna neeche chipakta hai (sheet peek)
+      let metrics = [];
+      let containerH = 0;
+
+      const layout = () => {
+        // Pehle natural heights, phir sab ko barabar (equal-height rule)
+        items.forEach((el) => {
+          el.style.height = "";
+        });
+        const maxH = Math.max(...items.map((el) => el.offsetHeight));
+        items.forEach((el) => {
+          el.style.height = `${maxH}px`;
+        });
+        containerH = container.offsetHeight;
+        metrics = items.map((el) => ({ top: el.offsetTop, h: el.offsetHeight }));
+      };
+
+      const update = () => {
+        const y = window.scrollY;
+        const cTop = container.getBoundingClientRect().top + y;
+        items.forEach((el, i) => {
+          const m = metrics[i];
+          if (!m) return;
+          const maxDelta = Math.max(0, containerH - m.top - m.h);
+          const raw = y + TOP + i * STEP - (cTop + m.top);
+          const d = Math.max(0, Math.min(raw, maxDelta));
+          el.style.transform = `translate3d(0, ${d}px, 0)`;
+          // Agla card jitna qareeb aata hai, ye card utna scale/dim hota hai
+          const next = metrics[i + 1];
+          if (next && articles[i]) {
+            const nTop = cTop + next.top;
+            const range = Math.max(1, window.innerHeight - (TOP + (i + 1) * STEP));
+            const p = Math.max(
+              0,
+              Math.min(1, (y + window.innerHeight - nTop) / range),
+            );
+            articles[i].style.transform = `scale(${1 - 0.05 * p})`;
+            articles[i].style.filter = `brightness(${1 - 0.3 * p})`;
+          }
+        });
+      };
+
+      layout();
+      update();
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top bottom",
+        end: "bottom top",
+        onUpdate: update,
+        onRefresh: () => {
+          layout();
+          update();
+        },
+      });
+    }, container);
+    return () => ctx.revert();
+  }, [fx]);
 
   return (
     <section id="services" className="relative scroll-mt-24 overflow-hidden py-16">
@@ -143,33 +253,28 @@ function Services({ preview = false } = {}) {
           <div className="mt-4 h-[3px] w-14 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500" />
         </div>
 
-        {/* Service cards — 3D tilt + hover lift, floating art (preview: pehle 3) */}
-        <div className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${preview ? "xl:grid-cols-3" : "xl:grid-cols-4"}`} style={{ perspective: "1200px" }}>
-          {(preview ? heroServices.slice(0, 3) : heroServices).map((s, i) => (
-            <TiltCard key={s.title} className="h-full">
-              <article className="reveal group relative h-full rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.22)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.38)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
-                <Link
-                  href={`/services/${s.slug}`}
-                  aria-label={`${s.title} — details`}
-                  className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-violet-200 text-violet-500 transition-all duration-300 group-hover:bg-violet-600 group-hover:text-white dark:border-white/15 dark:text-violet-300"
-                >
-                  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
-                  </svg>
-                </Link>
-                <ServiceArt name={s.icon} delay={`${i * 0.7}s`} />
-                <h3 className="mt-4 font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white">
-                  <Link href={`/services/${s.slug}`} className="transition-colors hover:text-violet-600 dark:hover:text-violet-300">
-                    {s.title}
-                  </Link>
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {s.short}
-                </p>
-              </article>
-            </TiltCard>
-          ))}
-        </div>
+        {/* Service cards — 3D tilt + hover lift, floating art (preview: pehle 3).
+            Desktop FX: sticky stacked sheets (har card chipakta hai, agla
+            us par slide hota hai) — neeche wala effect dekho. */}
+        {fx ? (
+          <div ref={stackRef} className="relative flex flex-col gap-6">
+            {(preview ? heroServices.slice(0, 3) : heroServices).map((s, i) => (
+              <div
+                key={s.title}
+                className="svc-stack-item relative will-change-transform"
+                style={{ zIndex: i + 1 }}
+              >
+                <ServiceCard s={s} i={i} reveal={false} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${preview ? "xl:grid-cols-3" : "xl:grid-cols-4"}`} style={{ perspective: "1200px" }}>
+            {(preview ? heroServices.slice(0, 3) : heroServices).map((s, i) => (
+              <ServiceCard key={s.title} s={s} i={i} />
+            ))}
+          </div>
+        )}
 
         {preview && <ViewAllButton href="/services">View All Services</ViewAllButton>}
 

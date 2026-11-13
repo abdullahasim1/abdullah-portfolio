@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { timeline } from "../data/experience";
 import { certifications } from "../data/certifications";
 import { useCounterAnimation } from "../hooks/useCounterAnimation";
+import { useScrollFxEnabled } from "../hooks/useScrollFx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,6 +94,67 @@ const HIGHLIGHTS = [
   },
 ];
 
+/* Ek timeline entry — normal list aur pinned stepper (FX) dono mein
+   bilkul yehi markup istemal hota hai. */
+function TimelineEntry({ item, index: i }) {
+  return (
+    <div className="relative flex gap-5 sm:gap-7">
+      <span className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-violet-300 bg-white font-display text-[15px] font-extrabold text-violet-600 shadow-sm dark:border-violet-400/40 dark:bg-slate-900 dark:text-violet-300">
+        {String(i + 1).padStart(2, "0")}
+      </span>
+      <article className="min-w-0 flex-1 rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_46px_-20px_rgba(124,58,237,0.32)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
+        <div className="flex gap-5">
+          <EntryIcon index={i} />
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h3 className="font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white sm:text-xl">
+                {item.title}
+              </h3>
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-violet-100 px-3.5 py-1.5 text-xs font-semibold text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+                {item.period}
+              </span>
+            </div>
+            <p className="mt-1 text-sm font-semibold text-violet-600 dark:text-violet-300">
+              {item.org.replace(" — ", " • ")}
+            </p>
+            <p className="mt-2.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+              {item.desc}
+            </p>
+            {(item.points?.length ?? 0) > 0 && (
+              <ul className="mt-4 space-y-2">
+                {item.points.map((point) => (
+                  <li
+                    key={point}
+                    className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300"
+                  >
+                    <svg className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" fill="none" stroke="currentColor" strokeWidth={2.4} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {item.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-violet-200 px-3 py-1 text-xs font-medium text-violet-600 dark:border-violet-400/25 dark:text-violet-300"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  );
+}
+
 function Experience({ preview = false } = {}) {
   const shown = timeline.slice(0, preview ? PREVIEW_COUNT : PAGE_COUNT);
   /* Timeline line scroll ke sath draw hoti hai (motion spec §14) */
@@ -120,6 +182,62 @@ function Experience({ preview = false } = {}) {
       tween.kill();
     };
   }, []);
+
+  /* Pinned step-changer (ExpertsCloud pattern) — desktop FX only.
+     Section PIN hota hai, ek waqt mein ek entry dikhti hai; scroll
+     progress entries ko swap karta hai, counter (01/0N) aur uske neeche
+     progress line sath bharte hain. FX mode mein purani line-draw
+     animation nahi chalti (line render hi nahi hoti). */
+  const fx = useScrollFxEnabled();
+  const stageRef = useRef(null);
+  const counterRef = useRef(null);
+  const barRef = useRef(null);
+  useEffect(() => {
+    if (!fx || !stageRef.current || shown.length < 2) return undefined;
+    const ctx = gsap.context(() => {
+      const panels = gsap.utils.toArray(".exp-panel", stageRef.current);
+      if (panels.length < 2) return;
+      gsap.set(panels, { autoAlpha: 0, y: 28 });
+      gsap.set(panels[0], { autoAlpha: 1, y: 0 });
+      const total = panels.length;
+      const tl = gsap.timeline({
+        defaults: { ease: "power2.inOut" },
+        scrollTrigger: {
+          trigger: stageRef.current,
+          start: "top top+=104",
+          end: () => `+=${(total - 1) * window.innerHeight * 0.55}`,
+          scrub: 0.6,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const idx = Math.min(
+              total - 1,
+              Math.floor(self.progress * total),
+            );
+            if (counterRef.current) {
+              counterRef.current.textContent = `${String(idx + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+            }
+            if (barRef.current) {
+              barRef.current.style.transform = `scaleX(${self.progress})`;
+            }
+          },
+        },
+      });
+      for (let i = 0; i < total - 1; i += 1) {
+        tl.to(panels[i], { autoAlpha: 0, y: -28, duration: 0.42 }, i)
+          .fromTo(
+            panels[i + 1],
+            { autoAlpha: 0, y: 28 },
+            { autoAlpha: 1, y: 0, duration: 0.42 },
+            i + 0.08,
+          );
+      }
+      tl.to({}, { duration: 0.2 }); // aakhri step par halka sa hold
+    }, stageRef);
+    return () => ctx.revert();
+  }, [fx, shown.length]);
+
   return (
     <section id="experience" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -right-40 top-20 h-96 w-96 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/10" />
@@ -186,72 +304,52 @@ function Experience({ preview = false } = {}) {
 
         {/* Content grid */}
         <div className={`mt-10 grid items-start gap-8 ${preview ? "" : "lg:grid-cols-[1fr_360px]"}`}>
-          {/* Timeline */}
+          {/* Timeline — desktop FX: pinned step-changer (counter +
+              progress line); warna classic line + list */}
           <div className="relative" ref={timelineRef}>
-            <span
-              aria-hidden
-              ref={lineRef}
-              style={{ transformOrigin: "top" }}
-              className="absolute bottom-8 left-[27px] top-8 w-px bg-gradient-to-b from-violet-400 via-violet-300 to-violet-200 dark:from-violet-400/60 dark:via-violet-500/30 dark:to-violet-500/10"
-            />
-            <div className="space-y-6">
-              {shown.map((item, i) => (
-                <div key={item.title} className="relative flex gap-5 sm:gap-7">
-                  <span className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-violet-300 bg-white font-display text-[15px] font-extrabold text-violet-600 shadow-sm dark:border-violet-400/40 dark:bg-slate-900 dark:text-violet-300">
-                    {String(i + 1).padStart(2, "0")}
+            {fx ? (
+              <div ref={stageRef} className="exp-stage">
+                <div className="mb-7">
+                  <span
+                    ref={counterRef}
+                    className="font-display text-[40px] font-extrabold leading-none tracking-tight text-slate-900 dark:text-white"
+                  >
+                    01 / {String(shown.length).padStart(2, "0")}
                   </span>
-                  <article className="min-w-0 flex-1 rounded-[1.6rem] border border-violet-100 bg-white p-6 shadow-[0_14px_40px_-20px_rgba(124,58,237,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_46px_-20px_rgba(124,58,237,0.32)] dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
-                    <div className="flex gap-5">
-                      <EntryIcon index={i} />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-start justify-between gap-3">
-                          <h3 className="font-display text-lg font-extrabold leading-snug text-slate-900 dark:text-white sm:text-xl">
-                            {item.title}
-                          </h3>
-                          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-violet-100 px-3.5 py-1.5 text-xs font-semibold text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
-                            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                            </svg>
-                            {item.period}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-sm font-semibold text-violet-600 dark:text-violet-300">
-                          {item.org.replace(" — ", " • ")}
-                        </p>
-                        <p className="mt-2.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                          {item.desc}
-                        </p>
-                        {(item.points?.length ?? 0) > 0 && (
-                          <ul className="mt-4 space-y-2">
-                            {item.points.map((point) => (
-                              <li
-                                key={point}
-                                className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300"
-                              >
-                                <svg className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" fill="none" stroke="currentColor" strokeWidth={2.4} viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                {point}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {item.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="rounded-full border border-violet-200 px-3 py-1 text-xs font-medium text-violet-600 dark:border-violet-400/25 dark:text-violet-300"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </article>
+                  <div className="mt-4 h-[3px] w-full max-w-xs overflow-hidden rounded-full bg-violet-100 dark:bg-white/10">
+                    <div
+                      ref={barRef}
+                      className="h-full w-full origin-left rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500"
+                      style={{ transform: "scaleX(0)" }}
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
+                <div className="grid">
+                  {shown.map((item, i) => (
+                    <div
+                      key={item.title}
+                      className="exp-panel col-start-1 row-start-1"
+                    >
+                      <TimelineEntry item={item} index={i} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                <span
+                  aria-hidden
+                  ref={lineRef}
+                  style={{ transformOrigin: "top" }}
+                  className="absolute bottom-8 left-[27px] top-8 w-px bg-gradient-to-b from-violet-400 via-violet-300 to-violet-200 dark:from-violet-400/60 dark:via-violet-500/30 dark:to-violet-500/10"
+                />
+                <div className="space-y-6">
+                  {shown.map((item, i) => (
+                    <TimelineEntry key={item.title} item={item} index={i} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Journey Highlights (home preview mein nahi) */}

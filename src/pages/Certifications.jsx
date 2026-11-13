@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { siAnthropic } from "simple-icons";
-import { useScrollReveal } from "../hooks";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useScrollReveal, useScrollFxEnabled } from "../hooks";
+
+gsap.registerPlugin(ScrollTrigger);
 import { certifications } from "../data/certifications";
 import ViewAllButton from "../components/ViewAllButton";
 
@@ -330,6 +334,57 @@ function Certifications({ showAll = false, preview = false } = {}) {
   const visible = isPreviewing ? shown.slice(0, PREVIEW_COUNT) : shown;
   const hasMore = !showAll && filter === "all" && shown.length > PREVIEW_COUNT;
 
+  /* Opposite-direction rows (ExpertsCloud pattern) — desktop FX, sirf
+     "All" view mein (filtered views classic grid rehte hain). Home
+     preview: 2 rows (6+6). Page: saare cards 3 alternating rows mein —
+     har card maujood, barabar size, scroll ke sath saamne se guzarta
+     hai (reachable). Pin nahi hota — sirf scroll-linked drift. */
+  const fxRaw = useScrollFxEnabled();
+  const fx = fxRaw && filter === "all";
+  const rowsRef = useRef(null);
+  const showKeepLearning = filter === "all" && (showAll || expanded || !hasMore);
+  const rowItems = [
+    ...visible.map((cert) => ({
+      key: cert.id,
+      node: <CertCard key={cert.id} cert={cert} />,
+    })),
+    ...(showKeepLearning
+      ? [{ key: "__keep-learning", node: <KeepLearning /> }]
+      : []),
+  ];
+  const rowCount = preview ? 2 : 3;
+  const perRow = Math.ceil(rowItems.length / rowCount) || 1;
+  const rows = Array.from({ length: rowCount }, (_, r) =>
+    rowItems.slice(r * perRow, (r + 1) * perRow),
+  ).filter((row) => row.length > 0);
+
+  useEffect(() => {
+    if (!fx || !rowsRef.current) return undefined;
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray(".cert-row", rowsRef.current).forEach((row, ri) => {
+        const excess = () =>
+          Math.max(0, row.scrollWidth - row.parentElement.clientWidth);
+        const movesLeft = ri % 2 === 0;
+        gsap.fromTo(
+          row,
+          { x: () => (movesLeft ? 0 : -excess()) },
+          {
+            x: () => (movesLeft ? -excess() : 0),
+            ease: "none",
+            scrollTrigger: {
+              trigger: rowsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+      });
+    }, rowsRef);
+    return () => ctx.revert();
+  }, [fx, filter, expanded, visible.length]);
+
   return (
     <section id="certifications" className="relative scroll-mt-24 overflow-hidden py-16">
       <div aria-hidden className="absolute -left-32 top-24 h-80 w-80 rounded-full bg-violet-300/20 blur-3xl dark:bg-violet-600/10" />
@@ -385,13 +440,30 @@ function Certifications({ showAll = false, preview = false } = {}) {
         </div>
         )}
 
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {visible.map((cert) => (
-            <CertCard key={cert.id} cert={cert} />
-          ))}
-          {filter === "all" && (showAll || expanded || !hasMore) && <KeepLearning />}
-        </div>
+        {/* Cards — desktop FX ("All" view): mukhalif simt mein chalti
+            rows; warna classic grid */}
+        {fx ? (
+          <div ref={rowsRef} className="flex flex-col gap-6">
+            {rows.map((row, ri) => (
+              <div key={ri} className="-my-1 overflow-hidden py-1">
+                <div className="cert-row flex w-max items-stretch gap-6">
+                  {row.map((item) => (
+                    <div key={item.key} className="w-[302px] flex-none">
+                      {item.node}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {visible.map((cert) => (
+              <CertCard key={cert.id} cert={cert} />
+            ))}
+            {filter === "all" && (showAll || expanded || !hasMore) && <KeepLearning />}
+          </div>
+        )}
 
         {/* Home preview: button /certifications page par le jata hai (expand nahi) */}
         {preview && hasMore && (

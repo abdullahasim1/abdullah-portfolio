@@ -3,6 +3,7 @@ import { getSoundMuted, toggleSound, playClickSound } from "../lib/sound";
 /* DARK THEME DISABLED (2026-11-11, Abdullah's call): light theme only. To restore dark mode, uncomment this toggle, the ThemeContext dark logic, and the index.html theme script — all dark: styles in components are untouched and still in place. */
 // import { getTheme, applyTheme } from "../lib/theme";
 import { Link, useRoute } from "../lib/router";
+import { useHideOnScroll } from "../hooks/useHideOnScroll";
 
 /* Board design: har nav link ke sath chhota violet line icon */
 const ICONS = {
@@ -86,6 +87,13 @@ function NavIcon({ id, className = "w-4 h-4" }) {
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [focusWithin, setFocusWithin] = useState(false);
+  /* ExpertsCloud pattern: neeche scroll par header chhup jata hai, upar
+     scroll par wapas. Mobile menu khula ho ya keyboard focus header ke
+     andar ho to kabhi hide nahi hota (focus trap nahi banta). */
+  const navHidden = useHideOnScroll({
+    suspended: mobileOpen || focusWithin,
+  });
   const [scrolled, setScrolled] = useState(false);
   const [muted, setMuted] = useState(() => getSoundMuted());
   /* DARK THEME DISABLED: theme hamesha "light" — original state line:
@@ -153,7 +161,21 @@ function Navbar() {
   */
 
   return (
-    <header className="nav-in fixed top-0 inset-x-0 z-50 px-4 pt-4">
+    <header
+      className="nav-in fixed top-0 inset-x-0 z-50 px-4 pt-4"
+      onFocus={() => setFocusWithin(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setFocusWithin(false);
+      }}
+    >
+      {/* Hide transform is wrapper par hai — header ki .nav-in entrance
+          animation (fill both, transform: none) transform ko override
+          kar deti, is liye header par direct translate nahi lagaya. */}
+      <div
+        className={`transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          navHidden ? "-translate-y-[140%] pointer-events-none" : "translate-y-0"
+        }`}
+      >
       <nav
         className={`max-w-[1440px] mx-auto flex items-center justify-between gap-2 rounded-[26px] lg:rounded-full px-4 py-3 transition-all duration-300 ${
           scrolled || theme === "light"
@@ -359,6 +381,7 @@ function Navbar() {
             Let&apos;s Talk
           </Link>
         </div>
+      </div>
       </div>
     </header>
   );

@@ -1,6 +1,10 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { siGsap, siMysql, siNodedotjs, siReact } from "simple-icons";
-import { useScrollReveal } from "../hooks";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useScrollReveal, useScrollFxEnabled } from "../hooks";
+
+gsap.registerPlugin(ScrollTrigger);
 import { useGithubRepos } from "../hooks/useGithubRepos";
 import TiltCard from "../components/TiltCard";
 import RepoCard from "../components/RepoCard";
@@ -163,9 +167,9 @@ function HeroTags({ project }) {
   );
 }
 
-function FeaturedProjectCard({ project, onOpenCaseStudy }) {
+function FeaturedProjectCard({ project, onOpenCaseStudy, bare = false }) {
   return (
-    <article className="reveal group relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-violet-100 bg-white shadow-[0_14px_40px_-18px_rgba(124,58,237,0.2)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300 hover:shadow-[0_22px_46px_-18px_rgba(124,58,237,0.32)] dark:border-white/10 dark:bg-slate-900/70 dark:hover:border-violet-400/40">
+    <article className={`${bare ? "" : "reveal "}group relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-violet-100 bg-white shadow-[0_14px_40px_-18px_rgba(124,58,237,0.2)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300 hover:shadow-[0_22px_46px_-18px_rgba(124,58,237,0.32)] dark:border-white/10 dark:bg-slate-900/70 dark:hover:border-violet-400/40`}>
       {/* Image zone */}
       <div className="relative h-48 overflow-hidden shrink-0">
         <ProjectImage project={project} />
@@ -330,12 +334,57 @@ export function FeaturedWork({ preview = false, embedded = false }) {
     navigateTo(`/projects/${projectSlug(project)}`);
   };
 
+  /* Pinned horizontal showcase (ExpertsCloud pattern) — desktop FX,
+     sirf "All" view mein: wrapper PIN hota hai, heading + filters upar
+     rehte hain, cards ki horizontal track scroll ke sath X par scrub
+     hoti hai aur neeche progress line bharti hai. Filter lagte hi FX
+     band ho jata hai (filtered grid apni jagah) — pin ki safai
+     ctx.revert() se hoti hai, pin-spacer leak nahi hota. */
+  const fxRaw = useScrollFxEnabled();
+  const fx = fxRaw && featuredFilter === "all";
+  const pinRef = useRef(null);
+  const trackRef = useRef(null);
+  const barRef = useRef(null);
+  useEffect(() => {
+    if (!fx || !pinRef.current || !trackRef.current) return undefined;
+    const ctx = gsap.context(() => {
+      const trackEl = trackRef.current;
+      const getAmount = () =>
+        Math.max(0, trackEl.scrollWidth - trackEl.parentElement.clientWidth);
+      gsap.to(trackEl, {
+        x: () => -getAmount(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: pinRef.current,
+          start: "top top+=92",
+          end: () => `+=${getAmount()}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (barRef.current) {
+              barRef.current.style.transform = `scaleX(${self.progress})`;
+            }
+          },
+        },
+      });
+    }, pinRef);
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+    return () => {
+      window.removeEventListener("load", onLoad);
+      ctx.revert();
+    };
+  }, [fx]);
+
   return (
     <section id="projects" className={`relative overflow-hidden scroll-mt-24 ${preview || embedded ? "py-16" : "pt-28 pb-0"}`}>
       {/* Soft background blobs — screenshots se compete nahi karte */}
       <div aria-hidden className="animate-[floatY_11s_ease-in-out_infinite] absolute -left-32 top-24 h-80 w-80 rounded-full bg-violet-300/15 blur-3xl dark:bg-violet-600/[0.07]" />
       <div aria-hidden className="animate-[floatY_13s_ease-in-out_infinite] absolute -right-32 top-[560px] h-96 w-96 rounded-full bg-fuchsia-300/10 blur-3xl dark:bg-fuchsia-600/[0.05]" />
       <div className="relative max-w-[1400px] mx-auto px-6">
+       <div ref={pinRef} className="relative">
 
         <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -409,6 +458,30 @@ export function FeaturedWork({ preview = false, embedded = false }) {
 
         {/* ---------- Featured work — board layout (All) / uniform grid (filtered) ---------- */}
         {featuredFilter === "all" ? (
+          fx ? (
+            /* FX: tamam 5 projects ek horizontal track mein (uniform
+               cards, equal height) — content/links board wale hi hain */
+            <div className={preview ? "" : "mb-24"}>
+              <div className="overflow-hidden">
+                <div ref={trackRef} className="flex w-max items-stretch gap-6 pt-1 pb-2">
+                  {enrichedFeatured.map((project) => (
+                    <div key={project.repoName} className="w-[380px] flex-none">
+                      <TiltCard divisor={40} maxDeg={4} className="h-full">
+                        <FeaturedProjectCard bare project={project} onOpenCaseStudy={openCase(project)} />
+                      </TiltCard>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div aria-hidden className="mt-5 h-[3px] overflow-hidden rounded-full bg-violet-500/15 dark:bg-white/10">
+                <div
+                  ref={barRef}
+                  className="h-full w-full origin-left rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500"
+                  style={{ transform: "scaleX(0)" }}
+                />
+              </div>
+            </div>
+          ) : (
           <div className={preview ? "" : "mb-24"}>
             <FeaturedHeroCard
               project={enrichedFeatured[0]}
@@ -442,6 +515,7 @@ export function FeaturedWork({ preview = false, embedded = false }) {
               ))}
             </div>
           </div>
+          )
         ) : (
           <div key={featuredFilter} className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 ${preview ? "" : "mb-24"}`}>
             {visibleFeatured.map((project, i) => (
@@ -458,6 +532,7 @@ export function FeaturedWork({ preview = false, embedded = false }) {
           </div>
         )}
 
+       </div>
       </div>
     </section>
   );
