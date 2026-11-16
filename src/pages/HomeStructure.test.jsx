@@ -17,7 +17,10 @@ import { posts } from "../data/posts.gen";
    hain — preview hub khatam. Sirf Featured Projects, Certifications
    aur Blog home par preview rehte hain (View All asal page par).
    Ye tests full-section content aur bache hue previews dono lock
-   karte hain. */
+   karte hain.
+   2026-11-16 (audit-fix session): /services + /services/<slug> asal
+   pages ke tor par wapas aaye — home composition waisa ka waisa hai,
+   sirf route-table guard neeche nayi surat ke mutabiq hai. */
 
 const heroServices = services.filter((s) => s.icon !== "automation");
 
@@ -165,14 +168,16 @@ describe("home composition (App.jsx source)", () => {
       expect(idx, `HomePage missing ${marker}`).toBeGreaterThan(last);
       last = idx;
     }
-    // Route table: sirf teen asal pages + certifications showAll
+    // Route table: projects + certifications + blog + services
+    // (services pages 2026-11-16 ko wapas aaye; about/contact ab bhi
+    //  home anchors hain, un ke alag routes nahi)
     expect(src).toContain("<Certifications showAll />");
     expect(src).toContain('case "projects":');
     expect(src).toContain('case "certifications":');
     expect(src).toContain('case "blog":');
+    expect(src).toContain('case "services":');
+    expect(src).toContain("ServiceDetail");
     expect(src).not.toContain('case "about":');
-    expect(src).not.toContain('case "services":');
     expect(src).not.toContain('case "contact":');
-    expect(src).not.toContain("ServiceDetail");
   });
 });
