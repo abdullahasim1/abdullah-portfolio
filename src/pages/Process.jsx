@@ -71,7 +71,7 @@ function StepArt({ index }) {
         )}
       </div>
       {index === 0 && (
-        <svg aria-hidden className="absolute right-6 top-1 h-6 w-6 text-violet-500 dark:text-violet-300" fill="currentColor" viewBox="0 0 24 24">
+        <svg aria-hidden className="absolute right-6 top-1 h-6 w-6 text-violet-700 dark:text-violet-300" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
         </svg>
       )}
@@ -172,7 +172,7 @@ function Process() {
               className="rounded-[1.8rem] border border-violet-100 bg-white p-7 shadow-[0_16px_44px_-20px_rgba(124,58,237,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-20px_rgba(124,58,237,0.32)] dark:border-white/10 dark:bg-slate-900/70 sm:p-8"
             >
               <div className="flex items-start gap-2">
-                <span aria-hidden className="font-display text-[64px] font-extrabold leading-none text-[#D9CEFC] dark:text-violet-500/25">
+                <span aria-hidden className="font-display text-[64px] font-extrabold leading-none text-violet-500 dark:text-violet-500/25">
                   {step.step}
                 </span>
                 <StepArt index={index} />

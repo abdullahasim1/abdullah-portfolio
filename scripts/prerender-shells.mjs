@@ -32,6 +32,8 @@ import {
   certificationsItemList,
   blogItemList,
   projectWorkNode,
+  personNode,
+  publisherNode,
 } from "../src/lib/routeSchema.js";
 import { posts } from "../src/data/posts.gen.js";
 
@@ -48,6 +50,17 @@ const baseHtml = fs.readFileSync(distIndex, "utf8");
 
 function esc(value) {
   return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+/* SERP description limit — word boundary par trim, warna Google khud
+   beech se kaat deta hai. */
+function truncate(value, max = 158) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  const trimmed = (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trim();
+  return `${trimmed}…`;
 }
 
 function setTitle(html, title) {
@@ -68,20 +81,40 @@ function setCanonical(html, url) {
   );
 }
 
-function shellFor({ title, description, path: routePath, type, image }) {
+function shellFor({
+  title,
+  description,
+  path: routePath,
+  type,
+  image,
+  imageWidth,
+  imageHeight,
+  imageAlt,
+}) {
   const url = `${SITE_URL}${routePath}`;
   let html = baseNoLd;
   html = setTitle(html, title);
-  html = setMetaContent(html, 'name="description"', description);
+  html = setMetaContent(html, 'name="description"', truncate(description));
   html = setCanonical(html, url);
   html = setMetaContent(html, 'property="og:url"', url);
   html = setMetaContent(html, 'property="og:title"', title);
-  html = setMetaContent(html, 'property="og:description"', description);
+  html = setMetaContent(html, 'property="og:description"', truncate(description));
   if (type) html = setMetaContent(html, 'property="og:type"', type);
-  if (image) html = setMetaContent(html, 'property="og:image"', image);
+  if (image) {
+    html = setMetaContent(html, 'property="og:image"', image);
+    html = setMetaContent(html, 'name="twitter:image"', image);
+    if (imageWidth) {
+      html = setMetaContent(html, 'property="og:image:width"', String(imageWidth));
+    }
+    if (imageHeight) {
+      html = setMetaContent(html, 'property="og:image:height"', String(imageHeight));
+    }
+    const alt = imageAlt || title;
+    html = setMetaContent(html, 'property="og:image:alt"', alt);
+    html = setMetaContent(html, 'name="twitter:image:alt"', alt);
+  }
   html = setMetaContent(html, 'name="twitter:title"', title);
-  html = setMetaContent(html, 'name="twitter:description"', description);
-  if (image) html = setMetaContent(html, 'name="twitter:image"', image);
+  html = setMetaContent(html, 'name="twitter:description"', truncate(description));
   return html;
 }
 
@@ -148,9 +181,10 @@ const routes = [];
 /* Static pages — pageMeta.js se */
 for (const [routePath, meta] of Object.entries(PAGE_META)) {
   if (routePath === "/") continue;
-  const route = { path: routePath, title: meta.title, description: meta.description, keep: ["other"], extra: [] };
+  const route = { path: routePath, title: meta.title, description: meta.description, keep: ["other"], extra: [personNode()] };
   if (routePath === "/projects") {
     route.extra = [
+      personNode(),
       breadcrumbList([
         { name: "Home", path: "/" },
         { name: "Projects", path: "/projects" },
@@ -159,6 +193,7 @@ for (const [routePath, meta] of Object.entries(PAGE_META)) {
     ];
   } else if (routePath === "/certifications") {
     route.extra = [
+      personNode(),
       breadcrumbList([
         { name: "Home", path: "/" },
         { name: "Certifications", path: "/certifications" },
@@ -168,6 +203,8 @@ for (const [routePath, meta] of Object.entries(PAGE_META)) {
   } else if (routePath === "/blog") {
     route.keep = ["blog", "other"];
     route.extra = [
+      personNode(),
+      publisherNode(),
       breadcrumbList([
         { name: "Home", path: "/" },
         { name: "Blog", path: "/blog" },
@@ -188,8 +225,12 @@ for (const p of featuredProjects) {
     description: p.overview || p.description,
     type: "article",
     image: p.image ? `${SITE_URL}${p.image}` : undefined,
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageAlt: `${p.title} — ${p.description}`,
     keep: [`code:${slug}`, "other"],
     extra: [
+      personNode(),
       ...(hasCode ? [] : [projectWorkNode(p)]),
       breadcrumbList([
         { name: "Home", path: "/" },

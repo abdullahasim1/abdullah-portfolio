@@ -158,7 +158,7 @@ function About({ preview = false } = {}) {
                   className="flex items-center gap-3 rounded-2xl border border-white/10 light:border-violet-100 bg-white/[0.03] light:bg-white px-3.5 py-3 light:shadow-[0_12px_26px_-18px_rgba(76,29,149,0.4)]"
                 >
                   <svg
-                    className="h-6 w-6 shrink-0 text-violet-400 light:text-violet-500"
+                    className="h-6 w-6 shrink-0 text-violet-700"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.8"
@@ -189,7 +189,7 @@ function About({ preview = false } = {}) {
                 "Product Development",
               ].map((item) => (
                 <span key={item} className="inline-flex items-center gap-2 text-sm font-medium text-slate-300 light:text-slate-700">
-                  <svg className="w-[19px] h-[19px] text-violet-400 light:text-violet-500 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                  <svg className="w-[19px] h-[19px] text-violet-700 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   {item}
@@ -272,7 +272,7 @@ function About({ preview = false } = {}) {
                   {card.icon}
                 </svg>
               </span>
-              <span className="mt-4 text-[10.5px] font-bold uppercase tracking-[0.18em] text-violet-400 light:text-violet-500">
+              <span className="mt-4 text-[10.5px] font-bold uppercase tracking-[0.18em] text-violet-700">
                 {card.label}
               </span>
               <h3 className="mt-1.5 font-display text-[17px] font-bold leading-snug text-white light:text-slate-900">

@@ -341,7 +341,7 @@ function Skills({ preview = false } = {}) {
                 </div>
                 {group.projects && (
                   <p className="mt-5 border-t border-white/[0.07] light:border-slate-200/80 pt-4 text-[12px] leading-relaxed text-slate-400 light:text-slate-500">
-                    <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet-400 light:text-violet-500">
+                    <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet-700">
                       In production —{" "}
                     </span>
                     {group.projects}
@@ -370,7 +370,7 @@ function Skills({ preview = false } = {}) {
             </div>
             {group.projects && (
               <p className="mt-5 border-t border-white/[0.07] light:border-slate-200/80 pt-4 text-[12px] leading-relaxed text-slate-400 light:text-slate-500">
-                <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet-400 light:text-violet-500">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet-700">
                   In production —{" "}
                 </span>
                 {group.projects}

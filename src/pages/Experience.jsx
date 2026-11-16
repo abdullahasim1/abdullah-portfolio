@@ -15,7 +15,9 @@ function CountValue({ value }) {
   if (!match) return <>{value}</>;
   return (
     <>
-      <span ref={ref}>0</span>
+      {/* Target value hi render karo: counter isi ko 0 se animate karta hai,
+          is liye React ka virtual text aur final DOM text match rehte hain. */}
+      <span ref={ref}>{match[1]}</span>
       {match[2]}
     </>
   );
@@ -318,7 +320,7 @@ function Experience({ preview = false } = {}) {
             </button>
           </div>
           <span aria-hidden className="hidden h-px flex-1 bg-gradient-to-r from-violet-200 to-transparent dark:from-violet-500/25 lg:block" />
-          <span className="hidden items-center gap-2 text-[11px] font-bold uppercase tracking-[0.22em] text-violet-500 dark:text-violet-300 lg:inline-flex">
+          <span className="hidden items-center gap-2 text-[11px] font-bold uppercase tracking-[0.22em] text-violet-700 dark:text-violet-300 lg:inline-flex">
             <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
             Career Timeline
           </span>

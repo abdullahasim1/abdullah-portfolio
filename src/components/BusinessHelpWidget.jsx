@@ -26,25 +26,38 @@ export default function BusinessHelpWidget() {
     document.body.appendChild(script);
   }, []);
 
-  // Lenis scroll guard: widget.js #ai-widget-root ko body mein inject
-  // karta hai — us par data-lenis-prevent lagana Lenis ka documented
-  // opt-out hai, taake chat ke andar ka wheel/touch scroll page ko na
-  // ghumaye aur message list natively scroll ho. Root kabhi bhi aa
-  // sakta hai (script async load hota hai), is liye MutationObserver.
+  // Lenis scroll guard + keyboard accessibility patch.
+  // Vendor script launcher ko <span onclick> banata hai (keyboard se open
+  // nahi hota — audit). Root ko mark karo aur launcher spans ko button
+  // semantics + Enter/Space handler do. Widget apna launcher re-render
+  // karta hai, is liye observer disconnect nahi hota.
   useEffect(() => {
-    const markRoot = (root) => root.setAttribute("data-lenis-prevent", "");
-    const existing = document.getElementById("ai-widget-root");
-    if (existing) {
-      markRoot(existing);
-      return;
-    }
-    const observer = new MutationObserver(() => {
+    const upgraded = new WeakSet();
+
+    const patch = () => {
       const root = document.getElementById("ai-widget-root");
-      if (root) {
-        markRoot(root);
-        observer.disconnect();
-      }
-    });
+      if (!root) return;
+      root.setAttribute("data-lenis-prevent", "");
+      root.querySelectorAll(".aiw-launcher-note > span").forEach((el) => {
+        if (upgraded.has(el)) return;
+        upgraded.add(el);
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.setAttribute(
+          "aria-label",
+          (el.textContent || "").trim() || "Open chat",
+        );
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            el.click();
+          }
+        });
+      });
+    };
+
+    patch();
+    const observer = new MutationObserver(patch);
     observer.observe(document.body, { childList: true, subtree: true });
     return () => observer.disconnect();
   }, []);

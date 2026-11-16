@@ -4,7 +4,7 @@ import { testimonials } from "../data/testimonials";
 
 function Stars() {
   return (
-    <div className="flex items-center gap-1" aria-label="5 out of 5 stars">
+    <div className="flex items-center gap-1" role="img" aria-label="5 out of 5 stars">
       {[...Array(5)].map((_, star) => (
         <svg
           key={star}

@@ -31,13 +31,20 @@ React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, MySQL, AWS, C
 - [Blog](https://abdullah-asim-dev.vercel.app/blog): articles on AI engineering & automation
 - [DevRox](https://thedevrox.com): his AI, automation & software agency
 
+<!-- LLMS-BLOG:START -->
+
 ## Blog
 
-Articles (also at /blog/<slug>, RSS: https://abdullah-asim-dev.vercel.app/rss.xml):
+- [How I automated hiring communication with AI workflows — a HireGen AI case study](https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows) — Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — and what it taught me about automation that actually ships. (Oct 2, 2026)
+- [How much does it cost to hire an n8n developer in 2026?](https://abdullah-asim-dev.vercel.app/blog/how-much-does-it-cost-to-hire-n8n-developer-2026) — A practical pricing guide to hiring an n8n developer — what drives the cost, typical project tiers, n8n vs Zapier/Make at scale, and how to scope your automation project before you pay. (Oct 2, 2026)
+- [n8n vs Make.com for small business automation — an honest 2026 comparison](https://abdullah-asim-dev.vercel.app/blog/n8n-vs-make-small-business-automation) — n8n vs Make.com compared on pricing, self-hosting, ease of use, integrations, and AI — plus a simple framework for which one your small business should pick. (Oct 2, 2026)
+- [Cutting portfolio LCP from 3.7s to 0.9s — a real performance audit](https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s) — The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and what I measured at each step. (Sep 12, 2026)
+- [How I split a React 19 + Three.js app without breaking the bundle](https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting) — Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-dependency trap with react-three-fiber. (Aug 28, 2026)
+- [AWS Certified Generative AI Developer (Professional) — my study path](https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional) — A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safety, and cost trade-offs. (Jul 15, 2026)
 
-- [Cutting portfolio LCP from 3.7s to 0.9s](https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s): real Core Web Vitals fixes with measured before/after numbers.
-- [How I split a React 19 + Three.js app](https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting): code-splitting patterns for WebGL apps on Vite.
-- [AWS Certified Generative AI Developer (Professional)](https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional): my exam-aligned study path — Bedrock, RAG, evaluation, safety, cost.
+RSS: https://abdullah-asim-dev.vercel.app/rss.xml
+
+<!-- LLMS-BLOG:END -->
 
 ## Contact
 

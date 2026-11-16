@@ -24,13 +24,10 @@ export default defineConfig({
     modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
-        /* Sirf three + gsap alag chunks — react/react-dom/r3f ko ALAG chunk
-           mat banao: react-reconciler (r3f ka dep) React internals use karta
-           hai, manual split se circular chunk-deps banti hain aur r3f phir
-           entry graph mein aa jata hai. Small vendors index ke saath rehne
-           do (gzip ~54KB total, theek hai). */
+        /* Sirf gsap alag chunk — baaki small vendors index ke saath rehne do
+           (React/router/data ka gzip ~54KB hai, theek hai). Dead 3D stack
+           (three/r3f) Nov 2026 audit mein remove ho gaya. */
         manualChunks(id) {
-          if (id.includes("node_modules/three/")) return "three";
           if (id.includes("node_modules/gsap/")) return "gsap";
         },
       },

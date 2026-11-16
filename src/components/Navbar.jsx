@@ -231,7 +231,6 @@ function Navbar() {
         <Link
           href="/"
           className="flex items-center gap-3 group shrink-0"
-          aria-label="Abdullah Asim - Home"
         >
           <span className="relative inline-flex h-11 w-11 items-center justify-center shrink-0 text-violet-500">
             <svg
@@ -247,7 +246,7 @@ function Navbar() {
               <path d="M9 37 24 10l15 27" />
               <path d="M16 27.5h16" />
             </svg>
-            <span className="absolute -right-1 -top-0.5 text-[13px] leading-none text-fuchsia-500">✦</span>
+            <span aria-hidden="true" className="absolute -right-1 -top-0.5 text-[13px] leading-none text-fuchsia-500">✦</span>
           </span>
           <span className="hidden sm:block leading-tight">
             <span className="block font-display font-bold tracking-tight text-[15px] text-white light:text-slate-900">
@@ -257,6 +256,7 @@ function Navbar() {
               Full-Stack Developer
             </span>
           </span>
+          <span className="sr-only">Home</span>
         </Link>
 
         <span className="hidden lg:block h-9 w-px bg-slate-400/25 light:bg-slate-300/70 shrink-0" aria-hidden="true" />
@@ -280,7 +280,7 @@ function Navbar() {
                     : "text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50"
                 }`}
               >
-                <span className={isActive ? "text-white" : "text-violet-400 light:text-violet-500"}>
+                <span className={isActive ? "text-white" : "text-violet-700"}>
                   <NavIcon id={link.id} />
                 </span>
                 {link.label}
@@ -365,7 +365,7 @@ function Navbar() {
             download="Abdullah-Bin-Asim-Resume.pdf"
             className="hidden sm:inline-flex items-center gap-1.5 rounded-full glass px-4 py-2.5 text-sm font-semibold text-slate-200 light:text-slate-700 hover:text-violet-500 hover:border-violet-400/40 transition-colors"
           >
-            <svg className="w-4 h-4 text-violet-400 light:text-violet-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-violet-700" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
             </svg>
             Resume
@@ -411,7 +411,7 @@ function Navbar() {
               onClick={closeMobile}
               className="inline-flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-slate-300 light:text-slate-700 hover:text-violet-500 hover:bg-white/[0.05] light:hover:bg-violet-50 transition-colors"
             >
-              <span className="text-violet-400 light:text-violet-500">
+              <span className="text-violet-700">
                 <NavIcon id={link.id} />
               </span>
               {link.label}

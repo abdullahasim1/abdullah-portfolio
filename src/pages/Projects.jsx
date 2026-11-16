@@ -9,7 +9,7 @@ import { useGithubRepos } from "../hooks/useGithubRepos";
 import TiltCard from "../components/TiltCard";
 import RepoCard from "../components/RepoCard";
 import { track } from "../lib/analytics";
-import { Link, navigateTo } from "../lib/router";
+import { Link } from "../lib/router";
 import {
   featuredProjects,
   githubOgImage,
@@ -92,8 +92,8 @@ function CardLinks({ project, large = false, onOpenCaseStudy }) {
         </a>
       )}
       {onOpenCaseStudy && (
-        <button
-          type="button"
+        <Link
+          href={`/projects/${projectSlug(project)}`}
           onClick={onOpenCaseStudy}
           className={`group/btn inline-flex items-center justify-center gap-1.5 rounded-full border border-violet-200 bg-white font-semibold text-violet-700 transition-all duration-200 hover:border-violet-400 hover:bg-violet-50 active:scale-[0.98] dark:border-white/15 dark:bg-white/5 dark:text-violet-200 dark:hover:border-violet-400/50 dark:hover:bg-violet-500/10 ${pad}`}
         >
@@ -101,7 +101,7 @@ function CardLinks({ project, large = false, onOpenCaseStudy }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
           Case Study
-        </button>
+        </Link>
       )}
       <a
         href={project.githubLink}
@@ -328,10 +328,10 @@ export function FeaturedWork({ preview = false, embedded = false }) {
     return () => window.removeEventListener("resize", measure);
   }, [featuredFilter]);
 
-  /* Case Study ab modal nahi — apni page /projects/<slug> khulti hai */
+  /* Case Study ab modal nahi — apni page /projects/<slug> khulti hai.
+     Anchor (Link) khud navigate karta hai; yahan sirf analytics. */
   const openCase = (project) => () => {
     track("project-open", { id: project.repoName });
-    navigateTo(`/projects/${projectSlug(project)}`);
   };
 
   /* Pinned horizontal showcase (ExpertsCloud pattern) — desktop FX,
@@ -437,9 +437,15 @@ export function FeaturedWork({ preview = false, embedded = false }) {
               <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
               Featured Projects
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight">
-              My Recent Work
-            </h2>
+            {preview || embedded ? (
+              <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight">
+                My Recent Work
+              </h2>
+            ) : (
+              <h1 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-white light:text-slate-900 leading-tight">
+                My Recent Work
+              </h1>
+            )}
             <p className="text-slate-400 mt-4 max-w-2xl leading-relaxed">
               Selected work I&apos;ve designed, built and shipped — real
               products solving real problems.
@@ -741,7 +747,7 @@ export function ProjectsPage({ embedded = false } = {}) {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 rounded-2xl glass border-amber-400/25 text-amber-200/90 text-sm">
+          <div className="mb-6 p-4 rounded-2xl glass border-amber-300 text-amber-900 dark:border-amber-400/25 dark:text-amber-200/90 text-sm">
             <p className="font-medium mb-1">
               {rateLimited
                 ? "GitHub API rate limit reached (60 requests/hour for unauthenticated users)."
@@ -751,7 +757,7 @@ export function ProjectsPage({ embedded = false } = {}) {
               <button
                 type="button"
                 onClick={retry}
-                className="px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-400/30 text-amber-200 text-xs font-medium hover:bg-amber-500/25 transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-amber-100 border border-amber-300 text-amber-900 text-xs font-medium hover:bg-amber-200 dark:bg-amber-500/15 dark:border-amber-400/30 dark:text-amber-200 transition-colors"
               >
                 Retry
               </button>

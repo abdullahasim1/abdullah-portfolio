@@ -180,9 +180,15 @@ function Blog({ preview = false } = {}) {
               </svg>
               Blog
             </span>
-            <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-[44px]">
-              Notes &amp; Articles
-            </h2>
+            {preview ? (
+              <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-[44px]">
+                Notes &amp; Articles
+              </h2>
+            ) : (
+              <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-[44px]">
+                Notes &amp; Articles
+              </h1>
+            )}
             <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
               Deep dives on performance, React architecture and generative AI — the same problems I solve for clients, written down.
             </p>

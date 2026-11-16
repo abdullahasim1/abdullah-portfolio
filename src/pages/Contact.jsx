@@ -8,7 +8,7 @@ const EMAIL = "abdullah.gc.18@gmail.com";
    Key khaali ho to form mailto: fallback use karta hai. */
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "";
 
-const MIN_FILL_TIME = 2000; // 2 seconds minimum
+const MIN_FILL_TIME = 1500; // 1.5s — bots instant submit karte hain
 
 const contactInfo = [
   { kind: "mail", title: "Email", value: EMAIL, link: `mailto:${EMAIL}`, external: false },
@@ -167,14 +167,6 @@ function Contact() {
     const message = data.get("message")?.trim() || "";
     const honeypot = data.get("website")?.trim() || "";
 
-    // Min fill time check — bots submit instantly
-    const fillTime = Date.now() - mountTimeRef.current;
-    if (fillTime < MIN_FILL_TIME) {
-      setStatus("error");
-      statusRef.current?.focus();
-      return;
-    }
-
     // Honeypot check — bots fill hidden fields, humans don't
     if (honeypot) {
       setStatus("sent");
@@ -192,7 +184,21 @@ function Contact() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setTouched({ name: true, email: true, message: true });
-      setStatus("error");
+      setStatus("idle");
+      // Pehle invalid field par focus — generic "something went wrong"
+      // ki jagah seedha field error dikhta hai.
+      const firstInvalid = ["name", "email", "message"].find(
+        (key) => newErrors[key],
+      );
+      document.getElementById(`contact-${firstInvalid}`)?.focus();
+      return;
+    }
+
+    // Min fill time — validation ke baad, taake asli user ko galat
+    // "network error" na dikhe (audit).
+    const fillTime = Date.now() - mountTimeRef.current;
+    if (fillTime < MIN_FILL_TIME) {
+      setStatus("too-fast");
       statusRef.current?.focus();
       return;
     }
@@ -208,9 +214,12 @@ function Contact() {
 
     setStatus("sending");
     setErrors({});
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
+        signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -234,6 +243,8 @@ function Contact() {
     } catch {
       setStatus("error");
       statusRef.current?.focus();
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 
@@ -292,7 +303,7 @@ function Contact() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
               </span>
-              <span className="text-[15px] font-semibold text-emerald-600 dark:text-emerald-300">
+              <span className="text-[15px] font-semibold text-emerald-700 dark:text-emerald-300">
                 Available for new projects
               </span>
             </div>
@@ -316,7 +327,7 @@ function Contact() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} aria-busy={status === "sending"} className="space-y-5">
               {/* Honeypot field — hidden from humans, bots will fill it */}
               <div className="absolute opacity-0 pointer-events-none" aria-hidden="true">
                 <input type="text" name="website" tabIndex={-1} autoComplete="off" />
@@ -344,7 +355,7 @@ function Contact() {
                     />
                   </div>
                   {errors.name && touched.name && (
-                    <p id="name-error" className="mt-1.5 text-sm text-amber-500" role="alert">
+                    <p id="name-error" className="mt-1.5 text-sm text-amber-700" role="alert">
                       {errors.name}
                     </p>
                   )}
@@ -370,7 +381,7 @@ function Contact() {
                     />
                   </div>
                   {errors.email && touched.email && (
-                    <p id="email-error" className="mt-1.5 text-sm text-amber-500" role="alert">
+                    <p id="email-error" className="mt-1.5 text-sm text-amber-700" role="alert">
                       {errors.email}
                     </p>
                   )}
@@ -379,7 +390,7 @@ function Contact() {
 
               <div>
                 <label htmlFor="contact-subject" className={labelClass}>
-                  Subject <span className="text-rose-500">*</span>
+                  Subject <span className="font-normal text-slate-400">(optional)</span>
                 </label>
                 <div className="relative">
                   <FieldIcon d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607l-9.58-9.581A2.25 2.25 0 009.568 3zM6 6h.008v.008H6V6z" />
@@ -416,7 +427,7 @@ function Contact() {
                   />
                 </div>
                 {errors.message && touched.message && (
-                  <p id="message-error" className="mt-1.5 text-sm text-amber-500" role="alert">
+                  <p id="message-error" className="mt-1.5 text-sm text-amber-700" role="alert">
                     {errors.message}
                   </p>
                 )}
@@ -437,7 +448,7 @@ function Contact() {
                   href="https://wa.link/o1bqnp"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-emerald-300 hover:text-emerald-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-emerald-300 hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#1ebe5d]" fill="currentColor" aria-hidden>
                     <path d={siWhatsapp.path} />
@@ -448,7 +459,7 @@ function Contact() {
                   href={`mailto:${EMAIL}?subject=${encodeURIComponent("Free Quote Request")}&body=${encodeURIComponent(
                     "Hi Abdullah,\n\nI'd like a quote for my project. Here are some details:\n- Project type: \n- Timeline: \n- Budget range: \n\nThanks!",
                   )}`}
-                  className="group inline-flex items-center gap-1.5 px-2 py-3 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-500 dark:text-violet-300"
+                  className="group inline-flex items-center gap-1.5 px-2 py-3 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-700 dark:text-violet-300"
                 >
                   Get a Free Quote
                   <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
@@ -457,15 +468,26 @@ function Contact() {
                 </a>
               </div>
 
-              <div ref={statusRef} role="status" aria-live="polite" className="min-h-[1.25rem]">
+              <div
+                ref={statusRef}
+                role="status"
+                aria-live="polite"
+                tabIndex={-1}
+                className="min-h-[1.25rem] outline-none"
+              >
                 {status === "sent" && (
                   <p className="text-sm font-medium text-emerald-500">
                     Message sent — I&apos;ll get back to you within a few hours.
                   </p>
                 )}
+                {status === "too-fast" && (
+                  <p className="text-sm font-medium text-amber-700">
+                    Form submitted a little too fast — please try again.
+                  </p>
+                )}
                 {status === "error" && (
-                  <p className="text-sm font-medium text-amber-500">
-                    Something went wrong. Please email me directly at {EMAIL}.
+                  <p className="text-sm font-medium text-amber-700">
+                    Couldn&apos;t send right now. Please email me directly at {EMAIL}.
                   </p>
                 )}
               </div>

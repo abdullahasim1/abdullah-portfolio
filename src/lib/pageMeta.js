@@ -5,9 +5,9 @@
 export const SITE_URL = "https://abdullah-asim-dev.vercel.app";
 export const SITE_NAME = "Abdullah Asim — Portfolio";
 export const DEFAULT_TITLE =
-  "Abdullah Bin Asim — AI Cloud Engineer & Full Stack Developer in Lahore, Pakistan";
+  "Abdullah Bin Asim — AI Cloud Engineer, Lahore, Pakistan";
 export const DEFAULT_DESCRIPTION =
-  "Abdullah Bin Asim — AI Cloud Engineer at Experts Cloud & Full Stack Developer based in Lahore, Pakistan. AWS Certified Generative AI Developer (Professional) and Claude Certified Architect. Bedrock, RAG, n8n & AI automation — 25+ projects shipped, open to full-time remote roles and freelance projects.";
+  "AI Cloud Engineer at Experts Cloud in Lahore, Pakistan — AWS Generative AI Professional & Claude Certified Architect. Bedrock, RAG, serverless and n8n automation.";
 
 /** @type {Record<string, { title: string, description: string }>} */
 /* One-pager (2026-11-13): sirf asal pages ki meta — About / Skills /
@@ -16,19 +16,19 @@ export const DEFAULT_DESCRIPTION =
 export const PAGE_META = {
   "/": { title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION },
   "/projects": {
-    title: "Projects — Abdullah Bin Asim",
+    title: "Projects — AI & Automation Case Studies | Abdullah Bin Asim",
     description:
-      "Selected projects and open-source work by Abdullah Bin Asim — AI products, automation platforms and web apps built in Lahore, Pakistan, with full case studies and GitHub repositories.",
+      "Case studies and open-source work by Abdullah Bin Asim — AI products, n8n automation and full-stack apps built in Lahore, Pakistan.",
   },
   "/certifications": {
-    title: "Certifications — Abdullah Bin Asim",
+    title: "Certifications — AWS, Anthropic & OpenAI | Abdullah Bin Asim",
     description:
-      "27 certifications and credentials held by Abdullah Bin Asim, AI Cloud Engineer based in Lahore, Pakistan — across AWS, Anthropic and OpenAI, including AWS Generative AI Developer Professional and Claude Certified Architect.",
+      "27 AWS, Anthropic and OpenAI certifications held by Abdullah Bin Asim — AWS Generative AI Developer Professional and Claude Certified Architect.",
   },
   "/blog": {
-    title: "Blog — Abdullah Bin Asim",
+    title: "Blog — AI Engineering, AWS & Automation | Abdullah Bin Asim",
     description:
-      "Articles by Abdullah Bin Asim on AI engineering, automation, AWS and web performance — written from Lahore, Pakistan.",
+      "Articles on AI engineering, n8n automation, AWS and web performance by Abdullah Bin Asim, an AI Cloud Engineer in Lahore, Pakistan.",
   },
 };
 

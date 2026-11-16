@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   featuredProjects,
   getFeaturedBySlug,
@@ -9,6 +9,7 @@ import {
 import { useGithubRepos } from "../hooks/useGithubRepos";
 import { Link } from "../lib/router";
 import { applyPageMeta, SITE_URL } from "../lib/pageMeta";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 /* /projects/<slug> — case-study page (pehle modal mein tha, ab apni
    page: apna URL, apna meta, shareable link). Design board style. */
@@ -17,6 +18,22 @@ export default function ProjectCaseStudy({ slug }) {
   const project = getFeaturedBySlug(slug);
   const { repos } = useGithubRepos();
   const [lightbox, setLightbox] = useState(-1);
+  const lightboxRef = useRef(null);
+  const lightboxCloseRef = useRef(null);
+
+  /* Modal open: focus trap + scroll lock + close button par initial focus
+     (audit: focus peeche ke "Open screenshot" button par reh jata tha). */
+  useFocusTrap(lightboxRef, lightbox >= 0);
+  useEffect(() => {
+    if (lightbox < 0) return undefined;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => lightboxCloseRef.current?.focus(), 30);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.clearTimeout(t);
+    };
+  }, [lightbox]);
 
   const hasGallery = Boolean(project?.gallery?.length);
   const gallery = hasGallery ? project.gallery : project ? [project.image] : [];
@@ -69,7 +86,7 @@ export default function ProjectCaseStudy({ slug }) {
       <div className="relative mx-auto max-w-4xl px-6">
         <Link
           href="/projects"
-          className="group inline-flex items-center gap-2 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-500 dark:text-violet-300"
+          className="group inline-flex items-center gap-2 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-700 dark:text-violet-300"
         >
           <svg className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
@@ -342,6 +359,7 @@ export default function ProjectCaseStudy({ slug }) {
         {/* Lightbox — gallery image full size */}
         {lightbox >= 0 && (
           <div
+            ref={lightboxRef}
             className="fixed inset-0 z-[120] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm sm:p-8"
             onClick={() => setLightbox(-1)}
             role="dialog"
@@ -355,8 +373,9 @@ export default function ProjectCaseStudy({ slug }) {
               onClick={(e) => e.stopPropagation()}
             />
             <button
+              ref={lightboxCloseRef}
               type="button"
-              aria-label="Close"
+              aria-label="Close screenshot viewer"
               onClick={() => setLightbox(-1)}
               className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
             >

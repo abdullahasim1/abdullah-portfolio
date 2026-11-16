@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { certifications } from "../data/certifications";
 import { featuredProjects, projectSlug } from "../data/projects";
 import { PAGE_META } from "./pageMeta";
+import { posts } from "../data/posts.gen";
 import {
   breadcrumbList,
   projectsItemList,
@@ -163,6 +164,19 @@ describe("llms files carry current entity facts", () => {
       expect(text).not.toContain("credly.com/users/abdullah-asim");
       expect(text).toContain("27");
       expect(text).toContain("Lahore");
+    });
+  }
+});
+
+describe("agent-readable files list every post", () => {
+  for (const rel of ["public/llms.txt", "public/llms-full.txt", "public/index.md"]) {
+    it(`${rel}: every blog slug has a URL`, () => {
+      const text = readRoot(rel);
+      for (const post of posts) {
+        expect(text, `${rel} missing /blog/${post.slug}`).toContain(
+          `/blog/${post.slug}`,
+        );
+      }
     });
   }
 });

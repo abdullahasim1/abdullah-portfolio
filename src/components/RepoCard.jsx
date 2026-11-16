@@ -173,7 +173,7 @@ function RepoCard({ repo }) {
           {displayName}
         </a>
         {repo.stargazers_count > 0 && (
-          <span className="ml-auto inline-flex shrink-0 items-center gap-1 text-xs text-amber-500">
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1 text-xs text-amber-700">
             ★ {repo.stargazers_count}
           </span>
         )}

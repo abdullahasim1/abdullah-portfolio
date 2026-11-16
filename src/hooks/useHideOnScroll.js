@@ -95,9 +95,16 @@ export function useHideOnScroll({
       return true;
     };
     let timer = null;
-    if (!attachLenis()) {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (!reducedMotion && !attachLenis()) {
+      // Reduced-motion users ke liye Lenis init hi nahi hota — unke liye
+      // native fallback hi correct hai, is liye poll start nahi karte.
+      let attempts = 0;
       timer = setInterval(() => {
-        if (attachLenis()) {
+        attempts += 1;
+        if (attachLenis() || attempts > 40) {
           clearInterval(timer);
           timer = null;
         }

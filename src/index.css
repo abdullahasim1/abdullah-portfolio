@@ -599,6 +599,7 @@ html.light .text-slate-100 { color: #1E293B; }
 html.light .text-slate-200 { color: #334155; }
 html.light .text-slate-300 { color: #475569; }
 html.light .text-slate-400 { color: #64748B; }
+html.light .text-slate-500 { color: #475569; }
 html.light .text-violet-200 { color: #6D28D9; }
 html.light .text-violet-300 { color: #7C3AED; }
 html.light .text-cyan-200 { color: #6D28D9; }
@@ -680,7 +681,7 @@ html.light .text-cyan-200\/90 { color: #6D28D9; }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-@keyframes glowPulse {
+@keyframes splashGlowPulse {
   0%, 100% { opacity: 0.55; transform: scaleX(1); }
   50% { opacity: 1; transform: scaleX(1.07); }
 }
@@ -700,7 +701,7 @@ html.light .text-cyan-200\/90 { color: #6D28D9; }
   animation: orbitFlat 12s linear infinite;
 }
 .splash-globe { animation: globeSpin 70s linear infinite; }
-.splash-platform { animation: glowPulse 3.2s ease-in-out infinite; }
+.splash-platform { animation: splashGlowPulse 3.2s ease-in-out infinite; }
 .splash-wave-back { animation: waveDrift 11s ease-in-out infinite alternate; }
 .splash-wave-front { animation: waveDrift 8s ease-in-out infinite alternate-reverse; }
 .splash-gradient-text {
@@ -716,6 +717,10 @@ html.light .text-cyan-200\/90 { color: #6D28D9; }
   .splash-platform, .splash-wave-back, .splash-wave-front,
   .splash-gradient-text { animation: none; }
 }
-.splash-jakarta {
-  font-family: "Plus Jakarta Sans", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+/* Third-party chat launcher (vendor <span onclick>) ko keyboard focus ring */
+#ai-widget-root [role="button"]:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 3px;
+  border-radius: 999px;
 }

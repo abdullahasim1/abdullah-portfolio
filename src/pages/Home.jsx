@@ -100,9 +100,11 @@ function Home({ introDone = true }) {
   useEffect(() => {
     if (!introDone || !sectionRef.current) return;
     const ctx = gsap.context(() => {
+      /* Sirf transform animate karo — opacity 0 se start karne par LCP
+         element JS chalne tak invisible rehta tha. Content pehli paint se
+         visible hai, animation sirf movement hai. */
       gsap.from("[data-hero-stagger]", {
         y: 30,
-        opacity: 0,
         duration: 1.1,
         stagger: 0.13,
         ease: "power3.out",

@@ -235,6 +235,7 @@ function Site() {
   const [introDone, setIntroDone] = useState(() => {
     if (typeof window === "undefined") return true;
     if (IS_LOW_END) return true;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
     return sessionStorage.getItem("aa-splash-seen") === "1";
   });
 
@@ -248,6 +249,7 @@ function Site() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
+      if (!introDone) return;
       if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
         e.preventDefault();
         setIsPaletteOpen((prev) => !prev);
@@ -262,7 +264,7 @@ function Site() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("aa-open-palette", onOpenPalette);
     };
-  }, []);
+  }, [introDone]);
 
   const handleSplashFinish = () => {
     sessionStorage.setItem("aa-splash-seen", "1");
@@ -286,6 +288,12 @@ function Site() {
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">
+      {/* Splash khula ho to baaki page inert — focus overlay ke peeche
+          Tab nahi kar sakta (WCAG 2.4.11 / aria-hidden). */}
+      <div
+        inert={!introDone ? true : undefined}
+        aria-hidden={introDone ? undefined : "true"}
+      >
       {/* Skip to content (keyboard users) */}
       <a
         href="#main-content"
@@ -325,11 +333,12 @@ function Site() {
 
       <Footer />
       <ScrollToTop />
-      <BusinessHelpWidget />
+      {introDone && <BusinessHelpWidget />}
       <CommandPalette
         isOpen={isPaletteOpen}
         onClose={() => setIsPaletteOpen(false)}
       />
+      </div>
 
       {/* Intro splash — site ke upar render hota hai, pehli paint se */}
       {!introDone && <SplashScreen onFinish={handleSplashFinish} />}

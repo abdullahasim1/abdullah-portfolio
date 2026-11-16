@@ -88,28 +88,15 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/projects/:slug",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/projects",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/certifications",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/blog",
-      "destination": "/index.html"
-    }
-  ],
   "redirects": [
     {
+      "source": "/privacy",
+      "destination": "/privacy.html",
+      "permanent": true
+    },
+    {
       "source": "/process",
-      "destination": "/#services",
+      "destination": "/#process",
       "permanent": true
     },
     {

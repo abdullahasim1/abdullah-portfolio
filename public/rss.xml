@@ -6,14 +6,14 @@
     <atom:link href="https://abdullah-asim-dev.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
     <description>Articles on full-stack development, AI engineering and web performance by Abdullah Bin Asim.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 28 Oct 2026 10:26:56 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 02 Oct 2026 00:00:00 GMT</lastBuildDate>
     <item>
       <title>How I automated hiring communication with AI workflows — a HireGen AI case study</title>
       <link>https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows</link>
       <guid isPermaLink="true">https://abdullah-asim-dev.vercel.app/blog/how-i-automated-hiring-with-ai-workflows</guid>
       <description>Case study: building HireGen AI, a hiring automation platform with AI resume matching, automated candidate email sequences, and skill-gap analytics — and what it taught me about automation that actually ships.</description>
       <pubDate>Fri, 02 Oct 2026 00:00:00 GMT</pubDate>
-      <author>Abdullah Bin Asim</author>
+      <author>abdullah.gc.18@gmail.com (Abdullah Bin Asim)</author>
       <category>Case Study</category>
       <category>AI Agents</category>
       <category>Automation</category>
@@ -25,7 +25,7 @@
       <guid isPermaLink="true">https://abdullah-asim-dev.vercel.app/blog/how-much-does-it-cost-to-hire-n8n-developer-2026</guid>
       <description>A practical pricing guide to hiring an n8n developer — what drives the cost, typical project tiers, n8n vs Zapier/Make at scale, and how to scope your automation project before you pay.</description>
       <pubDate>Fri, 02 Oct 2026 00:00:00 GMT</pubDate>
-      <author>Abdullah Bin Asim</author>
+      <author>abdullah.gc.18@gmail.com (Abdullah Bin Asim)</author>
       <category>n8n</category>
       <category>Pricing</category>
       <category>Freelance</category>
@@ -37,7 +37,7 @@
       <guid isPermaLink="true">https://abdullah-asim-dev.vercel.app/blog/n8n-vs-make-small-business-automation</guid>
       <description>n8n vs Make.com compared on pricing, self-hosting, ease of use, integrations, and AI — plus a simple framework for which one your small business should pick.</description>
       <pubDate>Fri, 02 Oct 2026 00:00:00 GMT</pubDate>
-      <author>Abdullah Bin Asim</author>
+      <author>abdullah.gc.18@gmail.com (Abdullah Bin Asim)</author>
       <category>n8n</category>
       <category>Make.com</category>
       <category>Automation</category>
@@ -49,7 +49,7 @@
       <guid isPermaLink="true">https://abdullah-asim-dev.vercel.app/blog/lcp-3-7s-to-0-9s</guid>
       <description>The exact fixes — code-splitting Three.js, deferring the service worker, rAF-throttling mouse handlers — that took my portfolio from a 0.9s LCP and what I measured at each step.</description>
       <pubDate>Sat, 12 Sep 2026 00:00:00 GMT</pubDate>
-      <author>Abdullah Bin Asim</author>
+      <author>abdullah.gc.18@gmail.com (Abdullah Bin Asim)</author>
       <category>Performance</category>
       <category>Vite</category>
       <category>Three.js</category>
@@ -61,7 +61,7 @@
       <guid isPermaLink="true">https://abdullah-asim-dev.vercel.app/blog/react-vite-code-splitting</guid>
       <description>Practical patterns for code-splitting a Vite + React app that ships WebGL — lazy sections, manual chunks, module preload pitfalls, and the circular-dependency trap with react-three-fiber.</description>
       <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
-      <author>Abdullah Bin Asim</author>
+      <author>abdullah.gc.18@gmail.com (Abdullah Bin Asim)</author>
       <category>React</category>
       <category>Vite</category>
       <category>Architecture</category>
@@ -73,7 +73,7 @@
       <guid isPermaLink="true">https://abdullah-asim-dev.vercel.app/blog/aws-genai-developer-professional</guid>
       <description>A practical, exam-aligned breakdown of how I prepared for the AWS Generative AI Developer Professional certification — Bedrock, RAG, evaluation, safety, and cost trade-offs.</description>
       <pubDate>Wed, 15 Jul 2026 00:00:00 GMT</pubDate>
-      <author>Abdullah Bin Asim</author>
+      <author>abdullah.gc.18@gmail.com (Abdullah Bin Asim)</author>
       <category>AWS</category>
       <category>Generative AI</category>
       <category>Certification</category>

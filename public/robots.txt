@@ -4,7 +4,7 @@
 # ---------- Default ----------
 User-agent: *
 Allow: /
-Disallow: /404
+Disallow: /404.html
 
 # ---------- AI / LLM crawlers — policy: open (public portfolio) ----------
 User-agent: GPTBot
@@ -49,8 +49,6 @@ Allow: /
 User-agent: slurp
 Allow: /
 
-# ---------- Content usage preferences (Content Signals) ----------
-Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 # ---------- Sitemap ----------
 Sitemap: https://abdullah-asim-dev.vercel.app/sitemap.xml

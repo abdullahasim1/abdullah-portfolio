@@ -88,14 +88,14 @@ action: () => goSection("testimonials"),
     label: "Download Resume (PDF)",
     group: "Quick Actions",
     icon: "📄",
-    action: () => window.open("/resume.pdf", "_blank"),
+    action: () => window.open("/resume.pdf", "_blank", "noopener,noreferrer"),
   },
   {
     id: "act-github",
     label: "Open GitHub Profile",
     group: "Quick Actions",
     icon: "🐙",
-    action: () => window.open("https://github.com/abdullahasim1", "_blank"),
+    action: () => window.open("https://github.com/abdullahasim1", "_blank", "noopener,noreferrer"),
   },
   {
     id: "act-linkedin",
@@ -103,14 +103,14 @@ action: () => goSection("testimonials"),
     group: "Quick Actions",
     icon: "💼",
     action: () =>
-      window.open("https://www.linkedin.com/in/abdullahasim1/", "_blank"),
+      window.open("https://www.linkedin.com/in/abdullahasim1/", "_blank", "noopener,noreferrer"),
   },
   {
     id: "act-whatsapp",
     label: "Chat on WhatsApp",
     group: "Quick Actions",
     icon: "📱",
-    action: () => window.open("https://wa.link/o1bqnp", "_blank"),
+    action: () => window.open("https://wa.link/o1bqnp", "_blank", "noopener,noreferrer"),
   },
   {
     id: "act-copy-email",
@@ -205,17 +205,23 @@ export default function CommandPalette({ isOpen, onClose }) {
       aria-label="Command Palette"
       className="fixed inset-0 z-[1000] flex items-start justify-center pt-20 sm:pt-28 px-4"
       onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          onClose();
+        }
+      }}
     >
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/75 backdrop-blur-md" />
+      <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" />
 
       {/* Palette Box */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-xl rounded-2xl glass-strong neon-ring shadow-[0_24px_80px_-16px_rgba(0,0,0,0.9)] overflow-hidden border border-cyan-400/30 animate-in fade-in zoom-in-95 duration-150"
+        className="relative w-full max-w-xl rounded-2xl bg-white shadow-[0_24px_80px_-16px_rgba(15,23,42,0.45)] overflow-hidden border border-violet-200 animate-in fade-in zoom-in-95 duration-150"
       >
         {/* Search header */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-white/[0.08] bg-black/30">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-violet-100 bg-violet-50/70">
           <svg
             className="w-5 h-5 text-cyan-400 shrink-0"
             fill="none"
@@ -236,19 +242,39 @@ export default function CommandPalette({ isOpen, onClose }) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a command or search sections, projects…"
-            className="w-full bg-transparent text-sm text-slate-100 placeholder-slate-500 focus:outline-none"
+            aria-label="Search commands"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="palette-results"
+            aria-activedescendant={
+              items[selectedIndex] ? `palette-item-${selectedIndex}` : undefined
+            }
+            className="w-full bg-transparent text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded"
           />
-          <kbd className="hidden sm:inline-block text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-white/[0.07] border border-white/[0.12] text-slate-400">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close command palette"
+            className="shrink-0 rounded-lg px-2 py-1 text-xs font-semibold text-slate-400 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
+          >
+            ✕
+          </button>
+          <kbd className="hidden sm:inline-block text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-white border border-violet-200 text-slate-500">
             ESC
           </kbd>
         </div>
 
         {/* Results List */}
-        <div className="max-h-[360px] overflow-y-auto p-2 space-y-1">
+        <div
+          id="palette-results"
+          role="listbox"
+          aria-label="Command results"
+          className="max-h-[360px] overflow-y-auto p-2 space-y-1"
+        >
           {items.length === 0 ? (
-            <div className="p-8 text-center text-sm text-slate-400">
+            <div className="p-8 text-center text-sm text-slate-500">
               No results found for "
-              <span className="text-slate-300">{query}</span>"
+              <span className="text-slate-700">{query}</span>"
             </div>
           ) : (
             items.map((item, index) => {
@@ -257,6 +283,9 @@ export default function CommandPalette({ isOpen, onClose }) {
                 <button
                   key={item.id}
                   type="button"
+                  role="option"
+                  id={`palette-item-${index}`}
+                  aria-selected={isSelected}
                   onClick={() => {
                     playClickSound();
                     item.action();
@@ -265,15 +294,15 @@ export default function CommandPalette({ isOpen, onClose }) {
                   onMouseEnter={() => setSelectedIndex(index)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm transition-colors ${
                     isSelected
-                      ? "bg-gradient-to-r from-cyan-500/20 to-violet-600/20 border border-cyan-400/30 text-white"
-                      : "text-slate-300 hover:bg-white/[0.04] border border-transparent"
+                      ? "bg-violet-100 border border-violet-300 text-slate-900"
+                      : "text-slate-700 hover:bg-violet-50 border border-transparent"
                   }`}
                 >
-                  <span className="text-base shrink-0">{item.icon}</span>
+                  <span className="text-base shrink-0" aria-hidden="true">{item.icon}</span>
                   <span className="flex-1 font-medium truncate">
                     {item.label}
                   </span>
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 px-2 py-0.5 rounded bg-white/[0.04]">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 px-2 py-0.5 rounded bg-violet-50">
                     {item.group}
                   </span>
                 </button>
@@ -283,16 +312,16 @@ export default function CommandPalette({ isOpen, onClose }) {
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-5 py-2.5 bg-black/40 border-t border-white/[0.06] text-[11px] text-slate-400">
+        <div className="flex items-center justify-between px-5 py-2.5 bg-violet-50/70 border-t border-violet-100 text-[11px] text-slate-500">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">
+              <kbd className="font-mono bg-white border border-violet-200 px-1.5 py-0.5 rounded text-[10px] text-slate-500">
                 ↑↓
               </kbd>{" "}
               to navigate
             </span>
             <span>
-              <kbd className="font-mono bg-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-400">
+              <kbd className="font-mono bg-white border border-violet-200 px-1.5 py-0.5 rounded text-[10px] text-slate-500">
                 ↵
               </kbd>{" "}
               to select

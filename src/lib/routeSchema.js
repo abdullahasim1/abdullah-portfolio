@@ -103,3 +103,50 @@ export function projectWorkNode(project) {
     author: { "@id": PERSON_ID },
   };
 }
+
+export const PUBLISHER_ID = `${SITE_URL}/#organization`;
+export const SITE_EMAIL = "abdullah.gc.18@gmail.com";
+
+/**
+ * Compact Person node — har route shell mein emit hota hai taake
+ * `author: { "@id": PERSON_ID }` references resolve hon (audit: /blog par
+ * 14 dangling refs, har case study/post par 2). Home ka full Person node
+ * index.html mein pehle se hai; yeh usi @id ko reuse karta hai.
+ */
+export function personNode() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": PERSON_ID,
+    name: "Abdullah Bin Asim",
+    url: `${SITE_URL}/`,
+    jobTitle: "AI Cloud Engineer & Full Stack Developer",
+    email: `mailto:${SITE_EMAIL}`,
+    sameAs: [
+      "https://github.com/abdullahasim1",
+      "https://www.linkedin.com/in/abdullahasim1/",
+      "https://www.credly.com/users/abdullah-bin-asim.ed30d504",
+      "https://www.credential.net/profile/abdullahbinsim860299/wallet",
+      "https://www.instagram.com/abdullah_asim2",
+      "https://daily.dev/abdullahasim1",
+    ],
+  };
+}
+
+/** Organization publisher — Google Article/BlogPosting rich results ke liye
+    publisher Person nahi, logo wali Organization honi chahiye. */
+export function publisherNode() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": PUBLISHER_ID,
+    name: "Abdullah Asim — Portfolio",
+    url: `${SITE_URL}/`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/icon-512.png`,
+      width: 512,
+      height: 512,
+    },
+  };
+}

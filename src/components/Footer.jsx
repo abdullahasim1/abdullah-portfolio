@@ -180,7 +180,7 @@ function Footer() {
                     onClick={() => playClickSound()}
                     className="flex items-center gap-3 py-[7px] text-[15px] text-slate-600 transition-colors hover:text-violet-600 dark:text-slate-300 dark:hover:text-violet-300"
                   >
-                    <LineIcon d={ICONS[item.icon]} filled={item.filled} className="h-[18px] w-[18px] shrink-0 text-violet-500 dark:text-violet-300" />
+                    <LineIcon d={ICONS[item.icon]} filled={item.filled} className="h-[18px] w-[18px] shrink-0 text-violet-700 dark:text-violet-300" />
                     {item.label}
                   </Link>
                 </li>
@@ -277,8 +277,6 @@ function Footer() {
             <a href="/privacy.html" className="transition-colors hover:text-violet-600 dark:hover:text-violet-300">
               Privacy
             </a>
-            <span aria-hidden className="h-4 w-px bg-slate-300 dark:bg-white/15" />
-            <span>Terms</span>
           </p>
           <div className="flex items-center gap-5">
             <p className="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">

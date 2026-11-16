@@ -303,7 +303,7 @@ function Services({ preview = false } = {}) {
               </p>
               <Link
                 href="/#services"
-                className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-500 dark:text-violet-300"
+                className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-600 transition-colors hover:text-violet-700 dark:text-violet-300"
               >
                 Explore automation services
                 <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">

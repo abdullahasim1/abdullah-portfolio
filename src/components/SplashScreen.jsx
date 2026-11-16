@@ -84,7 +84,7 @@ export default function SplashScreen({
   onComplete,
   onFinish,
   progress: externalProgress,
-  duration = 2400,
+  duration = 900,
   autoComplete = true,
   showSkip = true,
   name = "Abdullah Asim",
@@ -126,7 +126,7 @@ export default function SplashScreen({
       if (completedRef.current) return;
       completedRef.current = true;
       callbackRef.current?.();
-    }, 560);
+    }, 400);
     return () => window.clearTimeout(timeout);
   }, [progress]);
 
@@ -155,7 +155,7 @@ export default function SplashScreen({
   );
 
   return (
-    <div className={`aa-splash${leaving ? " aa-splash--leaving" : ""}`} role="status" aria-live="polite">
+    <div className={`aa-splash${leaving ? " aa-splash--leaving" : ""}`}>
       <div className="aa-splash-bg" />
       <div className="aa-bg-arc aa-bg-arc-one" />
       <div className="aa-bg-arc aa-bg-arc-two" />
@@ -194,7 +194,7 @@ export default function SplashScreen({
         <path d="M0 145 Q130 58 235 115 T425 85 T610 120 T760 52 V250 H0Z" fill="url(#aaDotsRight)" opacity=".6" />
       </svg>
 
-      <main className="aa-splash-content">
+      <div className="aa-splash-content">
         <section className="aa-visual" aria-label="Abdullah Asim brand emblem">
           <div className="aa-orbit aa-orbit-back" />
           <div className="aa-orbit aa-orbit-front" />
@@ -220,7 +220,7 @@ export default function SplashScreen({
         </section>
 
         <section className="aa-intro" aria-label="Portfolio introduction">
-          <h1 className="aa-name"><span>{name.split(" ")[0]}</span> <em>{name.split(" ").slice(1).join(" ")}</em></h1>
+          <div className="aa-name"><span>{name.split(" ")[0]}</span> <em>{name.split(" ").slice(1).join(" ")}</em></div>
           <div className="aa-role"><span />{role}<span /></div>
         </section>
 
@@ -248,7 +248,7 @@ export default function SplashScreen({
             <span>{progress >= 100 ? "Welcome to my portfolio" : "Loading Portfolio Experience..."}</span>
             <strong>{progress}%</strong>
           </div>
-          <div className="aa-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={progress}>
+          <div className="aa-progress-track" role="progressbar" aria-label="Portfolio loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow={progress}>
             <div className="aa-progress-fill" style={{ width: `${progress}%` }}>
               <span className="aa-progress-light" />
             </div>
@@ -261,7 +261,7 @@ export default function SplashScreen({
           <div><span>✓</span> Modern Design</div>
           <div><span>✓</span> High Performance</div>
         </section>
-      </main>
+      </div>
 
       {showSkip && !leaving && (
         <button type="button" className="aa-skip" onClick={handleSkip} aria-label="Skip intro">

@@ -106,7 +106,6 @@ The versions below are the dependency ranges declared in `package.json`.
 | Build tool | Vite `^8.3.6`, `@vitejs/plugin-react` `^6.2.1` |
 | Styling | Tailwind CSS `^4.3.4`, `@tailwindcss/vite` `^4.3.4` |
 | Animation | GSAP `^3.15.1`, Lenis `^1.3.27` |
-| 3D packages/components | Three.js `^0.187.0`, React Three Fiber `^9.8.2`, Drei `^10.7.9` |
 | Icons | simple-icons `^16.36.0` |
 | Unit testing | Vitest `^5.1.0`, Testing Library, jsdom `^31.0.0` |
 | End-to-end testing | Playwright `^1.65.0` |
@@ -122,7 +121,7 @@ abdullah-portfolio/
 ├── public/                  # Static assets, feeds, sitemap, and agent resources
 ├── scripts/                 # Content generation and prerendering
 ├── src/
-│   ├── components/          # Shared UI, chat widget, palette, estimator, and 3D components
+│   ├── components/          # Shared UI, chat widget, palette, and estimator
 │   ├── data/                # Structured portfolio content and generated post data
 │   ├── hooks/               # Scroll, viewport, focus, GitHub, and animation hooks
 │   ├── lib/                 # Router, metadata, theme, and utilities
@@ -189,16 +188,18 @@ Never commit real access keys.
 | Command | Actual script | Purpose |
 | --- | --- | --- |
 | `npm run dev` | `vite` | Start the Vite development server; `predev` generates content first |
-| `npm run build` | `vite build && node scripts/prerender-shells.mjs` | Build the site and prerender route shells; `prebuild` generates content first |
-| `npm run preview` | `vite preview` | Preview the production build |
+| `npm run build` | `vite build && node scripts/prerender-shells.mjs && node scripts/check-build.mjs` | Build, prerender route shells, then verify shells/schema/sitemap/llms; `prebuild` generates content first |
+| `npm run preview` | `vite preview` | Preview the production build (SPA fallback) |
+| `npm run preview:static` | `node scripts/preview-server.mjs 4173` | Preview `dist/` with Vercel-like clean URLs, redirects and 404 status |
 | `npm run lint` | `eslint .` | Run ESLint across the repository |
-| `npm run typecheck` | `tsc -p tsconfig.json --noEmit` | Type-check the JavaScript/JSDoc project configuration |
+| `npm run typecheck` | `tsc -p tsconfig.json --noEmit` | Parse-check JSX and the module graph (project is JS; `checkJs` is off) |
 | `npm test` | `vitest run` | Run the Vitest suite; `pretest` generates content first |
+| `npm run test:e2e` | `playwright test` | Run Playwright + axe against the static preview server |
 | `npm run test:watch` | `vitest` | Run Vitest in watch mode |
 | `npm run analyze` | `ANALYZE=1 vite build` | Build with bundle analysis enabled |
 | `npm run prepare` | `husky` | Install Husky hooks |
 
-There is no `e2e` npm script; Playwright is run directly as shown below.
+Playwright is wired into CI as its own job (`npm run test:e2e`).
 
 ## Testing
 
@@ -218,13 +219,13 @@ npm run test:watch
 
 ### Playwright end-to-end tests
 
-The Playwright suites in `tests/e2e/` cover the home page, the home Contact section, detail routes, the one-pager structure (kept pages load; legacy page URLs land on their home sections), static blog delivery, and removed-route behavior. The configuration runs Desktop Chrome and Pixel 5 projects against the Vite preview server on port 4173.
+The Playwright suites in `tests/e2e/` cover the home page, the home Contact section, detail routes, the one-pager structure (kept pages load; legacy page URLs land on their home sections), static blog delivery, removed-route behavior, and an axe WCAG 2.2 AA gate for every main route. The configuration runs Desktop Chrome and Pixel 5 projects against `scripts/preview-server.mjs` (Vercel-like clean URLs, 308 legacy redirects, 404 status) on port 4173.
 
 Build first, then run:
 
 ```bash
 npm run build
-npx playwright test
+npm run test:e2e
 ```
 
 ## CI/CD
