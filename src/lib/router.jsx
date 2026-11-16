@@ -113,6 +113,18 @@ function saveScrollPosition() {
   }
 }
 
+/* Page hide par bhi scroll save karo — reload ya bfcache se wapas
+   ane par position restore ho sakti hai. RouterProvider isay
+   "pagehide" listener ke tor par lagata hai.
+   REGRESSION NOTE (2026-11-16): ye handler kabhi define hi nahi hua
+   tha — effect mein is ka reference ReferenceError deta tha, React
+   poora root unmount kar deta tha aur production site har route par
+   blank white ho gayi thi (SSR/prerender theek tha kyunke effects
+   server par nahi chalte). router.test.jsx isay lock karta hai. */
+function onPageHide() {
+  saveScrollPosition();
+}
+
 /** @type {{ path: string, y: number } | null} */
 let pendingScrollRestore = null;
 
