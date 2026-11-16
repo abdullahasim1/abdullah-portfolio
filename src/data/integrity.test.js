@@ -177,14 +177,13 @@ describe("generated artefacts stay fresh", () => {
     for (const p of featuredProjects) {
       expect(xml, `sitemap missing project ${p.repoName}`).toContain(`/projects/${projectSlug(p)}`);
     }
-    // One-pager (2026-11-13): service detail URLs aur purane page
-    // URLs sitemap mein nahi hone chahiye.
-    for (const s of services) {
-      expect(xml, `sitemap must not list removed service ${s.slug}`).not.toContain(
-        `/services/${s.slug}`,
+    // Service landing pages (restored 2026-11) sitemap mein hone chahiye.
+    for (const service of services) {
+      expect(xml, `sitemap missing service ${service.slug}`).toContain(
+        `/services/${service.slug}`,
       );
     }
-    for (const gone of ["/about<", "/skills<", "/services<", "/experience<", "/contact<"]) {
+    for (const gone of ["/about<", "/skills<", "/experience<", "/contact<"]) {
       expect(xml, `sitemap must not list removed page ${gone}`).not.toContain(
         `https://abdullah-asim-dev.vercel.app${gone}`,
       );
@@ -203,18 +202,18 @@ describe("generated artefacts stay fresh", () => {
   });
 });
 
-describe("one-pager routes agree across all sources", () => {
-  /* 2026-11-13: site wapas one-pager hai — sirf teen asal pages
-     (Projects, Certifications, Blog) + home. Route set har jagah ek
-     jaisa hona chahiye: router PAGE_ROUTES, pageMeta PAGE_META,
-     App.jsx route table, sitemap. Hataye gaye pages ke URLs
-     vercel.json redirects se home anchors (/#…) par jane chahiye,
-     aur kisi asal page ka redirect nahi hona chahiye. */
-  const EXPECTED_PAGES = ["/", "/projects", "/certifications", "/blog"];
+describe("routes agree across all sources", () => {
+  /* Core pages: home + Projects / Certifications / Blog, plus the
+     services index and service landing pages (restored Nov 2026 for
+     commercial SEO). Route set har jagah ek jaisa hona chahiye:
+     router PAGE_ROUTES, pageMeta PAGE_META, App.jsx, sitemap.
+     Hataye gaye legacy pages home anchors par redirect hote hain. */
+  const CORE_PAGES = ["/", "/projects", "/certifications", "/blog", "/services"];
+  const SERVICE_PAGES = services.map((service) => `/services/${service.slug}`);
+  const EXPECTED_META_PAGES = [...CORE_PAGES, ...SERVICE_PAGES];
   const REMOVED_PAGES = {
     "/about": "/#about",
     "/skills": "/#skills",
-    "/services": "/#services",
     "/experience": "/#experience",
     "/contact": "/#contact",
   };
@@ -223,28 +222,31 @@ describe("one-pager routes agree across all sources", () => {
     const root = path.resolve(PUBLIC_DIR, "..");
     const routerSrc = fs.readFileSync(path.join(root, "src/lib/router.jsx"), "utf8");
     const routerBlock = routerSrc.match(/PAGE_ROUTES = \[([\s\S]*?)\]/)?.[1] ?? "";
-    const fromRouter = [...routerBlock.matchAll(/"(\/[^"]*)"/g)]
+    const fromRouter = [...routerBlock.matchAll(/"([^"]*)"/g)]
       .map((m) => m[1])
       .sort();
     const { PAGE_META } = await import("../lib/pageMeta.js");
-    expect(fromRouter).toEqual([...EXPECTED_PAGES].sort());
-    expect(Object.keys(PAGE_META).sort()).toEqual([...EXPECTED_PAGES].sort());
+    /* Service detail routes spread se aate hain — router literals sirf
+       core pages dete hain, meta dono ko cover karta hai. */
+    expect(fromRouter).toEqual([...CORE_PAGES].sort());
+    expect(Object.keys(PAGE_META).sort()).toEqual([...EXPECTED_META_PAGES].sort());
   });
 
-  it("App.jsx route table has a case for every kept page and none for removed pages", () => {
+  it("App.jsx routes every core page, the services index and service details", () => {
     const root = path.resolve(PUBLIC_DIR, "..");
     const appSrc = fs.readFileSync(path.join(root, "src/App.jsx"), "utf8");
-    for (const p of EXPECTED_PAGES.slice(1)) {
-      expect(appSrc, `App.jsx missing route case for ${p}`).toContain(
+    for (const p of CORE_PAGES.slice(1)) {
+      expect(appSrc, `App.jsx missing route for ${p}`).toContain(
         `case "${p.slice(1)}":`,
       );
     }
+    expect(appSrc).toContain("ServiceDetail");
+    expect(appSrc).toContain('head === "services"');
     for (const p of Object.keys(REMOVED_PAGES)) {
       expect(appSrc, `App.jsx must not route removed page ${p}`).not.toContain(
         `case "${p.slice(1)}":`,
       );
     }
-    expect(appSrc).not.toContain("ServiceDetail");
   });
 
   it("vercel.json redirects every removed page to its home anchor, and no kept page", () => {
@@ -254,14 +256,13 @@ describe("one-pager routes agree across all sources", () => {
     for (const [gone, anchor] of Object.entries(REMOVED_PAGES)) {
       expect(bySource.get(gone), `missing redirect for removed page ${gone}`).toBe(anchor);
     }
-    expect(bySource.get("/services/:slug")).toBe("/#services");
+    expect(bySource.has("/services")).toBe(false);
+    expect(bySource.has("/services/:slug")).toBe(false);
     for (const r of vercel.redirects ?? []) {
-      expect(EXPECTED_PAGES, `kept page ${r.source} must not be redirected`).not.toContain(
+      expect(EXPECTED_META_PAGES, `kept page ${r.source} must not be redirected`).not.toContain(
         r.source,
       );
     }
-    // Removed routes ki rewrites bhi nahi honi chahiye (warna SPA
-    // purana page render karne ki koshish karegi)
     const rewriteSources = (vercel.rewrites ?? []).map((r) => r.source);
     for (const gone of [...Object.keys(REMOVED_PAGES), "/services/:slug"]) {
       expect(rewriteSources, `stale rewrite for removed route ${gone}`).not.toContain(gone);
@@ -270,7 +271,7 @@ describe("one-pager routes agree across all sources", () => {
 
   it("committed sitemap covers every page route", () => {
     const xml = fs.readFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), "utf8");
-    for (const p of EXPECTED_PAGES.slice(1)) {
+    for (const p of EXPECTED_META_PAGES.slice(1)) {
       expect(xml, `sitemap missing page ${p}`).toContain(
         `https://abdullah-asim-dev.vercel.app${p}<`,
       );

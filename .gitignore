@@ -59,3 +59,8 @@ blob-report/
 
 # Audit exports
 *-audit/
+
+# Generated hero responsive variants (scripts/build-content.mjs)
+public/hero-light-640.webp
+public/hero-light-960.webp
+public/hero-light-1280.webp

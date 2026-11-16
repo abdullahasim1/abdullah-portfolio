@@ -15,6 +15,7 @@ import sharp from "sharp";
 
 import { faqs } from "../src/data/faqs.js";
 import { featuredProjects, PROJECT_SLUGS } from "../src/data/projects.js";
+import { services } from "../src/data/services.js";
 import { PDF_CERT_THUMBNAILS } from "./pdf-cert-thumbnails.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -131,6 +132,7 @@ function writeSitemap(posts) {
      hain — un ke alag URLs nahi rahe. Ye list pageMeta.js PAGE_META
      / router PAGE_ROUTES se agree karti hai. */
   const staticRoutes = [
+    { loc: `${SITE_URL}/services`, priority: "0.9" },
     { loc: `${SITE_URL}/projects`, priority: "0.9" },
     { loc: `${SITE_URL}/certifications`, priority: "0.8" },
     { loc: `${SITE_URL}/blog`, priority: "0.8" },
@@ -138,6 +140,11 @@ function writeSitemap(posts) {
   const urls = [
     { loc: `${SITE_URL}/`, changefreq: "weekly", priority: "1.0" },
     ...staticRoutes.map((r) => ({ ...r, changefreq: "monthly" })),
+    ...services.map((s) => ({
+      loc: `${SITE_URL}/services/${s.slug}`,
+      changefreq: "monthly",
+      priority: "0.8",
+    })),
     ...featuredProjects.map((p) => ({
       loc: `${SITE_URL}/projects/${PROJECT_SLUGS[p.repoName] ?? p.repoName}`,
       changefreq: "monthly",
@@ -564,7 +571,23 @@ function writePdfCertThumbnails() {
   console.log(`pdf cert thumbnails generated: ${Object.keys(PDF_CERT_THUMBNAILS).length}`);
 }
 
+/** Hero image ke responsive variants — mobile 148KB ki jagah ~40KB. */
+async function writeHeroVariants() {
+  const source = path.join(ROOT, "public", "hero-light.webp");
+  if (!fs.existsSync(source)) return;
+  await Promise.all(
+    [640, 960, 1280].map((width) =>
+      sharp(source)
+        .resize({ width })
+        .webp({ quality: 82 })
+        .toFile(path.join(ROOT, "public", `hero-light-${width}.webp`)),
+    ),
+  );
+  console.log("hero variants generated: 640 / 960 / 1280");
+}
+
 const posts = loadPosts();
+await writeHeroVariants();
 writeAboutPhoto();
 writePdfCertThumbnails();
 writeKiroBadge();

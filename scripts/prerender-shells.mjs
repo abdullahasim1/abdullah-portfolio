@@ -22,10 +22,16 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { Writable } from "node:stream";
 import { fileURLToPath } from "node:url";
+
+import React from "react";
+import { renderToPipeableStream } from "react-dom/server";
+import { createServer } from "vite";
 
 import { PAGE_META, SITE_URL } from "../src/lib/pageMeta.js";
 import { featuredProjects, projectSlug } from "../src/data/projects.js";
+import { services } from "../src/data/services.js";
 import {
   breadcrumbList,
   projectsItemList,
@@ -34,6 +40,9 @@ import {
   projectWorkNode,
   personNode,
   publisherNode,
+  serviceNode,
+  serviceFaqNode,
+  servicesItemList,
 } from "../src/lib/routeSchema.js";
 import { posts } from "../src/data/posts.gen.js";
 
@@ -176,6 +185,74 @@ function insertLd(html, keep, extra) {
   return html.replace("</head>", `${parts.join("\n")}\n  </head>`);
 }
 
+/* ---- Full body prerender (SSG) ------------------------------------
+   Sirf <head> ka meta nahi — poora React tree server par render hota
+   hai aur #root ke andar likha jata hai. Is se GPTBot/ClaudeBot jaise
+   non-JS crawlers ko real content milta hai aur first paint JS ka
+   intezar nahi karta. Client createRoot se ise replace karta hai. */
+function renderOne(App, routePath) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    const timer = setTimeout(() => {
+      reject(new Error(`prerender body timeout: ${routePath}`));
+    }, 30000);
+    const stream = renderToPipeableStream(
+      React.createElement(App, { initialPath: routePath }),
+      {
+        onAllReady() {
+          const out = new Writable({
+            write(chunk, _enc, done) {
+              chunks.push(chunk);
+              done();
+            },
+            final(done) {
+              clearTimeout(timer);
+              resolve(Buffer.concat(chunks).toString("utf8"));
+              done();
+            },
+          });
+          stream.pipe(out);
+        },
+        onShellError(error) {
+          clearTimeout(timer);
+          reject(error);
+        },
+        onError(error) {
+          /* Recoverable Suspense errors — onAllReady decide karega. */
+          console.warn(`prerender warning (${routePath}):`, error.message);
+        },
+      },
+    );
+  });
+}
+
+async function renderBodies(paths) {
+  const vite = await createServer({
+    server: { middlewareMode: true },
+    appType: "custom",
+    logLevel: "error",
+  });
+  try {
+    const { default: App } = await vite.ssrLoadModule("/src/App.jsx");
+    const bodies = {};
+    for (const routePath of paths) {
+      bodies[routePath] = await renderOne(App, routePath);
+    }
+    return bodies;
+  } finally {
+    await vite.close();
+  }
+}
+
+function injectBody(html, body) {
+  if (!body) throw new Error("prerender body is empty");
+  const marker = '<div id="root"></div>';
+  if (!html.includes(marker)) {
+    throw new Error("prerender: #root marker missing");
+  }
+  return html.replace(marker, `<div id="root">${body}</div>`);
+}
+
 const routes = [];
 
 /* Static pages — pageMeta.js se */
@@ -211,6 +288,31 @@ for (const [routePath, meta] of Object.entries(PAGE_META)) {
       ]),
       blogItemList(posts),
     ];
+  } else {
+    const service = services.find(
+      (item) => `/services/${item.slug}` === routePath,
+    );
+    if (routePath === "/services") {
+      route.extra = [
+        personNode(),
+        breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ]),
+        servicesItemList(services),
+      ];
+    } else if (service) {
+      route.extra = [
+        personNode(),
+        serviceNode(service),
+        serviceFaqNode(service),
+        breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/#services" },
+          { name: service.title, path: routePath },
+        ]),
+      ];
+    }
   }
   routes.push(route);
 }
@@ -244,11 +346,18 @@ for (const p of featuredProjects) {
 /* Service detail pages khatam (2026-11-13, one-pager) — un ke
    shells ab generate nahi hote. */
 
+/* Bodies: home + har route ka poora React markup. */
+const bodyPaths = ["/", ...routes.map((route) => route.path)];
+const bodies = await renderBodies(bodyPaths);
+
 /* Home shell (dist/index.html khud): sirf home ke nodes —
    Person + ProfilePage + WebSite + FAQPage. */
 fs.writeFileSync(
   distIndex,
-  insertLd(baseNoLd, ["person", "profile", "website", "faq", "other"], []),
+  injectBody(
+    insertLd(baseNoLd, ["person", "profile", "website", "faq", "other"], []),
+    bodies["/"],
+  ),
 );
 
 let written = 0;
@@ -257,7 +366,10 @@ for (const route of routes) {
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
     path.join(dir, "index.html"),
-    insertLd(shellFor(route), route.keep, route.extra),
+    injectBody(
+      insertLd(shellFor(route), route.keep, route.extra),
+      bodies[route.path],
+    ),
   );
   written++;
 }

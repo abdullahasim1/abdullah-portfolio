@@ -30,15 +30,17 @@ React, Next.js, Node.js, TypeScript, Tailwind CSS, GSAP, Three.js, Claude & AI A
 | Four-AI Platform | AI-powered web app with Text-to-Speech, Text-to-Image, and voice effects (React, Node.js, MySQL). | https://four-ai-dev.vercel.app |
 | HireGen AI | Smart hiring & communication automation — AI resume matching, email automation, skill-gap insights (Next.js, Generative AI). | https://hiregen-ai.vercel.app |
 | Upmatch — Job Recruitment | Modern job portal with employer listings, candidate profiles, application management. | https://job-recuitment.vercel.app |
+| Portfolio Website | The site you are on — React, Vite, prerendered content and strict performance budgets. | https://abdullah-asim-dev.vercel.app |
 | Business Help — AI Chat & Voice SaaS | White-label AI chat & voice-call widget for businesses — Retell AI voice agents, Calendly booking and a multi-tenant admin. | https://abdullah-asim-dev.vercel.app/projects/business-help |
 
 ## Services
 
-- Full-Stack Web Development — modern, responsive and high-performance web apps (React, Next.js, Node.js)
-- Generative AI Integration — Claude, OpenAI and AWS Bedrock capabilities in real products
-- AWS Cloud & Serverless — Lambda, S3 and API Gateway
-- AI-Powered Product Development — end-to-end SaaS from idea to launch
-- AI & Workflow Automation — n8n, Make.com, GoHighLevel and Zapier automations
+- [Full-Stack Web Development](https://abdullah-asim-dev.vercel.app/services/full-stack-web-development) — modern, responsive and high-performance web apps (React, Next.js, Node.js)
+- [Generative AI Integration](https://abdullah-asim-dev.vercel.app/services/generative-ai-integration) — Claude, OpenAI and AWS Bedrock capabilities in real products
+- [AWS Cloud & Serverless](https://abdullah-asim-dev.vercel.app/services/aws-cloud-serverless) — Lambda, S3 and API Gateway
+- [AI-Powered Product Development](https://abdullah-asim-dev.vercel.app/services/ai-product-development) — end-to-end SaaS from idea to launch
+- [AI & Workflow Automation](https://abdullah-asim-dev.vercel.app/services/ai-automation-workflows) — n8n, Make.com, GoHighLevel and Zapier automations
+- [All services](https://abdullah-asim-dev.vercel.app/services) — scope, process and fixed-quote engagements
 
 ## Certifications
 

@@ -100,10 +100,12 @@ ok(`${checks.length} route shells checked (canonical, h1, JSON-LD graph)`);
 
 /* 2. Home ka no-JS fallback */
 const home = fs.readFileSync(path.join(DIST, "index.html"), "utf8");
-if (!/<noscript>[\s\S]*Bedrock[\s\S]*<\/noscript>/.test(home)) {
-  fail("home: noscript fallback content missing");
+if (home.includes('<div id="root"></div>') || !home.includes('<div id="root">')) {
+  fail("home: prerendered body missing");
+} else if (!home.includes("Bedrock")) {
+  fail("home: prerendered body has no real content");
 } else {
-  ok("home: no-JS fallback present");
+  ok("home: full prerendered body present");
 }
 
 /* 3. Sitemap URLs sab build output mein maujood hon */
@@ -132,7 +134,7 @@ for (const rel of ["llms.txt", "llms-full.txt", "index.md"]) {
 ok("llms.txt / llms-full.txt / index.md list every post");
 
 /* 5. Deleted routes ka shell na bache */
-for (const stale of ["about", "skills", "services", "experience", "contact"]) {
+for (const stale of ["about", "skills", "experience", "contact"]) {
   if (fs.existsSync(path.join(DIST, stale, "index.html"))) {
     fail(`stale shell still built: /${stale}`);
   }

@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    "types": ["vite/client"]
+  },
+  "include": ["src/lib/**/*.js", "src/data/**/*.js"],
+  "exclude": ["**/*.test.js", "src/data/posts.gen.js"]
+}

@@ -115,16 +115,6 @@
       "permanent": true
     },
     {
-      "source": "/services",
-      "destination": "/#services",
-      "permanent": true
-    },
-    {
-      "source": "/services/:slug",
-      "destination": "/#services",
-      "permanent": true
-    },
-    {
       "source": "/experience",
       "destination": "/#experience",
       "permanent": true

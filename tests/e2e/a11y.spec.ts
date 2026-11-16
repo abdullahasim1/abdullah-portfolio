@@ -3,7 +3,14 @@ import AxeBuilder from "@axe-core/playwright";
 
 /* WCAG 2.2 AA smoke gate — audit (Nov 2026) ke baad CI mein add hua.
    Har main route par serious/critical axe violations fail karte hain. */
-const routes = ["/", "/projects", "/certifications", "/blog"];
+const routes = [
+  "/",
+  "/projects",
+  "/certifications",
+  "/blog",
+  "/services",
+  "/services/ai-automation-workflows",
+];
 
 for (const path of routes) {
   test(`axe WCAG 2.2 AA: ${path}`, async ({ page }) => {

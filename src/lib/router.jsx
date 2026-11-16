@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { getLenis, scrollToSection } from "./smoothScroll";
+import { getLenis, scrollToSection, scrollToY } from "./smoothScroll";
+import { SERVICE_SLUGS } from "../data/services";
 
 /* Lightweight history router — koi external dep nahi.
    Real <a href> render hote hain (crawlers / middle-click theek),
@@ -14,7 +15,14 @@ const RouterContext = createContext({ path: "/", navigate: () => {} });
    hain — bilkul PR #26 se pehle wali tarteeb. PAGE_ROUTES asal
    pages hain; pageMeta.js PAGE_META aur App.jsx route table se
    agree karne chahiye (integrity test ye pakka karta hai). */
-export const PAGE_ROUTES = ["/", "/projects", "/certifications", "/blog"];
+export const PAGE_ROUTES = [
+  "/",
+  "/projects",
+  "/certifications",
+  "/blog",
+  "/services",
+  ...SERVICE_SLUGS.map((slug) => `/services/${slug}`),
+];
 
 /* Home par maujood section ids — navbar scrollspy aur anchor
    navigation inhi par chalta hai. */
@@ -51,7 +59,6 @@ export function pageForSection(id) {
 const LEGACY_PATH_SECTION = {
   about: "about",
   skills: "skills",
-  services: "services",
   experience: "experience",
   contact: "contact",
 };
@@ -60,7 +67,6 @@ function legacySectionForPath(path) {
   const seg = path.split("/").filter(Boolean);
   if (seg.length === 1 && LEGACY_PATH_SECTION[seg[0]])
     return LEGACY_PATH_SECTION[seg[0]];
-  if (seg.length === 2 && seg[0] === "services") return "services";
   return null;
 }
 
@@ -93,6 +99,40 @@ export function redirectHashToRoute() {
    warna do loops aapas mein lar sakti hain. */
 let settleGen = 0;
 
+/* Browser back/forward par scroll position restore karne ke liye
+   current history entry mein Y save karte hain. Push se pehle call. */
+function saveScrollPosition() {
+  try {
+    window.history.replaceState(
+      { ...(window.history.state || {}), __scrollY: window.scrollY },
+      "",
+      window.location.href,
+    );
+  } catch {
+    /* history unavailable */
+  }
+}
+
+/** @type {{ path: string, y: number } | null} */
+let pendingScrollRestore = null;
+
+export function consumeScrollRestore() {
+  const restore = pendingScrollRestore;
+  pendingScrollRestore = null;
+  return restore;
+}
+
+/** Lazy sections mount hone tak thori der retry — warna scroll clamp ho jata hai. */
+export function restoreScroll(y) {
+  let tries = 0;
+  const tick = () => {
+    scrollToY(y);
+    tries += 1;
+    if (tries < 5) setTimeout(tick, 120);
+  };
+  requestAnimationFrame(tick);
+}
+
 export function navigateTo(path) {
   settleGen++;
   /* Purane multi-page URLs kabhi asal route nahi bante — home ke
@@ -114,6 +154,7 @@ export function navigateTo(path) {
     scrollTopNow();
     return;
   }
+  saveScrollPosition();
   window.history.pushState({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
@@ -241,13 +282,15 @@ export function consumePendingSection() {
   return false;
 }
 
-export function RouterProvider({ children }) {
+export function RouterProvider({ children, initialPath = "/" }) {
   /* Pehli load par hi purani shaklon ko seedha kar do — initial
      state mein, taake pehla render hi sahi page ka ho (popstate
      listener tab tak laga nahi hota):
      - purana page URL (/about waghera) → home + pending section
      - page-section ki hash (/#projects waghera) → asal route */
   const [path, setPath] = useState(() => {
+    /* SSR/prerender: window nahi hota — build script route ka path deta hai. */
+    if (typeof window === "undefined") return initialPath;
     const p = window.location.pathname;
     const legacy = legacySectionForPath(p);
     if (legacy) {
@@ -268,7 +311,7 @@ export function RouterProvider({ children }) {
   });
 
   useEffect(() => {
-    const onPop = () => {
+    const onPop = (event) => {
       /* Back/forward se purana page URL aaye to wahi normalization */
       const legacy = legacySectionForPath(window.location.pathname);
       if (legacy) {
@@ -279,10 +322,21 @@ export function RouterProvider({ children }) {
         setPath("/");
         return;
       }
+      const state = event.state;
+      if (state && typeof state.__scrollY === "number") {
+        pendingScrollRestore = {
+          path: window.location.pathname,
+          y: state.__scrollY,
+        };
+      }
       setPath(window.location.pathname);
     };
     window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
+    window.addEventListener("pagehide", onPageHide);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("pagehide", onPageHide);
+    };
   }, []);
 
   const navigate = useCallback((to) => {

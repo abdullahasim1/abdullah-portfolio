@@ -57,3 +57,16 @@ export function scrollToTop() {
 export function getLenis() {
   return lenis;
 }
+
+/**
+ * Absolute scroll position (back/forward restore ke liye).
+ * @param {number} y
+ */
+export function scrollToY(y) {
+  const target = Math.max(0, Number(y) || 0);
+  if (lenis) {
+    lenis.scrollTo(target, { immediate: true, force: true });
+  } else {
+    window.scrollTo(0, target);
+  }
+}

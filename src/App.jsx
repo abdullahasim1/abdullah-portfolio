@@ -9,16 +9,20 @@ import BusinessHelpWidget from "./components/BusinessHelpWidget";
 import CommandPalette from "./components/CommandPalette";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
-import SplashScreen from "./components/SplashScreen";
-import { IS_LOW_END } from "./lib/device";
-import { RouterProvider, useRoute, scrollTopNow, consumePendingSection, redirectHashToRoute, Link } from "./lib/router";
+import {
+  RouterProvider,
+  useRoute,
+  scrollTopNow,
+  consumePendingSection,
+  redirectHashToRoute,
+  consumeScrollRestore,
+  restoreScroll,
+  Link,
+} from "./lib/router";
 import { applyPageMeta, metaForPath } from "./lib/pageMeta";
 import { getFeaturedBySlug } from "./data/projects";
+import { getServiceBySlug } from "./data/services";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-/* Splash EAGER import hai (lazy nahi): ye sirf CSS/SVG hai, three is
-   mein nahi. Lazy hone par pehle portfolio flash hota tha, phir splash
-   aata tha — ab pehli paint se hi splash nazar aata hai. */
 
 /* Pages lazy load — har route apna chunk */
 const About = lazy(() => import("./pages/About"));
@@ -39,6 +43,8 @@ const Faq = lazy(() => import("./pages/Faq"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ProjectCaseStudy = lazy(() => import("./pages/ProjectCaseStudy"));
+const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
+const ServicesIndex = lazy(() => import("./pages/ServicesIndex"));
 function NotFound() {
   useEffect(() => {
     applyPageMeta({
@@ -107,10 +113,10 @@ function Section({ children }) {
    Certifications preview, Blog preview, Testimonials, FAQ, Contact
    FULL, CTA. Sirf teen previews bache hain jin ke asal pages hain —
    Projects, Certifications, Blog. */
-function HomePage({ introDone }) {
+function HomePage() {
   return (
     <>
-      <Home introDone={introDone} />
+      <Home />
       <TechTicker />
       <Section>
         <About />
@@ -159,20 +165,23 @@ function SectionPage({ children }) {
   return <div className="pt-20 sm:pt-24">{children}</div>;
 }
 
-function RouteView({ introDone }) {
+function RouteView() {
   const { path } = useRoute();
   const seg = path.split("/").filter(Boolean);
 
   /* Route change: meta apply + (pending section scroll ya top) +
-     ScrollTrigger refresh taake naye page ke reveals sahi chalen.
-     Splash chal raha ho to scroll defer hota hai — introDone true
-     hote hi yehi effect dobara chal kar consume kar leta hai. */
+     ScrollTrigger refresh taake naye page ke reveals sahi chalen. */
   useEffect(() => {
     if (path === "/" && redirectHashToRoute()) return;
     const meta = metaForPath(path);
     if (meta) applyPageMeta({ ...meta, path });
-    if (introDone) {
-      if (!consumePendingSection()) scrollTopNow();
+    const restore = consumeScrollRestore();
+    if (!consumePendingSection()) {
+      if (restore && restore.path === window.location.pathname && restore.y > 0) {
+        restoreScroll(restore.y);
+      } else {
+        scrollTopNow();
+      }
     }
     /* Refresh ek se zyada martaba: home one-pager ke lazy sections
        mukhtalif auqaat par mount hote hain — kisi section ka
@@ -191,7 +200,7 @@ function RouteView({ introDone }) {
       timers.forEach(clearTimeout);
       window.removeEventListener("load", onLoad);
     };
-  }, [path, introDone]);
+  }, [path]);
 
   const page = (node) => (
     <Suspense fallback={<div className="py-40" />}>
@@ -199,7 +208,7 @@ function RouteView({ introDone }) {
     </Suspense>
   );
 
-  if (seg.length === 0) return <HomePage introDone={introDone} />;
+  if (seg.length === 0) return <HomePage />;
 
   const [head, tail] = seg;
   if (seg.length === 1) {
@@ -218,9 +227,17 @@ function RouteView({ introDone }) {
             <Blog />
           </SectionPage>,
         );
+      case "services":
+        return page(<ServicesIndex />);
       default:
         break;
     }
+  }
+
+  if (head === "services" && seg.length === 2) {
+    return getServiceBySlug(tail)
+      ? page(<ServiceDetail slug={tail} />)
+      : <NotFound />;
   }
 
   if (head === "projects" && seg.length === 2 && getFeaturedBySlug(tail))
@@ -229,16 +246,6 @@ function RouteView({ introDone }) {
 }
 
 function Site() {
-  // Splash har session mein sirf ek dafa (refresh pe skip hota hai).
-  // Low-end/touch devices par splash bilkul mount nahi hota — warna
-  // three/r3f chunks mobile par load ho jaate hain (perf hit).
-  const [introDone, setIntroDone] = useState(() => {
-    if (typeof window === "undefined") return true;
-    if (IS_LOW_END) return true;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
-    return sessionStorage.getItem("aa-splash-seen") === "1";
-  });
-
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
   /* Purani hash wali blog links (#blog/<slug>) asal page par bhejo */
@@ -249,7 +256,6 @@ function Site() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (!introDone) return;
       if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
         e.preventDefault();
         setIsPaletteOpen((prev) => !prev);
@@ -264,36 +270,10 @@ function Site() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("aa-open-palette", onOpenPalette);
     };
-  }, [introDone]);
-
-  const handleSplashFinish = () => {
-    sessionStorage.setItem("aa-splash-seen", "1");
-    setIntroDone(true);
-  };
-
-  /* Splash ke doran page scroll lock — peeche ki site hilti nahi,
-     reveals apne sahi waqt par hi chalte hain. */
-  useEffect(() => {
-    if (introDone) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [introDone]);
-
-  /* Splash khatam hone par pending section / scroll ka kaam
-     RouteView ka effect (introDone dependency ke sath) khud kar
-     leta hai — yahan alag se kuch nahi karna. */
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">
-      {/* Splash khula ho to baaki page inert — focus overlay ke peeche
-          Tab nahi kar sakta (WCAG 2.4.11 / aria-hidden). */}
-      <div
-        inert={!introDone ? true : undefined}
-        aria-hidden={introDone ? undefined : "true"}
-      >
       {/* Skip to content (keyboard users) */}
       <a
         href="#main-content"
@@ -328,27 +308,23 @@ function Site() {
         tabIndex={-1}
         className="relative z-10 focus:outline-none"
       >
-        <RouteView introDone={introDone} />
+        <RouteView />
       </main>
 
       <Footer />
       <ScrollToTop />
-      {introDone && <BusinessHelpWidget />}
+      <BusinessHelpWidget />
       <CommandPalette
         isOpen={isPaletteOpen}
         onClose={() => setIsPaletteOpen(false)}
       />
-      </div>
-
-      {/* Intro splash — site ke upar render hota hai, pehli paint se */}
-      {!introDone && <SplashScreen onFinish={handleSplashFinish} />}
     </div>
   );
 }
 
-function App() {
+function App({ initialPath = "/" }) {
   return (
-    <RouterProvider>
+    <RouterProvider initialPath={initialPath}>
       <Site />
     </RouterProvider>
   );

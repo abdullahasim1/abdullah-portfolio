@@ -274,3 +274,10 @@ export const services = [
 export function getService(slug) {
   return services.find((s) => s.slug === slug) ?? null;
 }
+
+/** @param {string} slug */
+export function getServiceBySlug(slug) {
+  return services.find((service) => service.slug === slug) ?? null;
+}
+
+export const SERVICE_SLUGS = services.map((service) => service.slug);

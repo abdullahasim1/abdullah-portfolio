@@ -1,4 +1,5 @@
 // @ts-check
+import { services } from "../data/services.js";
 /* Har route ka SEO meta — client-side apply + build-time prerender
    shells (scripts/prerender-shells.mjs) dono yahi se lete hain. */
 
@@ -24,6 +25,11 @@ export const PAGE_META = {
     title: "Certifications — AWS, Anthropic & OpenAI | Abdullah Bin Asim",
     description:
       "27 AWS, Anthropic and OpenAI certifications held by Abdullah Bin Asim — AWS Generative AI Developer Professional and Claude Certified Architect.",
+  },
+  "/services": {
+    title: "Services — AI Automation, AWS & Full-Stack | Abdullah Bin Asim",
+    description:
+      "Five focused services by Abdullah Bin Asim: AI automation, AWS GenAI, full-stack web apps, AI product development and workflow automation. Fixed quotes.",
   },
   "/blog": {
     title: "Blog — AI Engineering, AWS & Automation | Abdullah Bin Asim",
@@ -82,4 +88,13 @@ export function applyPageMeta({ title, description, path, type = "website", imag
 /** @param {string} path */
 export function metaForPath(path) {
   return PAGE_META[path] ?? null;
+}
+
+/* Service landing pages — data/services.js se meta, taake title/
+   description service copy ke sath drift na karein. */
+for (const service of services) {
+  PAGE_META[`/services/${service.slug}`] = {
+    title: `${service.title} — Abdullah Bin Asim`,
+    description: `${service.short} Freelance service by Abdullah Bin Asim, AI Cloud Engineer in Lahore, Pakistan.`,
+  };
 }

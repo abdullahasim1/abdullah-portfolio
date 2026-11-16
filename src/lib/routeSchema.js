@@ -150,3 +150,63 @@ export function publisherNode() {
     },
   };
 }
+
+/**
+ * Service landing page schema — Service + deliverables catalog.
+ * @param {{ slug: string, title: string, short: string, deliverables: string[], tools: string[] }} service
+ */
+export function serviceNode(service) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.short,
+    url: `${SITE_URL}/services/${service.slug}`,
+    serviceType: service.title,
+    provider: { "@id": PERSON_ID },
+    areaServed: [
+      { "@type": "Country", name: "Pakistan" },
+      { "@type": "Place", name: "Worldwide (remote)" },
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `${service.title} deliverables`,
+      itemListElement: service.deliverables.map((item) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: item },
+      })),
+    },
+  };
+}
+
+/**
+ * @param {{ slug: string, title: string, faqs: { q: string, a: string }[] }} service
+ */
+export function serviceFaqNode(service) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    name: `${service.title} — FAQs`,
+    url: `${SITE_URL}/services/${service.slug}`,
+    mainEntity: service.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: { "@type": "Answer", text: faq.a },
+    })),
+  };
+}
+
+/** @param {{ slug: string, title: string, short: string }[]} list */
+export function servicesItemList(list) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Services — Abdullah Bin Asim",
+    itemListElement: list.map((service, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: service.title,
+      url: `${SITE_URL}/services/${service.slug}`,
+    })),
+  };
+}

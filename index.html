@@ -475,6 +475,8 @@
       rel="preload"
       as="image"
       href="/hero-light.webp"
+      imagesrcset="/hero-light-640.webp 640w, /hero-light-960.webp 960w, /hero-light-1280.webp 1280w, /hero-light.webp 1920w"
+      imagesizes="(max-width: 1024px) 100vw, 50vw"
       type="image/webp"
       fetchpriority="high"
     />
@@ -486,35 +488,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <noscript>
-      <div style="max-width:720px;margin:0 auto;padding:32px 20px;font-family:Inter,system-ui,sans-serif;line-height:1.65;color:#0f172a">
-        <h1>Abdullah Bin Asim — AI Cloud Engineer &amp; Full-Stack Developer</h1>
-        <p>AI Cloud Engineer at Experts Cloud in Lahore, Pakistan. AWS Certified Generative AI Developer (Professional) and Claude Certified Architect. I build Generative AI on AWS Bedrock, RAG systems, serverless apps and n8n / Make.com automation.</p>
-        <h2>Services</h2>
-        <ul>
-          <li>Generative AI integration — Claude, OpenAI, AWS Bedrock</li>
-          <li>AWS cloud &amp; serverless — Lambda, S3, API Gateway</li>
-          <li>AI &amp; workflow automation — n8n, Make.com, GoHighLevel</li>
-          <li>Full-stack web development — React, Next.js, Node.js</li>
-        </ul>
-        <h2>Featured projects</h2>
-        <ul>
-          <li><a href="/projects/four-ai">Four-AI Platform</a> — AI voice and image generation</li>
-          <li><a href="/projects/hiregen-ai">HireGen AI</a> — hiring automation</li>
-          <li><a href="/projects/upmatch">Upmatch</a> — job recruitment portal</li>
-          <li><a href="/projects/business-help">Business Help</a> — AI chat &amp; voice SaaS</li>
-          <li><a href="/projects/portfolio-website">Portfolio Website</a></li>
-        </ul>
-        <h2>More</h2>
-        <ul>
-          <li><a href="/projects">All projects</a></li>
-          <li><a href="/certifications">27 certifications</a></li>
-          <li><a href="/blog">Blog</a></li>
-        </ul>
-        <p>Contact: <a href="mailto:abdullah.gc.18@gmail.com">abdullah.gc.18@gmail.com</a> · <a href="https://github.com/abdullahasim1">GitHub</a> · <a href="https://www.linkedin.com/in/abdullahasim1/">LinkedIn</a></p>
-        <p>Agent-readable: <a href="/index.md">/index.md</a> · <a href="/llms-full.txt">/llms-full.txt</a></p>
-      </div>
-    </noscript>
+    
     <script type="module" src="/src/main.jsx"></script>
     <script>
       // Critical CSS inline for above-the-fold content (theme-aware)

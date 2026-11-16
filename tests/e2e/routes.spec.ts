@@ -17,15 +17,18 @@ test.describe('Detail routes', () => {
     await expect(page.getByRole('link', { name: /Live Demo/i })).toBeVisible();
   });
 
-  test('removed service detail route lands on the home Services section', async ({ page }) => {
-    // Service detail pages were removed in the 2026-11-13 one-pager
-    // restructure — the old URL must land on home's Services section
-    // (client normalization locally; vercel.json redirect in prod).
+  test('service landing page renders its own content', async ({ page }) => {
+    // Service pages restored Nov 2026 for commercial SEO.
     await page.goto('/services/generative-ai-integration');
-    await expect(page).toHaveURL(/\/(#services)?$/);
-    await expect(
-      page.getByRole('heading', { name: /Hire a Freelance n8n Developer/i }).first(),
-    ).toBeVisible();
+    await expect(page).toHaveURL(/\/services\/generative-ai-integration$/);
+    await expect(page.locator('h1')).toContainText(/Generative AI Integration/i);
+    await expect(page.getByRole('heading', { name: /What you get/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Common questions/i })).toBeVisible();
+  });
+
+  test('unknown service slug returns 404', async ({ page }) => {
+    const response = await page.goto('/services/not-a-service');
+    expect(response?.status()).toBe(404);
   });
 
   test('blog post serves as a full static HTML article', async ({ page }) => {
@@ -61,7 +64,6 @@ test.describe('One-pager structure (2026-11-13 restructure)', () => {
   const legacy: Array<[string, RegExp]> = [
     ['/about', /Turning Ideas into AI-Powered Solutions/i],
     ['/skills', /My Tech Stack/i],
-    ['/services', /Hire a Freelance n8n Developer/i],
     ['/experience', /My Journey/i],
     ['/contact', /Have a Project in Mind/i],
   ];
@@ -119,5 +121,27 @@ test.describe('One-pager structure (2026-11-13 restructure)', () => {
     await expect(
       page.getByRole('heading', { name: /My Recent Work/i }).first(),
     ).toBeVisible();
+  });
+});
+
+test.describe('History navigation', () => {
+  test('back button restores the previous scroll position', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1200);
+    await page.evaluate(() => window.scrollTo(0, 800));
+    await page.waitForTimeout(500);
+    const before = await page.evaluate(() => window.scrollY);
+    expect(before).toBeGreaterThan(500);
+
+    await page.getByRole('link', { name: /^Projects$/ }).first().click();
+    await page.waitForURL(/\/projects$/);
+    await page.waitForTimeout(500);
+
+    await page.goBack();
+    await page.waitForURL(/\/$/);
+    await page.waitForTimeout(1400);
+    const after = await page.evaluate(() => window.scrollY);
+    expect(Math.abs(after - before)).toBeLessThan(600);
   });
 });

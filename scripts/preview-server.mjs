@@ -43,7 +43,6 @@ const REDIRECTS = [
   [/^\/faq\/?$/, "/#faq"],
   [/^\/about\/?$/, "/#about"],
   [/^\/skills\/?$/, "/#skills"],
-  [/^\/services(\/.*)?\/?$/, "/#services"],
   [/^\/experience\/?$/, "/#experience"],
   [/^\/contact\/?$/, "/#contact"],
 ];

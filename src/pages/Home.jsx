@@ -93,12 +93,12 @@ function HeroChip({ item, className = "", delay = "0s" }) {
   );
 }
 
-function Home({ introDone = true }) {
+function Home() {
   const sectionRef = useRef(null);
   const visualRef = useRef(null);
 
   useEffect(() => {
-    if (!introDone || !sectionRef.current) return;
+    if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       /* Sirf transform animate karo — opacity 0 se start karne par LCP
          element JS chalne tak invisible rehta tha. Content pehli paint se
@@ -112,7 +112,7 @@ function Home({ introDone = true }) {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, [introDone]);
+  }, []);
 
   /* Hero visual par halka scroll parallax — inkwell-style scrub feel */
   useEffect(() => {
@@ -222,6 +222,8 @@ function Home({ introDone = true }) {
               />
               <img
                 src="/hero-light.webp"
+                srcSet="/hero-light-640.webp 640w, /hero-light-960.webp 960w, /hero-light-1280.webp 1280w, /hero-light.webp 1920w"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 alt="Floating laptop with a code editor on a soft lavender background"
                 className="relative w-full rounded-[28px] border border-violet-200/70 light:border-violet-100 object-cover shadow-[0_30px_80px_-30px_rgba(124,58,237,0.35)]"
                 width="960"
