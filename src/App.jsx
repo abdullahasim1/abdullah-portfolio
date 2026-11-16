@@ -9,6 +9,8 @@ import BusinessHelpWidget from "./components/BusinessHelpWidget";
 import CommandPalette from "./components/CommandPalette";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
+import SplashScreen from "./components/SplashScreen";
+import { IS_LOW_END } from "./lib/device";
 import {
   RouterProvider,
   useRoute,
@@ -23,6 +25,12 @@ import { applyPageMeta, metaForPath } from "./lib/pageMeta";
 import { getFeaturedBySlug } from "./data/projects";
 import { getServiceBySlug } from "./data/services";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+/* Splash EAGER import hai (lazy nahi): ye sirf CSS/SVG hai, three is
+   mein nahi. Lazy hone par pehle portfolio flash hota tha, phir splash
+   aata tha — ab pehli paint se hi splash nazar aata hai.
+   (2026-11-16: audit refactor mein splash hataya gaya tha — Abdullah
+   ke hukam par wapas laya gaya, jaisa pehle tha.) */
 
 /* Pages lazy load — har route apna chunk */
 const About = lazy(() => import("./pages/About"));
@@ -113,10 +121,10 @@ function Section({ children }) {
    Certifications preview, Blog preview, Testimonials, FAQ, Contact
    FULL, CTA. Sirf teen previews bache hain jin ke asal pages hain —
    Projects, Certifications, Blog. */
-function HomePage() {
+function HomePage({ introDone }) {
   return (
     <>
-      <Home />
+      <Home introDone={introDone} />
       <TechTicker />
       <Section>
         <About />
@@ -165,22 +173,26 @@ function SectionPage({ children }) {
   return <div className="pt-20 sm:pt-24">{children}</div>;
 }
 
-function RouteView() {
+function RouteView({ introDone }) {
   const { path } = useRoute();
   const seg = path.split("/").filter(Boolean);
 
   /* Route change: meta apply + (pending section scroll ya top) +
-     ScrollTrigger refresh taake naye page ke reveals sahi chalen. */
+     ScrollTrigger refresh taake naye page ke reveals sahi chalen.
+     Splash chal raha ho to scroll defer hota hai — introDone true
+     hote hi yehi effect dobara chal kar consume kar leta hai. */
   useEffect(() => {
     if (path === "/" && redirectHashToRoute()) return;
     const meta = metaForPath(path);
     if (meta) applyPageMeta({ ...meta, path });
-    const restore = consumeScrollRestore();
-    if (!consumePendingSection()) {
-      if (restore && restore.path === window.location.pathname && restore.y > 0) {
-        restoreScroll(restore.y);
-      } else {
-        scrollTopNow();
+    if (introDone) {
+      const restore = consumeScrollRestore();
+      if (!consumePendingSection()) {
+        if (restore && restore.path === window.location.pathname && restore.y > 0) {
+          restoreScroll(restore.y);
+        } else {
+          scrollTopNow();
+        }
       }
     }
     /* Refresh ek se zyada martaba: home one-pager ke lazy sections
@@ -200,7 +212,7 @@ function RouteView() {
       timers.forEach(clearTimeout);
       window.removeEventListener("load", onLoad);
     };
-  }, [path]);
+  }, [path, introDone]);
 
   const page = (node) => (
     <Suspense fallback={<div className="py-40" />}>
@@ -208,7 +220,7 @@ function RouteView() {
     </Suspense>
   );
 
-  if (seg.length === 0) return <HomePage />;
+  if (seg.length === 0) return <HomePage introDone={introDone} />;
 
   const [head, tail] = seg;
   if (seg.length === 1) {
@@ -246,6 +258,17 @@ function RouteView() {
 }
 
 function Site() {
+  // Splash har session mein sirf ek dafa (refresh pe skip hota hai).
+  // Low-end/touch devices par splash bilkul mount nahi hota — warna
+  // three/r3f chunks mobile par load ho jaate hain (perf hit).
+  // SSR/prerender mein window nahi hota — introDone true rehta hai
+  // taake SSG body mein poora content aaye, splash nahi.
+  const [introDone, setIntroDone] = useState(() => {
+    if (typeof window === "undefined") return true;
+    if (IS_LOW_END) return true;
+    return sessionStorage.getItem("aa-splash-seen") === "1";
+  });
+
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
   /* Purani hash wali blog links (#blog/<slug>) asal page par bhejo */
@@ -271,6 +294,26 @@ function Site() {
       window.removeEventListener("aa-open-palette", onOpenPalette);
     };
   }, []);
+
+  const handleSplashFinish = () => {
+    sessionStorage.setItem("aa-splash-seen", "1");
+    setIntroDone(true);
+  };
+
+  /* Splash ke doran page scroll lock — peeche ki site hilti nahi,
+     reveals apne sahi waqt par hi chalte hain. */
+  useEffect(() => {
+    if (introDone) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [introDone]);
+
+  /* Splash khatam hone par pending section / scroll ka kaam
+     RouteView ka effect (introDone dependency ke sath) khud kar
+     leta hai — yahan alag se kuch nahi karna. */
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">
@@ -308,7 +351,7 @@ function Site() {
         tabIndex={-1}
         className="relative z-10 focus:outline-none"
       >
-        <RouteView />
+        <RouteView introDone={introDone} />
       </main>
 
       <Footer />
@@ -318,6 +361,7 @@ function Site() {
         isOpen={isPaletteOpen}
         onClose={() => setIsPaletteOpen(false)}
       />
+      {!introDone && <SplashScreen onFinish={handleSplashFinish} />}
     </div>
   );
 }
