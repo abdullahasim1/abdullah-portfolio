@@ -211,7 +211,12 @@ function Services({ preview = false } = {}) {
               Math.min(1, (y + window.innerHeight - nTop) / range),
             );
             articles[i].style.transform = `scale(${1 - 0.05 * p})`;
-            articles[i].style.filter = `brightness(${1 - 0.3 * p})`;
+            // Dim BOHAT halka rakha hai (0.94): template (ExpertsCloud)
+            // par covered card ka panel apna rang mehfooz rakhta hai,
+            // grey nahi hota. Yahan pehle 0.70 tha — safed (light theme)
+            // card us se flat grey ho jata tha, jese card disabled ho
+            // (Abdullah ki screenshot wali shikayat, 2026-11-17).
+            articles[i].style.filter = `brightness(${1 - 0.06 * p})`;
           }
         });
       };
