@@ -485,8 +485,191 @@
     <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/space-grotesk-latin.woff2" crossorigin />
     <link rel="stylesheet" href="/fonts.css" />
+    <link rel="stylesheet" href="/splash.css" />
+    <script src="/splash.js"></script>
+    <noscript>
+      <style>
+        #initial-splash,
+        .aa-splash {
+          display: none !important;
+        }
+        #root {
+          visibility: visible !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
+    <!-- Instant 0ms Splash Screen (rendered immediately by browser before JS) -->
+    <div id="initial-splash" class="aa-splash" aria-label="Loading Abdullah Asim Portfolio">
+      <div class="aa-splash-bg"></div>
+      <div class="aa-bg-arc aa-bg-arc-one"></div>
+      <div class="aa-bg-arc aa-bg-arc-two"></div>
+      <div class="aa-globe" aria-hidden="true">
+        <div class="aa-globe-dots"></div>
+        <div class="aa-globe-shine"></div>
+      </div>
+      <div class="aa-particle-field" aria-hidden="true">
+        <span class="aa-particle aa-particle-1" style="--particle-left:11%;--particle-top:7%;--particle-delay:0s;--particle-duration:5s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:48%;--particle-top:60%;--particle-delay:-0.7s;--particle-duration:6s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:85%;--particle-top:13%;--particle-delay:-1.4s;--particle-duration:7s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:22%;--particle-top:66%;--particle-delay:-2.1s;--particle-duration:8s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:59%;--particle-top:19%;--particle-delay:-2.8s;--particle-duration:9s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:96%;--particle-top:72%;--particle-delay:-3.5s;--particle-duration:10s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:33%;--particle-top:25%;--particle-delay:-4.2s;--particle-duration:5s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:70%;--particle-top:78%;--particle-delay:-4.9s;--particle-duration:6s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:7%;--particle-top:31%;--particle-delay:-5.6s;--particle-duration:7s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:44%;--particle-top:84%;--particle-delay:0s;--particle-duration:8s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:81%;--particle-top:37%;--particle-delay:-0.7s;--particle-duration:9s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:18%;--particle-top:90%;--particle-delay:-1.4s;--particle-duration:10s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:55%;--particle-top:43%;--particle-delay:-2.1s;--particle-duration:5s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:92%;--particle-top:96%;--particle-delay:-2.8s;--particle-duration:6s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:29%;--particle-top:49%;--particle-delay:-3.5s;--particle-duration:7s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:66%;--particle-top:2%;--particle-delay:-4.2s;--particle-duration:8s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:3%;--particle-top:55%;--particle-delay:-4.9s;--particle-duration:9s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:40%;--particle-top:8%;--particle-delay:-5.6s;--particle-duration:10s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:77%;--particle-top:61%;--particle-delay:0s;--particle-duration:5s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:14%;--particle-top:14%;--particle-delay:-0.7s;--particle-duration:6s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:51%;--particle-top:67%;--particle-delay:-1.4s;--particle-duration:7s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:88%;--particle-top:20%;--particle-delay:-2.1s;--particle-duration:8s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:25%;--particle-top:73%;--particle-delay:-2.8s;--particle-duration:9s;--particle-size:4px;"></span>
+        <span class="aa-particle aa-particle-3" style="--particle-left:62%;--particle-top:26%;--particle-delay:-3.5s;--particle-duration:10s;--particle-size:5px;"></span>
+        <span class="aa-particle aa-particle-1" style="--particle-left:99%;--particle-top:79%;--particle-delay:-4.2s;--particle-duration:5s;--particle-size:3px;"></span>
+        <span class="aa-particle aa-particle-2" style="--particle-left:36%;--particle-top:32%;--particle-delay:-4.9s;--particle-duration:6s;--particle-size:4px;"></span>
+      </div>
+
+      <svg class="aa-landscape aa-landscape-left" viewBox="0 0 720 250" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="aaWaveLeft" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0" stop-color="#c9c4ff" stop-opacity=".12" />
+            <stop offset="1" stop-color="#9065ff" stop-opacity=".68" />
+          </linearGradient>
+          <pattern id="aaDotsLeft" width="9" height="9" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".65" />
+          </pattern>
+        </defs>
+        <path d="M0 95 Q80 16 158 76 T315 66 T500 100 T720 42 V250 H0Z" fill="url(#aaWaveLeft)" />
+        <path d="M0 95 Q80 16 158 76 T315 66 T500 100 T720 42" fill="none" stroke="#fff" stroke-width="2" opacity=".8" />
+        <path d="M0 116 Q90 32 170 91 T330 80 T510 114 T720 58 V250 H0Z" fill="url(#aaDotsLeft)" opacity=".55" />
+      </svg>
+      <svg class="aa-landscape aa-landscape-right" viewBox="0 0 760 250" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="aaWaveRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#d9d6ff" stop-opacity=".2" />
+            <stop offset="1" stop-color="#9270ff" stop-opacity=".56" />
+          </linearGradient>
+          <pattern id="aaDotsRight" width="9" height="9" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".7" />
+          </pattern>
+        </defs>
+        <path d="M0 125 Q120 40 220 95 T410 65 T590 100 T760 32 V250 H0Z" fill="url(#aaWaveRight)" />
+        <path d="M0 125 Q120 40 220 95 T410 65 T590 100 T760 32" fill="none" stroke="#fff" stroke-width="2" opacity=".8" />
+        <path d="M0 145 Q130 58 235 115 T425 85 T610 120 T760 52 V250 H0Z" fill="url(#aaDotsRight)" opacity=".6" />
+      </svg>
+
+      <div class="aa-splash-content">
+        <section class="aa-visual" aria-label="Abdullah Asim brand emblem">
+          <div class="aa-orbit aa-orbit-back"></div>
+          <div class="aa-orbit aa-orbit-front"></div>
+          <div class="aa-orbit aa-orbit-thin"></div>
+
+          <div class="aa-tech-tile aa-tech-aws">
+            <div class="aa-aws-mark" aria-label="AWS">
+              <img src="/logos/aws.svg" alt="AWS" width="60" height="36" />
+            </div>
+          </div>
+          <div class="aa-tech-tile aa-tech-react">
+            <svg viewBox="0 0 64 64" aria-hidden="true" class="aa-react-mark">
+              <g fill="none" stroke="currentColor" stroke-width="3.1">
+                <ellipse cx="32" cy="32" rx="27" ry="10.8" />
+                <ellipse cx="32" cy="32" rx="27" ry="10.8" transform="rotate(60 32 32)" />
+                <ellipse cx="32" cy="32" rx="27" ry="10.8" transform="rotate(120 32 32)" />
+              </g>
+              <circle cx="32" cy="32" r="4.2" fill="currentColor" />
+            </svg>
+          </div>
+          <div class="aa-tech-tile aa-tech-code">
+            <svg viewBox="0 0 64 64" aria-hidden="true" class="aa-code-mark">
+              <path d="M23 17 7 32l16 15M41 17l16 15-16 15M36 11 27 53" />
+            </svg>
+          </div>
+          <div class="aa-tech-tile aa-tech-next">
+            <div class="aa-next-mark" aria-label="Next.js">N</div>
+          </div>
+
+          <div class="aa-logo-platform">
+            <div class="aa-platform-top"></div>
+            <div class="aa-platform-edge"></div>
+            <div class="aa-platform-glow"></div>
+          </div>
+          <div class="aa-logo-glass">
+            <div class="aa-logo-reflection"></div>
+            <div class="aa-monogram">A</div>
+            <span class="aa-logo-spark">✦</span>
+          </div>
+          <span class="aa-orbit-dot aa-orbit-dot-one"></span>
+          <span class="aa-orbit-dot aa-orbit-dot-two"></span>
+        </section>
+
+        <section class="aa-intro" aria-label="Portfolio introduction">
+          <div class="aa-name"><span>Abdullah</span> <em>Asim</em></div>
+          <div class="aa-role"><span></span>AI CLOUD ENGINEER &amp; FULL-STACK DEVELOPER<span></span></div>
+        </section>
+
+        <section class="aa-capabilities" aria-label="Professional capabilities">
+          <div class="aa-capability aa-capability-one">
+            <span class="aa-cap-icon">✺</span>
+            <span>Generative AI</span>
+          </div>
+          <div class="aa-capability aa-capability-two">
+            <svg viewBox="0 0 64 64" aria-hidden="true" class="aa-cloud-mark">
+              <path d="M17 47h31a11 11 0 0 0 1-22 17 17 0 0 0-32-3A13 13 0 0 0 17 47Z" />
+            </svg>
+            <span>AWS Cloud</span>
+          </div>
+          <div class="aa-capability aa-capability-three">
+            <svg viewBox="0 0 64 64" aria-hidden="true" class="aa-stack-mark">
+              <path d="m32 8 25 13-25 13L7 21 32 8Z" />
+              <path d="m7 32 25 13 25-13M7 43l25 13 25-13" />
+            </svg>
+            <span>Full-Stack</span>
+          </div>
+          <div class="aa-capability aa-capability-four">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="aa-rocket-mark">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a18.18 18.18 0 0 0-3.32-3.09z" />
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+              <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+            </svg>
+            <span>Product Development</span>
+          </div>
+        </section>
+
+        <section class="aa-progress-section" aria-label="Loading progress">
+          <div class="aa-progress-labels">
+            <span class="aa-progress-status">Loading Portfolio Experience...</span>
+            <strong class="aa-progress-pct">0%</strong>
+          </div>
+          <div class="aa-progress-track" role="progressbar" aria-label="Portfolio loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="aa-progress-fill" style="width: 0%">
+              <span class="aa-progress-light"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="aa-quality" aria-label="Portfolio qualities">
+          <div><span>✓</span> Responsive</div>
+          <div><span>✓</span> Animated UI</div>
+          <div><span>✓</span> Modern Design</div>
+          <div><span>✓</span> High Performance</div>
+        </section>
+      </div>
+
+      <button type="button" class="aa-skip" aria-label="Skip intro">
+        Skip intro <span>↗</span>
+      </button>
+    </div>
+
     <div id="root"></div>
     
     <script type="module" src="/src/main.jsx"></script>

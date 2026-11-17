@@ -113,10 +113,10 @@ function Section({ children }) {
    Certifications preview, Blog preview, Testimonials, FAQ, Contact
    FULL, CTA. Sirf teen previews bache hain jin ke asal pages hain —
    Projects, Certifications, Blog. */
-function HomePage() {
+function HomePage({ introDone }) {
   return (
     <>
-      <Home />
+      <Home introDone={introDone} />
       <TechTicker />
       <Section>
         <About />
@@ -165,7 +165,7 @@ function SectionPage({ children }) {
   return <div className="pt-20 sm:pt-24">{children}</div>;
 }
 
-function RouteView() {
+function RouteView({ introDone }) {
   const { path } = useRoute();
   const seg = path.split("/").filter(Boolean);
 
@@ -208,7 +208,7 @@ function RouteView() {
     </Suspense>
   );
 
-  if (seg.length === 0) return <HomePage />;
+  if (seg.length === 0) return <HomePage introDone={introDone} />;
 
   const [head, tail] = seg;
   if (seg.length === 1) {
@@ -246,6 +246,34 @@ function RouteView() {
 }
 
 function Site() {
+  const [introDone, setIntroDone] = useState(() => {
+    if (typeof window === "undefined") return true;
+    if (window.__aa_splash_done) return true;
+    if (sessionStorage.getItem("aa-splash-seen") === "1") return true;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
+    return !document.getElementById("initial-splash");
+  });
+
+  useEffect(() => {
+    if (introDone) return;
+    if (window.__aa_splash_done || !document.getElementById("initial-splash")) {
+      setIntroDone(true);
+      return;
+    }
+    const onFinish = () => setIntroDone(true);
+    window.addEventListener("aa-splash-finish", onFinish);
+    return () => window.removeEventListener("aa-splash-finish", onFinish);
+  }, [introDone]);
+
+  useEffect(() => {
+    if (introDone) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [introDone]);
+
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
   /* Purani hash wali blog links (#blog/<slug>) asal page par bhejo */
@@ -256,6 +284,7 @@ function Site() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
+      if (!introDone) return;
       if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
         e.preventDefault();
         setIsPaletteOpen((prev) => !prev);
@@ -270,54 +299,59 @@ function Site() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("aa-open-palette", onOpenPalette);
     };
-  }, []);
+  }, [introDone]);
 
   return (
     <div className="relative min-h-screen bg-void text-slate-200 overflow-x-clip light:bg-[#F8FAFF] light:text-slate-900">
-      {/* Skip to content (keyboard users) */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-xl focus:bg-cyan-500 focus:px-5 focus:py-3 focus:font-semibold focus:text-white focus:shadow-lg"
+      <div
+        inert={!introDone ? true : undefined}
+        aria-hidden={introDone ? undefined : "true"}
       >
-        Skip to content
-      </a>
+        {/* Skip to content (keyboard users) */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-xl focus:bg-cyan-500 focus:px-5 focus:py-3 focus:font-semibold focus:text-white focus:shadow-lg"
+        >
+          Skip to content
+        </a>
 
-      {/* Top progress bar */}
-      <ScrollProgress />
+        {/* Top progress bar */}
+        <ScrollProgress />
 
-      {/* Ambient background glows */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 light:opacity-60">
-        <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-cyan-500/[0.07] blur-[120px] light:bg-cyan-500/[0.05]" />
-        <div className="absolute top-1/3 -right-48 h-[520px] w-[520px] rounded-full bg-violet-600/[0.08] blur-[130px] light:bg-violet-600/[0.05]" />
-        <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-indigo-500/[0.06] blur-[120px] light:bg-indigo-500/[0.04]" />
-        {/* Subtle dot matrix texture */}
-        <div
-          className="absolute inset-0 opacity-[0.35]"
-          style={{
-            backgroundImage:
-              "radial-gradient(rgba(148,163,184,0.055) 1px, transparent 1px)",
-            backgroundSize: "34px 34px",
-          }}
+        {/* Ambient background glows */}
+        <div aria-hidden className="pointer-events-none fixed inset-0 z-0 light:opacity-60">
+          <div className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full bg-cyan-500/[0.07] blur-[120px] light:bg-cyan-500/[0.05]" />
+          <div className="absolute top-1/3 -right-48 h-[520px] w-[520px] rounded-full bg-violet-600/[0.08] blur-[130px] light:bg-violet-600/[0.05]" />
+          <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-indigo-500/[0.06] blur-[120px] light:bg-indigo-500/[0.04]" />
+          {/* Subtle dot matrix texture */}
+          <div
+            className="absolute inset-0 opacity-[0.35]"
+            style={{
+              backgroundImage:
+                "radial-gradient(rgba(148,163,184,0.055) 1px, transparent 1px)",
+              backgroundSize: "34px 34px",
+            }}
+          />
+        </div>
+
+        <Navbar />
+
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="relative z-10 focus:outline-none"
+        >
+          <RouteView introDone={introDone} />
+        </main>
+
+        <Footer />
+        <ScrollToTop />
+        {introDone && <BusinessHelpWidget />}
+        <CommandPalette
+          isOpen={isPaletteOpen}
+          onClose={() => setIsPaletteOpen(false)}
         />
       </div>
-
-      <Navbar />
-
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className="relative z-10 focus:outline-none"
-      >
-        <RouteView />
-      </main>
-
-      <Footer />
-      <ScrollToTop />
-      <BusinessHelpWidget />
-      <CommandPalette
-        isOpen={isPaletteOpen}
-        onClose={() => setIsPaletteOpen(false)}
-      />
     </div>
   );
 }

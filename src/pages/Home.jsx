@@ -93,12 +93,12 @@ function HeroChip({ item, className = "", delay = "0s" }) {
   );
 }
 
-function Home() {
+function Home({ introDone = true }) {
   const sectionRef = useRef(null);
   const visualRef = useRef(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!introDone || !sectionRef.current) return;
     const ctx = gsap.context(() => {
       /* Sirf transform animate karo — opacity 0 se start karne par LCP
          element JS chalne tak invisible rehta tha. Content pehli paint se
@@ -112,7 +112,7 @@ function Home() {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [introDone]);
 
   /* Hero visual par halka scroll parallax — inkwell-style scrub feel */
   useEffect(() => {
