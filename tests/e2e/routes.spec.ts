@@ -134,7 +134,24 @@ test.describe('History navigation', () => {
     const before = await page.evaluate(() => window.scrollY);
     expect(before).toBeGreaterThan(500);
 
-    await page.getByRole('link', { name: /^Projects$/ }).first().click();
+    // Navbar neeche scroll par chhup jata hai (hide-on-scroll, -140%
+    // translate) — real user ki tarah thora upar scroll kar ke use
+    // wapas lao. Warna header ka "Projects" link viewport se bahar
+    // hota hai aur Playwright click 30s timeout karta hai (desktop).
+    // Mobile par desktop nav hoti hi nahi aur hamburger menu band
+    // hota hai — wahan pehle menu kholo, warna "Projects" ka pehla
+    // accessible link footer wala hota hai aur click ke liye page
+    // neeche (scrollY ~35883) scroll ho jata hai, jis se restore
+    // point hi bigar jata hai. Dono soorton mein header ke andar
+    // wala link use karo, taake footer link kabhi na mile.
+    await page.evaluate((y) => window.scrollTo(0, y - 40), before);
+    await page.waitForTimeout(500);
+    const menuToggle = page.getByRole("button", { name: "Toggle menu" });
+    if (await menuToggle.isVisible()) {
+      await menuToggle.click();
+      await page.waitForTimeout(400);
+    }
+    await page.locator("header").getByRole("link", { name: /^Projects$/ }).click();
     await page.waitForURL(/\/projects$/);
     await page.waitForTimeout(500);
 
