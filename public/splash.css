@@ -64,7 +64,7 @@ html.aa-splash-done #root {
   aspect-ratio: 1;
   left: 50%;
   top: -43%;
-  transform: translateX(-50%);
+  transform: translateX(-100%);
   border-radius: 50%;
   overflow: hidden;
   opacity: .8;
@@ -402,7 +402,7 @@ html.aa-splash-done #root {
 @keyframes aa-screen-out { to { opacity: 0; visibility: hidden; } }
 @keyframes aa-content-out { to { opacity: 0; transform: translateY(-24px) scale(.985); filter: blur(5px); } }
 @keyframes aa-bg-breathe { from { transform: scale(1) translate3d(-1%,0,0); } to { transform: scale(1.06) translate3d(1%,1%,0); } }
-@keyframes aa-globe-drift { from { translate: -50% 0; } to { translate: -50% 20px; } }
+@keyframes aa-globe-drift { from { transform: translate(-100%, 0); } to { transform: translate(-100%, 20px); } }
 @keyframes aa-particle-float { 0%,100% { transform: translate3d(0,0,0) scale(.7); opacity: .15; } 45% { transform: translate3d(13px,-24px,0) scale(1.15); opacity: .85; } 75% { transform: translate3d(-8px,-38px,0) scale(.8); opacity: .35; } }
 @keyframes aa-wave-float { from { transform: translateY(0) scaleX(1); } to { transform: translateY(-13px) scaleX(1.025); } }
 @keyframes aa-logo-float { 0%,100% { translate: 0 0; rotate: -1deg; } 50% { translate: 0 -11px; rotate: 1deg; } }
