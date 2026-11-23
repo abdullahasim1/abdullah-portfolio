@@ -11,7 +11,7 @@
 export const faqs = [
   {
     q: "Who is Abdullah Bin Asim?",
-    a: "A Full Stack Developer and AI Builder with 3+ years of experience. He builds fast, scalable web apps with React, Next.js, Node.js and AWS Generative AI, and holds AWS Certified Generative AI Developer – Professional credentials.",
+    a: "Abdullah Bin Asim is an AI Cloud Engineer & Full-Stack Developer based in Lahore, Pakistan. He works at Experts Cloud, where he builds Generative AI applications on AWS Bedrock, and is Founder & CTO of DevRox, an AI, automation & software agency. He holds the AWS Certified Generative AI Developer – Professional (Early Adopter) and Claude Certified Architect – Foundations credentials, and has shipped 25+ projects.",
   },
   {
     q: "What services does Abdullah offer?",

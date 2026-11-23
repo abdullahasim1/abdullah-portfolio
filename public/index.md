@@ -1,6 +1,6 @@
 # Abdullah Bin Asim — Full Stack Developer & AI Builder
 
-> Full Stack Developer · AI & Automation — AWS Generative AI certified. I build fast, scalable products with clean code and stunning design.
+> Abdullah Bin Asim is an AI Cloud Engineer & Full-Stack Developer based in Lahore, Pakistan. He works at Experts Cloud, where he builds Generative AI applications on AWS Bedrock, and is Founder & CTO of DevRox, an AI, automation & software agency. He holds the AWS Certified Generative AI Developer – Professional (Early Adopter) and Claude Certified Architect – Foundations credentials, and has shipped 25+ projects.
 
 - Portfolio: https://abdullah-asim-dev.vercel.app/
 - GitHub: https://github.com/abdullahasim1
