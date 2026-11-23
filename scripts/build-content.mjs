@@ -369,7 +369,7 @@ function writeStaticBlogPages(posts) {
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="${escapeXml(post.title)}" />
-    <meta property="og:site_name" content="Abdullah Asim — Portfolio" />
+    <meta property="og:site_name" content="Abdullah Bin Asim — Portfolio" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeXml(post.title)}" />
@@ -410,7 +410,7 @@ function writeStaticBlogPages(posts) {
     </main>
     <footer class="foot"><a href="/">Home</a> &middot; <a href="/blog">Blog</a></footer>
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"BlogPosting","headline":"${escapeXml(post.title)}","description":"${escapeXml(post.description)}","datePublished":"${post.date}","dateModified":"${post.date}","url":"${canonical}","author":{"@type":"Person","@id":"${SITE_URL}/#person","name":"Abdullah Bin Asim","url":"${SITE_URL}/"},"publisher":{"@type":"Organization","@id":"${SITE_URL}/#organization","name":"Abdullah Asim — Portfolio","url":"${SITE_URL}/","logo":{"@type":"ImageObject","url":"${SITE_URL}/icon-512.png","width":512,"height":512}},"mainEntityOfPage":"${canonical}","image":"${ogImage}"}
+      {"@context":"https://schema.org","@type":"BlogPosting","headline":"${escapeXml(post.title)}","description":"${escapeXml(post.description)}","datePublished":"${post.date}","dateModified":"${post.date}","url":"${canonical}","author":{"@type":"Person","@id":"${SITE_URL}/#person","name":"Abdullah Bin Asim","url":"${SITE_URL}/"},"publisher":{"@type":"Organization","@id":"${SITE_URL}/#organization","name":"Abdullah Bin Asim — Portfolio","url":"${SITE_URL}/","logo":{"@type":"ImageObject","url":"${SITE_URL}/icon-512.png","width":512,"height":512}},"mainEntityOfPage":"${canonical}","image":"${ogImage}"}
     </script>
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"${SITE_URL}/"},{"@type":"ListItem","position":2,"name":"Blog","item":"${SITE_URL}/blog"},{"@type":"ListItem","position":3,"name":"${escapeXml(post.title)}","item":"${canonical}"}]}

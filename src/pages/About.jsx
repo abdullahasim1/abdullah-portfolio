@@ -97,7 +97,7 @@ function About({ preview = false } = {}) {
             <div className="sweep-host relative rounded-[28px] overflow-hidden border border-violet-300/50 light:border-violet-200 shadow-[0_30px_60px_-25px_rgba(124,58,237,0.45)]">
               <img
                 src="/about-photo.webp"
-                alt="Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer"
+                alt="Abdullah Bin Asim — AI Cloud Engineer & Full-Stack Developer in Lahore, Pakistan"
                 className="w-full aspect-[3/4] object-cover"
                 loading="lazy"
                 width="720"
